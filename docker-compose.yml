@@ -1,0 +1,16 @@
+version: '3'
+networks:
+  env_net:
+    external: true
+
+
+
+services:
+  appserver:
+    image: mymodd:latest
+    container_name: imlogic
+    working_dir: /go/imlogic
+    networks:
+      - env_net
+    volumes:
+      - ~/go/src/imlogic:/go/imlogic

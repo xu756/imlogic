@@ -1,0 +1,10 @@
+Name: Public
+Host: 0.0.0.0
+Port: 13001
+Middlewares:
+  Log: false
+PublicRpc:
+  Etcd:
+    Hosts:
+    - etcd:2379
+    Key: public.rpc
