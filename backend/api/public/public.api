@@ -1,0 +1,46 @@
+syntax = "v1"
+
+info(
+    title: "公共api"
+    desc: "不需要验证的api"
+    author: "xu756"
+    email: "756334744@qq.com"
+    version: "v1"
+)
+
+// 用户登录相关
+//登录请求
+type LoginReq {
+    Username string `json:"username"` //用户名
+    Password string `json:"password"` //密码
+}
+//登录返回
+type LoginRes {
+    Token string `json:"token"`  //token
+    Expire int64 `json:"expire"` //过期时间
+}
+
+@server(
+    prefix : /imlogic/public/login
+    group : login
+)
+
+service Public {
+    @handler ByPassword
+    post /password (LoginReq) returns (LoginRes)
+}
+
+//获取配置
+
+//配置
+type Config {
+}
+
+@server(
+    prefix : /imlogic/public/config
+    group : config
+)
+service Public {
+    @handler GetConfig
+    get /default () returns (Config)
+}
