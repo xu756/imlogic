@@ -3,11 +3,11 @@ import {useModel} from '@umijs/max';
 import styles from './index.scss';
 
 const HomePage: React.FC = () => {
-    const {global} = useModel('global');
+    const {config,} = useModel('global');
     return (
         <PageContainer ghost>
             <div className={styles.container}>
-                {global.title}
+                {config.title}
             </div>
         </PageContainer>
     );

@@ -1,7 +1,7 @@
-import {useModel} from '@umijs/max';
+import {fetchInitialData} from '@/services/initial';
 
-export function getInitialState() {
-    return useModel('global');
+export async function getInitialState() {
+    return await fetchInitialData();
 }
 
 export const layout = () => {

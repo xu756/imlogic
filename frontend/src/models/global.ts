@@ -2,18 +2,8 @@
 import {useEffect, useState} from 'react';
 
 export default () => {
-    const [config, setConfig] = useState({
-        title: '云工桥安',
-    });
-    const [user, setUser] = useState({
-        name: '张三',
-        age: 18
-    })
-
-    useEffect(() => {
-        console.log('global', global);
-    }, []);
-
+    const [config, setConfig] = useState({});
+    const [user, setUser] = useState({})
     return {
         config,
         user,
