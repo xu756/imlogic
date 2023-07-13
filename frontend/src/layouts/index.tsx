@@ -1,9 +1,6 @@
-import {Outlet} from '@umijs/max'
+import {Outlet, useAccess} from '@umijs/max'
 
 export default () => {
-    return (
-        <div>
-            <Outlet/>
-        </div>
-    )
+    const access = useAccess();
+    return <Outlet/>;
 }

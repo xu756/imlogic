@@ -1,9 +1,7 @@
 export default function (initialState: any) {
-    const {userId, role} = initialState;
-    console.log('global', initialState);
+    const {config, user} = initialState;
 
     return {
-        canReadFoo: true,
-        canUpdateFoo: role === 'admin',
+        user: true
     };
 }

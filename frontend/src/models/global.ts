@@ -1,11 +1,6 @@
 // 全局共享数据示例
-import {useEffect, useState} from 'react';
+import {useModel} from "@umijs/max";
 
 export default () => {
-    const [config, setConfig] = useState({});
-    const [user, setUser] = useState({})
-    return {
-        config,
-        user,
-    };
+    return useModel('@@initialState').initialState
 }

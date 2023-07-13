@@ -9,26 +9,31 @@ export default defineConfig({
     layout: {
         title: 'imlogic',
 
-    },
-    routes: [
-        {
-            path: '/',
-            exact: false,
-            component: '@/layouts/index',
-            routes: [
-                {
-                    exact: true,
-                    name: '首页',
-                    path: '/home',
-                    component: '@/pages/home'
-                },
-            ]
-        },
 
+    },
+    mfsu: false,
+    routes: [
+        // {
+        //     path: '/',
+        //     exact: false,
+        //     redirect: '/home',
+        //     component: '@/layouts',
+        //     routes: [
+        //
+        //     ]
+        // },
+        {
+            name: '首页',
+            path: '/home',
+            component: '@/pages/home',
+            headerRender: true,
+            access: 'user',
+        },
         {
             exact: true,
             name: '登录',
             path: '/login',
+            layout: false,
             headerRender: false,
             // 不展示页脚
             footerRender: false,
