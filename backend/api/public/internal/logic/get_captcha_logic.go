@@ -1,4 +1,4 @@
-package config
+package logic
 
 import (
 	"context"
@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetConfigLogic struct {
+type GetCaptchaLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetConfigLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetConfigLogic {
-	return &GetConfigLogic{
+func NewGetCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCaptchaLogic {
+	return &GetCaptchaLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetConfigLogic) GetConfig() (resp *types.Config, err error) {
+func (l *GetCaptchaLogic) GetCaptcha(req *types.GetCodeReq) (resp *types.GetCodeRes, err error) {
 	// todo: add your logic here and delete this line
 
 	return

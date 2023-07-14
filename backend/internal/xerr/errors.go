@@ -31,22 +31,22 @@ func (e *CodeError) Error() string {
 // NewSystemError 系统错误
 func NewSystemError(err interface{}) *CodeError {
 	logx.Error("【系统错误】%v", err)
-	return &CodeError{errCode: SystemError, errMsg: "系统错误,请联系管理员"}
+	return &CodeError{errCode: NOTIFICATION, errMsg: "系统错误,请联系管理员"}
 }
 
 // NewDbErr 数据库错误
 func NewDbErr(msg string, err interface{}) *CodeError {
 	logx.Error("【数据库错误  %s】---%v", msg, err)
-	return &CodeError{errCode: SystemError, errMsg: "系统错误,请联系管理员"}
+	return &CodeError{errCode: ERRORMESSAGE, errMsg: "系统错误,请联系管理员"}
 }
 
 // NewMsgError 通用错误（返回给用户的）
 func NewMsgError(msg string) *CodeError {
-	return &CodeError{errCode: MsgError, errMsg: msg}
+	return &CodeError{errCode: WarnMessage, errMsg: msg}
 }
 
 // LogOut  重新登录
 func LogOut() *CodeError {
-	return &CodeError{errCode: LogOutError, errMsg: "身份验证失败，请重新登录"}
+	return &CodeError{errCode: REDIRECT, errMsg: "身份验证失败，请重新登录"}
 
 }

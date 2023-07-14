@@ -1,8 +1,5 @@
-import type {IApi} from 'umi';
+import type {IApi} from '@umijs/max';
 
 export default (api: IApi) => {
-    api.onDevCompileDone((opts) => {
-        opts;
-        console.log('> onDevCompileDone', opts.isFirstCompile);
-    });
+
 };

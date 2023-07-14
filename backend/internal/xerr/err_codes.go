@@ -1,11 +1,11 @@
 package xerr
 
-// OK 成功返回
-const OK uint32 = 200
-
 // 全局错误码
 const (
-	SystemError uint32 = 207 // 系统错误
-	MsgError    uint32 = 112 // 需要提醒用户的错误
-	LogOutError uint32 = 113 // 重新登录
+	SILENT       uint32 = 0 // 不提示
+	WarnMessage  uint32 = 1 // 警告提示
+	ERRORMESSAGE uint32 = 2 // 报错提示
+	NOTIFICATION uint32 = 3 // 通知
+	REDIRECT     uint32 = 9 // 页面跳转
+
 )

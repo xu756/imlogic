@@ -18,7 +18,7 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		httpx.WriteJson(w, http.StatusOK, r)
 	} else {
 		// 错误返回
-		errCode := xerr.SystemError
+		errCode := xerr.WarnMessage
 		errMsg := "系统错误,请联系管理员"
 
 		re := regexp.MustCompile(`ErrCode:(\d+).*，ErrMsg:(.*)`)
@@ -33,6 +33,6 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		} else {
 			fmt.Println("未找到 ErrCode 和 ErrMsg")
 		}
-		httpx.WriteJson(w, http.StatusOK, Error(errCode, errMsg))
+		httpx.WriteJson(w, http.StatusUnauthorized, Error(errCode, errMsg))
 	}
 }

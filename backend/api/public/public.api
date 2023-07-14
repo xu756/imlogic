@@ -8,11 +8,23 @@ info(
     version: "v1"
 )
 
-// 用户登录相关
-//登录请求
+// 获取验证码
+type GetCodeReq {
+    SessionId string `json:"session_id"` //会话id
+    Sign string `json:"sign"`            //签名
+    Timestamp int64 `json:"timestamp"`   //时间戳
+}
+// 获取验证码返回
+type GetCodeRes {
+    Expire int64 `json:"expire"` //过期时间
+    Img string `json:"img"`      //图片base64
+}
+
 type LoginReq {
-    Username string `json:"username"` //用户名
-    Password string `json:"password"` //密码
+    Username string `json:"username"`    //用户名
+    Password string `json:"password"`    //密码
+    SessionId string `json:"session_id"` //会话id
+    Code string `json:"code"`            //验证码
 }
 //登录返回
 type LoginRes {
@@ -20,27 +32,21 @@ type LoginRes {
     Expire int64 `json:"expire"` //过期时间
 }
 
+//获取验证码
+@server(
+    prefix : /imlogic/public/get_captcha
+)
+
+service Public {
+    @handler GetCaptcha
+    post /get_code (GetCodeReq) returns (GetCodeRes)
+}
+
 @server(
     prefix : /imlogic/public/login
-    group : login
 )
 
 service Public {
     @handler ByPassword
-    post /password (LoginReq) returns (LoginRes)
-}
-
-//获取配置
-
-//配置
-type Config {
-}
-
-@server(
-    prefix : /imlogic/public/config
-    group : config
-)
-service Public {
-    @handler GetConfig
-    get /default () returns (Config)
+    post /by_password (LoginReq) returns (LoginRes)
 }
