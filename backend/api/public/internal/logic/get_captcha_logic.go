@@ -24,7 +24,6 @@ func NewGetCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCap
 }
 
 func (l *GetCaptchaLogic) GetCaptcha(req *types.GetCodeReq) (resp *types.GetCodeRes, err error) {
-	// todo: add your logic here and delete this line
 
-	return
+	return &types.GetCodeRes{}, nil
 }

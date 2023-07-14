@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Checkbox, Form, Input, message} from 'antd';
 import './login.scss';
-import UserServices from '@/services/userServices';
+import Public from '@/services/public';
 
 export default () => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -9,12 +9,18 @@ export default () => {
     const onFinish = (values: any) => {
         console.log('Success:', values);
         setLoading(true)
-        UserServices.login(values.username, values.password).then((e) => {
+        Public.login(values.username, values.password).then((e) => {
             console.log(e)
             setLoading(false)
         })
     };
-
+    useEffect(() => {
+        Public.getCaptcha().then((e) => {
+            console.log(e)
+        }, (e) => {
+            console.log(e)
+        })
+    }, [])
     const onFinishFailed = (errorInfo: any) => {
         for (let i in errorInfo.errorFields) {
             messageApi.error(errorInfo.errorFields[i].errors[0]).then(r =>

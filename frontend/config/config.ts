@@ -28,8 +28,8 @@ export default defineConfig({
     npmClient: 'pnpm',
 
     proxy: {
-        '/api': {
-            target: 'https://b.imlogic.cn/api/',
+        '/imlogic': {
+            target: 'http://imlogic.cn/',
             changeOrigin: true,
             pathRewrite: {'^/api': ''},
         }

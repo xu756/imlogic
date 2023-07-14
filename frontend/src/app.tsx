@@ -127,10 +127,9 @@ export const request: RequestConfig = {
     requestInterceptors: [
         (config: any) => {
             // 拦截请求配置，进行个性化处理。
-            const url = config
-            console.log(config)
+             config.url = "/imlogic" + config.url
             // config.headers('Authorization', 'Bearer ' + localStorage.getItem('token'))
-            return {url, ...config,};
+            return config
         }
     ],
     // 响应拦截器
