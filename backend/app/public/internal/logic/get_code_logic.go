@@ -22,7 +22,7 @@ func NewGetCodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCodeLo
 	}
 }
 
-// 获取验证码
+// GetCode 获取验证码
 func (l *GetCodeLogic) GetCode(in *pb.GetCodeReq) (*pb.GetCodeResp, error) {
 	// todo: add your logic here and delete this line
 
