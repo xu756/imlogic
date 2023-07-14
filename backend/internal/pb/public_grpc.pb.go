@@ -30,7 +30,7 @@ type PublicClient interface {
 	// 获取验证码
 	GetCode(ctx context.Context, in *GetCodeReq, opts ...grpc.CallOption) (*GetCodeResp, error)
 	// 通过密码登录
-	LoginByPassword(ctx context.Context, opts ...grpc.CallOption) (Public_LoginByPasswordClient, error)
+	LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 }
 
 type publicClient struct {
@@ -50,35 +50,13 @@ func (c *publicClient) GetCode(ctx context.Context, in *GetCodeReq, opts ...grpc
 	return out, nil
 }
 
-func (c *publicClient) LoginByPassword(ctx context.Context, opts ...grpc.CallOption) (Public_LoginByPasswordClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Public_ServiceDesc.Streams[0], Public_LoginByPassword_FullMethodName, opts...)
+func (c *publicClient) LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, Public_LoginByPassword_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &publicLoginByPasswordClient{stream}
-	return x, nil
-}
-
-type Public_LoginByPasswordClient interface {
-	Send(*LoginRequest) error
-	Recv() (*LoginResponse, error)
-	grpc.ClientStream
-}
-
-type publicLoginByPasswordClient struct {
-	grpc.ClientStream
-}
-
-func (x *publicLoginByPasswordClient) Send(m *LoginRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *publicLoginByPasswordClient) Recv() (*LoginResponse, error) {
-	m := new(LoginResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // PublicServer is the server API for Public service.
@@ -88,7 +66,7 @@ type PublicServer interface {
 	// 获取验证码
 	GetCode(context.Context, *GetCodeReq) (*GetCodeResp, error)
 	// 通过密码登录
-	LoginByPassword(Public_LoginByPasswordServer) error
+	LoginByPassword(context.Context, *LoginRequest) (*LoginResponse, error)
 	mustEmbedUnimplementedPublicServer()
 }
 
@@ -99,8 +77,8 @@ type UnimplementedPublicServer struct {
 func (UnimplementedPublicServer) GetCode(context.Context, *GetCodeReq) (*GetCodeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCode not implemented")
 }
-func (UnimplementedPublicServer) LoginByPassword(Public_LoginByPasswordServer) error {
-	return status.Errorf(codes.Unimplemented, "method LoginByPassword not implemented")
+func (UnimplementedPublicServer) LoginByPassword(context.Context, *LoginRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginByPassword not implemented")
 }
 func (UnimplementedPublicServer) mustEmbedUnimplementedPublicServer() {}
 
@@ -133,30 +111,22 @@ func _Public_GetCode_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Public_LoginByPassword_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(PublicServer).LoginByPassword(&publicLoginByPasswordServer{stream})
-}
-
-type Public_LoginByPasswordServer interface {
-	Send(*LoginResponse) error
-	Recv() (*LoginRequest, error)
-	grpc.ServerStream
-}
-
-type publicLoginByPasswordServer struct {
-	grpc.ServerStream
-}
-
-func (x *publicLoginByPasswordServer) Send(m *LoginResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *publicLoginByPasswordServer) Recv() (*LoginRequest, error) {
-	m := new(LoginRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
+func _Public_LoginByPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if interceptor == nil {
+		return srv.(PublicServer).LoginByPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Public_LoginByPassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PublicServer).LoginByPassword(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // Public_ServiceDesc is the grpc.ServiceDesc for Public service.
@@ -170,14 +140,11 @@ var Public_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetCode",
 			Handler:    _Public_GetCode_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "LoginByPassword",
-			Handler:       _Public_LoginByPassword_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
+			MethodName: "LoginByPassword",
+			Handler:    _Public_LoginByPassword_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "public.proto",
 }

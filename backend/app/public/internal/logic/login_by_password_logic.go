@@ -23,8 +23,8 @@ func NewLoginByPasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *L
 }
 
 // 通过密码登录
-func (l *LoginByPasswordLogic) LoginByPassword(stream pb.Public_LoginByPasswordServer) error {
+func (l *LoginByPasswordLogic) LoginByPassword(in *pb.LoginRequest) (*pb.LoginResponse, error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return &pb.LoginResponse{}, nil
 }

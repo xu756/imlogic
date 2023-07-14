@@ -36,5 +36,5 @@ service Public {
   // 获取验证码
   rpc GetCode(GetCodeReq) returns (GetCodeResp);
   // 通过密码登录
-  rpc LoginByPassword(stream loginRequest) returns (stream loginResponse);
+  rpc LoginByPassword(loginRequest) returns (loginResponse);
 }

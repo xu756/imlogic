@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/xu756/imlogic/internal/pb"
 
 	"github.com/xu756/imlogic/api/public/internal/svc"
 	"github.com/xu756/imlogic/api/public/internal/types"
@@ -24,7 +25,18 @@ func NewByPasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ByPass
 }
 
 func (l *ByPasswordLogic) ByPassword(req *types.LoginReq) (resp *types.LoginRes, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	result, err := l.svcCtx.PublicRpc.LoginByPassword(l.ctx, &pb.LoginRequest{
+		Username:  req.Username,
+		Password:  req.Password,
+		SessionId: req.SessionId,
+		Code:      req.Code,
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp = &types.LoginRes{
+		Expire: result.Expire,
+		Token:  result.Token,
+	}
+	return resp, nil
 }

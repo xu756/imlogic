@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/xu756/imlogic/internal/pb"
 
 	"github.com/xu756/imlogic/api/public/internal/svc"
 	"github.com/xu756/imlogic/api/public/internal/types"
@@ -24,6 +25,16 @@ func NewGetCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCap
 }
 
 func (l *GetCaptchaLogic) GetCaptcha(req *types.GetCodeReq) (resp *types.GetCodeRes, err error) {
-
-	return &types.GetCodeRes{}, nil
+	result, err := l.svcCtx.PublicRpc.GetCode(l.ctx, &pb.GetCodeReq{
+		SessionId: req.SessionId,
+		Sign:      req.Sign,
+		Timestamp: req.Timestamp,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &types.GetCodeRes{
+		Expire: result.Expire,
+		Img:    result.Img,
+	}, nil
 }

@@ -29,7 +29,7 @@ func (s *PublicServer) GetCode(ctx context.Context, in *pb.GetCodeReq) (*pb.GetC
 }
 
 // 通过密码登录
-func (s *PublicServer) LoginByPassword(stream pb.Public_LoginByPasswordServer) error {
-	l := logic.NewLoginByPasswordLogic(stream.Context(), s.svcCtx)
-	return l.LoginByPassword(stream)
+func (s *PublicServer) LoginByPassword(ctx context.Context, in *pb.LoginRequest) (*pb.LoginResponse, error) {
+	l := logic.NewLoginByPasswordLogic(ctx, s.svcCtx)
+	return l.LoginByPassword(in)
 }

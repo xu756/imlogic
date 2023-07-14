@@ -21,7 +21,7 @@ type (
 		// 获取验证码
 		GetCode(ctx context.Context, in *GetCodeReq, opts ...grpc.CallOption) (*GetCodeResp, error)
 		// 通过密码登录
-		LoginByPassword(ctx context.Context, opts ...grpc.CallOption) (pb.Public_LoginByPasswordClient, error)
+		LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	}
 
 	defaultPublic struct {
@@ -42,7 +42,7 @@ func (m *defaultPublic) GetCode(ctx context.Context, in *GetCodeReq, opts ...grp
 }
 
 // 通过密码登录
-func (m *defaultPublic) LoginByPassword(ctx context.Context, opts ...grpc.CallOption) (pb.Public_LoginByPasswordClient, error) {
+func (m *defaultPublic) LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	client := pb.NewPublicClient(m.cli.Conn())
-	return client.LoginByPassword(ctx, opts...)
+	return client.LoginByPassword(ctx, in, opts...)
 }
