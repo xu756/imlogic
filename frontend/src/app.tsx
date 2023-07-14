@@ -10,7 +10,6 @@ export const layout: RunTimeLayoutConfig = () => {
         logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
         menu: {
             locale: false,
-
         },
         rightRender: (initialState: any) => {
             return (
@@ -19,10 +18,6 @@ export const layout: RunTimeLayoutConfig = () => {
                 </>
             )
         },
-
-        // 默认布局调整
-        // unAccessible :<h1>403</h1>,
-        // noFound: <div>'noFound'</div>,
 
     };
 };

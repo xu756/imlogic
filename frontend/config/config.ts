@@ -8,42 +8,20 @@ export default defineConfig({
     request: {},
     layout: {
         title: 'imlogic',
-
-
     },
-    mfsu: false,
     routes: [
-        // {
-        //     path: '/',
-        //     exact: false,
-        //     redirect: '/home',
-        //     component: '@/layouts',
-        //     routes: [
-        //
-        //     ]
-        // },
         {
-            name: '首页',
-            path: '/home',
-            component: '@/pages/home',
-            headerRender: true,
-            access: 'user',
+            path: '/',
+            flatMenu: true,
+            layout: 'mix',
+            component: '@/layouts/index',
+            routes: [
+                {path: '/', redirect: '/home'},
+                {path: '/home', name: '首页', component: '@/pages/home', icon: 'HomeOutlined',},
+                {path: '/chat', name: '聊天', component: '@/pages/chat', icon: 'TeamOutlined'},
+            ]
         },
-        {
-            exact: true,
-            name: '登录',
-            path: '/login',
-            layout: false,
-            headerRender: false,
-            // 不展示页脚
-            footerRender: false,
-            // 不展示菜单
-            menuRender: false,
-            // 不展示菜单顶栏
-            menuHeaderRender: false,
-            component: '@/pages/login'
-
-        }
+        {path: '/login', name: '登录', component: '@/pages/login', layout: false}
 
     ],
     npmClient: 'pnpm',
