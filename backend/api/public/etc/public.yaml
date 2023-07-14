@@ -1,3 +1,13 @@
 Name: Public
 Host: 0.0.0.0
 Port: 13001
+Public:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: public.rpc
+
+RedisConf:
+  Host: redis:6379
+  Type: node
+  Pass: Y5dg5tg8050oigInC30sf
