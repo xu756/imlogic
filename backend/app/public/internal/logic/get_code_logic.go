@@ -8,23 +8,23 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type LoginByPasswordLogic struct {
+type GetCodeLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewLoginByPasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginByPasswordLogic {
-	return &LoginByPasswordLogic{
+func NewGetCodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCodeLogic {
+	return &GetCodeLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-// 通过密码登录
-func (l *LoginByPasswordLogic) LoginByPassword(stream pb.Public_LoginByPasswordServer) error {
+// 获取验证码
+func (l *GetCodeLogic) GetCode(in *pb.GetCodeReq) (*pb.GetCodeResp, error) {
 	// todo: add your logic here and delete this line
 
-	return nil
+	return &pb.GetCodeResp{}, nil
 }

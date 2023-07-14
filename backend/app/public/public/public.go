@@ -5,7 +5,6 @@ package public
 
 import (
 	"context"
-
 	"github.com/xu756/imlogic/internal/pb"
 
 	"github.com/zeromicro/go-zero/zrpc"
@@ -13,12 +12,16 @@ import (
 )
 
 type (
+	GetCodeReq    = pb.GetCodeReq
+	GetCodeResp   = pb.GetCodeResp
 	LoginRequest  = pb.LoginRequest
 	LoginResponse = pb.LoginResponse
 
 	Public interface {
+		// 获取验证码
+		GetCode(ctx context.Context, in *GetCodeReq, opts ...grpc.CallOption) (*GetCodeResp, error)
 		// 通过密码登录
-		LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+		LoginByPassword(ctx context.Context, opts ...grpc.CallOption) (pb.Public_LoginByPasswordClient, error)
 	}
 
 	defaultPublic struct {
@@ -32,8 +35,14 @@ func NewPublic(cli zrpc.Client) Public {
 	}
 }
 
-// 通过密码登录
-func (m *defaultPublic) LoginByPassword(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+// 获取验证码
+func (m *defaultPublic) GetCode(ctx context.Context, in *GetCodeReq, opts ...grpc.CallOption) (*GetCodeResp, error) {
 	client := pb.NewPublicClient(m.cli.Conn())
-	return client.LoginByPassword(ctx, in, opts...)
+	return client.GetCode(ctx, in, opts...)
+}
+
+// 通过密码登录
+func (m *defaultPublic) LoginByPassword(ctx context.Context, opts ...grpc.CallOption) (pb.Public_LoginByPasswordClient, error) {
+	client := pb.NewPublicClient(m.cli.Conn())
+	return client.LoginByPassword(ctx, opts...)
 }

@@ -1,12 +1,29 @@
 syntax = "proto3";
 
 package pb;
-option go_package = "./pb";
+option go_package = "./proto";
+
+// 获取验证码
+message GetCodeReq {
+  string SessionId = 1;
+  string Sign = 2;
+  int64 Timestamp = 3;
+}
+// 获取验证码返回
+
+message GetCodeResp {
+  int64 Expire = 1; // 过期时间
+  string Img = 2; // 图片base64
+}
+
+
 
 // 登录请求
 message loginRequest {
   string Username = 1;
   string Password = 2;
+  string SessionId = 3;
+  string Code = 4;
 }
 
 // 登录响应
@@ -16,6 +33,8 @@ message loginResponse {
 }
 
 service Public {
+  // 获取验证码
+  rpc GetCode(GetCodeReq) returns (GetCodeResp);
   // 通过密码登录
   rpc LoginByPassword(stream loginRequest) returns (stream loginResponse);
 }

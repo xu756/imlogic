@@ -5,10 +5,10 @@ package server
 
 import (
 	"context"
+	"github.com/xu756/imlogic/internal/pb"
 
 	"github.com/xu756/imlogic/app/public/internal/logic"
 	"github.com/xu756/imlogic/app/public/internal/svc"
-	"github.com/xu756/imlogic/internal/pb"
 )
 
 type PublicServer struct {
@@ -22,8 +22,14 @@ func NewPublicServer(svcCtx *svc.ServiceContext) *PublicServer {
 	}
 }
 
+// 获取验证码
+func (s *PublicServer) GetCode(ctx context.Context, in *pb.GetCodeReq) (*pb.GetCodeResp, error) {
+	l := logic.NewGetCodeLogic(ctx, s.svcCtx)
+	return l.GetCode(in)
+}
+
 // 通过密码登录
-func (s *PublicServer) LoginByPassword(ctx context.Context, in *pb.LoginRequest) (*pb.LoginResponse, error) {
-	l := logic.NewLoginByPasswordLogic(ctx, s.svcCtx)
-	return l.LoginByPassword(in)
+func (s *PublicServer) LoginByPassword(stream pb.Public_LoginByPasswordServer) error {
+	l := logic.NewLoginByPasswordLogic(stream.Context(), s.svcCtx)
+	return l.LoginByPassword(stream)
 }
