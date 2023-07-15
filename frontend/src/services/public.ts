@@ -16,12 +16,14 @@ export default class Public {
     }
 
 
-    public static async login(username: string, password: string) {
+    public static async login(username: string, password: string, code: string, session_id: string) {
         return request('/public/login/by_password', {
             method: 'POST',
             data: {
                 username: username,
-                password: password
+                password: password,
+                code: code,
+                session_id: session_id
             }
         })
     }

@@ -1,3 +1,17 @@
+export interface InitialData {
+    config: {
+        title: string
+    },
+    user: {
+        name: string,
+        JwtToken: string,
+        connId: string,
+        session_id: string,
+        role: string,
+        email: string,
+    }
+}
+
 export const fetchInitialData = async () => {
     return {
         config: {
@@ -7,6 +21,7 @@ export const fetchInitialData = async () => {
             name: 'admin',
             JwtToken: '1234-5678-9101-1121',
             connId: '1234-5678-9101-1121',
+            session_id: '1234-5678-9101-1121',
             role: 'SYSTEM_ADMIN',
             email: '756334744@qq.com',
         }
