@@ -33,9 +33,9 @@ func (l *GetCodeLogic) GetCode(in *pb.GetCodeReq) (*pb.GetCodeResp, error) {
 	if err != nil {
 		return nil, xerr.NewSystemError("生成验证码失败" + err.Error())
 	}
-	logx.Infof("验证码id: %s, 验证码: %s", id, b64s)
 	return &pb.GetCodeResp{
-		Img:    b64s,
-		Expire: 120,
+		Img:       b64s,
+		Expire:    120,
+		SessionId: id,
 	}, nil
 }

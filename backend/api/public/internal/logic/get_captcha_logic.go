@@ -26,7 +26,6 @@ func NewGetCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetCap
 
 func (l *GetCaptchaLogic) GetCaptcha(req *types.GetCodeReq) (resp *types.GetCodeRes, err error) {
 	result, err := l.svcCtx.PublicRpc.GetCode(l.ctx, &pb.GetCodeReq{
-		SessionId: req.SessionId,
 		Sign:      req.Sign,
 		Timestamp: req.Timestamp,
 	})
@@ -34,7 +33,8 @@ func (l *GetCaptchaLogic) GetCaptcha(req *types.GetCodeReq) (resp *types.GetCode
 		return nil, err
 	}
 	return &types.GetCodeRes{
-		Expire: result.Expire,
-		Img:    result.Img,
+		Expire:    result.Expire,
+		Img:       result.Img,
+		SessionId: result.SessionId,
 	}, nil
 }

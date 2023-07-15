@@ -5,15 +5,15 @@ option go_package = "./proto";
 
 // 获取验证码
 message GetCodeReq {
-  string SessionId = 1;
-  string Sign = 2;
-  int64 Timestamp = 3;
+  string Sign = 1;
+  int64 Timestamp = 2;
 }
 // 获取验证码返回
 
 message GetCodeResp {
   int64 Expire = 1; // 过期时间
   string Img = 2; // 图片base64
+  string SessionId = 3; // 会话id
 }
 
 

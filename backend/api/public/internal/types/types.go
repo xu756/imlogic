@@ -2,14 +2,14 @@
 package types
 
 type GetCodeReq struct {
-	SessionId string `json:"session_id"` //会话id
-	Sign      string `json:"sign"`       //签名
-	Timestamp int64  `json:"timestamp"`  //时间戳
+	Sign      string `json:"sign"`      //签名
+	Timestamp int64  `json:"timestamp"` //时间戳
 }
 
 type GetCodeRes struct {
-	Expire int64  `json:"expire"` //过期时间
-	Img    string `json:"img"`    //图片base64
+	Expire    int64  `json:"expire"`     //过期时间
+	Img       string `json:"img"`        //图片base64
+	SessionId string `json:"session_id"` //会话id
 }
 
 type LoginReq struct {
