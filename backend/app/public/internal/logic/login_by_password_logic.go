@@ -29,5 +29,8 @@ func (l *LoginByPasswordLogic) LoginByPassword(in *pb.LoginRequest) (*pb.LoginRe
 	if !result {
 		return nil, xerr.NewMsgError("验证码错误")
 	}
-	return &pb.LoginResponse{}, nil
+	return &pb.LoginResponse{
+		Token:  "token",
+		Expire: 7200,
+	}, nil
 }

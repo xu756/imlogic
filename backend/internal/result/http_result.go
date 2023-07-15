@@ -1,7 +1,7 @@
 package result
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -24,15 +24,15 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		re := regexp.MustCompile(`ErrCode:(\d+).*，ErrMsg:(.*)`)
 		// 查找匹配项
 		matches := re.FindStringSubmatch(err.Error())
-
 		// 提取 ErrCode 和 ErrMsg
 		if len(matches) >= 3 {
 			Code, _ := strconv.ParseUint(matches[1], 10, 32)
 			errCode = uint32(Code)
 			errMsg = matches[2]
 		} else {
-			fmt.Println("未找到 ErrCode 和 ErrMsg")
+			log.Print("未找到 ErrCode 和 ErrMsg")
 		}
+		log.Print(errCode, errMsg)
 		httpx.WriteJson(w, http.StatusUnauthorized, Error(errCode, errMsg))
 	}
 }
