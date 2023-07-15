@@ -5,7 +5,7 @@ package server
 
 import (
 	"context"
-	pb2 "github.com/xu756/imlogic/internal/pb"
+	"github.com/xu756/imlogic/internal/pb"
 
 	"github.com/xu756/imlogic/app/chat/internal/logic"
 	"github.com/xu756/imlogic/app/chat/internal/svc"
@@ -13,7 +13,7 @@ import (
 
 type ChatServer struct {
 	svcCtx *svc.ServiceContext
-	pb2.UnimplementedChatServer
+	pb.UnimplementedChatServer
 }
 
 func NewChatServer(svcCtx *svc.ServiceContext) *ChatServer {
@@ -23,13 +23,13 @@ func NewChatServer(svcCtx *svc.ServiceContext) *ChatServer {
 }
 
 // 元事件 连接 断开 状态更新 解密错误
-func (s *ChatServer) Meta(ctx context.Context, in *pb2.ImMeta) (*pb2.MetaResp, error) {
+func (s *ChatServer) Meta(ctx context.Context, in *pb.ImMeta) (*pb.MetaResp, error) {
 	l := logic.NewMetaLogic(ctx, s.svcCtx)
 	return l.Meta(in)
 }
 
 // im消息
-func (s *ChatServer) Msg(ctx context.Context, in *pb2.Message) (*pb2.MsgResp, error) {
+func (s *ChatServer) Msg(ctx context.Context, in *pb.Message) (*pb.MsgResp, error) {
 	l := logic.NewMsgLogic(ctx, s.svcCtx)
 	return l.Msg(in)
 }

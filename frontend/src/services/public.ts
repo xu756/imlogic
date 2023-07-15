@@ -1,5 +1,6 @@
 import {request} from "@@/plugin-request";
 
+
 export default class Public {
 
     public static async getCaptcha() {
