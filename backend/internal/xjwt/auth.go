@@ -12,9 +12,9 @@ import (
 )
 
 type AuthInfo struct {
-	ID     int64  `json:"Id"`     // 用户ID
-	Role   int64  `json:"Role"`   // 用户角色
-	Issuer string `json:"Issuer"` // 签发者
+	ID    int64   `json:"Id"`    // 用户ID
+	Role  []int64 `json:"Role"`  // 用户角色
+	Group []int64 `json:"Group"` // 用户组
 }
 
 func (user *AuthInfo) GetStrId() string {
@@ -25,7 +25,6 @@ func (user *AuthInfo) GetStrId() string {
 type Jwt struct {
 	SignKey string // 秘钥
 	Expire  int64  // 过期时间
-	Issuer  string // token颁发者
 }
 
 // NewJwt 初始化jwt
@@ -33,7 +32,6 @@ func NewJwt(j Jwt) *Jwt {
 	return &Jwt{
 		SignKey: j.SignKey,
 		Expire:  j.Expire,
-		Issuer:  j.Issuer,
 	}
 }
 
@@ -62,12 +60,11 @@ type customJwtClaims struct {
 }
 
 // NewJwt 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwt(userId int64, role int64) (string, error) {
+func (j *Jwt) NewJwt(userId int64, role []int64) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
-			ID:     userId,
-			Role:   role,
-			Issuer: j.Issuer,
+			ID:   userId,
+			Role: role,
 		},
 		RegisteredClaims: jwt.RegisteredClaims{
 			NotBefore: jwt.NewNumericDate(tool.TimeNowInTimeZone()), // 生效时间
