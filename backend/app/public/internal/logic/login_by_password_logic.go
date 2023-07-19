@@ -2,10 +2,9 @@ package logic
 
 import (
 	"context"
+	"github.com/xu756/imlogic/app/public/internal/svc"
 	"github.com/xu756/imlogic/internal/pb"
 	"github.com/xu756/imlogic/internal/xerr"
-
-	"github.com/xu756/imlogic/app/public/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -41,11 +40,7 @@ func (l *LoginByPasswordLogic) LoginByPassword(in *pb.LoginRequest) (*pb.LoginRe
 	if err != nil {
 		return nil, err
 	}
-	var roleIds []int64
-	for _, role := range *roles {
-		roleIds = append(roleIds, role.RoleId)
-	}
-	jwt, err := l.svcCtx.Jwt.NewJwt(user.Id, roleIds)
+	jwt, err := l.svcCtx.Jwt.NewJwt(user.Id, roles)
 	if err != nil {
 		return nil, err
 	}

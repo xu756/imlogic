@@ -17,7 +17,7 @@ type (
 	// and implement the added methods in customUserRoleModel.
 	UserRoleModel interface {
 		userRoleModel
-		FindUserRoles(ctx context.Context, userId int64) (*[]UserRole, error)
+		FindUserRoles(ctx context.Context, userId int64) ([]int64, error)
 	}
 
 	customUserRoleModel struct {
@@ -32,16 +32,16 @@ func NewUserRoleModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option
 	}
 }
 
-func (m *customUserRoleModel) FindUserRoles(ctx context.Context, userId int64) (*[]UserRole, error) {
+func (m *customUserRoleModel) FindUserRoles(ctx context.Context, userId int64) ([]int64, error) {
 	userRolesKey := fmt.Sprintf("%s%v", cacheUserRolesPrefix, userId)
-	var resp []UserRole
+	var resp []int64
 	err := m.QueryRowCtx(ctx, &resp, userRolesKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {
-		query := fmt.Sprintf("select %s from %s where `user_id` = ? ", userRoleRows, m.table)
+		query := fmt.Sprintf("select `id` from %s where `user_id` = ? ", m.table)
 		return conn.QueryRowsCtx(ctx, v, query, userId)
 	})
 	switch err {
 	case nil:
-		return &resp, nil
+		return resp, nil
 	case sqlc.ErrNotFound:
 		return nil, xerr.NewMsgError("用户权限不存在")
 	default:
