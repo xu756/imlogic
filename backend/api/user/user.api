@@ -1,0 +1,34 @@
+syntax = "v1"
+
+info(
+    title: "用户api"
+    desc: "用户的api"
+    author: "xu756"
+    email: "756334744@qq.com"
+    version: "v1"
+)
+
+// 空的api
+type Empty {
+}
+// 返回用户信息
+type UserInfo {
+    Id int64 `json:"id" desc:"用户id"`
+    Name string `json:"name" desc:"用户名称"`
+    JwToken string `json:"JwToken" desc:"用户token"`
+    Avatar string `json:"avatar" desc:"用户头像"`
+    ConnId string `json:"connId" desc:"用户连接id"`
+    Role []int64 `json:"role" desc:"用户角色"`
+    Group []int64 `json:"group" desc:"用户组"`
+}
+
+@server(
+    prefix : /imlogic/user
+    middleware: Auth
+)
+
+service User {
+    @doc "获取用户信息"
+    @handler GetUserInfo
+    post /getUserInfo returns (UserInfo)
+}
