@@ -38,16 +38,14 @@ type (
 	}
 
 	UserGroup struct {
-		Id       int64  `db:"id"`        // ID
-		ParentId int64  `db:"parent_id"` // 所属父级用户组ID
-		Name     string `db:"name"`      // 用户组名称
-		Code     string `db:"code"`      // 用户组CODE唯一代码
-		Intro    string `db:"intro"`     // 用户组介绍
-		Created  int64  `db:"created"`   // 创建时间
-		Creator  int64  `db:"creator"`   // 创建人
-		Edited   int64  `db:"edited"`    // 修改时间
-		Editor   int64  `db:"editor"`    // 修改人
-		Deleted  int64  `db:"deleted"`   // 逻辑删除:0=未删除,1=已删除
+		Id          int64 `db:"id"`            // ID说
+		UserGroupId int64 `db:"user_group_id"` // 用户组ID
+		UserId      int64 `db:"user_id"`       // 用户ID
+		Created     int64 `db:"created"`       // 创建时间
+		Creator     int64 `db:"creator"`       // 创建人
+		Edited      int64 `db:"edited"`        // 修改时间
+		Editor      int64 `db:"editor"`        // 修改人
+		Deleted     int64 `db:"deleted"`       // 逻辑删除:0=未删除,1=已删除
 	}
 )
 
@@ -94,8 +92,8 @@ func (m *defaultUserGroupModel) FindOne(ctx context.Context, id int64) (*UserGro
 func (m *defaultUserGroupModel) Insert(ctx context.Context, data *UserGroup) (sql.Result, error) {
 	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userGroupRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.ParentId, data.Name, data.Code, data.Intro, data.Created, data.Creator, data.Edited, data.Editor, data.Deleted)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, userGroupRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.UserGroupId, data.UserId, data.Created, data.Creator, data.Edited, data.Editor, data.Deleted)
 	}, userGroupIdKey)
 	return ret, err
 }
@@ -104,7 +102,7 @@ func (m *defaultUserGroupModel) Update(ctx context.Context, data *UserGroup) err
 	userGroupIdKey := fmt.Sprintf("%s%v", cacheUserGroupIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userGroupRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.ParentId, data.Name, data.Code, data.Intro, data.Created, data.Creator, data.Edited, data.Editor, data.Deleted, data.Id)
+		return conn.ExecCtx(ctx, query, data.UserGroupId, data.UserId, data.Created, data.Creator, data.Edited, data.Editor, data.Deleted, data.Id)
 	}, userGroupIdKey)
 	return err
 }

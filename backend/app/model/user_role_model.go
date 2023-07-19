@@ -32,6 +32,7 @@ func NewUserRoleModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option
 	}
 }
 
+// FindUserRoles 查询用户权限
 func (m *customUserRoleModel) FindUserRoles(ctx context.Context, userId int64) ([]int64, error) {
 	userRolesKey := fmt.Sprintf("%s%v", cacheUserRolesPrefix, userId)
 	var resp []int64
@@ -43,7 +44,7 @@ func (m *customUserRoleModel) FindUserRoles(ctx context.Context, userId int64) (
 	case nil:
 		return resp, nil
 	case sqlc.ErrNotFound:
-		return nil, xerr.NewMsgError("用户权限不存在")
+		return []int64{}, nil
 	default:
 		return nil, xerr.NewDbErr("权限查询失败", err)
 	}

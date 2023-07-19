@@ -60,11 +60,12 @@ type customJwtClaims struct {
 }
 
 // NewJwt 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwt(userId int64, role []int64) (string, error) {
+func (j *Jwt) NewJwt(userId int64, role, groups []int64) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
-			ID:   userId,
-			Role: role,
+			ID:    userId,
+			Role:  role,
+			Group: groups,
 		},
 		RegisteredClaims: jwt.RegisteredClaims{
 			NotBefore: jwt.NewNumericDate(tool.TimeNowInTimeZone()), // 生效时间

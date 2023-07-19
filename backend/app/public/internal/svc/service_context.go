@@ -10,12 +10,13 @@ import (
 )
 
 type ServiceContext struct {
-	Config        config.Config
-	Captcha       *base64Captcha.Captcha
-	RedisClient   *redis.Redis
-	UserModel     model.UserModel
-	UserRoleModel model.UserRoleModel
-	Jwt           *xjwt.Jwt
+	Config         config.Config
+	Captcha        *base64Captcha.Captcha
+	RedisClient    *redis.Redis
+	UserModel      model.UserModel
+	UserRoleModel  model.UserRoleModel
+	UserGroupModel model.UserGroupModel
+	Jwt            *xjwt.Jwt
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -32,11 +33,12 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 	store := base64Captcha.NewMemoryStore(1000000, 120)
 	return &ServiceContext{
-		Config:        c,
-		Captcha:       base64Captcha.NewCaptcha(driver.ConvertFonts(), store),
-		RedisClient:   redisClient,
-		UserModel:     model.NewUserModel(conn, c.Cache),
-		UserRoleModel: model.NewUserRoleModel(conn, c.Cache),
-		Jwt:           xjwt.NewJwt(c.Jwt),
+		Config:         c,
+		Captcha:        base64Captcha.NewCaptcha(driver.ConvertFonts(), store),
+		RedisClient:    redisClient,
+		UserModel:      model.NewUserModel(conn, c.Cache),
+		UserRoleModel:  model.NewUserRoleModel(conn, c.Cache),
+		UserGroupModel: model.NewUserGroupModel(conn, c.Cache),
+		Jwt:            xjwt.NewJwt(c.Jwt),
 	}
 }

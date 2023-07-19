@@ -40,7 +40,11 @@ func (l *LoginByPasswordLogic) LoginByPassword(in *pb.LoginRequest) (*pb.LoginRe
 	if err != nil {
 		return nil, err
 	}
-	jwt, err := l.svcCtx.Jwt.NewJwt(user.Id, roles)
+	groups, err := l.svcCtx.UserGroupModel.FindUserGroups(l.ctx, user.Id)
+	if err != nil {
+		return nil, err
+	}
+	jwt, err := l.svcCtx.Jwt.NewJwt(user.Id, roles, groups)
 	if err != nil {
 		return nil, err
 	}
