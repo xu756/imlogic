@@ -25,12 +25,32 @@ func NewLoginByPasswordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *L
 
 // LoginByPassword 通过密码登录
 func (l *LoginByPasswordLogic) LoginByPassword(in *pb.LoginRequest) (*pb.LoginResponse, error) {
+	var resp = new(pb.LoginResponse)
 	result := l.svcCtx.Captcha.Verify(in.SessionId, in.Code, true)
 	if !result {
-		return nil, xerr.NewMsgError("验证码错误")
+		return resp, xerr.NewMsgError("验证码错误")
+	}
+	user, err := l.svcCtx.UserModel.LoginByPassword(l.ctx, in.Username)
+	if err != nil {
+		return resp, err
+	}
+	if user.Password != in.Password {
+		return resp, xerr.NewMsgError("密码错误")
+	}
+	roles, err := l.svcCtx.UserRoleModel.FindUserRoles(l.ctx, user.Id)
+	if err != nil {
+		return nil, err
+	}
+	var roleIds []int64
+	for _, role := range *roles {
+		roleIds = append(roleIds, role.RoleId)
+	}
+	jwt, err := l.svcCtx.Jwt.NewJwt(user.Id, roleIds)
+	if err != nil {
+		return nil, err
 	}
 	return &pb.LoginResponse{
-		Token:  "token",
+		Token:  jwt,
 		Expire: 7200,
 	}, nil
 }

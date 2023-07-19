@@ -12,17 +12,17 @@ export default () => {
     const onFinish = (values: any) => {
         setLoading(true)
         Public.login(values.username, values.password, values.code, session_id).then((e) => {
+            messageApi.success('登录成功')
+        }).catch((e) => {
+            console.log(e)
+        }).finally(() => {
+            init()
             setLoading(false)
-            form.resetFields(['code'])
-            messageApi.success('登录成功').then(r =>
-                console.log(r)
-            );
         })
 
     };
     useEffect(() => {
         init()
-
     }, [])
 
     const init = () => {

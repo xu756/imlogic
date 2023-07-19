@@ -1,17 +1,23 @@
 package model
 
 import (
+	"context"
+	"fmt"
+	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/zeromicro/go-zero/core/stores/cache"
+	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 var _ UserRoleModel = (*customUserRoleModel)(nil)
+var cacheUserRolesPrefix = "cache:userRoles:id:"
 
 type (
 	// UserRoleModel is an interface to be customized, add more methods here,
 	// and implement the added methods in customUserRoleModel.
 	UserRoleModel interface {
 		userRoleModel
+		FindUserRoles(ctx context.Context, userId int64) (*[]UserRole, error)
 	}
 
 	customUserRoleModel struct {
@@ -24,4 +30,22 @@ func NewUserRoleModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option
 	return &customUserRoleModel{
 		defaultUserRoleModel: newUserRoleModel(conn, c, opts...),
 	}
+}
+
+func (m *customUserRoleModel) FindUserRoles(ctx context.Context, userId int64) (*[]UserRole, error) {
+	userRolesKey := fmt.Sprintf("%s%v", cacheUserRolesPrefix, userId)
+	var resp []UserRole
+	err := m.QueryRowCtx(ctx, &resp, userRolesKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {
+		query := fmt.Sprintf("select %s from %s where `user_id` = ? ", userRoleRows, m.table)
+		return conn.QueryRowsCtx(ctx, v, query, userId)
+	})
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, xerr.NewMsgError("用户权限不存在")
+	default:
+		return nil, xerr.NewDbErr("权限查询失败", err)
+	}
+
 }

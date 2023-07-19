@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/xu756/imlogic/internal/xerr"
 	"strings"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
@@ -89,7 +90,7 @@ func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error)
 	case sqlc.ErrNotFound:
 		return nil, ErrNotFound
 	default:
-		return nil, err
+		return nil, xerr.NewDbErr("查询失败", err)
 	}
 }
 
@@ -99,7 +100,7 @@ func (m *defaultUserModel) Insert(ctx context.Context, data *User) (sql.Result, 
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
 		return conn.ExecCtx(ctx, query, data.State, data.Name, data.HeadImgUrl, data.Mobile, data.Salt, data.Password, data.Created, data.Creator, data.Edited, data.Editor, data.Deleted)
 	}, userIdKey)
-	return ret, err
+	return ret, xerr.NewDbErr("插入失败", err)
 }
 
 func (m *defaultUserModel) Update(ctx context.Context, data *User) error {
@@ -108,16 +109,11 @@ func (m *defaultUserModel) Update(ctx context.Context, data *User) error {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
 		return conn.ExecCtx(ctx, query, data.State, data.Name, data.HeadImgUrl, data.Mobile, data.Salt, data.Password, data.Created, data.Creator, data.Edited, data.Editor, data.Deleted, data.Id)
 	}, userIdKey)
-	return err
+	return xerr.NewDbErr("更新失败", err)
 }
 
 func (m *defaultUserModel) formatPrimary(primary any) string {
 	return fmt.Sprintf("%s%v", cacheUserIdPrefix, primary)
-}
-
-func (m *defaultUserModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary any) error {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userRows, m.table)
-	return conn.QueryRowCtx(ctx, v, query, primary)
 }
 
 func (m *defaultUserModel) tableName() string {

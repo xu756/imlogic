@@ -66,36 +66,45 @@ enum ErrorShowType {
 interface ResponseStructure {
     success: boolean;
     data: any;
-    errorCode?: number;
+    errorCode?: ErrorShowType;
     errorMessage?: string;
-    showType?: ErrorShowType;
 }
 
 
 export const request: RequestConfig = {
     timeout: 1000,
     headers: {'X-Requested-With': 'XMLHttpRequest'},
+    // 请求拦截器
+    requestInterceptors: [
+        (config: any) => {
+            // 拦截请求配置，进行个性化处理。
+            config.url = "/imlogic" + config.url
+            // config.headers('Authorization', 'Bearer ' + localStorage.getItem('token'))
+            return config
+        }
+    ],
     errorConfig: {
         // 错误抛出
         errorThrower: (res: ResponseStructure) => {
-            const {success, data, errorCode, errorMessage, showType} = res;
-            if (!success) {
+            const {success, data, errorCode, errorMessage} = res;
+            if (!success || undefined) {
                 const error: any = new Error(errorMessage);
                 error.name = 'BizError';
-                error.info = {errorCode, errorMessage, showType, data};
+                error.info = {success, data, errorCode, errorMessage};
                 throw error; // 抛出自制的错误
             }
         },
         // 错误接收及处理
+
         errorHandler: (error: any, opts: any) => {
+            console.error(error);
             if (opts?.skipErrorHandler) throw error;
             // 我们的 errorThrower 抛出的错误。
-            if (error.name === 'BizError') {
-                console.error(error);
-            } else if (error.response) {
+            if (error.response) {
                 // Axios 的错误
+                console.log(error.response.data);
                 // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-                const {errorMessage, errorCode} = error.response.data;
+                const {errorCode, errorMessage} = error.response.data;
                 switch (errorCode) {
                     case ErrorShowType.SILENT:
                         // do nothing
@@ -131,15 +140,7 @@ export const request: RequestConfig = {
         },
 
     },
-    // 请求拦截器
-    requestInterceptors: [
-        (config: any) => {
-            // 拦截请求配置，进行个性化处理。
-            config.url = "/imlogic" + config.url
-            // config.headers('Authorization', 'Bearer ' + localStorage.getItem('token'))
-            return config
-        }
-    ],
+
     // 响应拦截器
     responseInterceptors: [
         (response: any) => {

@@ -11,10 +11,11 @@ func Success(data interface{}) *ResponseSuccessBean {
 }
 
 type ResponseErrorBean struct {
+	Success      bool   `json:"success"`
 	ErrorCode    uint32 `json:"errorCode"`
 	ErrorMessage string `json:"errorMessage"`
 }
 
 func Error(errCode uint32, errMsg string) *ResponseErrorBean {
-	return &ResponseErrorBean{errCode, errMsg}
+	return &ResponseErrorBean{false, errCode, errMsg}
 }

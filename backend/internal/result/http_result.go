@@ -32,7 +32,6 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		} else {
 			log.Print("未找到 ErrCode 和 ErrMsg")
 		}
-		log.Print(errCode, errMsg)
 		httpx.WriteJson(w, http.StatusUnauthorized, Error(errCode, errMsg))
 	}
 }
