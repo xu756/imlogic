@@ -20,7 +20,3 @@
 
 # Go workspace file
 go.work
-
-*/node_modules
-*/dist
-frontend/src/.umi
