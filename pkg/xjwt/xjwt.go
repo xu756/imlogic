@@ -1,23 +1,20 @@
 package xjwt
 
 import (
-	"fmt"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/xu756/imlogic/internal/tool"
-	"github.com/xu756/imlogic/internal/xerr"
-	"net/http"
-	"strings"
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/xu756/imlogic/common/config"
+	"github.com/xu756/imlogic/pkg/tool"
+	"github.com/xu756/imlogic/pkg/xerr"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
 )
 
-type AuthInfo struct {
-	ID    int64   `json:"Id"`    // 用户ID
-	Role  []int64 `json:"Role"`  // 用户角色
-	Group []int64 `json:"Group"` // 用户组
-}
+var j *Jwt
 
-func (user *AuthInfo) GetStrId() string {
-	return fmt.Sprintf("%d", user.ID)
+type AuthInfo struct {
+	UserID string `json:"UserID"` // 用户ID
+	Role   string `json:"Role"`   // 用户角色
 }
 
 type Jwt struct {
@@ -25,17 +22,16 @@ type Jwt struct {
 	Expire  int64  // 过期时间
 }
 
-// NewJwt 初始化jwt
-func NewJwt(j Jwt) *Jwt {
-	return &Jwt{
-		SignKey: j.SignKey,
-		Expire:  j.Expire,
+func InitJwt() {
+	j = &Jwt{
+		SignKey: config.RunData.JwtConfig.SignKey,
+		Expire:  config.RunData.JwtConfig.Expire,
 	}
 }
 
 // token过期时间
 func (j *Jwt) expireAtTime() time.Time {
-	timezone := tool.TimeNowInTimeZone()
+	timezone := tool.TimeNow()
 	expire := time.Duration(j.Expire) * time.Minute
 	return timezone.Add(expire)
 }
@@ -58,17 +54,16 @@ type customJwtClaims struct {
 }
 
 // NewJwt 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwt(userId int64, role, groups []int64) (string, error) {
+func NewJwt(userId, role string) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
-			ID:    userId,
-			Role:  role,
-			Group: groups,
+			UserID: userId,
+			Role:   role,
 		},
 		RegisteredClaims: jwt.RegisteredClaims{
-			NotBefore: jwt.NewNumericDate(tool.TimeNowInTimeZone()), // 生效时间
-			IssuedAt:  jwt.NewNumericDate(tool.TimeNowInTimeZone()), // 签发时间
-			ExpiresAt: jwt.NewNumericDate(j.expireAtTime()),         // 签名过期时间
+			NotBefore: jwt.NewNumericDate(tool.TimeNow()),   // 生效时间
+			IssuedAt:  jwt.NewNumericDate(tool.TimeNow()),   // 签发时间
+			ExpiresAt: jwt.NewNumericDate(j.expireAtTime()), // 签名过期时间
 		},
 	}
 	// 根据 claims 生成token对象
@@ -86,19 +81,9 @@ func (j *Jwt) createToken(claims customJwtClaims) (string, error) {
 	return t.SignedString([]byte(j.SignKey))
 }
 
-// GetTokenFromHeader 获取请求头中的token
-func (j *Jwt) GetTokenFromHeader(r *http.Request, headerName string) (*AuthInfo, error) {
-
-	authHeader := r.Header.Get(headerName)
-	if authHeader == "" {
-		return nil, xerr.ErrMsg(xerr.JwtAuthEmpty)
-	}
-
-	parts := strings.SplitN(authHeader, " ", 2)
-	if len(parts) != 2 || parts[0] != "Bearer" {
-		return nil, xerr.ErrMsg(xerr.JwtAuthErr)
-	}
-	token, err := j.parseTokenString(parts[1])
+// GetTokenFromToken 从token解析
+func GetTokenFromToken(c *app.RequestContext) (*AuthInfo, error) {
+	token, err := j.parseTokenString(string(c.Cookie("token")))
 	if err != nil {
 		return nil, xerr.ErrMsg(xerr.JwtParseErr)
 	}

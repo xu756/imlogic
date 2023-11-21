@@ -7,19 +7,18 @@ import "fmt"
 */
 
 type CodeError struct {
-	Code uint32
-	Msg  string
+	Code uint32 `json:"code"`
+	Msg  string `json:"msg"`
 }
 
-func (c CodeError) Error() string {
-	return fmt.Sprintf("code:%d msg:%s", c.Code, c.Msg)
+func (e CodeError) Error() string {
+	return fmt.Sprintf("code:%d,msg:%s", e.Code, e.Msg)
 }
-
-func (c CodeError) GetCode() uint32 {
-	return c.Code
+func (e CodeError) GetCode() uint32 {
+	return e.Code
 }
-func (c CodeError) GetMsg() string {
-	return c.Msg
+func (e CodeError) GetMsg() string {
+	return e.Msg
 }
 
 func NewErr(code uint32, msg string) error {

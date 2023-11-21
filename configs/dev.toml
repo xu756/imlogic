@@ -1,0 +1,17 @@
+Addr = "0.0.0.0:8080"
+
+[DbConfig]
+Addr = "localhost"
+Port = 3306
+Username = "root"
+Password = "fyU0bj2KLndYN6CKYubb"
+DbName = "xynu_grade"
+
+[RedisConfig]
+Addr = "localhost:6379"
+Password = "Y5dg5tg8050oigInC30sf"
+Db = 2
+
+[JwtConfig]
+SignKey = "Tqede8rNvZvbKmjqYpQRvwLxsGR"
+Expire = 3600

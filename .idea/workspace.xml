@@ -4,182 +4,143 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/imlogic.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsonSchemas.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/stylesheetLinters/stylelint.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/conn.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/conn/conn.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/etc/conn.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/handler/add_conn.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/handler/handler.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/logic/add_conn.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/logic/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/logic/client_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/logic/encrypte.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/logic/hub.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/logic/msg_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/im_server/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/internal/config/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/internal/logic/broadcast_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/internal/logic/send_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/internal/server/conn_server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/conn/internal/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/etc/public.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/config/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/handler/by_password_handler.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/handler/get_captcha_handler.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/handler/routes.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/logic/by_password_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/logic/get_captcha_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/internal/types/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/public.api" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/public/public.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/etc/user.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/config/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/handler/get_user_info_handler.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/handler/routes.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/logic/get_user_info_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/middleware/auth_middleware.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/internal/types/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/user.api" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user/user.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/chat.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/chat/chat.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/etc/chat.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/internal/config/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/internal/logic/meta_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/internal/logic/msg_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/internal/server/chat_server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/chat/internal/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/account_model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/account_model_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/group.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/group_model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/group_model_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/role_model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/role_model_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_group.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_group_model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_group_model_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_model_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_role_model.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/user_role_model_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/model/vars.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/etc/public.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/internal/config/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/internal/logic/get_code_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/internal/logic/login_by_password_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/internal/server/public_server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/internal/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/public.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/public/public/public.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/etc/user.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/internal/config/config.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/internal/logic/get_user_info_logic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/internal/server/user_server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/internal/svc/service_context.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/user.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/user/user/user.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/go.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/go.sum" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/chat.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/chat.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/chat_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/common.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/conn.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/conn.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/conn_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/public.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/public.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/public_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/user.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/user.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/pb/user_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/result/http_result.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/result/response.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/sql/imlogic.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/tool/bytes.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/tool/time.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/tool/uid.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/xerr/err_codes.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/xerr/errors.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/xjwt/auth.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/internal/xtype/message.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/modd.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/config/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/mock/userAPI.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/plugin.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/pnpm-lock.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/access.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/global.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/layouts/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/loading.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/models/global.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/chat/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/document.ejs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/index.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/home/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login/login.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/initial.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/public.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/format.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/typings.d.ts" beforeDir="false" />
+    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="重新配置">
+      <change afterPath="$PROJECT_DIR$/cmd/public/handler/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/public/handler/user_info.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/config/dir.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/config/dir_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/config/init.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/dev.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/cache/cache.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/email/email.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/email/pool.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/msg/email.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/msg/email_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/result/http_result.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/result/response.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/tool/time.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/tool/time_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/tool/uuid.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/tool/uuid_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/xerr/xerr.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/xerr/xmsg.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/xjwt/init.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/xjwt/xjwt_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/chat.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/chat.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/chat_grpc.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/common.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/conn.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/conn.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/conn_grpc.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/public.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/public.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/public_grpc.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/user.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/user.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pb/user_grpc.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/result/response.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sql/imlogic.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/tool/time.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/tool/uid.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/xerr/errors.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xjwt/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/xjwt/xjwt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xtype/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/xtype/message.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
   <component name="GOROOT" url="file://$USER_HOME$/devenv/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2XOoSuaMvaAYbEmxsoytkHE5XDy" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/xu756",
-    "settings.editor.selected.configurable": "ssh.settings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/xu756/开发/go/src/imlogic&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/internal/xjwt" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cmd" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/kitex_gen" />
+      <recent name="$PROJECT_DIR$/idl" />
+      <recent name="$PROJECT_DIR$/app" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="go build github.com/xu756/imlogic/cmd/public" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="imlogic" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/xu756/imlogic/cmd/public" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/cmd/public/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go 构建.go build github.com/xu756/imlogic/cmd/public" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+    <option name="myConnectionType" value="NONE" />
+    <option name="myConnectionId" value="" />
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="change" />
+    <MESSAGE value="new" />
+    <MESSAGE value="重新配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="重新配置" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
