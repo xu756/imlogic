@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="rpc">
-      <change afterPath="$PROJECT_DIR$/cmd/public/handler/handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/public/handler/user_info.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/api/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/api/rpc/public.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/idl/public.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/public.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +21,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Go Application" />
         <option value="Go File" />
       </list>
     </option>
@@ -24,6 +29,9 @@
   <component name="GOROOT" url="file://$USER_HOME$/devenv/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
