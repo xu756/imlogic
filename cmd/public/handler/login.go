@@ -13,9 +13,9 @@ func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *public.LoginBy
 	return resp, nil
 }
 
-func (s *PublicSrvImpl) LoginByEmail(ctx context.Context, req *public.LoginByEmailReq) (res *public.LoginRes, err error) {
+func (s *PublicSrvImpl) LoginByMobile(ctx context.Context, req *public.LoginByMobileReq) (res *public.LoginRes, err error) {
 	res = &public.LoginRes{
-		Token:  req.Email,
+		Token:  req.Mobile,
 		Expire: 6400,
 	}
 	return res, nil

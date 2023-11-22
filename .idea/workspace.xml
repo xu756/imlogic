@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="rpc">
-      <change afterPath="$PROJECT_DIR$/cmd/api/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/api/rpc/public.go" afterDir="false" />
+    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="rpc proto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl/public.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/public.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/handler/user_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/send_captcha.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +105,8 @@
     <MESSAGE value="new" />
     <MESSAGE value="重新配置" />
     <MESSAGE value="rpc" />
-    <option name="LAST_COMMIT_MESSAGE" value="rpc" />
+    <MESSAGE value="rpc proto" />
+    <option name="LAST_COMMIT_MESSAGE" value="rpc proto" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
