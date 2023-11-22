@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option go_package = "public";
+
+package public;
+
+message LoginByPasswordReq {
+    string username = 1;
+    string password = 2;
+    string session_id = 3;
+}
+
+message LoginByEmailReq {
+    string email = 1;
+    string captcha = 2;
+    string session_id = 3;
+}
+
+message LoginRes {
+    string token = 1;
+    int64 expire = 2;
+}
+
+message UserInfoReq {
+    int64 user_id = 1;
+}
+
+message UserInfoRes {
+    string username = 1;
+    string avatar = 2;
+    repeated string roles = 3;
+}
+service Public {
+    rpc LoginByPassword (LoginByPasswordReq) returns (LoginRes);
+    rpc LoginByEmail (LoginByEmailReq) returns (LoginRes);
+    rpc GetUserInfo (UserInfoReq) returns (UserInfoRes);
+}

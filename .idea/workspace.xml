@@ -4,56 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="重新配置">
+    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="rpc">
       <change afterPath="$PROJECT_DIR$/cmd/public/handler/handler.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/cmd/public/handler/user_info.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/config/dir.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/config/dir_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/config/init.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configs/dev.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/cache/cache.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/email/email.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/email/pool.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/msg/email.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/msg/email_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/result/http_result.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/result/response.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tool/time.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tool/time_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tool/uuid.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tool/uuid_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/xerr/xerr.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/xerr/xmsg.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/xjwt/init.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/xjwt/xjwt_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/chat.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/chat.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/chat_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/common.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/conn.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/conn.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/conn_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/public.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/public.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/public_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/user.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/user.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pb/user_grpc.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/result/response.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sql/imlogic.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/tool/time.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/tool/uid.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/xerr/errors.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xjwt/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/xjwt/xjwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xtype/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/xtype/message.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +25,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -79,25 +36,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/xu756/开发/go/src/imlogic&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/xu756/开发/go/src/imlogic",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -137,10 +95,12 @@
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="change" />
     <MESSAGE value="new" />
     <MESSAGE value="重新配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="重新配置" />
+    <MESSAGE value="rpc" />
+    <option name="LAST_COMMIT_MESSAGE" value="rpc" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
