@@ -1,7 +1,7 @@
 package tool
 
 import (
-	"github.com/xu756/imlogic/pkg/xerr"
+	"github.com/xu756/imlogic/internal/xerr"
 	"math/rand"
 	"strconv"
 

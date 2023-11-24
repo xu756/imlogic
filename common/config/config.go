@@ -1,12 +1,16 @@
 package config
 
 type Config struct {
-	Addr        string
+	Addr        Addr
 	DbConfig    DbConfig
-	SqlitePath  string
 	RedisConfig RedisConfig
 	JwtConfig   JwtConfig
 	EmailConfig EmailConfig
+}
+
+type Addr struct {
+	ApiAddr    string
+	PublicAddr string
 }
 
 type DbConfig struct {

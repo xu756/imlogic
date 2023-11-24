@@ -3,7 +3,7 @@ package result
 import (
 	"errors"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/xu756/imlogic/pkg/xerr"
+	"github.com/xu756/imlogic/internal/xerr"
 	"net/http"
 )
 

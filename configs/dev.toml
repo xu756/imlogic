@@ -1,4 +1,6 @@
-Addr = "0.0.0.0:8080"
+[Addr]
+ApiAddr = "0.0.0.0:7080"
+PublicAddr = "0.0.0.0:7081"
 
 [DbConfig]
 Addr = "localhost"
@@ -15,3 +17,10 @@ Db = 2
 [JwtConfig]
 SignKey = "Tqede8rNvZvbKmjqYpQRvwLxsGR"
 Expire = 3600
+
+
+[EmailConfig]
+SMTPAddr = "smtp.feishu.cn:587"
+Password = "smcfUO20MyiAEijy"
+From = "grade@xynu.email"
+Host = "smtp.feishu.cn"

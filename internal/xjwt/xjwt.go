@@ -2,12 +2,11 @@ package xjwt
 
 import (
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/xu756/imlogic/common/config"
-	"github.com/xu756/imlogic/pkg/tool"
-	"github.com/xu756/imlogic/pkg/xerr"
-	"time"
-
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/xu756/imlogic/common/config"
+	"github.com/xu756/imlogic/internal/tool"
+	"github.com/xu756/imlogic/internal/xerr"
+	"time"
 )
 
 var j *Jwt

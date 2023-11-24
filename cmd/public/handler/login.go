@@ -6,10 +6,7 @@ import (
 )
 
 func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *public.LoginByPasswordReq) (resp *public.LoginRes, err error) {
-	resp = &public.LoginRes{
-		Token:  req.Username,
-		Expire: 6400,
-	}
+
 	return resp, nil
 }
 
