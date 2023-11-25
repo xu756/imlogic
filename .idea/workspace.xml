@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="etcd">
+    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="rpc">
+      <change afterPath="$PROJECT_DIR$/cmd/api/router/init.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,11 +126,11 @@
     <MESSAGE value="change" />
     <MESSAGE value="new" />
     <MESSAGE value="重新配置" />
-    <MESSAGE value="rpc" />
     <MESSAGE value="rpc proto" />
     <MESSAGE value="modd" />
     <MESSAGE value="etcd" />
-    <option name="LAST_COMMIT_MESSAGE" value="etcd" />
+    <MESSAGE value="rpc" />
+    <option name="LAST_COMMIT_MESSAGE" value="rpc" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

@@ -33,6 +33,8 @@ func main() {
 		}),
 		server.WithRegistry(r),
 	)
+	klog.Debugf("【Public Rpc】 on %s", config.RunData.Addr.PublicAddr)
+
 	err = svr.Run()
 	if err != nil {
 		log.Println(err.Error())
