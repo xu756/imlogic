@@ -13,7 +13,7 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	router.InitRouter()
-	hlog.Debugf("【Api】 on %s", config.RunData.Addr.ApiAddr)
+	hlog.Debugf("【Api】addr on %s", config.RunData.Addr.ApiAddr)
 	err := router.HttpServer.Run()
 	if err != nil {
 		hlog.Debug(err.Error())

@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-var j *Jwt
-
 type AuthInfo struct {
 	UserID string `json:"UserID"` // 用户ID
 	Role   string `json:"Role"`   // 用户角色
@@ -21,8 +19,8 @@ type Jwt struct {
 	Expire  int64  // 过期时间
 }
 
-func InitJwt() {
-	j = &Jwt{
+func InitJwt() *Jwt {
+	return &Jwt{
 		SignKey: config.RunData.JwtConfig.SignKey,
 		Expire:  config.RunData.JwtConfig.Expire,
 	}
@@ -52,8 +50,8 @@ type customJwtClaims struct {
 	jwt.RegisteredClaims
 }
 
-// NewJwt 生成jwt，返回 token 字符串
-func NewJwt(userId, role string) (string, error) {
+// NewJwtToken 生成jwt，返回 token 字符串
+func (j *Jwt) NewJwtToken(userId, role string) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
 			UserID: userId,
@@ -68,7 +66,7 @@ func NewJwt(userId, role string) (string, error) {
 	// 根据 claims 生成token对象
 	token, err := j.createToken(c)
 	if err != nil {
-		return "", xerr.UserExpire()
+		return "", xerr.ErrMsg(xerr.JwtCreateErr)
 	}
 	return token, nil
 }
@@ -80,8 +78,8 @@ func (j *Jwt) createToken(claims customJwtClaims) (string, error) {
 	return t.SignedString([]byte(j.SignKey))
 }
 
-// GetTokenFromToken 从token解析
-func GetTokenFromToken(c *app.RequestContext) (*AuthInfo, error) {
+// GetUserInfoFromToken 从token解析
+func (j *Jwt) GetUserInfoFromToken(c *app.RequestContext) (*AuthInfo, error) {
 	token, err := j.parseTokenString(string(c.Cookie("token")))
 	if err != nil {
 		return nil, xerr.ErrMsg(xerr.JwtParseErr)

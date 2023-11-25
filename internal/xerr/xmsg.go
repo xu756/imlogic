@@ -25,8 +25,7 @@ func init() {
 	message[UserUpdateErr] = "更新用户信息失败"
 	message[UserEmailExist] = "邮箱已存在"
 	message[UserEmailNotExist] = "邮箱不存在"
-
-	// jwt
+	// jwt模块码 错误消息
 	message[JwtCreateErr] = "jwt生成失败"
 	message[JwtParseErr] = "jwt解析失败"
 	message[JwtAuthEmpty] = "请求头中auth为空"
@@ -34,29 +33,8 @@ func init() {
 	message[CaptchaErr] = "验证码错误"
 	message[CaptchaExpired] = "验证码过期"
 	message[NotSameUser] = "不是同一个用户"
-
-	// Subject
-	message[SubjectExist] = "课程已存在"
-	message[SubjectFindErr] = " 课程查找错误"
-	message[SubjectUpdateErr] = "课程更新失败"
-
-	// Mark
-	message[MarkExist] = "成绩已存在"
-	message[MarkCreateErr] = "成绩创建失败"
-	message[MarkFindErr] = "成绩查找失败"
-
 	// Emails
 	message[SendEmailErr] = "邮件发送失败"
 	message[SendSmsErr] = "短信发送失败"
 	message[CaptchaNotExist] = "验证码已过期"
-
-	// File
-	message[FileSaveErr] = "文件保存失败"
-	message[FileNotExist] = "文件不存在"
-	message[UploadFileErr] = "文件上传失败，请重试"
-	message[CreatDirErr] = "创建文件夹失败,请联系管理员"
-	message[TeacherConNotDown] = "不支持老师下载学生成绩"
-	message[FileTypeErr] = "文件类型错误，只支持xlsx"
-	message[ExcelReadErr] = "Excel文件读取失败"
-	message[ExcelFileErr] = "Excel文件错误，请重新下载模板文件再重新上传"
 }

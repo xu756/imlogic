@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="rpc">
-      <change afterPath="$PROJECT_DIR$/cmd/api/router/init.go" afterDir="false" />
+    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="api">
+      <change afterPath="$PROJECT_DIR$/internal/middleware/jwt.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/router/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/router/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/result/http_result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/errors.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xerr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xjwt/xjwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xjwt/xjwt.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,31 +46,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/xu756/开发/go/src/imlogic",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/xu756/开发/go/src/imlogic&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "h2"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;h2&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -130,7 +134,8 @@
     <MESSAGE value="modd" />
     <MESSAGE value="etcd" />
     <MESSAGE value="rpc" />
-    <option name="LAST_COMMIT_MESSAGE" value="rpc" />
+    <MESSAGE value="api" />
+    <option name="LAST_COMMIT_MESSAGE" value="api" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

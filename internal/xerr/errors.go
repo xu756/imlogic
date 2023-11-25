@@ -56,16 +56,3 @@ func SystemErr() error {
 		Msg:  message[SystemErrCode],
 	}
 }
-
-func ParamErr() error {
-	return CodeError{
-		Code: Param,
-		Msg:  message[Param],
-	}
-}
-func UserExpire() error {
-	return CodeError{
-		Code: UserExpired,
-		Msg:  message[UserExpired],
-	}
-}
