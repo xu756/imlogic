@@ -22,7 +22,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.PublicAddr)
 	if err != nil {
 		klog.Fatal(err)
@@ -31,7 +30,6 @@ func main() {
 		server.WithServiceAddr(addr),
 		server.WithRegistryInfo(&registry.Info{
 			ServiceName: "public",
-			Addr:        addr,
 		}),
 		server.WithRegistry(r),
 	)
