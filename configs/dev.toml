@@ -3,14 +3,14 @@ ApiAddr = "0.0.0.0:7080"
 PublicAddr = "0.0.0.0:7081"
 
 [DbConfig]
-Addr = "localhost"
-Port = 3306
+Addr = "47.96.152.242"
+Port = 13306
 Username = "root"
 Password = "fyU0bj2KLndYN6CKYubb"
-DbName = "xynu_grade"
+DbName = "imlogic"
 
 [RedisConfig]
-Addr = "localhost:6379"
+Addr = "47.96.152.242:16379"
 Password = "Y5dg5tg8050oigInC30sf"
 Db = 2
 
@@ -24,3 +24,8 @@ SMTPAddr = "smtp.feishu.cn:587"
 Password = "smcfUO20MyiAEijy"
 From = "grade@xynu.email"
 Host = "smtp.feishu.cn"
+
+
+
+[Etcd]
+Addrs = ["47.96.152.242:12379"]

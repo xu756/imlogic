@@ -6,6 +6,7 @@ type Config struct {
 	RedisConfig RedisConfig
 	JwtConfig   JwtConfig
 	EmailConfig EmailConfig
+	Etcd        Etcd
 }
 
 type Addr struct {
@@ -37,4 +38,8 @@ type EmailConfig struct {
 	Password string
 	From     string
 	Host     string
+}
+
+type Etcd struct {
+	Addrs []string
 }
