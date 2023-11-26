@@ -15,6 +15,7 @@ type Addr struct {
 }
 
 type DbConfig struct {
+	DbType   string
 	Addr     string
 	Port     int
 	Username string

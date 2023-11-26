@@ -3,6 +3,7 @@ ApiAddr = "0.0.0.0:7080"
 PublicAddr = "0.0.0.0:7081"
 
 [DbConfig]
+DbType = "postgres"
 Addr = "47.96.152.242"
 Port = 15432
 Username = "root"
