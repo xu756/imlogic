@@ -4,7 +4,7 @@ PublicAddr = "0.0.0.0:7081"
 
 [DbConfig]
 Addr = "47.96.152.242"
-Port = 13306
+Port = 15432
 Username = "root"
 Password = "fyU0bj2KLndYN6CKYubb"
 DbName = "imlogic"
