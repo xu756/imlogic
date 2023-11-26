@@ -4,14 +4,14 @@ PublicAddr = "0.0.0.0:7081"
 
 [DbConfig]
 DbType = "postgres"
-Addr = "47.96.152.242"
+Addr = "dataLinux"
 Port = 15432
 Username = "root"
 Password = "fyU0bj2KLndYN6CKYubb"
 DbName = "imlogic"
 
 [RedisConfig]
-Addr = "47.96.152.242:16379"
+Addr = "dataLinux:16379"
 Password = "Y5dg5tg8050oigInC30sf"
 Db = 2
 

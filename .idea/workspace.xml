@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="数据库">
+    <list default="true" id="95c3d1df-f2aa-4c1e-b0a6-b21927447e91" name="更改" comment="数据库 类型">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/dev.toml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -132,7 +131,8 @@
     <MESSAGE value="api" />
     <MESSAGE value="jwt" />
     <MESSAGE value="数据库" />
-    <option name="LAST_COMMIT_MESSAGE" value="数据库" />
+    <MESSAGE value="数据库 类型" />
+    <option name="LAST_COMMIT_MESSAGE" value="数据库 类型" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
