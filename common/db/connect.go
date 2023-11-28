@@ -1,11 +1,9 @@
 package db
 
 import (
-	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/xu756/imlogic/common/config"
+	"github.com/glebarez/sqlite"
 	"github.com/xu756/imlogic/common/model"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 	"time"
@@ -18,15 +16,16 @@ type customModel struct {
 func NewModel() Model {
 
 	// FIXME: 先使用sqlite3
-	dsn := "host=%s user=%s password=%s dbname=%s port=%d  TimeZone=Asia/Shanghai"
-	c := config.RunData.DbConfig
-	dsn = fmt.Sprintf(dsn, c.Addr, c.Username, c.Password, c.DbName, c.Port)
-	db, err := gorm.Open(postgres.New(postgres.Config{
-		DSN:                  dsn,
-		PreferSimpleProtocol: true,
-	}), &gorm.Config{
-		SkipDefaultTransaction: true,
-	})
+	//dsn := "host=%s user=%s password=%s dbname=%s port=%d  TimeZone=Asia/Shanghai"
+	//c := config.RunData.DbConfig
+	//dsn = fmt.Sprintf(dsn, c.Addr, c.Username, c.Password, c.DbName, c.Port)
+	//db, err := gorm.Open(postgres.New(postgres.Config{
+	//	DSN:                  dsn,
+	//	PreferSimpleProtocol: true,
+	//}), &gorm.Config{
+	//	SkipDefaultTransaction: true,
+	//})
+	db, err := gorm.Open(sqlite.Open("./build/data.db"), &gorm.Config{})
 	if err != nil {
 		log.Panic(err)
 	}
