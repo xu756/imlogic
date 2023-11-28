@@ -5,7 +5,6 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/server"
-	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/xu756/imlogic/cmd/public/handler"
 	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/kitex_gen/public/publicsrv"
@@ -18,10 +17,11 @@ var file = flag.String("f", "", "config file path")
 func main() {
 	flag.Parse()
 	config.Init(*file)
-	r, err := etcd.NewEtcdRegistry(config.RunData.Etcd.Addrs)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// FIXME: 添加etcd注册
+	//r, err := etcd.NewEtcdRegistry(config.RunData.Etcd.Addrs)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.PublicAddr)
 	if err != nil {
 		klog.Fatal(err)
@@ -31,7 +31,7 @@ func main() {
 		server.WithRegistryInfo(&registry.Info{
 			ServiceName: "public",
 		}),
-		server.WithRegistry(r),
+		//server.WithRegistry(r),
 	)
 	klog.Debugf("【Public Rpc】 on %s", config.RunData.Addr.PublicAddr)
 

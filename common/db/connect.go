@@ -38,6 +38,7 @@ func NewModel() Model {
 	sqlDb.SetMaxOpenConns(100)
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDb.SetConnMaxLifetime(time.Hour)
+	log.Print("【 数据库连接成功 】")
 	return &customModel{
 		Db: db,
 	}
