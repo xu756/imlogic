@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="数据表接口">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/public.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="去掉etcd">
       <change beforePath="$PROJECT_DIR$/common/db/connect.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/connect.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +70,8 @@
     <MESSAGE value="调用" />
     <MESSAGE value="connect" />
     <MESSAGE value="数据表接口" />
-    <option name="LAST_COMMIT_MESSAGE" value="数据表接口" />
+    <MESSAGE value="去掉etcd" />
+    <option name="LAST_COMMIT_MESSAGE" value="去掉etcd" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

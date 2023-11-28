@@ -16,6 +16,8 @@ type customModel struct {
 }
 
 func NewModel() Model {
+
+	// FIXME: 先使用sqlite3
 	dsn := "host=%s user=%s password=%s dbname=%s port=%d  TimeZone=Asia/Shanghai"
 	c := config.RunData.DbConfig
 	dsn = fmt.Sprintf(dsn, c.Addr, c.Username, c.Password, c.DbName, c.Port)
