@@ -26,7 +26,7 @@ func main() {
 	if err != nil {
 		klog.Fatal(err)
 	}
-	svr := publicsrv.NewServer(new(handler.PublicSrvImpl),
+	svr := publicsrv.NewServer(handler.NewPublicSrvImpl(),
 		server.WithServiceAddr(addr),
 		server.WithRegistryInfo(&registry.Info{
 			ServiceName: "public",

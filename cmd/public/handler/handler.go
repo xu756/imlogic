@@ -3,11 +3,13 @@ package handler
 import (
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
+	"github.com/xu756/imlogic/common/db"
 )
 
 type PublicSrvImpl struct {
 	WriteAPI api.WriteAPIBlocking
 	ReadAPI  api.QueryAPI
+	Model    db.Model
 }
 
 func NewPublicSrvImpl() *PublicSrvImpl {
@@ -19,6 +21,7 @@ func NewPublicSrvImpl() *PublicSrvImpl {
 	return &PublicSrvImpl{
 		WriteAPI: client.WriteAPIBlocking(org, bucket),
 		ReadAPI:  client.QueryAPI(org),
+		Model:    db.NewModel(),
 	}
 
 }

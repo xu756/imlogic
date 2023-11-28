@@ -1,25 +1,21 @@
-package model
+package db
 
 import (
 	"fmt"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/xu756/imlogic/common/config"
+	"github.com/xu756/imlogic/common/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 	"time"
 )
 
-var Db *gorm.DB
-
-func InitModel() {
-	connect()
-	err := create()
-	if err != nil {
-		panic(err)
-	}
+type customModel struct {
+	Db *gorm.DB
 }
 
-func connect() *gorm.DB {
+func NewModel() Model {
 	dsn := "host=%s user=%s password=%s dbname=%s port=%d  TimeZone=Asia/Shanghai"
 	c := config.RunData.DbConfig
 	dsn = fmt.Sprintf(dsn, c.Addr, c.Username, c.Password, c.DbName, c.Port)
@@ -42,26 +38,16 @@ func connect() *gorm.DB {
 	sqlDb.SetMaxOpenConns(100)
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDb.SetConnMaxLifetime(time.Hour)
-	Db = db
-	return Db
+	return &customModel{
+		Db: db,
+	}
 }
 
-// create 创建数据表
-func create() error {
-
+func (m *customModel) CreateTable() error {
+	err := m.Db.AutoMigrate(&model.UserModel{})
+	if err != nil {
+		klog.Debugf("【 创建表失败 %s 】 ", "user")
+		return err
+	}
 	return nil
-}
-
-func GetDb() *gorm.DB {
-	db, err := Db.DB()
-	if err != nil {
-		log.Print(err, "获取数据库连接失败")
-		return connect()
-	}
-	err = db.Ping()
-	if err != nil {
-		log.Print(err, "ping 数据库连接失败")
-		return connect()
-	}
-	return Db
 }
