@@ -1,10 +1,10 @@
 package xerr
 
-var message map[uint32]string
+var message map[int32]string
 
 func init() {
 	// 全局码 错误消息
-	message = make(map[uint32]string)
+	message = make(map[int32]string)
 	message[OK] = "ok"
 	message[SystemErrCode] = "系统错误，请联系管理员"
 	message[DbErrCode] = "数据库错误"

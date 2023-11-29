@@ -10,7 +10,7 @@ import (
 */
 
 type CodeError struct {
-	Code uint32 `json:"code"`
+	Code int32  `json:"code"`
 	Msg  string `json:"msg"`
 }
 
@@ -18,43 +18,52 @@ func (e CodeError) Error() string {
 	return fmt.Sprintf("code:%d,msg:%s", e.Code, e.Msg)
 }
 
-func (e CodeError) GetCode() uint32 {
+func (e CodeError) GetCode() int32 {
 	return e.Code
 }
 
-func NewErr(code uint32, msg string) error {
+func GetMsg(code int32) string {
+	return message[code]
+
+}
+
+func NewErr(code int32, msg string) error {
 	return CodeError{
 		Code: code,
 		Msg:  msg,
 	}
 }
 
-func NewSprintfErr(code uint32, format string, a ...interface{}) error {
-	return CodeError{
+func NewSprintfErr(code int32, format string, a ...interface{}) error {
+	err := CodeError{
 		Code: code,
 		Msg:  fmt.Sprintf(format, a...),
 	}
+	return remote.NewTransError(code, err)
 }
 
-func ErrMsg(code uint32) error {
+func ErrMsg(code int32) error {
 
-	return CodeError{
+	err := CodeError{
 		Code: code,
 		Msg:  message[code],
 	}
+	return remote.NewTransError(code, err)
+
 }
 func ParamErr() error {
-	//return CodeError{
-	//	Code: Param,
-	//	Msg:  message[Param],
-	//}
+	err := CodeError{
+		Code: Param,
+		Msg:  message[Param],
+	}
+	return remote.NewTransError(Param, err)
 
 }
 
 func SystemErr() error {
-	//return CodeError{
-	//	Code: SystemErrCode,
-	//	Msg:  message[SystemErrCode],
-	//}
-	return remote.NewTransErrorWithMsg(SystemErrCode, message[SystemErrCode])
+	err := CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+	return remote.NewTransError(SystemErrCode, err)
 }

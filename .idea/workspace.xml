@@ -6,14 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="处理错误">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/api/router/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/router/public.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/api/rpc/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/api/rpc/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/public.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/model/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/result/http_result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/result/response.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/result/response.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/xerr/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/errors.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +28,9 @@
   <component name="GOROOT" url="file://$USER_HOME$/devenv/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoVcsConfiguration">
+    <option name="GO_FMT" value="false" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -75,6 +76,8 @@
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="git" />
     <MESSAGE value="调用" />
     <MESSAGE value="connect" />

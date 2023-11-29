@@ -2,7 +2,6 @@ package rpc
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
 
 func Init() {
@@ -16,6 +15,5 @@ func Init() {
 }
 
 func ClientErrorHandler(ctx context.Context, err error) error {
-	hlog.Debug(err)
 	return err
 }

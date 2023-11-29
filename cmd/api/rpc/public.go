@@ -14,6 +14,7 @@ func InitPublicClient(destService string) {
 		client.WithHostPorts(config.RunData.Addr.PublicAddr),
 		client.WithErrorHandler(ClientErrorHandler),
 	)
+
 	if err != nil {
 		hlog.Debugf("【 连接 public Rpc 失败 】", err)
 		panic(err)

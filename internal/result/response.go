@@ -17,11 +17,11 @@ func successRes(data interface{}) *ResponseSuccessBean {
 
 type ResponseErrorBean struct {
 	Success      bool      `json:"success"`
-	ErrorCode    uint32    `json:"errorCode"`
+	ErrorCode    int32     `json:"errorCode"`
 	ErrorMessage string    `json:"errorMessage"`
 	Timestamp    time.Time `json:"timestamp"`
 }
 
-func errorRes(errCode uint32, errMsg string) *ResponseErrorBean {
+func errorRes(errCode int32, errMsg string) *ResponseErrorBean {
 	return &ResponseErrorBean{false, errCode, errMsg, tool.TimeNow()}
 }
