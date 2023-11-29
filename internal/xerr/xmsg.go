@@ -8,6 +8,10 @@ func init() {
 	message[OK] = "ok"
 	message[SystemErrCode] = "系统错误，请联系管理员"
 	message[DbErrCode] = "数据库错误"
+	message[DbFindErr] = "数据库查询错误"
+	message[DbCreateErr] = "数据库创建错误"
+	message[DbUpdateErr] = "数据库更新错误"
+	message[DbDeleteErr] = "数据库删除错误"
 	message[Param] = "参数错误"
 	message[DbConnectErr] = "数据库连接失败"
 	message[RedisConnectErr] = "redis连接失败"
@@ -16,15 +20,13 @@ func init() {
 
 	// 用户模块码 错误消息
 	message[UserExist] = "账号已存在"
-	message[UserPasswordErr] = "账号密码错误"
+	message[UserPasswordErr] = "密码错误"
 	message[UserLoginOut] = "账号未登录"
 	message[UserExpired] = "账号登录过期"
 	message[UserDeleteErr] = "删除用户失败,请联系管理员"
 	message[UserNotExist] = "账号不存在"
 	message[UserRegisterErr] = "注册失败"
 	message[UserUpdateErr] = "更新用户信息失败"
-	message[UserEmailExist] = "邮箱已存在"
-	message[UserEmailNotExist] = "邮箱不存在"
 	// jwt模块码 错误消息
 	message[JwtCreateErr] = "jwt生成失败"
 	message[JwtParseErr] = "jwt解析失败"

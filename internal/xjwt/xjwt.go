@@ -10,8 +10,8 @@ import (
 )
 
 type AuthInfo struct {
-	UserID string `json:"UserID"` // 用户ID
-	Role   string `json:"Role"`   // 用户角色
+	UserID uint64   `json:"userID"` // 用户ID
+	Role   []uint64 `json:"Role"`   // 用户角色
 }
 
 type Jwt struct {
@@ -19,7 +19,7 @@ type Jwt struct {
 	Expire  int64  // 过期时间
 }
 
-func InitJwt() *Jwt {
+func NewJwt() *Jwt {
 	return &Jwt{
 		SignKey: config.RunData.JwtConfig.SignKey,
 		Expire:  config.RunData.JwtConfig.Expire,
@@ -51,7 +51,7 @@ type customJwtClaims struct {
 }
 
 // NewJwtToken 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwtToken(userId, role string) (string, error) {
+func (j *Jwt) NewJwtToken(userId uint64, role []uint64) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
 			UserID: userId,

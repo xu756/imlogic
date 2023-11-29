@@ -5,6 +5,10 @@ const (
 	OK = 200 + iota
 	SystemErrCode
 	DbErrCode
+	DbFindErr
+	DbCreateErr
+	DbUpdateErr
+	DbDeleteErr
 	Param
 	DbConnectErr
 	RedisConnectErr
@@ -22,8 +26,6 @@ const (
 	UserNotExist
 	UserRegisterErr
 	UserUpdateErr
-	UserEmailExist
-	UserEmailNotExist
 )
 
 // JWT 模块码
