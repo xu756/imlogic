@@ -1,5 +1,10 @@
 package rpc
 
+import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
+)
+
 func Init() {
 	// FIXME  配置etcd
 
@@ -8,5 +13,9 @@ func Init() {
 	//	hlog.Debug(err)
 	//}
 	InitPublicClient("public")
+}
 
+func ClientErrorHandler(ctx context.Context, err error) error {
+	hlog.Debug(err)
+	return err
 }

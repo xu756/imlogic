@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="配置使用sqlite3">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="处理错误">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/db/connect.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/connect.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/db/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/router/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/router/public.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/public.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/model/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xerr.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xjwt/init.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xjwt/xjwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xjwt/xjwt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xjwt/xjwt_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xjwt/xjwt_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/result/http_result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/errors.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +82,9 @@
     <MESSAGE value="去掉etcd" />
     <MESSAGE value="sql" />
     <MESSAGE value="配置使用sqlite3" />
-    <option name="LAST_COMMIT_MESSAGE" value="配置使用sqlite3" />
+    <MESSAGE value="FindUserByUsername" />
+    <MESSAGE value="处理错误" />
+    <option name="LAST_COMMIT_MESSAGE" value="处理错误" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

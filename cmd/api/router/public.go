@@ -6,22 +6,60 @@ import (
 	"github.com/cloudwego/hertz/pkg/route"
 	"github.com/xu756/imlogic/cmd/api/rpc"
 	"github.com/xu756/imlogic/internal/result"
+	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/xu756/imlogic/kitex_gen/public"
 )
 
 func PublicRoute(r *route.RouterGroup) {
-	r.GET("/", Index)
+	r.POST("/login", Login)
 }
 
-func Index(c context.Context, ctx *app.RequestContext) {
-	res, err := rpc.PublicClient.LoginByMobile(c, &public.LoginByMobileReq{
-		Mobile:    "12345678901",
-		Captcha:   "1111",
-		SessionId: "111111",
-	})
-	if err != nil {
+type loginReq struct {
+	LoginType string `json:"loginType,required" vd:"$='account'|$='mobile'"`
+	Username  string `json:"userName"`
+	Password  string `json:"passWord"`
+	Mobile    string `json:"mobile"`
+	Captcha   string `json:"captcha"`
+	SessionId string `json:"sessionId"`
+}
+
+func Login(ctx context.Context, c *app.RequestContext) {
+
+	var req loginReq
+	if err := c.BindAndValidate(&req); err != nil {
+		result.HttpError(c, xerr.ParamErr())
 		return
 	}
-	result.HttpSuccess(ctx, res)
-
+	switch req.LoginType {
+	case "account":
+		if req.Username == "" || req.Password == "" {
+			result.HttpError(c, xerr.ParamErr())
+			return
+		}
+		user, err := rpc.PublicClient.LoginByPassword(ctx, &public.LoginByPasswordReq{
+			Username:  req.Username,
+			Password:  req.Password,
+			SessionId: req.SessionId,
+		})
+		if err != nil {
+			result.HttpError(c, err)
+			return
+		}
+		result.HttpSuccess(c, user)
+	case "mobile":
+		if req.Mobile == "" || req.Captcha == "" || req.SessionId == "" {
+			result.HttpError(c, xerr.ParamErr())
+			return
+		}
+		user, err := rpc.PublicClient.LoginByMobile(ctx, &public.LoginByMobileReq{
+			Mobile:    req.Mobile,
+			Captcha:   req.Captcha,
+			SessionId: req.SessionId,
+		})
+		if err != nil {
+			result.HttpError(c, err)
+			return
+		}
+		result.HttpSuccess(c, user)
+	}
 }

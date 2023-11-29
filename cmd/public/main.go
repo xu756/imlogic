@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"flag"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/server"
@@ -28,6 +31,7 @@ func main() {
 	}
 	svr := publicsrv.NewServer(handler.NewPublicSrvImpl(),
 		server.WithServiceAddr(addr),
+		server.WithErrorHandler(ServerErrorHandler),
 		server.WithRegistryInfo(&registry.Info{
 			ServiceName: "public",
 		}),
@@ -39,4 +43,11 @@ func main() {
 	if err != nil {
 		log.Println(err.Error())
 	}
+}
+
+func ServerErrorHandler(ctx context.Context, err error) error {
+	if errors.Is(err, kerrors.ErrBiz) {
+		err = errors.Unwrap(err)
+	}
+	return err
 }

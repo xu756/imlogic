@@ -1,6 +1,9 @@
 package xerr
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/cloudwego/kitex/pkg/remote"
+)
 
 /**
 常用通用固定错误
@@ -14,11 +17,9 @@ type CodeError struct {
 func (e CodeError) Error() string {
 	return fmt.Sprintf("code:%d,msg:%s", e.Code, e.Msg)
 }
+
 func (e CodeError) GetCode() uint32 {
 	return e.Code
-}
-func (e CodeError) GetMsg() string {
-	return e.Msg
 }
 
 func NewErr(code uint32, msg string) error {
@@ -42,17 +43,18 @@ func ErrMsg(code uint32) error {
 		Msg:  message[code],
 	}
 }
-func DbErr() error {
-	return CodeError{
-		Code: DbErrCode,
-		Msg:  message[DbErrCode],
-	}
+func ParamErr() error {
+	//return CodeError{
+	//	Code: Param,
+	//	Msg:  message[Param],
+	//}
 
 }
 
 func SystemErr() error {
-	return CodeError{
-		Code: SystemErrCode,
-		Msg:  message[SystemErrCode],
-	}
+	//return CodeError{
+	//	Code: SystemErrCode,
+	//	Msg:  message[SystemErrCode],
+	//}
+	return remote.NewTransErrorWithMsg(SystemErrCode, message[SystemErrCode])
 }

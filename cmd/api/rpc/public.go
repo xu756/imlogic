@@ -10,7 +10,10 @@ import (
 var PublicClient publicsrv.Client
 
 func InitPublicClient(destService string) {
-	s, err := publicsrv.NewClient(destService, client.WithHostPorts(config.RunData.Addr.PublicAddr))
+	s, err := publicsrv.NewClient(destService,
+		client.WithHostPorts(config.RunData.Addr.PublicAddr),
+		client.WithErrorHandler(ClientErrorHandler),
+	)
 	if err != nil {
 		hlog.Debugf("【 连接 public Rpc 失败 】", err)
 		panic(err)
