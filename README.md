@@ -2,10 +2,10 @@
 ### 文档地址
 一个分布式 Im系统 拥有良好的扩展性和高可用性
 
-<a href="https://s1zt69w7hzv.feishu.cn/wiki/space/7240272377303629826?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home" target="_blank">飞书文档</a>
+[飞书文档](https://s1zt69w7hzv.feishu.cn/wiki/space/7240272377303629826?ccm_open_type=lark_wiki_spaceLink&open_tab_from=wiki_home?_blank)
 
 #### 启动
-使用<a href="https://github.com/cortesi/modd" target="_blank" >`modd`<a/> 部署
+使用[modd](https://github.com/cortesi/modd?_blank)部署
 ###### 安装
 ```bash
 go install github.com/cortesi/modd/cmd/modd@latest
