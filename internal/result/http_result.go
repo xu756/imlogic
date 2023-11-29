@@ -18,5 +18,4 @@ func HttpError(ctx *app.RequestContext, err error) {
 	errId := err.(*remote.TransError).TypeID()
 	ctx.JSON(http.StatusOK, errorRes(errId, xerr.GetMsg(errId)))
 	ctx.Abort()
-
 }
