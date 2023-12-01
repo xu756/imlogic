@@ -13,7 +13,6 @@ const (
 	DbConnectErr
 	RedisConnectErr
 	RoleErr
-	ExportExcelErr
 )
 
 // 用户模块码
@@ -26,6 +25,7 @@ const (
 	UserNotExist
 	UserRegisterErr
 	UserUpdateErr
+	UserMobileNotExist
 )
 
 // JWT 模块码

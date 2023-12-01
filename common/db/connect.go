@@ -50,10 +50,35 @@ func NewModel() Model {
 }
 
 func CreateTable(db *gorm.DB) error {
-	err := db.AutoMigrate(&model.UserModel{})
+	err := db.AutoMigrate(&model.User{})
 	if err != nil {
 		klog.Debugf("【 创建表失败 %s 】 ", "user")
 		return err
 	}
 	return nil
+}
+
+func TestModel() Model {
+	db, err := gorm.Open(sqlite.Open("../../build/data.db"), &gorm.Config{})
+	if err != nil {
+		log.Panic(err)
+	}
+	sqlDb, err := db.DB()
+	if err != nil {
+		log.Panic(err)
+	}
+	// SetMaxIdleConns 设置空闲连接池中连接的最大数量
+	sqlDb.SetMaxIdleConns(10)
+	// SetMaxOpenConns 设置打开数据库连接的最大数量。
+	sqlDb.SetMaxOpenConns(100)
+	// SetConnMaxLifetime 设置了连接可复用的最大时间。
+	sqlDb.SetConnMaxLifetime(time.Second)
+	log.Print("【 数据库连接成功 】")
+	err = CreateTable(db)
+	if err != nil {
+		panic(err)
+	}
+	return &customModel{
+		Db: db,
+	}
 }

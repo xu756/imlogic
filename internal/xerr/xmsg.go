@@ -16,7 +16,6 @@ func init() {
 	message[DbConnectErr] = "数据库连接失败"
 	message[RedisConnectErr] = "redis连接失败"
 	message[RoleErr] = "角色错误"
-	message[ExportExcelErr] = "导出excel错误"
 
 	// 用户模块码 错误消息
 	message[UserExist] = "账号已存在"
@@ -27,6 +26,7 @@ func init() {
 	message[UserNotExist] = "账号不存在"
 	message[UserRegisterErr] = "注册失败"
 	message[UserUpdateErr] = "更新用户信息失败"
+	message[UserMobileNotExist] = "手机号不存在"
 	// jwt模块码 错误消息
 	message[JwtCreateErr] = "jwt生成失败"
 	message[JwtParseErr] = "jwt解析失败"
