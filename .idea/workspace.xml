@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="README">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/db/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/db/connect.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/connect.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/model/model.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/model/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/tool/uuid.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/tool/uuid.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xerr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,41 +47,76 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/xu756",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ssh.settings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/xu756&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ssh.settings&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql",
-      "sqlite"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;,
+      &quot;sqlite&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/common/model" />
       <recent name="$PROJECT_DIR$/common" />
     </key>
   </component>
+  <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser">
+    <configuration name="github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imlogic" />
+      <working_directory value="$PROJECT_DIR$/common/db" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/xu756/imlogic/common/db" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestCustomModel_CreateUser\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/xu756/imlogic/common/db 中的 TestCustomModel_FindUserByMobile" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imlogic" />
+      <working_directory value="$PROJECT_DIR$/common/db" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/xu756/imlogic/common/db" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestCustomModel_FindUserByMobile\E$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser" />
+        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_FindUserByMobile" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />

@@ -26,7 +26,18 @@ func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *public.LoginBy
 	return resp, nil
 }
 
-func (s *PublicSrvImpl) LoginByMobile(ctx context.Context, req *public.LoginByMobileReq) (res *public.LoginRes, err error) {
-
-	return res, nil
+func (s *PublicSrvImpl) LoginByMobile(ctx context.Context, req *public.LoginByMobileReq) (resp *public.LoginRes, err error) {
+	user, err := s.Model.FindUserByMobile(ctx, req.Mobile)
+	if err != nil {
+		return nil, err
+	}
+	token, err := s.Jwt.NewJwtToken(user.ID, []uint64{1})
+	if err != nil {
+		return nil, err
+	}
+	resp = &public.LoginRes{
+		Token:  token,
+		Expire: config.RunData.JwtConfig.Expire,
+	}
+	return resp, nil
 }
