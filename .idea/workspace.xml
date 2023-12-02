@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="model">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="重新生成">
+      <change afterPath="$PROJECT_DIR$/idl/idl.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/db/connect.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/connect.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +131,9 @@
     <MESSAGE value="README" />
     <MESSAGE value="时间" />
     <MESSAGE value="model" />
-    <option name="LAST_COMMIT_MESSAGE" value="model" />
+    <MESSAGE value="gorm 性能调整" />
+    <MESSAGE value="重新生成" />
+    <option name="LAST_COMMIT_MESSAGE" value="重新生成" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

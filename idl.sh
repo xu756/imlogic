@@ -1,0 +1,1 @@
+kitex -module github.com/xu756/imlogic  idl/public.proto
