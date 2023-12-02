@@ -4,23 +4,19 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="README">
-      <change afterPath="$PROJECT_DIR$/common/db/user_test.go" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="model">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/db/connect.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/connect.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/model/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/model/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/model/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/tool/uuid.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/tool/uuid.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xerr.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -133,7 +129,9 @@
     <MESSAGE value="错误处理" />
     <MESSAGE value="error" />
     <MESSAGE value="README" />
-    <option name="LAST_COMMIT_MESSAGE" value="README" />
+    <MESSAGE value="时间" />
+    <MESSAGE value="model" />
+    <option name="LAST_COMMIT_MESSAGE" value="model" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

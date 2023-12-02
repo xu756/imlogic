@@ -25,7 +25,11 @@ func NewModel() Model {
 	//}), &gorm.Config{
 	//	SkipDefaultTransaction: true,
 	//})
-	db, err := gorm.Open(sqlite.Open("./build/data.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("./build/data.db"), &gorm.Config{
+		TranslateError:         true, //  翻译错误
+		SkipDefaultTransaction: true, //禁用默认事务
+		PrepareStmt:            true, // 缓存预编译语句
+	})
 	if err != nil {
 		log.Panic(err)
 	}
@@ -59,7 +63,11 @@ func CreateTable(db *gorm.DB) error {
 }
 
 func TestModel() Model {
-	db, err := gorm.Open(sqlite.Open("../../build/data.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("../../build/data.db"), &gorm.Config{
+		TranslateError:         true, //  翻译错误
+		SkipDefaultTransaction: true, //禁用默认事务
+		PrepareStmt:            true, // 缓存预编译语句
+	})
 	if err != nil {
 		log.Panic(err)
 	}
