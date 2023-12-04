@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="生成代码" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="添加websocket">
+      <change afterPath="$PROJECT_DIR$/cmd/im/handler/add_conn.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/handler/conn_handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/handler/conn_manager.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/handler/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/logic/send_msg.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/dev.toml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,6 +31,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Go Application" />
         <option value="Go File" />
       </list>
     </option>
@@ -68,6 +82,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cmd/im/handler" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/common/model" />
       <recent name="$PROJECT_DIR$/common" />
@@ -132,7 +147,8 @@
     <MESSAGE value="gorm 性能调整" />
     <MESSAGE value="重新生成" />
     <MESSAGE value="生成代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="生成代码" />
+    <MESSAGE value="添加websocket" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加websocket" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

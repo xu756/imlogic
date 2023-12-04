@@ -1,6 +1,11 @@
 [Addr]
 ApiAddr = "0.0.0.0:7080"
-PublicAddr = "0.0.0.0:7081"
+PublicAddr = "0.0.0.0:8081"
+ImAddr = "0.0.0.0:7082"
+
+# 服务发现
+[Rpc]
+PublicRpc = "0.0.0.0:8081"
 
 [DbConfig]
 DbType = "postgres"

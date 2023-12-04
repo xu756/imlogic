@@ -25,7 +25,7 @@ func main() {
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
-	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.PublicAddr)
+	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Rpc.PublicRpc)
 	if err != nil {
 		klog.Fatal(err)
 	}

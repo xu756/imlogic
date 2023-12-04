@@ -2,6 +2,7 @@ package config
 
 type Config struct {
 	Addr        Addr
+	Rpc         Rpc
 	DbConfig    DbConfig
 	RedisConfig RedisConfig
 	JwtConfig   JwtConfig
@@ -12,6 +13,11 @@ type Config struct {
 type Addr struct {
 	ApiAddr    string
 	PublicAddr string
+	ImAddr     string
+}
+
+type Rpc struct {
+	PublicRpc string
 }
 
 type DbConfig struct {
