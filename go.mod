@@ -39,6 +39,7 @@ require (
 	github.com/glebarez/go-sqlite v1.21.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/pprof v0.0.0-20221118152302-e6195bd50e26 // indirect
+	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
