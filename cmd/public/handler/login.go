@@ -15,7 +15,7 @@ func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *public.LoginBy
 	if user.Password != req.Password {
 		return nil, xerr.ErrMsg(xerr.UserPasswordErr)
 	}
-	token, err := s.Jwt.NewJwtToken(user.ID, []uint64{1})
+	token, err := s.Jwt.NewJwtToken(user.ID, []int64{1})
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (s *PublicSrvImpl) LoginByMobile(ctx context.Context, req *public.LoginByMo
 	if err != nil {
 		return nil, err
 	}
-	token, err := s.Jwt.NewJwtToken(user.ID, []uint64{1})
+	token, err := s.Jwt.NewJwtToken(user.ID, []int64{1})
 	if err != nil {
 		return nil, err
 	}

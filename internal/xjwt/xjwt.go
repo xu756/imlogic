@@ -10,8 +10,8 @@ import (
 )
 
 type AuthInfo struct {
-	UserID uint64   `json:"userID"` // 用户ID
-	Role   []uint64 `json:"Role"`   // 用户角色
+	UserID int64   `json:"userID"` // 用户ID
+	Role   []int64 `json:"Role"`   // 用户角色
 }
 
 type Jwt struct {
@@ -51,7 +51,7 @@ type customJwtClaims struct {
 }
 
 // NewJwtToken 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwtToken(userId uint64, role []uint64) (string, error) {
+func (j *Jwt) NewJwtToken(userId int64, role []int64) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
 			UserID: userId,

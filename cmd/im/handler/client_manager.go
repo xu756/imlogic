@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/hertz-contrib/websocket"
-	"log"
 	"sync"
 )
 
@@ -23,7 +22,6 @@ func (c *clientManager) run() {
 	for {
 		select {
 		case conn := <-c.register:
-			log.Print(c)
 			c.add(conn)
 		case conn := <-c.unregister:
 			c.del(conn)

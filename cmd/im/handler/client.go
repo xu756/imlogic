@@ -31,7 +31,7 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string) *Client {
 		linkID: linkID,
 		//reader: make(chan *Message, 1024),
 		writer: make(chan *Message, 1024),
-		Close:  make(chan bool),
+		Close:  make(chan bool, 1),
 	}
 	return client
 }
@@ -44,16 +44,13 @@ func (c *Client) listenAndRead() {
 		case <-c.ctx.Done():
 			return
 		default:
-			msg := new(Message)
-			mt, message, err := c.ws.ReadMessage()
+			var msg *Message
+			err := c.ws.ReadJSON(&msg)
 			if err != nil {
-				log.Println("read:", err)
-				break
+				// todo 错误处理
+				log.Print(err)
 			}
-			msg.MsgType = uint8(mt)
-			msg.Msg = string(message)
-			log.Print(msg)
-			//go c.logic(msg)
+			go c.logic(msg)
 		}
 	}
 }

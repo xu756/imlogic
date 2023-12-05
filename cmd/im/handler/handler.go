@@ -8,7 +8,6 @@ import (
 	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/internal/middleware"
 	"github.com/xu756/imlogic/internal/result"
-	"log"
 )
 
 var HttpServer *server.Hertz
@@ -30,22 +29,7 @@ func connect(ctx context.Context, c *app.RequestContext) {
 		client := NewClient(ctx, ws, "test")
 		go client.listenAndWrite()
 		ClientManager.register <- client
-		log.Print(ClientManager.Clients.Load("test"))
-		//go client.listenAndRead()
-		//log.Print(ws)
-		//for {
-		//	mt, message, err := ws.ReadMessage()
-		//	if err != nil {
-		//		log.Println("read:", err)
-		//		break
-		//	}
-		//	log.Printf("recv: %s", message)
-		//	err = ws.WriteMessage(mt, message)
-		//	if err != nil {
-		//		log.Println("write:", err)
-		//		break
-		//	}
-		//}
+		client.listenAndRead()
 
 	})
 	if err != nil {
