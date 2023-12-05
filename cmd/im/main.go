@@ -14,7 +14,7 @@ func main() {
 	config.Init(*file)
 	// todo 添加处理服务
 
-	handler.NewConnManager("im")
+	handler.NewClientnManager("im")
 	handler.InitRouter()
 	hlog.Debugf("【 Im 】addr on %s", config.RunData.Addr.ImAddr)
 	err := handler.HttpServer.Run()

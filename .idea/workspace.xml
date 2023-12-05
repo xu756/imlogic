@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="添加websocket">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="运行">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/add_conn.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/read.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/conn_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/conn_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client_manager.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/logic/send_msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/logic/send_msg.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/result/http_result.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xerr.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +143,8 @@
     <MESSAGE value="重新生成" />
     <MESSAGE value="生成代码" />
     <MESSAGE value="添加websocket" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加websocket" />
+    <MESSAGE value="运行" />
+    <option name="LAST_COMMIT_MESSAGE" value="运行" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"github.com/hertz-contrib/websocket"
+	"log"
 	"sync"
 )
 
@@ -11,55 +12,59 @@ type Message struct {
 	Msg     string `json:"msg"`
 }
 
-type Conn struct {
+type Client struct {
 	ctx    context.Context
 	mutex  sync.Mutex
 	linkID string // websocket 连接 id
 	ws     *websocket.Conn
 	isOpen bool
-	reader chan Message
-	Writer chan Message
+	//reader chan *Message
+	writer chan *Message
 	Close  chan bool
 }
 
-// NewConn 创建一个新的连接
-func NewConn(ctx context.Context, ws *websocket.Conn, linkID string) *Conn {
-	return &Conn{
+// NewClient 创建一个新的连接
+func NewClient(ctx context.Context, ws *websocket.Conn, linkID string) *Client {
+	client := &Client{
 		ctx:    ctx,
 		ws:     ws,
 		linkID: linkID,
-		reader: make(chan Message, 1024),
-		Writer: make(chan Message, 1024),
+		//reader: make(chan *Message, 1024),
+		writer: make(chan *Message, 1024),
 		Close:  make(chan bool),
 	}
+	return client
 }
 
 // listenAndRead 监听并读取消息
-func (c *Conn) listenAndRead() {
+func (c *Client) listenAndRead() {
 	// 通过ctx控制读取
 	for {
 		select {
 		case <-c.ctx.Done():
 			return
 		default:
-			var msg Message
-			err := c.ws.ReadJSON(&msg)
+			msg := new(Message)
+			mt, message, err := c.ws.ReadMessage()
 			if err != nil {
-				// todo 错误处理
-				return
+				log.Println("read:", err)
+				break
 			}
-			c.reader <- msg
+			msg.MsgType = uint8(mt)
+			msg.Msg = string(message)
+			log.Print(msg)
+			//go c.logic(msg)
 		}
 	}
 }
 
 // listenAndWrite 监听并写入消息
-func (c *Conn) listenAndWrite() {
+func (c *Client) listenAndWrite() {
 	for {
 		select {
 		case <-c.ctx.Done():
 			return
-		case msg := <-c.Writer:
+		case msg := <-c.writer:
 			err := c.ws.WriteJSON(msg)
 			if err != nil {
 				// todo 错误处理
