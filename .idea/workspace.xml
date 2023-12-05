@@ -7,11 +7,8 @@
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="clients">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client_manager.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/read.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/read.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xjwt/xjwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xjwt/xjwt.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
