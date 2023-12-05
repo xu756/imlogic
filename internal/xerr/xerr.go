@@ -45,3 +45,8 @@ const (
 	SendSmsErr
 	CaptchaNotExist
 )
+
+// Upgrade  websocket 模块码
+const (
+	UpgradeErr = 260 + iota
+)

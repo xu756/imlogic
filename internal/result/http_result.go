@@ -8,14 +8,14 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
-func HttpSuccess(ctx *app.RequestContext, resp interface{}) {
+func HttpSuccess(c *app.RequestContext, resp interface{}) {
 	r := successRes(resp)
-	ctx.JSON(http.StatusOK, r)
-	ctx.Abort()
+	c.JSON(http.StatusOK, r)
+	c.Abort()
 }
 
-func HttpError(ctx *app.RequestContext, err error) {
+func HttpError(c *app.RequestContext, err error) {
 	errId := err.(*remote.TransError).TypeID()
-	ctx.JSON(http.StatusOK, errorRes(errId, xerr.GetMsg(errId)))
-	ctx.Abort()
+	c.JSON(http.StatusOK, errorRes(errId, xerr.GetMsg(errId)))
+	c.Abort()
 }

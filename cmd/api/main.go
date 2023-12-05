@@ -15,7 +15,7 @@ func main() {
 	config.Init(*file)
 	router.InitRouter()
 	rpc.Init()
-	hlog.Debugf("【Api】addr on %s", config.RunData.Addr.ApiAddr)
+	hlog.Debugf("【 Api 】addr on %s", config.RunData.Addr.ApiAddr)
 	err := router.HttpServer.Run()
 	if err != nil {
 		hlog.Debug(err.Error())
