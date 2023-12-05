@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/internal/middleware"
@@ -26,7 +27,7 @@ func InitRouter() {
 
 func connect(ctx context.Context, c *app.RequestContext) {
 	err := ClientManager.upgrader.Upgrade(c, func(ws *websocket.Conn) {
-		client := NewClient(ctx, ws, "test")
+		client := NewClient(ctx, ws, uuid.NewString())
 		go client.listenAndWrite()
 		ClientManager.register <- client
 		client.listenAndRead()
