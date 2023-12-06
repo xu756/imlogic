@@ -22,12 +22,12 @@ func InitRouter() {
 	h.Use(middleware.HertzJwt())
 	h.GET("/connect", connect)
 	HttpServer = h
-
 }
 
 func connect(ctx context.Context, c *app.RequestContext) {
 	err := ClientManager.upgrader.Upgrade(c, func(ws *websocket.Conn) {
-		client := NewClient(ctx, ws, uuid.NewString())
+		linkId := uuid.NewString()
+		client := NewClient(ctx, ws, linkId)
 		go client.listenAndWrite()
 		ClientManager.register <- client
 		client.listenAndRead()

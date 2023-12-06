@@ -13,8 +13,7 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	// todo 添加处理服务
-
-	handler.NewClientnManager("im")
+	handler.NewClientnManager()
 	handler.InitRouter()
 	hlog.Debugf("【 Im 】addr on %s", config.RunData.Addr.ImAddr)
 	err := handler.HttpServer.Run()

@@ -77,9 +77,10 @@ func (c *Client) listenAndWrite() {
 		c.close()
 	}()
 	c.ws.WriteJSON(map[string]interface{}{
-		"msgType": 100,
-		"msg":     "连接成功",
-		"linkID":  c.linkID,
+		"msgType":  100,
+		"msg":      "连接成功",
+		"linkID":   c.linkID,
+		"hostName": ClientManager.HostName,
 	})
 	for {
 		select {

@@ -2,14 +2,17 @@ package handler
 
 import (
 	"github.com/hertz-contrib/websocket"
+	"os"
 	"sync"
 )
 
 var ClientManager = new(clientManager)
 
-func NewClientnManager(HostName string) {
+func NewClientnManager() {
+	hostname, _ := os.Hostname()
+
 	ClientManager = &clientManager{
-		HostName:   HostName,
+		HostName:   hostname,
 		broadcast:  make(chan *Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
