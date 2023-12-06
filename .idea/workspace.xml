@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="README.md">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="ctx">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,6 +120,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="git" />
     <MESSAGE value="调用" />
     <MESSAGE value="connect" />
     <MESSAGE value="数据表接口" />
@@ -144,8 +145,7 @@
     <MESSAGE value="message" />
     <MESSAGE value="测试" />
     <MESSAGE value="ctx" />
-    <MESSAGE value="README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="ctx" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
