@@ -9,11 +9,12 @@ import (
 )
 
 var (
-	writeWait  = 10 * time.Second
-	pongWait   = 4 * time.Second
+	pongWait   = 4 * time.Second // 测试 暂时设置为 4s
 	pingPeriod = (pongWait * 9) / 10
 )
 
+// Message  消息结构体
+// todo 测试消息结构体，需要重新改
 type Message struct {
 	MsgType uint   `json:"msgType"`
 	Msg     string `json:"msg"`
@@ -50,6 +51,7 @@ func (c *Client) listenAndRead() {
 	}()
 	c.isOpen = true
 	c.ws.SetReadLimit(1024 * 1024 * 100)
+	//  设置读取超时时间 心跳
 	c.ws.SetReadDeadline(time.Now().Add(pongWait)) // 设置读取超时时间
 	for {
 		select {
