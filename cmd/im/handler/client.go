@@ -106,7 +106,7 @@ func (c *Client) close() {
 	defer c.mutex.Unlock()
 	if c.isOpen {
 		ClientManager.unregister <- c
-		c.cancel() // 取消上下文
+		c.cancel() // 取消上下文  listenAndRead listenAndWrite 退出
 		if err := c.ws.Close(); err != nil {
 			log.Print(err)
 		}
