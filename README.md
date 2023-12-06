@@ -23,8 +23,14 @@ cmd/public/**/*.* {
     prep: go build -o build/rpc/public-rpc  -v cmd/public/main.go;
     daemon +sigkill: build/rpc/public-rpc -f configs/dev.toml;
 }
+
+# cmd-im处理服务7082
+cmd/im/**/*.* {
+	prep: go build -o build/im/im  -v cmd/im/main.go;
+	daemon +sigkill: build/im/im -f configs/dev.toml;
+}
 ```
-> cmd/api/**/*.*_    _监听 cmd/api/**/*.* 的所有文件
+> `cmd/api/**/*.*` 监听 cmd/api/**/*.* 的所有文件
 
 注意 internal 下的的文件监听不了哦
 ###### 启动

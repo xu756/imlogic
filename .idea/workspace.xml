@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="测试">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="ctx">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,7 +144,8 @@
     <MESSAGE value="sqlite" />
     <MESSAGE value="message" />
     <MESSAGE value="测试" />
-    <option name="LAST_COMMIT_MESSAGE" value="测试" />
+    <MESSAGE value="ctx" />
+    <option name="LAST_COMMIT_MESSAGE" value="ctx" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
