@@ -55,6 +55,8 @@ func (c *clientManager) add(conn *Client) {
 }
 
 func (c *clientManager) del(conn *Client) {
+	c.clientsLock.Lock()
+	defer c.clientsLock.Unlock()
 	c.Clients.Delete(conn.linkID)
 }
 

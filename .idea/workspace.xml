@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="clients">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="sqlite">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/client_manager.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/handler/read.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/handler/read.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +142,9 @@
     <MESSAGE value="添加websocket" />
     <MESSAGE value="运行" />
     <MESSAGE value="clients" />
-    <option name="LAST_COMMIT_MESSAGE" value="clients" />
+    <MESSAGE value="websocket 完成" />
+    <MESSAGE value="sqlite" />
+    <option name="LAST_COMMIT_MESSAGE" value="sqlite" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

@@ -31,7 +31,6 @@ func connect(ctx context.Context, c *app.RequestContext) {
 		go client.listenAndWrite()
 		ClientManager.register <- client
 		client.listenAndRead()
-
 	})
 	if err != nil {
 		result.HttpError(c, err)

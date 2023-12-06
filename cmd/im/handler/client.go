@@ -15,7 +15,7 @@ var (
 )
 
 type Message struct {
-	MsgType uint8  `json:"msg_type"`
+	MsgType uint   `json:"msgType"`
 	Msg     string `json:"msg"`
 }
 
@@ -74,6 +74,11 @@ func (c *Client) listenAndWrite() {
 		ticker.Stop()
 		c.close()
 	}()
+	c.ws.WriteJSON(map[string]interface{}{
+		"msgType": 100,
+		"msg":     "连接成功",
+		"linkID":  c.linkID,
+	})
 	for {
 		select {
 		case <-c.ctx.Done():
