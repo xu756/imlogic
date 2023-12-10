@@ -13,12 +13,12 @@ var (
 	pingPeriod = (pongWait * 9) / 10
 )
 
-// Message  消息结构体
-// todo 测试消息结构体，需要重新改
-type Message struct {
-	MsgType uint   `json:"msgType"`
-	Msg     string `json:"msg"`
-}
+//// Message  消息结构体
+//// todo 测试消息结构体，需要重新改
+//type Message struct {
+//	MsgType uint   `json:"msgType"`
+//	Msg     string `json:"msg"`
+//}
 
 type Client struct {
 	ctx    context.Context
@@ -76,12 +76,7 @@ func (c *Client) listenAndWrite() {
 		ticker.Stop()
 		c.close()
 	}()
-	c.ws.WriteJSON(map[string]interface{}{
-		"msgType":  100,
-		"msg":      "连接成功",
-		"linkID":   c.linkID,
-		"hostName": ClientManager.HostName,
-	})
+	c.ws.WriteJSON(&Message{})
 	for {
 		select {
 		case <-c.ctx.Done():

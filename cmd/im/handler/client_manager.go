@@ -29,6 +29,7 @@ func (c *clientManager) run() {
 		case conn := <-c.unregister:
 			c.del(conn)
 		case message := <-c.broadcast:
+			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
 				select {
