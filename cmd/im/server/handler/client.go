@@ -72,7 +72,7 @@ func (c *Client) listenAndRead() {
 				c.close()
 				return
 			}
-			err = client.Send(&im.Message{
+			rpcMsg := &im.Message{
 				MsgId:     msg.MsgId,
 				Device:    msg.Device,
 				Timestamp: msg.Timestamp,
@@ -93,8 +93,10 @@ func (c *Client) listenAndRead() {
 					AudioUrl:   msg.MsgContent.AudioUrl,
 					VideoUrl:   msg.MsgContent.VideoUrl,
 				},
-			})
+			}
+			err = client.Send(rpcMsg)
 			if err != nil {
+				log.Print(rpcMsg)
 				client.Close()
 				c.close()
 			}

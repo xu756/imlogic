@@ -22,7 +22,6 @@ func (i ImRpcImpl) Receive(stream im.ImSrv_ReceiveServer) (err error) {
 		if err != nil {
 			return err
 		}
-
 		log.Print("receive msg: ", msg)
 		log.Print(msg.Parms["a"])
 	}
