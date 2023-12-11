@@ -10,14 +10,20 @@ type Config struct {
 	Etcd        Etcd
 }
 
+// Addr 服务地址 运行地址
 type Addr struct {
-	ApiAddr    string
-	PublicAddr string
-	ImAddr     string
+	ApiAddr      string
+	PublicAddr   string
+	ImAddr       string // ws 地址
+	ImServerAddr string // 调用ws rpc 地址
+	ImRpcAddr    string //处理ws消息的rpc地址
 }
 
+// Rpc 服务发现 调用的地址
 type Rpc struct {
-	PublicRpc string
+	PublicRpc    string
+	ImServerAddr string
+	ImRpcAddr    string
 }
 
 type DbConfig struct {

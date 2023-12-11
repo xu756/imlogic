@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 	"github.com/hertz-contrib/websocket"
+	"github.com/xu756/imlogic/cmd/im/server/rpc"
+	"github.com/xu756/imlogic/kitex_gen/im"
 	"log"
 	"sync"
 	"time"
@@ -46,8 +48,14 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string) *Client {
 
 // listenAndRead 监听并读取消息
 func (c *Client) listenAndRead() {
+	client, err := rpc.ImSrvClient.Receive(c.ctx)
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
 	defer func() {
 		c.close()
+		client.Close()
 	}()
 	c.isOpen = true
 	c.ws.SetReadLimit(1024 * 1024 * 100)
@@ -64,7 +72,33 @@ func (c *Client) listenAndRead() {
 				c.close()
 				return
 			}
-			go c.logic(msg)
+			err = client.Send(&im.Message{
+				MsgId:     msg.MsgId,
+				Device:    msg.Device,
+				Timestamp: msg.Timestamp,
+				Parms:     msg.Parms,
+				Action:    msg.Action,
+				From:      msg.From,
+				To:        msg.To,
+				MsgType:   msg.MsgType,
+				MsgMeta: &im.MsgMeta{
+					DetailType: msg.MsgMeta.DetailType,
+					Version:    msg.MsgMeta.Version,
+					Interval:   msg.MsgMeta.Interval,
+				},
+				MsgContent: &im.MsgContent{
+					DetailType: msg.MsgContent.DetailType,
+					Text:       msg.MsgContent.Text,
+					ImgUrl:     msg.MsgContent.ImgUrl,
+					AudioUrl:   msg.MsgContent.AudioUrl,
+					VideoUrl:   msg.MsgContent.VideoUrl,
+				},
+			})
+			if err != nil {
+				client.Close()
+				c.close()
+			}
+			//go c.logic(msg)
 		}
 	}
 }

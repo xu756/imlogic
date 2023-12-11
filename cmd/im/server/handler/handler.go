@@ -13,6 +13,7 @@ import (
 
 var HttpServer *server.Hertz
 
+// InitRouter 路由
 func InitRouter() {
 	h := server.Default(
 		server.WithHostPorts(config.RunData.Addr.ImAddr),
