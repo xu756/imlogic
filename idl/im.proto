@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option go_package = "im";
+
+package im;
+
+import "google/protobuf/struct.proto";
+
+message MsgMeta {
+    string detail_type = 1;
+    string version = 2;
+    int64 interval = 3;
+}
+
+message Msg {
+    string detail_type = 1;
+    string text = 2;
+    string img_url = 3;
+    string audio_url = 4;
+    string video_url = 5;
+}
+
+message Message {
+    string msg_id = 1;
+    string device = 2;
+    int64 timestamp = 3;
+    map<string, google.protobuf.Value> parms = 4;
+    string action = 5;
+    string from = 6;
+    string to = 7;
+    string msg_type = 8;
+    MsgMeta msg_meta = 9;
+    Msg msg_content = 10;
+}
+
+message MessageRes {
+    string msg_id = 1;
+    string device = 2;
+    int64 timestamp = 3;
+}
+
+
+// 处理websocket消息
+service ImSrc {
+    rpc Receive(stream Message) returns (MessageRes) {}
+}
