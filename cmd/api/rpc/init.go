@@ -1,9 +1,5 @@
 package rpc
 
-import (
-	"context"
-)
-
 func Init() {
 	// FIXME  配置etcd
 
@@ -12,8 +8,4 @@ func Init() {
 	//	hlog.Debug(err)
 	//}
 	InitPublicClient("public")
-}
-
-func ClientErrorHandler(ctx context.Context, err error) error {
-	return err
 }

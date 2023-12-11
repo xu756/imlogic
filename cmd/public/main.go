@@ -1,15 +1,12 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"flag"
-	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/server"
 	"github.com/xu756/imlogic/cmd/public/handler"
 	"github.com/xu756/imlogic/common/config"
+	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/xu756/imlogic/kitex_gen/public/publicsrv"
 	"log"
 	"net"
@@ -25,29 +22,22 @@ func main() {
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
-	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Rpc.PublicRpc)
+	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.PublicAddr)
 	if err != nil {
 		klog.Fatal(err)
 	}
 	svr := publicsrv.NewServer(handler.NewPublicSrvImpl(),
 		server.WithServiceAddr(addr),
-		server.WithErrorHandler(ServerErrorHandler),
-		server.WithRegistryInfo(&registry.Info{
-			ServiceName: "public",
-		}),
+		server.WithErrorHandler(xerr.ServerErrorHandler),
+		//server.WithRegistryInfo(&registry.Info{
+		//	ServiceName: "public",
+		//}),
 		//server.WithRegistry(r),
 	)
-	klog.Debugf("【Public Rpc】 on %s", config.RunData.Addr.PublicAddr)
+	log.Printf("【Public Rpc】 on %s", config.RunData.Addr.PublicAddr)
 
 	err = svr.Run()
 	if err != nil {
 		log.Println(err.Error())
 	}
-}
-
-func ServerErrorHandler(ctx context.Context, err error) error {
-	if errors.Is(err, kerrors.ErrBiz) {
-		err = errors.Unwrap(err)
-	}
-	return err
 }

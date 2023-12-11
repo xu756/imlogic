@@ -4,9 +4,29 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="消息结构体">
-      <change afterPath="$PROJECT_DIR$/idl/im.proto" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="proto">
+      <change afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/rpc/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/server/handler/msg.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/server/rpc/im_rpc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/im/server/rpc/init.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/xerr/kitex_err.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/public.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/msg.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/handler/read.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/read.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/dev.toml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/idl/im.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/im.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,10 +97,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cmd/im" />
+      <recent name="$PROJECT_DIR$/cmd/im/server" />
       <recent name="$PROJECT_DIR$/cmd/im/handler" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/common/model" />
-      <recent name="$PROJECT_DIR$/common" />
     </key>
   </component>
   <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser">
@@ -143,7 +164,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="数据表接口" />
     <MESSAGE value="去掉etcd" />
     <MESSAGE value="sql" />
     <MESSAGE value="配置使用sqlite3" />
@@ -168,7 +188,8 @@
     <MESSAGE value="部分说明" />
     <MESSAGE value="hostname" />
     <MESSAGE value="消息结构体" />
-    <option name="LAST_COMMIT_MESSAGE" value="消息结构体" />
+    <MESSAGE value="proto" />
+    <option name="LAST_COMMIT_MESSAGE" value="proto" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
