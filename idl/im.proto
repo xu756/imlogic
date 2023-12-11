@@ -4,7 +4,6 @@ option go_package = "im";
 
 package im;
 
-import "google/protobuf/struct.proto";
 
 message MsgMeta {
     string detail_type = 1;
@@ -12,7 +11,7 @@ message MsgMeta {
     int64 interval = 3;
 }
 
-message Msg {
+message MsgContent {
     string detail_type = 1;
     string text = 2;
     string img_url = 3;
@@ -24,23 +23,29 @@ message Message {
     string msg_id = 1;
     string device = 2;
     int64 timestamp = 3;
-    map<string, google.protobuf.Value> parms = 4;
+    map<string, string> parms = 4;
     string action = 5;
     string from = 6;
     string to = 7;
     string msg_type = 8;
     MsgMeta msg_meta = 9;
-    Msg msg_content = 10;
+    MsgContent msg_content = 10;
 }
 
 message MessageRes {
     string msg_id = 1;
-    string device = 2;
-    int64 timestamp = 3;
+    string from = 2;
+    string to = 3;
+    bool success = 4;
 }
 
 
 // 处理websocket消息
-service ImSrc {
+service ImSrv {
     rpc Receive(stream Message) returns (MessageRes) {}
+}
+
+// 其他服务发送消息
+service ImServer{
+    rpc Send(Message) returns (MessageRes) {}
 }
