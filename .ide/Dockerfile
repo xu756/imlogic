@@ -1,7 +1,13 @@
 FROM golang:1.21
+RUN curl -fsSL https://code-server.dev/install.sh | sh &&\
+    code-server --install-extension redhat.vscode-yaml &&\
+    code-server --install-extension MS-CEINTL.vscode-language-pack-zh-hans &&\
+    code-server --install-extension ms-azuretools.vscode-docker &&\
+    code-server --install-extension mtxr.sqltools &&\
+    code-server --install-extension mtxr.sqltools-driver-pg &&\
+    echo done \
+
 RUN go install github.com/cortesi/modd/cmd/modd@latest
 
-
-# 指定字符集支持命令行输入中文（根据需要选择字符集）
 ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
