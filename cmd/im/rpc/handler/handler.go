@@ -23,6 +23,6 @@ func (i ImRpcImpl) Receive(stream im.ImSrv_ReceiveServer) (err error) {
 			return err
 		}
 		log.Print("receive msg: ", msg)
-		log.Print(msg.Parms["a"])
+		log.Print(msg.Params["a"])
 	}
 }

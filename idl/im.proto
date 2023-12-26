@@ -23,7 +23,7 @@ message Message {
     string msg_id = 1;
     string device = 2;
     int64 timestamp = 3;
-    map<string, string> parms = 4;
+    map<string, string> params = 4;
     string action = 5;
     string from = 6;
     string to = 7;

@@ -16,7 +16,7 @@ func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.Messag
 			MsgId:     req.MsgId,
 			Device:    req.Device,
 			Timestamp: req.Timestamp,
-			Parms:     req.Parms,
+			Params:    req.Params,
 			Action:    req.Action,
 			From:      req.From,
 			To:        req.To,

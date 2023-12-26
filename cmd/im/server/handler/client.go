@@ -76,7 +76,7 @@ func (c *Client) listenAndRead() {
 				MsgId:     msg.MsgId,
 				Device:    msg.Device,
 				Timestamp: msg.Timestamp,
-				Parms:     msg.Parms,
+				Params:    msg.Params,
 				Action:    msg.Action,
 				From:      msg.From,
 				To:        msg.To,

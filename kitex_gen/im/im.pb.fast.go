@@ -203,8 +203,8 @@ func (x *Message) fastReadField3(buf []byte, _type int8) (offset int, err error)
 }
 
 func (x *Message) fastReadField4(buf []byte, _type int8) (offset int, err error) {
-	if x.Parms == nil {
-		x.Parms = make(map[string]string)
+	if x.Params == nil {
+		x.Params = make(map[string]string)
 	}
 	var key string
 	var value string
@@ -220,7 +220,7 @@ func (x *Message) fastReadField4(buf []byte, _type int8) (offset int, err error)
 	if err != nil {
 		return offset, err
 	}
-	x.Parms[key] = value
+	x.Params[key] = value
 	return offset, nil
 }
 
@@ -447,10 +447,10 @@ func (x *Message) fastWriteField3(buf []byte) (offset int) {
 }
 
 func (x *Message) fastWriteField4(buf []byte) (offset int) {
-	if x.Parms == nil {
+	if x.Params == nil {
 		return offset
 	}
-	for k, v := range x.GetParms() {
+	for k, v := range x.GetParams() {
 		offset += fastpb.WriteMapEntry(buf[offset:], 4,
 			func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
 				offset := 0
@@ -681,10 +681,10 @@ func (x *Message) sizeField3() (n int) {
 }
 
 func (x *Message) sizeField4() (n int) {
-	if x.Parms == nil {
+	if x.Params == nil {
 		return n
 	}
-	for k, v := range x.GetParms() {
+	for k, v := range x.GetParams() {
 		n += fastpb.SizeMapEntry(4,
 			func(numTagOrKey, numIdxOrVal int32) int {
 				n := 0
@@ -805,7 +805,7 @@ var fieldIDToName_Message = map[int32]string{
 	1:  "MsgId",
 	2:  "Device",
 	3:  "Timestamp",
-	4:  "Parms",
+	4:  "Params",
 	5:  "Action",
 	6:  "From",
 	7:  "To",
