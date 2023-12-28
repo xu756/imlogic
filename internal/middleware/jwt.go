@@ -6,6 +6,7 @@ import (
 )
 
 func HertzJwt() app.HandlerFunc {
+	// todo 验证jwt
 	return func(c context.Context, ctx *app.RequestContext) {
 		ctx.Next(c)
 	}

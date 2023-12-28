@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/websocket"
 	"os"
 	"sync"
@@ -16,7 +17,11 @@ func NewClientnManager() {
 		broadcast:  make(chan *Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
-		upgrader:   websocket.HertzUpgrader{},
+		upgrader: websocket.HertzUpgrader{
+			CheckOrigin: func(ctx *app.RequestContext) bool {
+				return true
+			},
+		},
 	}
 	go ClientManager.run()
 }

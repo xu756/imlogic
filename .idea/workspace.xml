@@ -4,24 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="coding conf">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="rename parms to params">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/msg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl.sh" beforeDir="false" afterPath="$PROJECT_DIR$/idl.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl/im.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/im.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/im.pb.fast.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/im.pb.fast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imserver/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imserver/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imserver/imserver.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imserver/imserver.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imserver/invoker.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imserver/invoker.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imserver/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imserver/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/invoker.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/invoker.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/middleware/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/middleware/jwt.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +146,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="错误处理" />
     <MESSAGE value="error" />
     <MESSAGE value="README" />
     <MESSAGE value="时间" />
@@ -184,7 +170,8 @@
     <MESSAGE value="rpc" />
     <MESSAGE value="ws" />
     <MESSAGE value="coding conf" />
-    <option name="LAST_COMMIT_MESSAGE" value="coding conf" />
+    <MESSAGE value="rename parms to params" />
+    <option name="LAST_COMMIT_MESSAGE" value="rename parms to params" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

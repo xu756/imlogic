@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/common/config"
-	"github.com/xu756/imlogic/internal/middleware"
 	"github.com/xu756/imlogic/internal/result"
+	"log"
 )
 
 var HttpServer *server.Hertz
@@ -20,7 +20,7 @@ func InitRouter() {
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
-	h.Use(middleware.HertzJwt())
+	//h.Use(middleware.HertzJwt())
 	h.GET("/connect", connect)
 	HttpServer = h
 }
@@ -34,6 +34,7 @@ func connect(ctx context.Context, c *app.RequestContext) {
 		client.listenAndRead()
 	})
 	if err != nil {
+		log.Print(err)
 		result.HttpError(c, err)
 		return
 	}
