@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="rename parms to params">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="CheckOrigin">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/middleware/jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/middleware/jwt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +144,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="error" />
     <MESSAGE value="README" />
     <MESSAGE value="时间" />
     <MESSAGE value="model" />
@@ -171,7 +168,8 @@
     <MESSAGE value="ws" />
     <MESSAGE value="coding conf" />
     <MESSAGE value="rename parms to params" />
-    <option name="LAST_COMMIT_MESSAGE" value="rename parms to params" />
+    <MESSAGE value="CheckOrigin" />
+    <option name="LAST_COMMIT_MESSAGE" value="CheckOrigin" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

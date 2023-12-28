@@ -2,8 +2,10 @@ package handler
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
+	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
 	"log"
 	"sync"
@@ -51,6 +53,7 @@ func (c *Client) listenAndRead() {
 	client, err := rpc.ImSrvClient.Receive(c.ctx)
 	if err != nil {
 		log.Println(err.Error())
+		client.Close()
 		return
 	}
 	defer func() {
@@ -100,7 +103,7 @@ func (c *Client) listenAndRead() {
 				client.Close()
 				c.close()
 			}
-			//go c.logic(msg)
+			go c.logic(msg)
 		}
 	}
 }
@@ -124,10 +127,21 @@ func (c *Client) listenAndWrite() {
 				return
 			}
 		case <-ticker.C:
-			err := c.ws.WriteJSON("ping")
-			if err != nil {
-				c.close()
-				return
+			//err := c.ws.WriteJSON("ping")
+			//if err != nil {
+			//	c.close()
+			//	return
+			//}
+			c.writer <- &Message{
+				MsgId:     uuid.NewString(),
+				Device:    "pc", //todo 判断设备类型
+				Timestamp: tool.TimeNowUnixMilli(),
+				MsgType:   "meta",
+				MsgMeta: MsgMeta{
+					DetailType: "heartbeat",
+					Version:    "1.0",
+					Interval:   30000,
+				},
 			}
 		}
 
