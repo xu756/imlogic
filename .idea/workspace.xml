@@ -5,8 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="CheckOrigin">
+      <change afterPath="$PROJECT_DIR$/ent/generate.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/db/connect.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/connect.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/db/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/db/user_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/db/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/model/model.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/model/user.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/dev.toml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/errors.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xerr.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xerr.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/xmsg.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/xerr/xmsg.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +49,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -70,8 +81,8 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;,
-      &quot;sqlite&quot;
+      &quot;sqlite&quot;,
+      &quot;postgresql&quot;
     ]
   }
 }</component>
@@ -84,42 +95,10 @@
       <recent name="$PROJECT_DIR$/common/model" />
     </key>
   </component>
-  <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser">
-    <configuration name="github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="imlogic" />
-      <working_directory value="$PROJECT_DIR$/common/db" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/xu756/imlogic/common/db" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestCustomModel_CreateUser\E$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="github.com/xu756/imlogic/common/db 中的 TestCustomModel_FindUserByMobile" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="imlogic" />
-      <working_directory value="$PROJECT_DIR$/common/db" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/xu756/imlogic/common/db" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestCustomModel_FindUserByMobile\E$" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_CreateUser" />
-        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/db 中的 TestCustomModel_FindUserByMobile" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-gosdk-266795519c66-911b893a1778-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.13135.104" />
+        <option value="bundled-gosdk-e58f7cfedaf7-155fe4b6e3a0-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-233.14015.113" />
       </set>
     </attachedChunks>
   </component>

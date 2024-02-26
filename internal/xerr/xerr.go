@@ -4,13 +4,12 @@ package xerr
 const (
 	OK = 200 + iota
 	SystemErrCode
-	DbErrCode
-	DbFindErr
-	DbCreateErr
-	DbUpdateErr
-	DbDeleteErr
+	DbFind
+	DbCreate
+	DbUpdate
+	DbDelete
 	Param
-	DbConnectErr
+	DbConnect
 	RedisConnectErr
 	RoleErr
 )
@@ -44,9 +43,4 @@ const (
 	SendEmailErr = 250 + iota
 	SendSmsErr
 	CaptchaNotExist
-)
-
-// Upgrade  websocket 模块码
-const (
-	UpgradeErr = 260 + iota
 )

@@ -15,14 +15,14 @@ ImRpcAddr = "0.0.0.0:7084"
 
 [DbConfig]
 DbType = "postgres"
-Addr = "dataLinux"
+Addr = "127.0.0.1"
 Port = 15432
 Username = "root"
 Password = "fyU0bj2KLndYN6CKYubb"
 DbName = "imlogic"
 
 [RedisConfig]
-Addr = "dataLinux:16379"
+Addr = "127.0.0.1:16379"
 Password = "Y5dg5tg8050oigInC30sf"
 Db = 2
 

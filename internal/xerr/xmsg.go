@@ -7,13 +7,12 @@ func init() {
 	message = make(map[int32]string)
 	message[OK] = "ok"
 	message[SystemErrCode] = "系统错误，请联系管理员"
-	message[DbErrCode] = "数据库错误"
-	message[DbFindErr] = "数据库查询错误"
-	message[DbCreateErr] = "数据库创建错误"
-	message[DbUpdateErr] = "数据库更新错误"
-	message[DbDeleteErr] = "数据库删除错误"
+	message[DbFind] = "数据查询错误"
+	message[DbCreate] = "数据创建错误"
+	message[DbUpdate] = "数据更新错误"
+	message[DbDelete] = "数据删除错误"
 	message[Param] = "参数错误"
-	message[DbConnectErr] = "数据库连接失败"
+	message[DbConnect] = "数据库连接失败"
 	message[RedisConnectErr] = "redis连接失败"
 	message[RoleErr] = "角色错误"
 
@@ -40,5 +39,4 @@ func init() {
 	message[SendSmsErr] = "短信发送失败"
 	message[CaptchaNotExist] = "验证码已过期"
 	//Upgrade
-	message[UpgradeErr] = "websocket升级失败"
 }

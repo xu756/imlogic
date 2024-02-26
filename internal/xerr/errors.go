@@ -2,7 +2,6 @@ package xerr
 
 import (
 	"fmt"
-	"github.com/cloudwego/kitex/pkg/remote"
 )
 
 /**
@@ -24,46 +23,70 @@ func (e CodeError) GetCode() int32 {
 
 func GetMsg(code int32) string {
 	return message[code]
+}
+
+func ErrMsg(code int32) error {
+	return CodeError{
+		Code: code,
+		Msg:  message[code],
+	}
+
+}
+func ParamErr() error {
+	return CodeError{
+		Code: Param,
+		Msg:  message[Param],
+	}
 
 }
 
-func NewErr(code int32, msg string) error {
+func SystemErr() error {
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+}
+
+func DbErr(code int32, msg string) error {
 	return CodeError{
 		Code: code,
 		Msg:  msg,
 	}
 }
 
-func NewSprintfErr(code int32, format string, a ...interface{}) error {
-	err := CodeError{
-		Code: code,
-		Msg:  fmt.Sprintf(format, a...),
-	}
-	return remote.NewTransError(code, err)
+func DbConnectErr() error {
+	return DbErr(DbConnect, message[DbConnect])
 }
 
-func ErrMsg(code int32) error {
-
-	err := CodeError{
-		Code: code,
-		Msg:  message[code],
-	}
-	return remote.NewTransError(code, err)
-
-}
-func ParamErr() error {
-	err := CodeError{
-		Code: Param,
-		Msg:  message[Param],
-	}
-	return remote.NewTransError(Param, err)
-
+func DbFindErr() error {
+	//return CodeError{
+	//	Code: DbFind,
+	//	Msg:  message[DbFind],
+	//}
+	return DbErr(DbFind, message[DbFind])
 }
 
-func SystemErr() error {
-	err := CodeError{
-		Code: SystemErrCode,
-		Msg:  message[SystemErrCode],
-	}
-	return remote.NewTransError(SystemErrCode, err)
+func DbCreateErr() error {
+	//return CodeError{
+	//	Code: DbCreate,
+	//	Msg:  message[DbCreate],
+	//}
+	return DbErr(DbCreate, message[DbCreate])
+}
+
+func DbUpdateErr() error {
+	//return CodeError{
+	//	Code: DbUpdate,
+	//	Msg:  message[DbUpdate],
+	//}
+	return DbErr(DbUpdate, message[DbUpdate])
+}
+
+func DbDeleteErr() error {
+	//return CodeError{
+	//	Code: DbDelete,
+	//	Msg:  message[DbDelete],
+	//}
+	return DbErr(DbDelete, message[DbDelete])
+
 }
