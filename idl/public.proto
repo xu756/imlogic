@@ -5,35 +5,37 @@ option go_package = "public";
 package public;
 
 message LoginByPasswordReq {
-    string username = 1;
-    string password = 2;
-    string session_id = 3;
+  string username = 1;
+  string password = 2;
+  string session_id = 3;
+  string device = 4;
 }
 
 message LoginByMobileReq {
-    string mobile = 1;
-    string captcha = 2;
-    string session_id = 3;
+  string mobile = 1;
+  string captcha = 2;
+  string session_id = 3;
+  string device = 4;
 }
 
 message LoginRes {
-    string token = 1;
-    int64 expire = 2;
+  string token = 1;
+  int64 expire = 2;
 }
 message SendCaptchaReq {
-    string session_id = 1;
-    string mobile = 2;
+  string session_id = 1;
+  string mobile = 2;
 }
 message SendCaptchaRes {
-    bool success = 1;
+  bool success = 1;
 }
 
 
 service PublicSrv {
-    // 用户名密码登录
-    rpc LoginByPassword (LoginByPasswordReq) returns (LoginRes);
-    // 手机验证码登录
-    rpc LoginByMobile (LoginByMobileReq) returns (LoginRes);
-    // 发送手机验证码
-    rpc SendCaptcha (SendCaptchaReq) returns (SendCaptchaRes);
+  // 用户名密码登录
+  rpc LoginByPassword (LoginByPasswordReq) returns (LoginRes);
+  // 手机验证码登录
+  rpc LoginByMobile (LoginByMobileReq) returns (LoginRes);
+  // 发送手机验证码
+  rpc SendCaptcha (SendCaptchaReq) returns (SendCaptchaRes);
 }

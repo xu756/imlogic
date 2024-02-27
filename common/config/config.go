@@ -6,8 +6,9 @@ type Config struct {
 	DbConfig    DbConfig
 	RedisConfig RedisConfig
 	JwtConfig   JwtConfig
+	MqUrl       string
 	EmailConfig EmailConfig
-	Etcd        Etcd
+	MinioConfig MinioConfig
 }
 
 // Addr 服务地址 运行地址
@@ -53,6 +54,11 @@ type EmailConfig struct {
 	Host     string
 }
 
-type Etcd struct {
-	Addrs []string
+// MinioConfig  配置
+type MinioConfig struct {
+	Endpoint        string
+	AccessKeyID     string
+	SecretAccessKey string
+	UseSSL          bool
+	BucketName      string
 }

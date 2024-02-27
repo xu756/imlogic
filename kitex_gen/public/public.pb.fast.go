@@ -29,6 +29,11 @@ func (x *LoginByPasswordReq) FastRead(buf []byte, _type int8, number int32) (off
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -57,6 +62,11 @@ func (x *LoginByPasswordReq) fastReadField3(buf []byte, _type int8) (offset int,
 	return offset, err
 }
 
+func (x *LoginByPasswordReq) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Device, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
 func (x *LoginByMobileReq) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
@@ -71,6 +81,11 @@ func (x *LoginByMobileReq) FastRead(buf []byte, _type int8, number int32) (offse
 		}
 	case 3:
 		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
 		if err != nil {
 			goto ReadFieldError
 		}
@@ -99,6 +114,11 @@ func (x *LoginByMobileReq) fastReadField2(buf []byte, _type int8) (offset int, e
 
 func (x *LoginByMobileReq) fastReadField3(buf []byte, _type int8) (offset int, err error) {
 	x.SessionId, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *LoginByMobileReq) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Device, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -204,6 +224,7 @@ func (x *LoginByPasswordReq) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
 	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
 	return offset
 }
 
@@ -231,6 +252,14 @@ func (x *LoginByPasswordReq) fastWriteField3(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *LoginByPasswordReq) fastWriteField4(buf []byte) (offset int) {
+	if x.Device == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 4, x.GetDevice())
+	return offset
+}
+
 func (x *LoginByMobileReq) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -238,6 +267,7 @@ func (x *LoginByMobileReq) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
 	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
 	return offset
 }
 
@@ -262,6 +292,14 @@ func (x *LoginByMobileReq) fastWriteField3(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 3, x.GetSessionId())
+	return offset
+}
+
+func (x *LoginByMobileReq) fastWriteField4(buf []byte) (offset int) {
+	if x.Device == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 4, x.GetDevice())
 	return offset
 }
 
@@ -338,6 +376,7 @@ func (x *LoginByPasswordReq) Size() (n int) {
 	n += x.sizeField1()
 	n += x.sizeField2()
 	n += x.sizeField3()
+	n += x.sizeField4()
 	return n
 }
 
@@ -365,6 +404,14 @@ func (x *LoginByPasswordReq) sizeField3() (n int) {
 	return n
 }
 
+func (x *LoginByPasswordReq) sizeField4() (n int) {
+	if x.Device == "" {
+		return n
+	}
+	n += fastpb.SizeString(4, x.GetDevice())
+	return n
+}
+
 func (x *LoginByMobileReq) Size() (n int) {
 	if x == nil {
 		return n
@@ -372,6 +419,7 @@ func (x *LoginByMobileReq) Size() (n int) {
 	n += x.sizeField1()
 	n += x.sizeField2()
 	n += x.sizeField3()
+	n += x.sizeField4()
 	return n
 }
 
@@ -396,6 +444,14 @@ func (x *LoginByMobileReq) sizeField3() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(3, x.GetSessionId())
+	return n
+}
+
+func (x *LoginByMobileReq) sizeField4() (n int) {
+	if x.Device == "" {
+		return n
+	}
+	n += fastpb.SizeString(4, x.GetDevice())
 	return n
 }
 
@@ -469,12 +525,14 @@ var fieldIDToName_LoginByPasswordReq = map[int32]string{
 	1: "Username",
 	2: "Password",
 	3: "SessionId",
+	4: "Device",
 }
 
 var fieldIDToName_LoginByMobileReq = map[int32]string{
 	1: "Mobile",
 	2: "Captcha",
 	3: "SessionId",
+	4: "Device",
 }
 
 var fieldIDToName_LoginRes = map[int32]string{
