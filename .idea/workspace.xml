@@ -4,22 +4,29 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="remove gorm &amp;&amp; upgrade to ent">
-      <change afterPath="$PROJECT_DIR$/configs/dev.yaml" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="update ent">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/public/handler/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/router/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/router/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/router/public.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/router/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/router/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/public.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/handler/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/handler/send_captcha.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/handler/send_captcha.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/public/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/init.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/init_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/init_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/dev.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/dev.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/idl.sh" beforeDir="false" afterPath="$PROJECT_DIR$/idl.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl/public.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/public.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/publicsrv/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/invoker.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/publicsrv/invoker.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/publicsrv.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/publicsrv/publicsrv.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/public/publicsrv/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/idl/public.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.fast.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/public.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/invoker.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/publicsrv.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/public/publicsrv/server.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/modd.conf" beforeDir="false" afterPath="$PROJECT_DIR$/modd.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,35 +69,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "Go 测试.github.com/xu756/imlogic/common/config 中的 Test.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/xu756",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/config 中的 Test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/xu756&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite",
-      "postgresql",
-      "redis"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;,
+      &quot;postgresql&quot;,
+      &quot;redis&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/cmd/im" />
@@ -147,7 +154,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="时间" />
     <MESSAGE value="model" />
     <MESSAGE value="gorm 性能调整" />
     <MESSAGE value="重新生成" />
@@ -172,7 +178,8 @@
     <MESSAGE value="rename parms to params" />
     <MESSAGE value="CheckOrigin" />
     <MESSAGE value="remove gorm &amp;&amp; upgrade to ent" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove gorm &amp;&amp; upgrade to ent" />
+    <MESSAGE value="update ent" />
+    <option name="LAST_COMMIT_MESSAGE" value="update ent" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

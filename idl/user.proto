@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "public";
+option go_package = "user";
 
-package public;
+package user;
 
 message LoginByPasswordReq {
   string username = 1;
@@ -31,7 +31,7 @@ message SendCaptchaRes {
 }
 
 
-service PublicSrv {
+service UserSrv {
   // 用户名密码登录
   rpc LoginByPassword (LoginByPasswordReq) returns (LoginRes);
   // 手机验证码登录

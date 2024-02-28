@@ -16,6 +16,6 @@ func InitRouter() {
 	)
 	h.Use(middleware.HertzJwt())
 	router := h.Group("/api")
-	PublicRoute(router.Group("/public"))
+	UserRoute(router.Group("/user"))
 	HttpServer = h
 }

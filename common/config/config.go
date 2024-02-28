@@ -1,64 +1,61 @@
 package config
 
 type Config struct {
-	Addr        Addr
-	Rpc         Rpc
-	DbConfig    DbConfig
-	RedisConfig RedisConfig
-	JwtConfig   JwtConfig
-	MqUrl       string
-	EmailConfig EmailConfig
-	MinioConfig MinioConfig
+	Addr        Addr        `yaml:"Addr"`
+	Rpc         Rpc         `yaml:"Rpc"`
+	DbConfig    DbConfig    `yaml:"DbConfig"`
+	RedisConfig RedisConfig `yaml:"RedisConfig"`
+	JwtConfig   JwtConfig   `yaml:"JwtConfig"`
+	MqUrl       string      `yaml:"MqUrl"`
+	EmailConfig EmailConfig `yaml:"EmailConfig"`
+	MinioConfig MinioConfig `yaml:"MinioConfig"`
 }
 
-// Addr 服务地址 运行地址
 type Addr struct {
-	ApiAddr      string
-	PublicAddr   string
-	ImAddr       string // ws 地址
-	ImServerAddr string // 调用ws rpc 地址
-	ImRpcAddr    string //处理ws消息的rpc地址
+	ApiAddr      string `yaml:"ApiAddr"`
+	UserAddr     string `yaml:"UserAddr"`
+	ImAddr       string `yaml:"ImAddr"`       // ws 地址
+	ImServerAddr string `yaml:"ImServerAddr"` // 调用ws rpc 地址
+	ImRpcAddr    string `yaml:"ImRpcAddr"`    //处理ws消息的rpc地址
 }
 
-// Rpc 服务发现 调用的地址
 type Rpc struct {
-	PublicRpc    string
-	ImServerAddr string
-	ImRpcAddr    string
+	UserRpc      string `yaml:"UserRpc"`
+	ImServerAddr string `yaml:"ImServerAddr"`
+	ImRpcAddr    string `yaml:"ImRpcAddr"`
 }
 
 type DbConfig struct {
-	DbType   string
-	Addr     string
-	Port     int
-	Username string
-	Password string
-	DbName   string
+	DbType   string `yaml:"DbType"`
+	Addr     string `yaml:"Addr"`
+	Port     int    `yaml:"Port"`
+	Username string `yaml:"Username"`
+	Password string `yaml:"Password"`
+	DbName   string `yaml:"DbName"`
 }
 
 type RedisConfig struct {
-	Addr     string
-	Password string
-	Db       int
+	Addr     string `yaml:"Addr"`
+	Password string `yaml:"Password"`
+	Db       int    `yaml:"Db"`
 }
 
 type JwtConfig struct {
-	SignKey string
-	Expire  int64
+	SignKey string `yaml:"SignKey"`
+	Expire  int64  `yaml:"Expire"`
 }
 
 type EmailConfig struct {
-	SMTPAddr string
-	Password string
-	From     string
-	Host     string
+	SMTPAddr string `yaml:"SMTPAddr"`
+	Password string `yaml:"Password"`
+	From     string `yaml:"From"`
+	Host     string `yaml:"Host"`
 }
 
-// MinioConfig  配置
 type MinioConfig struct {
-	Endpoint        string
-	AccessKeyID     string
-	SecretAccessKey string
-	UseSSL          bool
-	BucketName      string
+	Endpoint        string `yaml:"Endpoint"`
+	AccessKeyID     string `yaml:"AccessKeyID"`
+	SecretAccessKey string `yaml:"SecretAccessKey"`
+	UseSSL          bool   `yaml:"UseSSL"`
+	BucketName      string `yaml:"BucketName"`
 }

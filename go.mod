@@ -4,7 +4,6 @@ go 1.21.1
 
 require (
 	entgo.io/ent v0.13.0
-	github.com/BurntSushi/toml v1.3.2
 	github.com/cloudwego/fastpb v0.0.4
 	github.com/cloudwego/hertz v0.7.2
 	github.com/cloudwego/kitex v0.7.3

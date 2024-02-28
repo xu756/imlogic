@@ -20,9 +20,9 @@ cmd/api/**/*.* {
 	daemon +sigkill: build/api/api -f configs/dev.toml;
 }
 # cmd-public处理服务7081
-cmd/public/**/*.* {
-    prep: go build -o build/rpc/public-rpc  -v cmd/public/main.go;
-    daemon +sigkill: build/rpc/public-rpc -f configs/dev.toml;
+cmd/user/**/*.* {
+    prep: go build -o build/rpc/user-rpc  -v cmd/user/main.go;
+    daemon +sigkill: build/rpc/user-rpc -f configs/dev.toml;
 }
 
 # cmd-im处理服务7082

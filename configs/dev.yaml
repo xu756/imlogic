@@ -1,12 +1,12 @@
 Addr:
   ApiAddr: "0.0.0.0:7080"
-  PublicAddr: "0.0.0.0:8081"
+  UserAddr: "0.0.0.0:8081"
   ImAddr: "0.0.0.0:7082" # ws 地址
   ImServerAddr: "0.0.0.0:7083" # 调用ws rpc 地址
   ImRpcAddr: "0.0.0.0:7084" # 处理ws消息的rpc地址
 
 Rpc:
-  PublicRpc: "0.0.0.0:8081"
+  UserRpc: "0.0.0.0:8081"
   ImServerAddr: "0.0.0.0:7083"
   ImRpcAddr: "0.0.0.0:7084"
 
