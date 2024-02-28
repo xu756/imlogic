@@ -15,6 +15,7 @@ require (
 	github.com/minio/minio-go/v7 v7.0.67
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	google.golang.org/protobuf v1.28.1
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -28,7 +29,7 @@ require (
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/choleraehyq/pid v0.0.17 // indirect
+	github.com/choleraehyq/pid v0.0.18 // indirect
 	github.com/cloudwego/configmanager v0.2.0 // indirect
 	github.com/cloudwego/dynamicgo v0.1.3 // indirect
 	github.com/cloudwego/frugal v0.1.8 // indirect
@@ -83,5 +84,4 @@ require (
 	google.golang.org/grpc v1.41.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
