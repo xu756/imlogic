@@ -1,6 +1,6 @@
 module github.com/xu756/imlogic
 
-go 1.21.1
+go 1.22.0
 
 require (
 	entgo.io/ent v0.13.0
