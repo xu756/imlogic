@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="update go version to 1.22.0">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/cmd/api/router/user_type.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/middleware/err_handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/router/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/router/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/user/handler/send_captcha.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/handler/send_captcha.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/result/http_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/result/http_result.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

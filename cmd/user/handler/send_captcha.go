@@ -6,6 +6,5 @@ import (
 )
 
 func (s *PublicSrvImpl) SendCaptcha(ctx context.Context, req *user.SendCaptchaReq) (res *user.SendCaptchaRes, err error) {
-	//TODO implement me
-	panic("implement me")
+	return &user.SendCaptchaRes{Success: true}, nil
 }

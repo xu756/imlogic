@@ -1,11 +1,10 @@
 package result
 
 import (
-	"github.com/cloudwego/kitex/pkg/remote"
+	"errors"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/xu756/imlogic/internal/xerr"
 	"net/http"
-
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 func HttpSuccess(c *app.RequestContext, resp interface{}) {
@@ -15,7 +14,13 @@ func HttpSuccess(c *app.RequestContext, resp interface{}) {
 }
 
 func HttpError(c *app.RequestContext, err error) {
-	errId := err.(*remote.TransError).TypeID()
-	c.JSON(http.StatusOK, errorRes(errId, xerr.GetMsg(errId)))
+	var resErr xerr.CodeError
+	errors.As(err, &resErr)
+	c.JSON(http.StatusOK, errorRes(resErr.Code, resErr.Msg))
+	c.Abort()
+}
+
+func HttpParamErr(c *app.RequestContext) {
+	c.JSON(http.StatusOK, errorRes(xerr.Param, xerr.GetMsg(xerr.Param)))
 	c.Abort()
 }
