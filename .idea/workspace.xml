@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="update api struct">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="remove print">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/rpc/im_rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/rpc/im_rpc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/user/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/handler/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/xerr/kitex_err.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +140,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="重新生成" />
     <MESSAGE value="生成代码" />
     <MESSAGE value="添加websocket" />
     <MESSAGE value="运行" />
@@ -159,7 +164,8 @@
     <MESSAGE value="update ent" />
     <MESSAGE value="update go version to 1.22.0" />
     <MESSAGE value="update api struct" />
-    <option name="LAST_COMMIT_MESSAGE" value="update api struct" />
+    <MESSAGE value="remove print" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove print" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

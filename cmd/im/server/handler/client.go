@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	pongWait   = 4 * time.Second // 测试 暂时设置为 4s
+	pongWait   = 60 * time.Second // 测试 暂时设置为 4s
 	pingPeriod = (pongWait * 9) / 10
 )
 

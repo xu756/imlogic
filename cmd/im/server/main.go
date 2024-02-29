@@ -9,7 +9,6 @@ import (
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
 	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/internal/middleware"
-	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/xu756/imlogic/kitex_gen/im/imserver"
 	"log"
 	"net"
@@ -31,7 +30,6 @@ func main() {
 	}
 	svr := imserver.NewServer(handler.NewImServerImpl(),
 		server.WithServiceAddr(addr),
-		server.WithErrorHandler(xerr.ServerErrorHandler),
 		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
 	hlog.Info("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)

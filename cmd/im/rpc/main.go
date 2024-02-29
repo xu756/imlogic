@@ -7,7 +7,6 @@ import (
 	"github.com/xu756/imlogic/cmd/im/rpc/handler"
 	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/internal/middleware"
-	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/xu756/imlogic/kitex_gen/im/imsrv"
 	"log"
 	"net"
@@ -24,7 +23,6 @@ func main() {
 	}
 	svr := imsrv.NewServer(handler.NewImRpcImpl(),
 		server.WithServiceAddr(addr),
-		server.WithErrorHandler(xerr.ServerErrorHandler),
 		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
 	log.Printf("【Im Rpc】 on %s", config.RunData.Addr.ImRpcAddr)

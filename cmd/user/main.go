@@ -6,7 +6,7 @@ import (
 	"github.com/cloudwego/kitex/server"
 	"github.com/xu756/imlogic/cmd/user/handler"
 	"github.com/xu756/imlogic/common/config"
-	"github.com/xu756/imlogic/internal/xerr"
+	"github.com/xu756/imlogic/internal/middleware"
 	"github.com/xu756/imlogic/kitex_gen/user/usersrv"
 	"log"
 	"net"
@@ -23,7 +23,7 @@ func main() {
 	}
 	svr := usersrv.NewServer(handler.NewPublicSrvImpl(),
 		server.WithServiceAddr(addr),
-		server.WithErrorHandler(xerr.ServerErrorHandler),
+		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
 	log.Printf("【User Rpc】 on %s", config.RunData.Addr.UserAddr)
 
