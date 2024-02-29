@@ -2,12 +2,13 @@ package main
 
 import (
 	"flag"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/server"
 	"github.com/xu756/imlogic/cmd/im/server/handler"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
 	"github.com/xu756/imlogic/common/config"
+	"github.com/xu756/imlogic/internal/middleware"
 	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/xu756/imlogic/kitex_gen/im/imserver"
 	"log"
@@ -31,15 +32,12 @@ func main() {
 	svr := imserver.NewServer(handler.NewImServerImpl(),
 		server.WithServiceAddr(addr),
 		server.WithErrorHandler(xerr.ServerErrorHandler),
-		server.WithRegistryInfo(&registry.Info{
-			ServiceName: "im-server",
-		}),
-		//server.WithRegistry(r),
+		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
-	log.Printf("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
+	hlog.Info("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
 
 	go handler.HttpServer.Spin()
-	log.Printf("【 Im-rpc-server 】 on %s", config.RunData.Addr.ImServerAddr)
+	hlog.Info("【 Im-rpc-server 】 on %s", config.RunData.Addr.ImServerAddr)
 
 	err = svr.Run()
 	if err != nil {

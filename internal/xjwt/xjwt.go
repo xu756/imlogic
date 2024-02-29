@@ -10,8 +10,8 @@ import (
 )
 
 type AuthInfo struct {
-	UserID int64   `json:"userID"` // 用户ID
-	Role   []int64 `json:"Role"`   // 用户角色
+	UserUuid string `json:"uuid"`    // 用户Uuid
+	Version  int64  `json:"version"` // 用户版本
 }
 
 type Jwt struct {
@@ -51,11 +51,11 @@ type customJwtClaims struct {
 }
 
 // NewJwtToken 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwtToken(userId int64, role []int64) (string, error) {
+func (j *Jwt) NewJwtToken(UserUuid string, version int64) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
-			UserID: userId,
-			Role:   role,
+			UserUuid: UserUuid,
+			Version:  version,
 		},
 		RegisteredClaims: jwt.RegisteredClaims{
 			NotBefore: jwt.NewNumericDate(tool.TimeNow()),   // 生效时间
