@@ -52,7 +52,6 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string) *Client {
 func (c *Client) listenAndRead() {
 	client, err := rpc.ImSrvClient.Receive(c.ctx)
 	if err != nil {
-		log.Println(err.Error())
 		client.Close()
 		return
 	}
@@ -99,7 +98,6 @@ func (c *Client) listenAndRead() {
 			}
 			err = client.Send(rpcMsg)
 			if err != nil {
-				log.Print(rpcMsg)
 				client.Close()
 				c.close()
 			}
@@ -115,7 +113,6 @@ func (c *Client) listenAndWrite() {
 		ticker.Stop()
 		c.close()
 	}()
-	c.ws.WriteJSON(&Message{})
 	for {
 		select {
 		case <-c.ctx.Done():
