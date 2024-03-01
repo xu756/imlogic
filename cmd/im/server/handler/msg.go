@@ -1,5 +1,7 @@
 package handler
 
+import "github.com/xu756/imlogic/kitex_gen/im"
+
 // MsgMeta 消息元数据
 type MsgMeta struct {
 	DetailType string `json:"detailType"` //  connect | disconnect | heartbeat
@@ -27,4 +29,35 @@ type Message struct {
 	MsgType    string            `json:"msgType"`   // meta | text | image | file | audio | video | location | custom
 	MsgMeta    MsgMeta           `json:"msgMeta"`   // msgType = meta 时，此字段有值
 	MsgContent MsgContent        `json:"msgContent"`
+}
+
+func RpcMsgToMsg(msg *im.Message) *Message {
+	newMsg := Message{
+		MsgId:     msg.MsgId,
+		Device:    msg.Device,
+		Timestamp: msg.Timestamp,
+		Params:    msg.Params,
+		Action:    msg.Action,
+		From:      msg.From,
+		To:        msg.To,
+		MsgType:   msg.MsgType,
+	}
+	if msg.MsgMeta != nil {
+		newMsg.MsgMeta = MsgMeta{
+			DetailType: msg.MsgMeta.DetailType,
+			Version:    msg.MsgMeta.Version,
+			Interval:   msg.MsgMeta.Interval,
+		}
+	}
+	if msg.MsgContent != nil {
+		newMsg.MsgContent = MsgContent{
+			DetailType: msg.MsgContent.DetailType,
+			Text:       msg.MsgContent.Text,
+			ImgUrl:     msg.MsgContent.ImgUrl,
+			AudioUrl:   msg.MsgContent.AudioUrl,
+			VideoUrl:   msg.MsgContent.VideoUrl,
+		}
+	}
+	return &newMsg
+
 }

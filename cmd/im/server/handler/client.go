@@ -101,7 +101,12 @@ func (c *Client) listenAndRead() {
 				client.Close()
 				c.close()
 			}
-			go c.logic(msg)
+			recMsg, err := client.Recv()
+			if err != nil {
+				log.Print(err)
+				return
+			}
+			go c.logic(RpcMsgToMsg(recMsg))
 		}
 	}
 }

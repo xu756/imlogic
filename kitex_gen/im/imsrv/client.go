@@ -19,7 +19,7 @@ type Client interface {
 type ImSrv_ReceiveClient interface {
 	streaming.Stream
 	Send(*im.Message) error
-	CloseAndRecv() (*im.MessageRes, error)
+	Recv() (*im.Message, error)
 }
 
 // NewClient creates a client for the service defined in IDL.

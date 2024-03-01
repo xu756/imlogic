@@ -53,11 +53,8 @@ type imSrvReceiveClient struct {
 func (x *imSrvReceiveClient) Send(m *im.Message) error {
 	return x.Stream.SendMsg(m)
 }
-func (x *imSrvReceiveClient) CloseAndRecv() (*im.MessageRes, error) {
-	if err := x.Stream.Close(); err != nil {
-		return nil, err
-	}
-	m := new(im.MessageRes)
+func (x *imSrvReceiveClient) Recv() (*im.Message, error) {
+	m := new(im.Message)
 	return m, x.Stream.RecvMsg(m)
 }
 
@@ -65,7 +62,7 @@ type imSrvReceiveServer struct {
 	streaming.Stream
 }
 
-func (x *imSrvReceiveServer) SendAndClose(m *im.MessageRes) error {
+func (x *imSrvReceiveServer) Send(m *im.Message) error {
 	return x.Stream.SendMsg(m)
 }
 
@@ -141,14 +138,14 @@ func (p *ReceiveArgs) GetFirstArgument() interface{} {
 }
 
 type ReceiveResult struct {
-	Success *im.MessageRes
+	Success *im.Message
 }
 
-var ReceiveResult_Success_DEFAULT *im.MessageRes
+var ReceiveResult_Success_DEFAULT *im.Message
 
 func (p *ReceiveResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
-		p.Success = new(im.MessageRes)
+		p.Success = new(im.Message)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
@@ -175,7 +172,7 @@ func (p *ReceiveResult) Marshal(out []byte) ([]byte, error) {
 }
 
 func (p *ReceiveResult) Unmarshal(in []byte) error {
-	msg := new(im.MessageRes)
+	msg := new(im.Message)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -183,7 +180,7 @@ func (p *ReceiveResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *ReceiveResult) GetSuccess() *im.MessageRes {
+func (p *ReceiveResult) GetSuccess() *im.Message {
 	if !p.IsSetSuccess() {
 		return ReceiveResult_Success_DEFAULT
 	}
@@ -191,7 +188,7 @@ func (p *ReceiveResult) GetSuccess() *im.MessageRes {
 }
 
 func (p *ReceiveResult) SetSuccess(x interface{}) {
-	p.Success = x.(*im.MessageRes)
+	p.Success = x.(*im.Message)
 }
 
 func (p *ReceiveResult) IsSetSuccess() bool {

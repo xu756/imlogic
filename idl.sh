@@ -1,1 +1,1 @@
-kitex -module github.com/xu756/imlogic  idl/user.proto
+kitex -module github.com/xu756/imlogic  idl/im.proto
