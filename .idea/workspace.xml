@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="remove print">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="upload">
+      <change afterPath="$PROJECT_DIR$/cmd/im/server/server.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/cache/cache_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/api/rpc/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/api/rpc/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/rpc/im_rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/rpc/im_rpc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/user/handler/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/handler/login.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/user/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/xerr/kitex_err.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/cache/cache.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/cache/cache.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/dev.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +57,8 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet.executor&quot;: &quot;Run&quot;,
     &quot;Go 测试.github.com/xu756/imlogic/common/config 中的 Test.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -93,7 +94,31 @@
       <recent name="$PROJECT_DIR$/common/model" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet">
+    <configuration name="github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imlogic" />
+      <working_directory value="$PROJECT_DIR$/common/cache" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/xu756/imlogic/common/cache" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewCacheClient\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imlogic" />
+      <working_directory value="$PROJECT_DIR$/common/cache" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/xu756/imlogic/common/cache" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewCacheGet\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="github.com/xu756/imlogic/common/config 中的 Test" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="imlogic" />
       <working_directory value="$PROJECT_DIR$/common/config" />
@@ -108,6 +133,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet" />
+        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/config 中的 Test" />
       </list>
     </recent_temporary>
@@ -140,7 +167,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="生成代码" />
     <MESSAGE value="添加websocket" />
     <MESSAGE value="运行" />
     <MESSAGE value="clients" />
@@ -165,7 +191,8 @@
     <MESSAGE value="update go version to 1.22.0" />
     <MESSAGE value="update api struct" />
     <MESSAGE value="remove print" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove print" />
+    <MESSAGE value="upload" />
+    <option name="LAST_COMMIT_MESSAGE" value="upload" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

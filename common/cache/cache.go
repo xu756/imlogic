@@ -1,39 +1,33 @@
 package cache
 
 import (
-	"github.com/patrickmn/go-cache"
+	"context"
+	"encoding/json"
+	"github.com/redis/go-redis/v9"
+	"github.com/xu756/imlogic/common/config"
 	"time"
 )
 
-var cdb *cache.Cache
-
-func InitCache() {
-	c := cache.New(cache.NoExpiration, cache.NoExpiration)
-	cdb = c
-
+type Client struct {
+	redis  *redis.Client
+	Prefix string
 }
 
-type UserCache struct {
-	Email     string
-	Code      string
-	SessionId string
-}
-
-// Get 获取缓存
-func Get(key string) (*UserCache, bool) {
-	v, ok := cdb.Get(key)
-	if !ok {
-		return &UserCache{}, false
+func NewCacheClient() Client {
+	return Client{
+		redis: redis.NewClient(&redis.Options{
+			Addr:     config.RunData.RedisConfig.Addr,
+			Password: config.RunData.RedisConfig.Password,
+			DB:       config.RunData.RedisConfig.Db,
+		}),
+		Prefix: config.RunData.RedisConfig.Prefix,
 	}
-	return v.(*UserCache), true
 }
 
-// Set 设置缓存
-func Set(key, email, code, sessionId string) {
-	cdb.Set(key, &UserCache{
-		Email:     email,
-		Code:      code,
-		SessionId: sessionId,
-	}, 60*time.Second)
-
+func (c *Client) Get(ctx context.Context, key string) *redis.StringCmd {
+	return c.redis.Get(ctx, key)
+}
+func (c *Client) Set(ctx context.Context, key string, v interface{}, expiration time.Duration) error {
+	value, _ := json.Marshal(v)
+	return c.redis.Set(ctx, key, value, expiration).Err()
 }

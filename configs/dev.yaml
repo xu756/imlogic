@@ -22,6 +22,7 @@ RedisConfig:
   Addr: "127.0.0.1:6379"
   Password: "Y5dg5tg8050oigInC30sf"
   Db: 0
+  Prefix: "imlogic"
 
 JwtConfig:
   SignKey: "Tqede8rNvZvbKmjqYpQRvwLxsGR"
