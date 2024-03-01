@@ -9,9 +9,8 @@ import (
 
 var ClientManager = new(clientManager)
 
-func NewClientnManager() {
+func NewClientManager() {
 	hostname, _ := os.Hostname()
-
 	ClientManager = &clientManager{
 		HostName:   hostname,
 		broadcast:  make(chan *Message),
