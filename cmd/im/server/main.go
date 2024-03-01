@@ -35,7 +35,7 @@ func main() {
 	hlog.Info("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
 
 	go handler.HttpServer.Spin()
-	hlog.Info("【 Im-rpc-server 】 on %s", config.RunData.Addr.ImServerAddr)
+	hlog.Info("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
 
 	err = svr.Run()
 	if err != nil {

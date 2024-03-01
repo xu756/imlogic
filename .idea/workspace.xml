@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="add redis config">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/msg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl.sh" beforeDir="false" afterPath="$PROJECT_DIR$/idl.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl/im.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/im.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="update to stream">
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +174,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="运行" />
     <MESSAGE value="clients" />
     <MESSAGE value="websocket 完成" />
     <MESSAGE value="sqlite" />
@@ -207,7 +198,8 @@
     <MESSAGE value="remove print" />
     <MESSAGE value="upload" />
     <MESSAGE value="add redis config" />
-    <option name="LAST_COMMIT_MESSAGE" value="add redis config" />
+    <MESSAGE value="update to stream" />
+    <option name="LAST_COMMIT_MESSAGE" value="update to stream" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
