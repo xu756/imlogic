@@ -28,7 +28,7 @@ message Message {
     string from = 6;
     string to = 7;
     string msg_type = 8;
-     MsgMeta msg_meta = 9;
+    MsgMeta msg_meta = 9;
     MsgContent msg_content = 10;
 }
 
@@ -40,9 +40,15 @@ message MessageRes {
 }
 
 
+
+
+
+
 // 处理websocket消息
 service ImSrv {
     rpc Receive(stream Message) returns (stream Message) {}
+    rpc MetaMsg(Message) returns (MessageRes) {}
+
 }
 
 // 其他服务发送消息

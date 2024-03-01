@@ -80,7 +80,7 @@ func (c *Client) listenAndRead() {
 				Timestamp: msg.Timestamp,
 				Params:    msg.Params,
 				Action:    msg.Action,
-				From:      msg.From,
+				From:      c.linkID,
 				To:        msg.To,
 				MsgType:   msg.MsgType,
 				MsgMeta: &im.MsgMeta{
@@ -123,6 +123,7 @@ func (c *Client) listenAndWrite() {
 		case <-c.ctx.Done():
 			return
 		case msg := <-c.writer:
+			msg.To = c.linkID
 			err := c.ws.WriteJSON(msg)
 			if err != nil {
 				c.close()
@@ -156,6 +157,15 @@ func (c *Client) close() {
 	defer c.mutex.Unlock()
 	if c.isOpen {
 		ClientManager.unregister <- c
+		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, &im.Message{
+			Timestamp: tool.TimeNowUnixMilli(),
+			Action:    "send",
+			From:      c.linkID,
+			To:        "im-rpc",
+			MsgType:   "meta",
+			MsgMeta:   &im.MsgMeta{DetailType: "disconnect", Version: "1.0", Interval: 0},
+		})
+
 		c.cancel() // 取消上下文  listenAndRead listenAndWrite 同时退出
 		if err := c.ws.Close(); err != nil {
 			log.Print(err)

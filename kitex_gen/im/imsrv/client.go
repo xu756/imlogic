@@ -14,6 +14,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	Receive(ctx context.Context, callOptions ...callopt.Option) (stream ImSrv_ReceiveClient, err error)
+	MetaMsg(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
 }
 
 type ImSrv_ReceiveClient interface {
@@ -56,4 +57,9 @@ type kImSrvClient struct {
 func (p *kImSrvClient) Receive(ctx context.Context, callOptions ...callopt.Option) (stream ImSrv_ReceiveClient, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.Receive(ctx)
+}
+
+func (p *kImSrvClient) MetaMsg(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.MetaMsg(ctx, Req)
 }

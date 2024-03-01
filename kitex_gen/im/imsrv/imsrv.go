@@ -23,6 +23,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	handlerType := (*im.ImSrv)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"Receive": kitex.NewMethodInfo(receiveHandler, newReceiveArgs, newReceiveResult, false),
+		"MetaMsg": kitex.NewMethodInfo(metaMsgHandler, newMetaMsgArgs, newMetaMsgResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "im",
@@ -199,6 +200,159 @@ func (p *ReceiveResult) GetResult() interface{} {
 	return p.Success
 }
 
+func metaMsgHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(im.Message)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(im.ImSrv).MetaMsg(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *MetaMsgArgs:
+		success, err := handler.(im.ImSrv).MetaMsg(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*MetaMsgResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newMetaMsgArgs() interface{} {
+	return &MetaMsgArgs{}
+}
+
+func newMetaMsgResult() interface{} {
+	return &MetaMsgResult{}
+}
+
+type MetaMsgArgs struct {
+	Req *im.Message
+}
+
+func (p *MetaMsgArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(im.Message)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *MetaMsgArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *MetaMsgArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *MetaMsgArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *MetaMsgArgs) Unmarshal(in []byte) error {
+	msg := new(im.Message)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var MetaMsgArgs_Req_DEFAULT *im.Message
+
+func (p *MetaMsgArgs) GetReq() *im.Message {
+	if !p.IsSetReq() {
+		return MetaMsgArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *MetaMsgArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *MetaMsgArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type MetaMsgResult struct {
+	Success *im.MessageRes
+}
+
+var MetaMsgResult_Success_DEFAULT *im.MessageRes
+
+func (p *MetaMsgResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(im.MessageRes)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *MetaMsgResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *MetaMsgResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *MetaMsgResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *MetaMsgResult) Unmarshal(in []byte) error {
+	msg := new(im.MessageRes)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *MetaMsgResult) GetSuccess() *im.MessageRes {
+	if !p.IsSetSuccess() {
+		return MetaMsgResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *MetaMsgResult) SetSuccess(x interface{}) {
+	p.Success = x.(*im.MessageRes)
+}
+
+func (p *MetaMsgResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *MetaMsgResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -221,4 +375,14 @@ func (p *kClient) Receive(ctx context.Context) (ImSrv_ReceiveClient, error) {
 	}
 	stream := &imSrvReceiveClient{res.Stream}
 	return stream, nil
+}
+
+func (p *kClient) MetaMsg(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
+	var _args MetaMsgArgs
+	_args.Req = Req
+	var _result MetaMsgResult
+	if err = p.c.Call(ctx, "MetaMsg", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
 }
