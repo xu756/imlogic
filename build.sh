@@ -17,8 +17,6 @@ echo -e "\033[32m 旧Dockerfile内容如下： \033[0m"
 echo  "---------------------------------------------------"
 cat Dockerfile
 
-
-
 # 根据DOCKER_IMAGE_NAME设置mapped_value
 if [ "${DOCKER_IMAGE_NAME}" == "user-rpc" ]; then
   mapped_value="user"
@@ -38,11 +36,8 @@ if [ -z "${mapped_value}" ]; then
   exit 2
 fi
 
-NEW_LINE="RUN go build -o main -v cmd/${mapped_value}/main.go"
 sed -i '' "10d" Dockerfile
-sed -i '' "9a\\
-$NEW_LINE
-" Dockerfile
+sed -i '' "9a RUN go build -o main -v cmd/${mapped_value}/main.go" Dockerfile
 
 echo  "---------------------------------------------------"
 echo -e "\033[32m Dockerfile已更新。 \033[0m"
