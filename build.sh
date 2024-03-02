@@ -36,8 +36,11 @@ if [ -z "${mapped_value}" ]; then
   exit 2
 fi
 
-sed -i '' "10d" Dockerfile
-sed -i '' "9a RUN go build -o main -v cmd/${mapped_value}/main.go" Dockerfile
+ 获取Dockerfile的完整路径
+dockerfile_path="$(pwd)/Dockerfile"
+
+sed -i '' '10d' "${dockerfile_path}"
+sed -i '' "9a RUN go build -o main -v cmd/${mapped_value}/main.go" "${dockerfile_path}"
 
 echo  "---------------------------------------------------"
 echo -e "\033[32m Dockerfile已更新。 \033[0m"
