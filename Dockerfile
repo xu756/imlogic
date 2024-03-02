@@ -18,6 +18,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=builder /app/main .
+COPY --from=builder /app/main /app/main
 
 CMD ["/app/main -f /app/deploy.yaml"]
