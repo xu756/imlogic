@@ -23,4 +23,4 @@ COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/S
 COPY --from=builder /app/main /app/main
 ENV TZ Asia/Shanghai
 
-CMD ["./main", "-f", "./deploy.yaml"]
+CMD ["./main", "-f", "deploy.yaml"]
