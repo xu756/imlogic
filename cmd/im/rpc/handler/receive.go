@@ -31,6 +31,7 @@ func (i ImRpcImpl) Receive(stream im.ImSrv_ReceiveServer) (err error) {
 			},
 		})
 		if err != nil {
+			stream.Close()
 			return err
 		}
 	}
