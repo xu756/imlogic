@@ -34,8 +34,9 @@ esac
 dockerfile_path="$(pwd)/Dockerfile"
 
 # 删除Dockerfile中的第10行并插入新内容
-if sed -i  '10d' "${dockerfile_path}" && \
-   sed -i  "9a RUN go build -o main -v cmd/${mapped_value}/main.go" "${dockerfile_path}"; then
+if sed -i  '15d' "${dockerfile_path}" && \
+  cat "cmd/${mapped_value}/main.go"
+  sed -i  "14a RUN go build -o main -v cmd/${mapped_value}/main.go" "${dockerfile_path}"; then
   echo "---------------------------------------------------"
   echo -e "\033[32m Dockerfile已更新。 \033[0m"
   cat Dockerfile

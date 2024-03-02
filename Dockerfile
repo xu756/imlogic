@@ -11,7 +11,7 @@ ENV GO111MODULE=on \
 WORKDIR /app
 ENV GOPATH=/go
 ENV GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
-RUN go mod tidy
+
 RUN go build -o main -v cmd/im/rpc/main.go
 
 FROM alpine:latest
