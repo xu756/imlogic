@@ -10,7 +10,7 @@ ENV GO111MODULE=on \
 
 WORKDIR /app
 ENV GOPATH=/go
-ENV GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
+ENV GOPROXY="https://goproxy.cn,direct"
 
 RUN go build -o main  ./cmd/im/rpc/main.go
 
