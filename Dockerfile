@@ -6,7 +6,7 @@ ADD configs/dev.yaml /app/dev.yaml
 
 WORKDIR /app
 ENV GOPATH=/go
-ENV GOPROXY https://mirrors.aliyun.com/goproxy/,direct
+ENV GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 RUN go build -o main -v cmd/im/rpc/main.go
 
 FROM alpine:latest
