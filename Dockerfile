@@ -20,4 +20,4 @@ WORKDIR /app
 
 COPY --from=builder /app/main /app/main
 
-CMD ["/app/main", "-f", "/app/deploy.yaml"]
+CMD ["./main", "-f", "./deploy.yaml"]

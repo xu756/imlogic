@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="Dockerfile">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="Dockerfile build">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
@@ -180,7 +180,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="message" />
     <MESSAGE value="测试" />
     <MESSAGE value="ctx" />
     <MESSAGE value="部分说明" />
@@ -205,7 +204,8 @@
     <MESSAGE value="add Dockerfile" />
     <MESSAGE value="build" />
     <MESSAGE value="Dockerfile" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dockerfile" />
+    <MESSAGE value="Dockerfile build" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dockerfile build" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
