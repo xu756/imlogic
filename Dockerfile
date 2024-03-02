@@ -2,7 +2,7 @@ FROM golang:1.22.0 as builder
 
 RUN mkdir /app
 
-ADD deploy/build /app/
+ADD configs/dev.yaml /app/dev.yaml
 
 WORKDIR /app
 ENV GOPATH=/go
@@ -14,5 +14,6 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY --from=builder /app/main .
+COPY --from=builder /app/dev.yaml .
 
 CMD ["/app/main -f /app/deploy.yaml"]

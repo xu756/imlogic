@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# 检查环境变量DOCKER_IMAGE_NAME是否已设置
-if [ -z "${DOCKER_IMAGE_NAME}" ]; then
-  echo "DOCKER_IMAGE_NAME环境变量未设置。"
+# 检查环境变量CODING_DOCKER_IMAGE_NAME是否已设置
+if [ -z "${CODING_DOCKER_IMAGE_NAME}" ]; then
+  echo "CODING_DOCKER_IMAGE_NAME环境变量未设置。"
   exit 1
 fi
 
@@ -12,37 +12,34 @@ if [ ! -f "Dockerfile" ]; then
   exit 1
 fi
 
-# 显示旧Dockerfile内容 颜色
+# 显示旧Dockerfile内容及颜色
 echo -e "\033[32m 旧Dockerfile内容如下： \033[0m"
-echo  "---------------------------------------------------"
+echo "---------------------------------------------------"
 cat Dockerfile
+echo "---------------------------------------------------"
 
-# 根据DOCKER_IMAGE_NAME设置mapped_value
-if [ "${DOCKER_IMAGE_NAME}" == "user-rpc" ]; then
-  mapped_value="user"
-elif [ "${DOCKER_IMAGE_NAME}" == "api" ]; then
-  mapped_value="api"
-elif [ "${DOCKER_IMAGE_NAME}" == "im-rpc" ]; then
-  mapped_value="im/rpc"
-elif [ "${DOCKER_IMAGE_NAME}" == "im-server" ]; then
-  mapped_value="im/server"
-else
-  echo "没有找到${DOCKER_IMAGE_NAME}的映射值。"
-  exit 2
-fi
-# 如果没有找到映射值，退出脚本
-if [ -z "${mapped_value}" ]; then
-  echo "没有找到${DOCKER_IMAGE_NAME}的映射值。"
-  exit 2
-fi
+# 根据CODING_DOCKER_IMAGE_NAME设置mapped_value
+case "${CODING_DOCKER_IMAGE_NAME}" in
+  "user-rpc") mapped_value="user" ;;
+  "api") mapped_value="api" ;;
+  "im-rpc") mapped_value="im/rpc" ;;
+  "im-server") mapped_value="im/server" ;;
+  *)
+    echo "没有找到${CODING_DOCKER_IMAGE_NAME}的映射值。"
+    exit 2
+    ;;
+esac
 
- 获取Dockerfile的完整路径
+# 获取Dockerfile的完整路径
 dockerfile_path="$(pwd)/Dockerfile"
 
-sed -i '' '10d' "${dockerfile_path}"
-sed -i '' "9a RUN go build -o main -v cmd/${mapped_value}/main.go" "${dockerfile_path}"
-
-echo  "---------------------------------------------------"
-echo -e "\033[32m Dockerfile已更新。 \033[0m"
-cat Dockerfile
-echo "Dockerfile已更新。"
+# 删除Dockerfile中的第10行并插入新内容
+if sed -i '' '10d' "${dockerfile_path}" && \
+   sed -i '' "9a RUN go build -o main -v cmd/${mapped_value}/main.go" "${dockerfile_path}"; then
+  echo "---------------------------------------------------"
+  echo -e "\033[32m Dockerfile已更新。 \033[0m"
+  cat Dockerfile
+  echo "Dockerfile已更新。"
+else
+  echo "更新Dockerfile时发生错误。"
+fi
