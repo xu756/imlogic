@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# 检查环境变量CODING_DOCKER_IMAGE_NAME是否已设置
-if [ -z "${CODING_DOCKER_IMAGE_NAME}" ]; then
-  echo "CODING_DOCKER_IMAGE_NAME环境变量未设置。"
+# 检查环境变量DOCKER_IMAGE_NAME是否已设置
+if [ -z "${DOCKER_IMAGE_NAME}" ]; then
+  echo "DOCKER_IMAGE_NAME环境变量未设置。"
   exit 1
 fi
 
@@ -18,14 +18,14 @@ echo "---------------------------------------------------"
 cat Dockerfile
 echo "---------------------------------------------------"
 
-# 根据CODING_DOCKER_IMAGE_NAME设置mapped_value
-case "${CODING_DOCKER_IMAGE_NAME}" in
+# 根据DOCKER_IMAGE_NAME设置mapped_value
+case "${DOCKER_IMAGE_NAME}" in
   "user-rpc") mapped_value="user" ;;
   "api") mapped_value="api" ;;
   "im-rpc") mapped_value="im/rpc" ;;
   "im-server") mapped_value="im/server" ;;
   *)
-    echo "没有找到${CODING_DOCKER_IMAGE_NAME}的映射值。"
+    echo "没有找到${DOCKER_IMAGE_NAME}的映射值。"
     exit 2
     ;;
 esac
