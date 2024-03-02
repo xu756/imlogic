@@ -6,6 +6,19 @@ if [ -z "${DOCKER_IMAGE_NAME}" ]; then
   exit 1
 fi
 
+# 检查Dockerfile是否存在
+if [ ! -f "Dockerfile" ]; then
+  echo "Dockerfile不存在。"
+  exit 1
+fi
+
+# 显示旧Dockerfile内容 颜色
+echo -e "\033[32m 旧Dockerfile内容如下： \033[0m"
+echo  "---------------------------------------------------"
+cat Dockerfile
+
+
+
 # 根据DOCKER_IMAGE_NAME设置mapped_value
 if [ "${DOCKER_IMAGE_NAME}" == "user-rpc" ]; then
   mapped_value="user"
@@ -31,4 +44,7 @@ sed -i '' "9a\\
 $NEW_LINE
 " Dockerfile
 
+echo  "---------------------------------------------------"
+echo -e "\033[32m Dockerfile已更新。 \033[0m"
+cat Dockerfile
 echo "Dockerfile已更新。"
