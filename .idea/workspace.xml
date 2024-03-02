@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="update to stream">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="add Dockerfile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +138,10 @@
       <pattern value="^\QTest\E$" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet" />
@@ -177,7 +179,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="clients" />
     <MESSAGE value="websocket 完成" />
     <MESSAGE value="sqlite" />
     <MESSAGE value="message" />
@@ -202,7 +203,8 @@
     <MESSAGE value="upload" />
     <MESSAGE value="add redis config" />
     <MESSAGE value="update to stream" />
-    <option name="LAST_COMMIT_MESSAGE" value="update to stream" />
+    <MESSAGE value="add Dockerfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Dockerfile" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
