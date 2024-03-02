@@ -15,7 +15,7 @@ COPY . .
 RUN go build -ldflags="-s -w"  -o /app/main  cmd/im/rpc/main.go
 RUN ls /app
 
-FROM scratch
+FROM alpine:3.19.1
 
 WORKDIR /app
 
