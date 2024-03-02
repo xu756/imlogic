@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
+	"github.com/xu756/imlogic/common/types"
 	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
 	"log"
@@ -31,7 +32,7 @@ type Client struct {
 	linkID string // websocket 连接 id
 	ws     *websocket.Conn
 	isOpen bool
-	writer chan *Message
+	writer chan *types.Message
 }
 
 // NewClient 创建一个新的连接
@@ -43,7 +44,7 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string) *Client {
 		ws:     ws,
 		linkID: linkID,
 		//reader: make(chan *Message, 1024),
-		writer: make(chan *Message, 1024),
+		writer: make(chan *types.Message, 1024),
 	}
 	return client
 }
@@ -68,7 +69,7 @@ func (c *Client) listenAndRead() {
 		case <-c.ctx.Done():
 			return
 		default:
-			var msg *Message
+			var msg *types.Message
 			err := c.ws.ReadJSON(&msg)
 			if err != nil {
 				c.close()
@@ -106,7 +107,7 @@ func (c *Client) listenAndRead() {
 				log.Print(err)
 				return
 			}
-			go c.logic(RpcMsgToMsg(recMsg))
+			go c.logic(types.RpcMsgToMsg(recMsg))
 		}
 	}
 }
@@ -135,12 +136,12 @@ func (c *Client) listenAndWrite() {
 			//	c.close()
 			//	return
 			//}
-			c.writer <- &Message{
+			c.writer <- &types.Message{
 				MsgId:     uuid.NewString(),
 				Device:    "pc", //todo 判断设备类型
 				Timestamp: tool.TimeNowUnixMilli(),
 				MsgType:   "meta",
-				MsgMeta: MsgMeta{
+				MsgMeta: types.MsgMeta{
 					DetailType: "heartbeat",
 					Version:    "1.0",
 					Interval:   30000,

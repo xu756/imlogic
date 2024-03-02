@@ -1,4 +1,4 @@
-package handler
+package types
 
 import "github.com/xu756/imlogic/kitex_gen/im"
 

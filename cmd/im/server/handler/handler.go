@@ -40,7 +40,8 @@ func connect(ctx context.Context, c *app.RequestContext) {
 			Timestamp: tool.TimeNowUnixMilli(),
 			Action:    "send",
 			Params: map[string]string{
-				"userId": userId,
+				"userId":   userId,
+				"hostName": ClientManager.HostName,
 			},
 			From:    linkId,
 			To:      "im-rpc",

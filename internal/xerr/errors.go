@@ -90,3 +90,10 @@ func DbDeleteErr() error {
 	return DbErr(DbDelete, message[DbDelete])
 
 }
+
+func CacheErr() error {
+	return CodeError{
+		Code: RedisErr,
+		Msg:  message[RedisErr],
+	}
+}

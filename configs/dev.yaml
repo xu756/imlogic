@@ -21,7 +21,7 @@ DbConfig:
 RedisConfig:
   Addr: "0.0.0.0:6379"
   Password: "Y5dg5tg8050oigInC30sf"
-  Db: 0
+  Db: 4
   Prefix: "imlogic"
 
 JwtConfig:

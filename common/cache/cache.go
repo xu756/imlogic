@@ -31,3 +31,8 @@ func (c *Client) Set(ctx context.Context, key string, v interface{}, expiration 
 	value, _ := json.Marshal(v)
 	return c.redis.Set(ctx, key, value, expiration).Err()
 }
+
+// Keys 查询 key开头的所有key
+func (c *Client) Keys(ctx context.Context, key string) *redis.StringSliceCmd {
+	return c.redis.Keys(ctx, key)
+}

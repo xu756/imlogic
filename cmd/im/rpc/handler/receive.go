@@ -1,19 +1,8 @@
 package handler
 
 import (
-	"github.com/xu756/imlogic/common/db"
 	"github.com/xu756/imlogic/kitex_gen/im"
 )
-
-type ImRpcImpl struct {
-	Model db.Model
-}
-
-func NewImRpcImpl() *ImRpcImpl {
-	return &ImRpcImpl{
-		Model: db.NewModel(),
-	}
-}
 
 func (i ImRpcImpl) Receive(stream im.ImSrv_ReceiveServer) (err error) {
 	for {

@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/websocket"
+	"github.com/xu756/imlogic/common/types"
 	"os"
 	"sync"
 )
@@ -13,7 +14,7 @@ func NewClientManager() {
 	hostname, _ := os.Hostname()
 	ClientManager = &clientManager{
 		HostName:   hostname,
-		broadcast:  make(chan *Message),
+		broadcast:  make(chan *types.Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		upgrader: websocket.HertzUpgrader{
@@ -53,7 +54,7 @@ type clientManager struct {
 	upgrader    websocket.HertzUpgrader
 	handler     func(*websocket.Conn)
 	clientsLock sync.RWMutex
-	broadcast   chan *Message
+	broadcast   chan *types.Message
 	register    chan *Client
 	unregister  chan *Client
 }

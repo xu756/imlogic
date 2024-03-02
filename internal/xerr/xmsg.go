@@ -15,6 +15,7 @@ func init() {
 	message[DbConnect] = "数据库连接失败"
 	message[RedisConnectErr] = "redis连接失败"
 	message[RoleErr] = "角色错误"
+	message[RedisErr] = "redis连接失败"
 
 	// 用户模块码 错误消息
 	message[UserExist] = "账号已存在"

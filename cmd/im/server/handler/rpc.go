@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"github.com/xu756/imlogic/common/types"
 	"github.com/xu756/imlogic/kitex_gen/im"
 )
 
@@ -12,7 +13,7 @@ type ImServerImpl struct {
 func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
 	ok, conn := ClientManager.GetConn(req.GetTo())
 	if ok {
-		conn.writer <- &Message{
+		conn.writer <- &types.Message{
 			MsgId:     req.MsgId,
 			Device:    req.Device,
 			Timestamp: req.Timestamp,
@@ -21,12 +22,12 @@ func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.Messag
 			From:      req.From,
 			To:        req.To,
 			MsgType:   req.MsgType,
-			MsgMeta: MsgMeta{
+			MsgMeta: types.MsgMeta{
 				DetailType: req.MsgMeta.DetailType,
 				Version:    req.MsgMeta.Version,
 				Interval:   req.MsgMeta.Interval,
 			},
-			MsgContent: MsgContent{
+			MsgContent: types.MsgContent{
 				DetailType: req.MsgContent.DetailType,
 				Text:       req.MsgContent.Text,
 				ImgUrl:     req.MsgContent.ImgUrl,

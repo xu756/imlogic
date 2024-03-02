@@ -42,10 +42,18 @@ func TestNewCacheGet(t *testing.T) {
 	client := NewCacheClient()
 	ctx := context.Background()
 	var user cacheUser
-	err := client.Get(ctx, "test").Scan(&user)
+	err := client.Get(ctx, "test1").Scan(&user)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 	t.Log(user)
+}
+
+func TestClient_Keys(t *testing.T) {
+	config.Init("../../configs/dev.yaml")
+	client := NewCacheClient()
+	ctx := context.Background()
+	keys := client.Keys(ctx, "conn:*")
+	t.Log(keys.Val())
 }

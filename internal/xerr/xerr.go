@@ -12,11 +12,12 @@ const (
 	DbConnect
 	RedisConnectErr
 	RoleErr
+	RedisErr
 )
 
 // 用户模块码
 const (
-	UserExist = 210 + iota
+	UserExist = 220 + iota
 	UserPasswordErr
 	UserLoginOut
 	UserExpired
@@ -29,7 +30,7 @@ const (
 
 // JWT 模块码
 const (
-	JwtCreateErr = 220 + iota
+	JwtCreateErr = 230 + iota
 	JwtParseErr
 	JwtAuthEmpty
 	JwtAuthErr

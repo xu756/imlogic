@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"github.com/xu756/imlogic/internal/xerr"
 	"github.com/xu756/imlogic/kitex_gen/im"
 	"log"
 )
@@ -10,7 +11,10 @@ func (i ImRpcImpl) MetaMsg(ctx context.Context, req *im.Message) (res *im.Messag
 	switch req.MsgMeta.DetailType {
 	case "connect":
 		// todo
-		log.Printf("%s[%s] connect ", req.Params["userId"], req.From)
+		err := i.Cache.AddConn(ctx, req.Params["userId"], req.Device, req.From, req.Params["hostName"], req.Timestamp)
+		if err != nil {
+			return nil, xerr.CacheErr()
+		}
 		break
 	case "disconnect":
 		// todo
