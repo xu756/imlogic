@@ -21,6 +21,7 @@ WORKDIR /app
 
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
 COPY --from=builder /app/main /app/main
+COPY --from=builder /build/configs/deploy.yaml /app/deploy.yaml
 ENV TZ Asia/Shanghai
 
 CMD ["./main", "-f", "deploy.yaml"]
