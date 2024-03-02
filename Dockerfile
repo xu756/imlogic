@@ -6,7 +6,7 @@ ADD configs/dev.yaml /app/dev.yaml
 
 WORKDIR /app
 ENV GOPATH=/go
-ENV GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+ENV GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
 ENV GO111MODULE=on
 RUN go mod tidy
 RUN go build -o main -v cmd/im/rpc/main.go
