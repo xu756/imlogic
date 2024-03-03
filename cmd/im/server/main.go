@@ -20,7 +20,7 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	// todo 添加处理服务
-	handler.NewClientManager()
+	go handler.Hub.Run()
 	handler.InitRouter()
 	rpc.Init()
 
@@ -34,12 +34,14 @@ func main() {
 	)
 	hlog.Infof("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
 
-	go handler.HttpServer.Spin()
 	hlog.Infof("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
 
-	err = svr.Run()
-	if err != nil {
-		log.Printf(err.Error())
-		return
-	}
+	go func() {
+		err = svr.Run()
+		if err != nil {
+			log.Printf(err.Error())
+			return
+		}
+	}()
+	handler.HttpServer.Spin()
 }

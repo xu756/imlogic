@@ -2,10 +2,8 @@ package handler
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
-	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/common/types"
 	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
@@ -34,7 +32,7 @@ type Client struct {
 // NewClient 创建一个新的连接
 func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device string) *Client {
 	ctx, cancel := context.WithCancel(ctx)
-	client := &Client{
+	return &Client{
 		ctx:    ctx,
 		cancel: cancel,
 		ws:     ws,
@@ -44,61 +42,36 @@ func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device s
 		//reader: make(chan *Message, 1024),
 		writer: make(chan *types.Message),
 	}
-	return client
 }
 
 // listenAndRead 监听并读取消息
 func (c *Client) listenAndRead() {
-	client, err := rpc.ImSrvClient.Receive(c.ctx)
-	if err != nil {
-		client.Close()
-		return
-	}
-	c.isOpen = true
-	c.ws.SetReadLimit(1024 * 1024 * 100)
+	defer c.close()
 	//  设置读取超时时间 心跳
+	msg := new(types.Message)
 	for {
-		select {
-		case <-c.ctx.Done():
+		err := c.ws.ReadJSON(msg)
+		if err != nil {
 			return
-		default:
-			var msg *types.Message
-			err := c.ws.ReadJSON(&msg)
-			if err != nil {
-				c.close()
-				return
-			}
-			msg.From = c.linkID
-			go c.logic(msg)
-
 		}
+		msg.From = c.linkID
+		c.logic(msg)
+
 	}
 }
 
 // listenAndWrite 监听并写入消息
 func (c *Client) listenAndWrite() {
-	//ticker := time.NewTicker(pingPeriod) // 定时发送心跳
-	err := c.ws.WriteJSON(types.Message{
-		MsgId:     uuid.NewString(),
-		Device:    c.device,
-		Timestamp: tool.TimeNowUnixMilli(),
-		From:      "im-rpc",
-		To:        c.linkID,
-		MsgType:   "meta",
-		MsgMeta: types.MsgMeta{
-			DetailType: "heartbeat",
-			Version:    config.GetVersion(),
-		},
-	})
-	if err != nil {
-		c.close()
-		return
-	}
+	defer c.close()
 	for {
 		select {
 		case <-c.ctx.Done():
 			return
-		case msg := <-c.writer:
+		case msg, ok := <-c.writer:
+			if !ok {
+				return
+			}
+			msg.To = c.linkID
 			c.Write(msg)
 		}
 
@@ -110,10 +83,12 @@ func (c *Client) close() {
 	c.Lock()
 	defer c.Unlock()
 	if c.isOpen {
-		ClientManager.unregister <- c
+		Hub.unregister <- c
+		close(c.writer)
+		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, &im.Message{
 			UserId:    c.userId,
-			Hostname:  ClientManager.HostName,
+			Hostname:  Hub.HostName,
 			Device:    c.device,
 			Timestamp: tool.TimeNowUnixMilli(),
 			Action:    "send",
@@ -132,7 +107,6 @@ func (c *Client) close() {
 }
 
 func (c *Client) Write(msg *types.Message) {
-	msg.To = c.linkID
 	err := c.ws.WriteJSON(&msg)
 	if err != nil {
 		c.close()

@@ -8,11 +8,11 @@ import (
 	"sync"
 )
 
-var ClientManager = new(clientManager)
+var Hub = newHub()
 
-func NewClientManager() {
+func newHub() *hub {
 	hostname, _ := os.Hostname()
-	ClientManager = &clientManager{
+	return &hub{
 		HostName:   hostname,
 		broadcast:  make(chan *types.Message),
 		register:   make(chan *Client),
@@ -23,10 +23,9 @@ func NewClientManager() {
 			},
 		},
 	}
-	go ClientManager.run()
 }
 
-func (c *clientManager) run() {
+func (c *hub) Run() {
 	for {
 		select {
 		case conn := <-c.register:
@@ -37,6 +36,7 @@ func (c *clientManager) run() {
 			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
+				message.To = "all"
 				conn.Write(message)
 				return true
 			})
@@ -44,7 +44,7 @@ func (c *clientManager) run() {
 	}
 }
 
-type clientManager struct {
+type hub struct {
 	Clients    sync.Map
 	HostName   string
 	upgrader   websocket.HertzUpgrader
@@ -53,15 +53,15 @@ type clientManager struct {
 	unregister chan *Client
 }
 
-func (c *clientManager) add(conn *Client) {
+func (c *hub) add(conn *Client) {
 	c.Clients.Store(conn.linkID, conn)
 }
 
-func (c *clientManager) del(conn *Client) {
+func (c *hub) del(conn *Client) {
 	c.Clients.Delete(conn.linkID)
 }
 
-func (c *clientManager) GetConn(linkID string) (bool, *Client) {
+func (c *hub) GetConn(linkID string) (bool, *Client) {
 	conn, ok := c.Clients.Load(linkID)
 	if ok {
 		return true, conn.(*Client)

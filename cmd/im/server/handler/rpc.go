@@ -11,7 +11,7 @@ type ImServerImpl struct {
 }
 
 func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
-	ok, conn := ClientManager.GetConn(req.GetTo())
+	ok, conn := Hub.GetConn(req.GetTo())
 	if ok {
 		conn.writer <- &types.Message{
 			MsgId:     req.MsgId,

@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="lock">
+      <change afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/read.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/read.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +59,7 @@
   "keyToString": {
     "DefaultGoTemplateProperty": "Go File",
     "Go 测试.github.com/xu756/imlogic/cmd/im/server 中的 TestServerInit.executor": "Run",
+    "Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter.executor": "Run",
     "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey.executor": "Run",
     "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_Keys.executor": "Run",
     "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient.executor": "Run",
@@ -95,17 +99,17 @@
       <recent name="$PROJECT_DIR$/cmd/im" />
     </key>
   </component>
-  <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey">
-    <configuration name="github.com/xu756/imlogic/cmd/im/server 中的 TestServerInit" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter">
+    <configuration name="github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="imlogic" />
-      <working_directory value="$PROJECT_DIR$/cmd/im/server" />
+      <working_directory value="$PROJECT_DIR$/cmd/im/server/handler" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="github.com/xu756/imlogic/cmd/im/server" />
+      <package value="github.com/xu756/imlogic/cmd/im/server/handler" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestServerInit\E$" />
+      <pattern value="^\QTestInitRouter\E$" />
       <method v="2" />
     </configuration>
     <configuration name="github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -164,11 +168,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_Keys" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet" />
-        <item itemvalue="Go 测试.github.com/xu756/imlogic/cmd/im/server 中的 TestServerInit" />
       </list>
     </recent_temporary>
   </component>
