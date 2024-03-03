@@ -47,9 +47,10 @@ func connect(ctx context.Context, c *app.RequestContext) {
 			result.HttpError(c, err)
 			return
 		}
-		go client.listenAndWrite()
 		ClientManager.register <- client
+		go client.listenAndWrite()
 		client.listenAndRead()
+
 	})
 	if err != nil {
 		log.Print(err)

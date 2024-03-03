@@ -4,6 +4,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/common/types"
+	"log"
 	"os"
 	"sync"
 )
@@ -37,11 +38,8 @@ func (c *clientManager) run() {
 			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
-				select {
-				case conn.writer <- message:
-				default:
-					c.del(conn)
-				}
+				log.Printf("to %s", message.To)
+				conn.writer <- message
 				return true
 			})
 		}

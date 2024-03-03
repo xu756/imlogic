@@ -42,7 +42,7 @@ func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device s
 		userId: userId,
 		device: device,
 		//reader: make(chan *Message, 1024),
-		writer: make(chan *types.Message, 1024),
+		writer: make(chan *types.Message),
 	}
 	return client
 }
@@ -73,79 +73,42 @@ func (c *Client) listenAndRead() {
 				c.close()
 				return
 			}
-			rpcMsg := &im.Message{
-				MsgId:     msg.MsgId,
-				Timestamp: msg.Timestamp,
-				Params:    msg.Params,
-				Action:    msg.Action,
-				UserId:    c.userId,
-				Hostname:  ClientManager.HostName,
-				Device:    c.device,
-				From:      c.linkID,
-				To:        msg.To,
-				MsgType:   msg.MsgType,
-				MsgMeta: &im.MsgMeta{
-					DetailType: msg.MsgMeta.DetailType,
-					Version:    msg.MsgMeta.Version,
-				},
-				MsgContent: &im.MsgContent{
-					DetailType: msg.MsgContent.DetailType,
-					Text:       msg.MsgContent.Text,
-					ImgUrl:     msg.MsgContent.ImgUrl,
-					AudioUrl:   msg.MsgContent.AudioUrl,
-					VideoUrl:   msg.MsgContent.VideoUrl,
-				},
-			}
-			err = client.Send(rpcMsg)
-			if err != nil {
-				client.Close()
-				c.close()
-			}
-			recMsg, err := client.Recv()
-			if err != nil {
-				log.Print(err)
-				return
-			}
-			go c.logic(types.RpcMsgToMsg(recMsg))
+			msg.From = c.linkID
+			c.logic(msg)
+
 		}
 	}
 }
 
 // listenAndWrite 监听并写入消息
 func (c *Client) listenAndWrite() {
-	ticker := time.NewTicker(pingPeriod) // 定时发送心跳
+	//ticker := time.NewTicker(pingPeriod) // 定时发送心跳
 	defer func() {
-		ticker.Stop()
+		//ticker.Stop()
 		c.close()
 	}()
+	err := c.ws.WriteJSON(types.Message{
+		MsgId:     uuid.NewString(),
+		Device:    c.device,
+		Timestamp: tool.TimeNowUnixMilli(),
+		From:      "im-rpc",
+		To:        c.linkID,
+		MsgType:   "meta",
+		MsgMeta: types.MsgMeta{
+			DetailType: "heartbeat",
+			Version:    config.GetVersion(),
+		},
+	})
+	if err != nil {
+		c.close()
+		return
+	}
 	for {
 		select {
 		case <-c.ctx.Done():
 			return
 		case msg := <-c.writer:
-			msg.To = c.linkID
-			err := c.ws.WriteJSON(&msg)
-			if err != nil {
-				c.close()
-				return
-			}
-		case <-ticker.C:
-			err := c.ws.WriteJSON(types.Message{
-				MsgId:     uuid.NewString(),
-				Device:    c.device,
-				Timestamp: tool.TimeNowUnixMilli(),
-				From:      "im-rpc",
-				To:        c.linkID,
-				MsgType:   "meta",
-				MsgMeta: types.MsgMeta{
-					DetailType: "heartbeat",
-					Version:    config.GetVersion(),
-				},
-			})
-			if err != nil {
-				c.close()
-				return
-			}
+			c.Write(msg)
 		}
 
 	}
@@ -174,5 +137,15 @@ func (c *Client) close() {
 			log.Print(err)
 		}
 		c.isOpen = false
+	}
+}
+
+func (c *Client) Write(msg *types.Message) {
+	msg.To = c.linkID
+	log.Print(c.linkID == msg.To)
+	err := c.ws.WriteJSON(&msg)
+	if err != nil {
+		c.close()
+		return
 	}
 }
