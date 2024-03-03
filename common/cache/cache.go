@@ -36,3 +36,13 @@ func (c *Client) Set(ctx context.Context, key string, v interface{}, expiration 
 func (c *Client) Keys(ctx context.Context, key string) *redis.StringSliceCmd {
 	return c.redis.Keys(ctx, key)
 }
+
+// DelKeys 删除keys
+func (c *Client) DelKeys(ctx context.Context, key ...string) *redis.IntCmd {
+	return c.redis.Del(ctx, key...)
+}
+
+// Del 删除key
+func (c *Client) Del(ctx context.Context, key string) *redis.IntCmd {
+	return c.redis.Del(ctx, key)
+}

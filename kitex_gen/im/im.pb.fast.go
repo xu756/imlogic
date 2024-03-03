@@ -24,11 +24,6 @@ func (x *MsgMeta) FastRead(buf []byte, _type int8, number int32) (offset int, er
 		if err != nil {
 			goto ReadFieldError
 		}
-	case 3:
-		offset, err = x.fastReadField3(buf, _type)
-		if err != nil {
-			goto ReadFieldError
-		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -49,11 +44,6 @@ func (x *MsgMeta) fastReadField1(buf []byte, _type int8) (offset int, err error)
 
 func (x *MsgMeta) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 	x.Version, offset, err = fastpb.ReadString(buf, _type)
-	return offset, err
-}
-
-func (x *MsgMeta) fastReadField3(buf []byte, _type int8) (offset int, err error) {
-	x.Interval, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -174,6 +164,16 @@ func (x *Message) FastRead(buf []byte, _type int8, number int32) (offset int, er
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 11:
+		offset, err = x.fastReadField11(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 12:
+		offset, err = x.fastReadField12(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -193,16 +193,66 @@ func (x *Message) fastReadField1(buf []byte, _type int8) (offset int, err error)
 }
 
 func (x *Message) fastReadField2(buf []byte, _type int8) (offset int, err error) {
-	x.Device, offset, err = fastpb.ReadString(buf, _type)
+	x.UserId, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
 func (x *Message) fastReadField3(buf []byte, _type int8) (offset int, err error) {
-	x.Timestamp, offset, err = fastpb.ReadInt64(buf, _type)
+	x.Hostname, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
 func (x *Message) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Timestamp, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Message) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.Device, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Message) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.Action, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Message) fastReadField7(buf []byte, _type int8) (offset int, err error) {
+	x.From, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Message) fastReadField8(buf []byte, _type int8) (offset int, err error) {
+	x.To, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Message) fastReadField9(buf []byte, _type int8) (offset int, err error) {
+	x.MsgType, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Message) fastReadField10(buf []byte, _type int8) (offset int, err error) {
+	var v MsgMeta
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.MsgMeta = &v
+	return offset, nil
+}
+
+func (x *Message) fastReadField11(buf []byte, _type int8) (offset int, err error) {
+	var v MsgContent
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.MsgContent = &v
+	return offset, nil
+}
+
+func (x *Message) fastReadField12(buf []byte, _type int8) (offset int, err error) {
 	if x.Params == nil {
 		x.Params = make(map[string]string)
 	}
@@ -221,46 +271,6 @@ func (x *Message) fastReadField4(buf []byte, _type int8) (offset int, err error)
 		return offset, err
 	}
 	x.Params[key] = value
-	return offset, nil
-}
-
-func (x *Message) fastReadField5(buf []byte, _type int8) (offset int, err error) {
-	x.Action, offset, err = fastpb.ReadString(buf, _type)
-	return offset, err
-}
-
-func (x *Message) fastReadField6(buf []byte, _type int8) (offset int, err error) {
-	x.From, offset, err = fastpb.ReadString(buf, _type)
-	return offset, err
-}
-
-func (x *Message) fastReadField7(buf []byte, _type int8) (offset int, err error) {
-	x.To, offset, err = fastpb.ReadString(buf, _type)
-	return offset, err
-}
-
-func (x *Message) fastReadField8(buf []byte, _type int8) (offset int, err error) {
-	x.MsgType, offset, err = fastpb.ReadString(buf, _type)
-	return offset, err
-}
-
-func (x *Message) fastReadField9(buf []byte, _type int8) (offset int, err error) {
-	var v MsgMeta
-	offset, err = fastpb.ReadMessage(buf, _type, &v)
-	if err != nil {
-		return offset, err
-	}
-	x.MsgMeta = &v
-	return offset, nil
-}
-
-func (x *Message) fastReadField10(buf []byte, _type int8) (offset int, err error) {
-	var v MsgContent
-	offset, err = fastpb.ReadMessage(buf, _type, &v)
-	if err != nil {
-		return offset, err
-	}
-	x.MsgContent = &v
 	return offset, nil
 }
 
@@ -325,7 +335,6 @@ func (x *MsgMeta) FastWrite(buf []byte) (offset int) {
 	}
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
-	offset += x.fastWriteField3(buf[offset:])
 	return offset
 }
 
@@ -342,14 +351,6 @@ func (x *MsgMeta) fastWriteField2(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 2, x.GetVersion())
-	return offset
-}
-
-func (x *MsgMeta) fastWriteField3(buf []byte) (offset int) {
-	if x.Interval == 0 {
-		return offset
-	}
-	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetInterval())
 	return offset
 }
 
@@ -419,6 +420,8 @@ func (x *Message) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField8(buf[offset:])
 	offset += x.fastWriteField9(buf[offset:])
 	offset += x.fastWriteField10(buf[offset:])
+	offset += x.fastWriteField11(buf[offset:])
+	offset += x.fastWriteField12(buf[offset:])
 	return offset
 }
 
@@ -431,27 +434,91 @@ func (x *Message) fastWriteField1(buf []byte) (offset int) {
 }
 
 func (x *Message) fastWriteField2(buf []byte) (offset int) {
-	if x.Device == "" {
+	if x.UserId == "" {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 2, x.GetDevice())
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetUserId())
 	return offset
 }
 
 func (x *Message) fastWriteField3(buf []byte) (offset int) {
-	if x.Timestamp == 0 {
+	if x.Hostname == "" {
 		return offset
 	}
-	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetTimestamp())
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetHostname())
 	return offset
 }
 
 func (x *Message) fastWriteField4(buf []byte) (offset int) {
+	if x.Timestamp == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 4, x.GetTimestamp())
+	return offset
+}
+
+func (x *Message) fastWriteField5(buf []byte) (offset int) {
+	if x.Device == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 5, x.GetDevice())
+	return offset
+}
+
+func (x *Message) fastWriteField6(buf []byte) (offset int) {
+	if x.Action == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 6, x.GetAction())
+	return offset
+}
+
+func (x *Message) fastWriteField7(buf []byte) (offset int) {
+	if x.From == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 7, x.GetFrom())
+	return offset
+}
+
+func (x *Message) fastWriteField8(buf []byte) (offset int) {
+	if x.To == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 8, x.GetTo())
+	return offset
+}
+
+func (x *Message) fastWriteField9(buf []byte) (offset int) {
+	if x.MsgType == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 9, x.GetMsgType())
+	return offset
+}
+
+func (x *Message) fastWriteField10(buf []byte) (offset int) {
+	if x.MsgMeta == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 10, x.GetMsgMeta())
+	return offset
+}
+
+func (x *Message) fastWriteField11(buf []byte) (offset int) {
+	if x.MsgContent == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 11, x.GetMsgContent())
+	return offset
+}
+
+func (x *Message) fastWriteField12(buf []byte) (offset int) {
 	if x.Params == nil {
 		return offset
 	}
 	for k, v := range x.GetParams() {
-		offset += fastpb.WriteMapEntry(buf[offset:], 4,
+		offset += fastpb.WriteMapEntry(buf[offset:], 12,
 			func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
 				offset := 0
 				offset += fastpb.WriteString(buf[offset:], numTagOrKey, k)
@@ -459,54 +526,6 @@ func (x *Message) fastWriteField4(buf []byte) (offset int) {
 				return offset
 			})
 	}
-	return offset
-}
-
-func (x *Message) fastWriteField5(buf []byte) (offset int) {
-	if x.Action == "" {
-		return offset
-	}
-	offset += fastpb.WriteString(buf[offset:], 5, x.GetAction())
-	return offset
-}
-
-func (x *Message) fastWriteField6(buf []byte) (offset int) {
-	if x.From == "" {
-		return offset
-	}
-	offset += fastpb.WriteString(buf[offset:], 6, x.GetFrom())
-	return offset
-}
-
-func (x *Message) fastWriteField7(buf []byte) (offset int) {
-	if x.To == "" {
-		return offset
-	}
-	offset += fastpb.WriteString(buf[offset:], 7, x.GetTo())
-	return offset
-}
-
-func (x *Message) fastWriteField8(buf []byte) (offset int) {
-	if x.MsgType == "" {
-		return offset
-	}
-	offset += fastpb.WriteString(buf[offset:], 8, x.GetMsgType())
-	return offset
-}
-
-func (x *Message) fastWriteField9(buf []byte) (offset int) {
-	if x.MsgMeta == nil {
-		return offset
-	}
-	offset += fastpb.WriteMessage(buf[offset:], 9, x.GetMsgMeta())
-	return offset
-}
-
-func (x *Message) fastWriteField10(buf []byte) (offset int) {
-	if x.MsgContent == nil {
-		return offset
-	}
-	offset += fastpb.WriteMessage(buf[offset:], 10, x.GetMsgContent())
 	return offset
 }
 
@@ -559,7 +578,6 @@ func (x *MsgMeta) Size() (n int) {
 	}
 	n += x.sizeField1()
 	n += x.sizeField2()
-	n += x.sizeField3()
 	return n
 }
 
@@ -576,14 +594,6 @@ func (x *MsgMeta) sizeField2() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(2, x.GetVersion())
-	return n
-}
-
-func (x *MsgMeta) sizeField3() (n int) {
-	if x.Interval == 0 {
-		return n
-	}
-	n += fastpb.SizeInt64(3, x.GetInterval())
 	return n
 }
 
@@ -653,6 +663,8 @@ func (x *Message) Size() (n int) {
 	n += x.sizeField8()
 	n += x.sizeField9()
 	n += x.sizeField10()
+	n += x.sizeField11()
+	n += x.sizeField12()
 	return n
 }
 
@@ -665,27 +677,91 @@ func (x *Message) sizeField1() (n int) {
 }
 
 func (x *Message) sizeField2() (n int) {
-	if x.Device == "" {
+	if x.UserId == "" {
 		return n
 	}
-	n += fastpb.SizeString(2, x.GetDevice())
+	n += fastpb.SizeString(2, x.GetUserId())
 	return n
 }
 
 func (x *Message) sizeField3() (n int) {
-	if x.Timestamp == 0 {
+	if x.Hostname == "" {
 		return n
 	}
-	n += fastpb.SizeInt64(3, x.GetTimestamp())
+	n += fastpb.SizeString(3, x.GetHostname())
 	return n
 }
 
 func (x *Message) sizeField4() (n int) {
+	if x.Timestamp == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(4, x.GetTimestamp())
+	return n
+}
+
+func (x *Message) sizeField5() (n int) {
+	if x.Device == "" {
+		return n
+	}
+	n += fastpb.SizeString(5, x.GetDevice())
+	return n
+}
+
+func (x *Message) sizeField6() (n int) {
+	if x.Action == "" {
+		return n
+	}
+	n += fastpb.SizeString(6, x.GetAction())
+	return n
+}
+
+func (x *Message) sizeField7() (n int) {
+	if x.From == "" {
+		return n
+	}
+	n += fastpb.SizeString(7, x.GetFrom())
+	return n
+}
+
+func (x *Message) sizeField8() (n int) {
+	if x.To == "" {
+		return n
+	}
+	n += fastpb.SizeString(8, x.GetTo())
+	return n
+}
+
+func (x *Message) sizeField9() (n int) {
+	if x.MsgType == "" {
+		return n
+	}
+	n += fastpb.SizeString(9, x.GetMsgType())
+	return n
+}
+
+func (x *Message) sizeField10() (n int) {
+	if x.MsgMeta == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(10, x.GetMsgMeta())
+	return n
+}
+
+func (x *Message) sizeField11() (n int) {
+	if x.MsgContent == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(11, x.GetMsgContent())
+	return n
+}
+
+func (x *Message) sizeField12() (n int) {
 	if x.Params == nil {
 		return n
 	}
 	for k, v := range x.GetParams() {
-		n += fastpb.SizeMapEntry(4,
+		n += fastpb.SizeMapEntry(12,
 			func(numTagOrKey, numIdxOrVal int32) int {
 				n := 0
 				n += fastpb.SizeString(numTagOrKey, k)
@@ -693,54 +769,6 @@ func (x *Message) sizeField4() (n int) {
 				return n
 			})
 	}
-	return n
-}
-
-func (x *Message) sizeField5() (n int) {
-	if x.Action == "" {
-		return n
-	}
-	n += fastpb.SizeString(5, x.GetAction())
-	return n
-}
-
-func (x *Message) sizeField6() (n int) {
-	if x.From == "" {
-		return n
-	}
-	n += fastpb.SizeString(6, x.GetFrom())
-	return n
-}
-
-func (x *Message) sizeField7() (n int) {
-	if x.To == "" {
-		return n
-	}
-	n += fastpb.SizeString(7, x.GetTo())
-	return n
-}
-
-func (x *Message) sizeField8() (n int) {
-	if x.MsgType == "" {
-		return n
-	}
-	n += fastpb.SizeString(8, x.GetMsgType())
-	return n
-}
-
-func (x *Message) sizeField9() (n int) {
-	if x.MsgMeta == nil {
-		return n
-	}
-	n += fastpb.SizeMessage(9, x.GetMsgMeta())
-	return n
-}
-
-func (x *Message) sizeField10() (n int) {
-	if x.MsgContent == nil {
-		return n
-	}
-	n += fastpb.SizeMessage(10, x.GetMsgContent())
 	return n
 }
 
@@ -790,7 +818,6 @@ func (x *MessageRes) sizeField4() (n int) {
 var fieldIDToName_MsgMeta = map[int32]string{
 	1: "DetailType",
 	2: "Version",
-	3: "Interval",
 }
 
 var fieldIDToName_MsgContent = map[int32]string{
@@ -803,15 +830,17 @@ var fieldIDToName_MsgContent = map[int32]string{
 
 var fieldIDToName_Message = map[int32]string{
 	1:  "MsgId",
-	2:  "Device",
-	3:  "Timestamp",
-	4:  "Params",
-	5:  "Action",
-	6:  "From",
-	7:  "To",
-	8:  "MsgType",
-	9:  "MsgMeta",
-	10: "MsgContent",
+	2:  "UserId",
+	3:  "Hostname",
+	4:  "Timestamp",
+	5:  "Device",
+	6:  "Action",
+	7:  "From",
+	8:  "To",
+	9:  "MsgType",
+	10: "MsgMeta",
+	11: "MsgContent",
+	12: "Params",
 }
 
 var fieldIDToName_MessageRes = map[int32]string{

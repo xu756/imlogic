@@ -11,22 +11,22 @@ func (i ImRpcImpl) MetaMsg(ctx context.Context, req *im.Message) (res *im.Messag
 	switch req.MsgMeta.DetailType {
 	case "connect":
 		// todo
-		err := i.Cache.AddConn(ctx, req.Params["userId"], req.Device, req.From, req.Params["hostName"], req.Timestamp)
+		err := i.Cache.AddConn(ctx, req.UserId, req.Device, req.From, req.Hostname, req.Timestamp)
 		if err != nil {
 			return nil, xerr.CacheErr()
 		}
 		break
 	case "disconnect":
 		// todo
-		log.Printf("%s[%s] disconnect ", req.Params["userId"], req.From)
+		log.Printf("%s[%s] disconnect ", req.UserId, req.From)
 		break
 	case "heartbeat":
 		// todo
-		log.Printf("%s[%s] heartbeat ", req.Params["userId"], req.From)
+		log.Printf("%s[%s] heartbeat ", req.UserId, req.From)
 		break
 	default:
 		// todo
-		log.Printf("%s[%s] unknown ", req.Params["userId"], req.From)
+		log.Printf("%s[%s] unknown ", req.UserId, req.From)
 		break
 
 	}

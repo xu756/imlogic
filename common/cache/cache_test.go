@@ -57,3 +57,12 @@ func TestClient_Keys(t *testing.T) {
 	keys := client.Keys(ctx, "conn:*")
 	t.Log(keys.Val())
 }
+
+func TestClient_DelKey(t *testing.T) {
+	config.Init("../../configs/dev.yaml")
+	client := NewCacheClient()
+	ctx := context.Background()
+	keys := client.DelKeys(ctx, "conn:host:bogon:7584aeff-9f50-4fec-90a6-218c5169268f", "conn:host:bogon:7584aeff-9f50-4fec-90a6-1")
+	t.Log(keys.Val())
+
+}

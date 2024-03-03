@@ -15,7 +15,6 @@ func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.Messag
 	if ok {
 		conn.writer <- &types.Message{
 			MsgId:     req.MsgId,
-			Device:    req.Device,
 			Timestamp: req.Timestamp,
 			Params:    req.Params,
 			Action:    req.Action,
@@ -25,7 +24,6 @@ func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.Messag
 			MsgMeta: types.MsgMeta{
 				DetailType: req.MsgMeta.DetailType,
 				Version:    req.MsgMeta.Version,
-				Interval:   req.MsgMeta.Interval,
 			},
 			MsgContent: types.MsgContent{
 				DetailType: req.MsgContent.DetailType,

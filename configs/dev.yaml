@@ -34,6 +34,7 @@ EmailConfig:
   From: "grade@xynu.email"
   Host: "smtp.feishu.cn"
 MqUrl: "amqp://root:PTXzAMnVe7bdYj@localhost:5672/"
+Version: "v1"
 MinioConfig:
   Endpoint: "" # 需要您提供具体值
   AccessKeyID: "" # 需要您提供具体值

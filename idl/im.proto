@@ -8,7 +8,6 @@ package im;
 message MsgMeta {
     string detail_type = 1;
     string version = 2;
-    int64 interval = 3;
 }
 
 message MsgContent {
@@ -21,15 +20,17 @@ message MsgContent {
 
 message Message {
     string msg_id = 1;
-    string device = 2;
-    int64 timestamp = 3;
-    map<string, string> params = 4;
-    string action = 5;
-    string from = 6;
-    string to = 7;
-    string msg_type = 8;
-    MsgMeta msg_meta = 9;
-    MsgContent msg_content = 10;
+    string user_id = 2;
+    string hostname = 3;
+    int64 timestamp = 4;
+    string device = 5;
+    string action = 6;
+    string from = 7;
+    string to = 8;
+    string msg_type = 9;
+    MsgMeta msg_meta = 10;
+    MsgContent msg_content = 11;
+    map<string, string> params = 12;
 }
 
 message MessageRes {

@@ -7,6 +7,7 @@ type Config struct {
 	RedisConfig RedisConfig `yaml:"RedisConfig"`
 	JwtConfig   JwtConfig   `yaml:"JwtConfig"`
 	MqUrl       string      `yaml:"MqUrl"`
+	Version     string      `yaml:"Version"`
 	EmailConfig EmailConfig `yaml:"EmailConfig"`
 	MinioConfig MinioConfig `yaml:"MinioConfig"`
 }
@@ -59,4 +60,9 @@ type MinioConfig struct {
 	SecretAccessKey string `yaml:"SecretAccessKey"`
 	UseSSL          bool   `yaml:"UseSSL"`
 	BucketName      string `yaml:"BucketName"`
+}
+
+func GetVersion() string {
+	return RunData.Version
+
 }

@@ -53,3 +53,8 @@ func (c *Client) AddConn(ctx context.Context, userId, device, linkId, hostName s
 	}
 	return nil
 }
+
+//// DelConn 删除链接
+//func (c *Client) DelConn(ctx context.Context, linkId string) error {
+//
+//}

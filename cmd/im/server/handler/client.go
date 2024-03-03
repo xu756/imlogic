@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
+	"github.com/xu756/imlogic/common/config"
 	"github.com/xu756/imlogic/common/types"
 	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
@@ -14,37 +15,32 @@ import (
 )
 
 var (
-	pongWait   = 60 * time.Second // 测试 暂时设置为 4s
+	pongWait   = 5 * time.Second // 测试 暂时设置为 4s
 	pingPeriod = (pongWait * 9) / 10
 )
-
-//// Message  消息结构体
-//// todo 测试消息结构体，需要重新改
-//type Message struct {
-//	MsgType uint   `json:"msgType"`
-//	Msg     string `json:"msg"`
-//}
 
 type Client struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	mutex  sync.Mutex
 	linkID string // websocket 连接 id
-	UserId string // 用户id
+	userId string // 用户id
+	device string // 设备类型
 	ws     *websocket.Conn
 	isOpen bool
 	writer chan *types.Message
 }
 
 // NewClient 创建一个新的连接
-func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID string) *Client {
+func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device string) *Client {
 	ctx, cancel := context.WithCancel(ctx)
 	client := &Client{
 		ctx:    ctx,
 		cancel: cancel,
 		ws:     ws,
 		linkID: linkID,
-		UserId: userId,
+		userId: userId,
+		device: device,
 		//reader: make(chan *Message, 1024),
 		writer: make(chan *types.Message, 1024),
 	}
@@ -79,17 +75,18 @@ func (c *Client) listenAndRead() {
 			}
 			rpcMsg := &im.Message{
 				MsgId:     msg.MsgId,
-				Device:    msg.Device,
 				Timestamp: msg.Timestamp,
 				Params:    msg.Params,
 				Action:    msg.Action,
+				UserId:    c.userId,
+				Hostname:  ClientManager.HostName,
+				Device:    c.device,
 				From:      c.linkID,
 				To:        msg.To,
 				MsgType:   msg.MsgType,
 				MsgMeta: &im.MsgMeta{
 					DetailType: msg.MsgMeta.DetailType,
 					Version:    msg.MsgMeta.Version,
-					Interval:   msg.MsgMeta.Interval,
 				},
 				MsgContent: &im.MsgContent{
 					DetailType: msg.MsgContent.DetailType,
@@ -127,27 +124,27 @@ func (c *Client) listenAndWrite() {
 			return
 		case msg := <-c.writer:
 			msg.To = c.linkID
-			err := c.ws.WriteJSON(msg)
+			err := c.ws.WriteJSON(&msg)
 			if err != nil {
 				c.close()
 				return
 			}
 		case <-ticker.C:
-			//err := c.ws.WriteJSON("ping")
-			//if err != nil {
-			//	c.close()
-			//	return
-			//}
-			c.writer <- &types.Message{
+			err := c.ws.WriteJSON(types.Message{
 				MsgId:     uuid.NewString(),
-				Device:    "pc", //todo 判断设备类型
+				Device:    c.device,
 				Timestamp: tool.TimeNowUnixMilli(),
+				From:      "im-rpc",
+				To:        c.linkID,
 				MsgType:   "meta",
 				MsgMeta: types.MsgMeta{
 					DetailType: "heartbeat",
-					Version:    "1.0",
-					Interval:   30000,
+					Version:    config.GetVersion(),
 				},
+			})
+			if err != nil {
+				c.close()
+				return
 			}
 		}
 
@@ -161,12 +158,15 @@ func (c *Client) close() {
 	if c.isOpen {
 		ClientManager.unregister <- c
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, &im.Message{
+			UserId:    c.userId,
+			Hostname:  ClientManager.HostName,
+			Device:    c.device,
 			Timestamp: tool.TimeNowUnixMilli(),
 			Action:    "send",
 			From:      c.linkID,
 			To:        "im-rpc",
 			MsgType:   "meta",
-			MsgMeta:   &im.MsgMeta{DetailType: "disconnect", Version: "1.0", Interval: 0},
+			MsgMeta:   &im.MsgMeta{DetailType: "disconnect", Version: "1.0"},
 		})
 
 		c.cancel() // 取消上下文  listenAndRead listenAndWrite 同时退出

@@ -60,6 +60,8 @@ type clientManager struct {
 }
 
 func (c *clientManager) add(conn *Client) {
+	c.clientsLock.Lock()
+	defer c.clientsLock.Unlock()
 	c.Clients.Store(conn.linkID, conn)
 }
 

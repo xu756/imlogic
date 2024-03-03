@@ -6,7 +6,6 @@ import "github.com/xu756/imlogic/kitex_gen/im"
 type MsgMeta struct {
 	DetailType string `json:"detailType"` //  connect | disconnect | heartbeat
 	Version    string `json:"version"`    // 1.0
-	Interval   int64  `json:"interval"`   // detailType=heartbeat  到下次心跳的间隔，单位：毫秒
 }
 
 // MsgContent 消息
@@ -34,7 +33,6 @@ type Message struct {
 func RpcMsgToMsg(msg *im.Message) *Message {
 	newMsg := Message{
 		MsgId:     msg.MsgId,
-		Device:    msg.Device,
 		Timestamp: msg.Timestamp,
 		Params:    msg.Params,
 		Action:    msg.Action,
@@ -46,7 +44,6 @@ func RpcMsgToMsg(msg *im.Message) *Message {
 		newMsg.MsgMeta = MsgMeta{
 			DetailType: msg.MsgMeta.DetailType,
 			Version:    msg.MsgMeta.Version,
-			Interval:   msg.MsgMeta.Interval,
 		}
 	}
 	if msg.MsgContent != nil {
