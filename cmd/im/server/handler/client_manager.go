@@ -4,7 +4,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/common/types"
-	"log"
 	"os"
 	"sync"
 )
@@ -38,7 +37,6 @@ func (c *clientManager) run() {
 			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
-				log.Printf("to %s", message.To)
 				conn.writer <- message
 				return true
 			})
@@ -47,25 +45,25 @@ func (c *clientManager) run() {
 }
 
 type clientManager struct {
-	Clients     sync.Map
-	HostName    string
-	upgrader    websocket.HertzUpgrader
-	handler     func(*websocket.Conn)
-	clientsLock sync.RWMutex
-	broadcast   chan *types.Message
-	register    chan *Client
-	unregister  chan *Client
+	sync.RWMutex
+	Clients    sync.Map
+	HostName   string
+	upgrader   websocket.HertzUpgrader
+	handler    func(*websocket.Conn)
+	broadcast  chan *types.Message
+	register   chan *Client
+	unregister chan *Client
 }
 
 func (c *clientManager) add(conn *Client) {
-	c.clientsLock.Lock()
-	defer c.clientsLock.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	c.Clients.Store(conn.linkID, conn)
 }
 
 func (c *clientManager) del(conn *Client) {
-	c.clientsLock.Lock()
-	defer c.clientsLock.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	c.Clients.Delete(conn.linkID)
 }
 

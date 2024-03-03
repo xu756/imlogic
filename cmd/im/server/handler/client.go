@@ -22,7 +22,7 @@ var (
 type Client struct {
 	ctx    context.Context
 	cancel context.CancelFunc
-	mutex  sync.Mutex
+	sync.RWMutex
 	linkID string // websocket 连接 id
 	userId string // 用户id
 	device string // 设备类型
@@ -74,7 +74,7 @@ func (c *Client) listenAndRead() {
 				return
 			}
 			msg.From = c.linkID
-			c.logic(msg)
+			go c.logic(msg)
 
 		}
 	}
@@ -83,10 +83,6 @@ func (c *Client) listenAndRead() {
 // listenAndWrite 监听并写入消息
 func (c *Client) listenAndWrite() {
 	//ticker := time.NewTicker(pingPeriod) // 定时发送心跳
-	defer func() {
-		//ticker.Stop()
-		c.close()
-	}()
 	err := c.ws.WriteJSON(types.Message{
 		MsgId:     uuid.NewString(),
 		Device:    c.device,
@@ -116,8 +112,8 @@ func (c *Client) listenAndWrite() {
 
 // close 关闭连接
 func (c *Client) close() {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
+	c.Lock()
+	defer c.Unlock()
 	if c.isOpen {
 		ClientManager.unregister <- c
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, &im.Message{
@@ -142,7 +138,6 @@ func (c *Client) close() {
 
 func (c *Client) Write(msg *types.Message) {
 	msg.To = c.linkID
-	log.Print(c.linkID == msg.To)
 	err := c.ws.WriteJSON(&msg)
 	if err != nil {
 		c.close()
