@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var connHeartBeatInterval = 60 * time.Second // 60s
+var connHeartBeatInterval = 0 * time.Second // 60s
 
 // 获取key conn:user:userId:hostname:LinkId
 func getUserCacheKey(userId, hostName, linkId string) string {

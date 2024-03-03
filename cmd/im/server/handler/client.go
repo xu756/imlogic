@@ -30,19 +30,21 @@ type Client struct {
 	cancel context.CancelFunc
 	mutex  sync.Mutex
 	linkID string // websocket 连接 id
+	UserId string // 用户id
 	ws     *websocket.Conn
 	isOpen bool
 	writer chan *types.Message
 }
 
 // NewClient 创建一个新的连接
-func NewClient(ctx context.Context, ws *websocket.Conn, linkID string) *Client {
+func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID string) *Client {
 	ctx, cancel := context.WithCancel(ctx)
 	client := &Client{
 		ctx:    ctx,
 		cancel: cancel,
 		ws:     ws,
 		linkID: linkID,
+		UserId: userId,
 		//reader: make(chan *Message, 1024),
 		writer: make(chan *types.Message, 1024),
 	}

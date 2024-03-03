@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
 	"github.com/xu756/imlogic/common/config"
@@ -30,20 +29,18 @@ func InitRouter() {
 
 func connect(ctx context.Context, c *app.RequestContext) {
 	err := ClientManager.upgrader.Upgrade(c, func(ws *websocket.Conn) {
-		// todo 获取
-		linkId := uuid.NewString()
-		userId := "admin"
+		// todo 获取用户信息
 		device := "pc"
-		client := NewClient(ctx, ws, linkId)
+		client := NewClient(ctx, ws, "admin", "uuid.NewString()")
 		msg, err := rpc.ImSrvClient.MetaMsg(ctx, &im.Message{
 			Device:    device,
 			Timestamp: tool.TimeNowUnixMilli(),
 			Action:    "send",
 			Params: map[string]string{
-				"userId":   userId,
+				"userId":   client.UserId,
 				"hostName": ClientManager.HostName,
 			},
-			From:    linkId,
+			From:    client.linkID,
 			To:      "im-rpc",
 			MsgType: "meta",
 			MsgMeta: &im.MsgMeta{DetailType: "connect", Version: "1.0", Interval: 0},
