@@ -37,7 +37,7 @@ func (c *clientManager) run() {
 			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
-				conn.writer <- message
+				conn.Write(message)
 				return true
 			})
 		}
@@ -45,25 +45,19 @@ func (c *clientManager) run() {
 }
 
 type clientManager struct {
-	sync.RWMutex
 	Clients    sync.Map
 	HostName   string
 	upgrader   websocket.HertzUpgrader
-	handler    func(*websocket.Conn)
 	broadcast  chan *types.Message
 	register   chan *Client
 	unregister chan *Client
 }
 
 func (c *clientManager) add(conn *Client) {
-	c.Lock()
-	defer c.Unlock()
 	c.Clients.Store(conn.linkID, conn)
 }
 
 func (c *clientManager) del(conn *Client) {
-	c.Lock()
-	defer c.Unlock()
 	c.Clients.Delete(conn.linkID)
 }
 
