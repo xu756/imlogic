@@ -54,14 +54,9 @@ func (c *Client) listenAndRead() {
 		client.Close()
 		return
 	}
-	defer func() {
-		c.close()
-		client.Close()
-	}()
 	c.isOpen = true
 	c.ws.SetReadLimit(1024 * 1024 * 100)
 	//  设置读取超时时间 心跳
-	c.ws.SetReadDeadline(time.Now().Add(pongWait)) // 设置读取超时时间
 	for {
 		select {
 		case <-c.ctx.Done():

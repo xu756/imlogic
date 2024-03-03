@@ -11,7 +11,6 @@ import (
 	"github.com/xu756/imlogic/internal/result"
 	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
-	"log"
 )
 
 var HttpServer *server.Hertz
@@ -53,7 +52,6 @@ func connect(ctx context.Context, c *app.RequestContext) {
 
 	})
 	if err != nil {
-		log.Print(err)
 		result.HttpError(c, err)
 		return
 	}
