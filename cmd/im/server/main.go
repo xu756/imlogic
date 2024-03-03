@@ -32,10 +32,10 @@ func main() {
 		server.WithServiceAddr(addr),
 		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
-	hlog.Info("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
+	hlog.Infof("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
 
 	go handler.HttpServer.Spin()
-	hlog.Info("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
+	hlog.Infof("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
 
 	err = svr.Run()
 	if err != nil {
