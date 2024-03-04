@@ -106,7 +106,6 @@ func (c *Client) close() {
 }
 
 func (c *Client) Write(msg *types.Message) {
-	msg.To = c.linkID
 	err := c.ws.WriteJSON(&msg)
 	if err != nil {
 		c.close()
