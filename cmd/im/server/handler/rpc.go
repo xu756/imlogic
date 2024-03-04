@@ -11,28 +11,28 @@ type ImServerImpl struct {
 }
 
 func (i ImServerImpl) Send(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
-	//ok, conn := hub.GetConn(req.GetTo())
-	//if ok {
-	hub.broadcast <- &types.Message{
-		MsgId:     req.MsgId,
-		Timestamp: req.Timestamp,
-		Params:    req.Params,
-		Action:    req.Action,
-		From:      req.From,
-		To:        "all",
-		MsgType:   req.MsgType,
-		MsgMeta: types.MsgMeta{
-			DetailType: req.MsgMeta.DetailType,
-			Version:    req.MsgMeta.Version,
-		},
-		MsgContent: types.MsgContent{
-			DetailType: req.MsgContent.DetailType,
-			Text:       req.MsgContent.Text,
-			ImgUrl:     req.MsgContent.ImgUrl,
-			AudioUrl:   req.MsgContent.AudioUrl,
-			VideoUrl:   req.MsgContent.VideoUrl,
-		},
-		//}
+	ok, conn := hub.GetConn(req.GetTo())
+	if ok {
+		conn.send <- &types.Message{
+			MsgId:     req.MsgId,
+			Timestamp: req.Timestamp,
+			Params:    req.Params,
+			Action:    req.Action,
+			From:      req.From,
+			To:        req.To,
+			MsgType:   req.MsgType,
+			MsgMeta: types.MsgMeta{
+				DetailType: req.MsgMeta.DetailType,
+				Version:    req.MsgMeta.Version,
+			},
+			MsgContent: types.MsgContent{
+				DetailType: req.MsgContent.DetailType,
+				Text:       req.MsgContent.Text,
+				ImgUrl:     req.MsgContent.ImgUrl,
+				AudioUrl:   req.MsgContent.AudioUrl,
+				VideoUrl:   req.MsgContent.VideoUrl,
+			},
+		}
 	}
 	return &im.MessageRes{
 		Success: true,

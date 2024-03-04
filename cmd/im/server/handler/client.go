@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
 	"github.com/xu756/imlogic/cmd/im/server/rpc"
 	"github.com/xu756/imlogic/common/types"
@@ -93,7 +94,7 @@ func (c *Client) close() {
 			MsgType:   "meta",
 			MsgMeta:   &im.MsgMeta{DetailType: "disconnect", Version: "1.0"},
 		})
-
+		hub.del(c)
 		c.cancel() // 取消上下文  listenAndRead listenAndWrite 同时退出
 		if err := c.ws.Close(); err != nil {
 			log.Print(err)
@@ -103,13 +104,8 @@ func (c *Client) close() {
 }
 
 func (c *Client) Write(msg *types.Message) {
-	msg.MsgId = c.linkID
-	ok, nc := hub.GetConn(c.linkID)
-	if !ok {
-		log.Print("找不到连接")
-		return
-	}
-	log.Print(nc.linkID == msg.MsgId)
+	msg.MsgId = uuid.NewString()
+	msg.To = c.linkID
 	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()

@@ -8,7 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

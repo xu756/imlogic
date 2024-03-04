@@ -37,7 +37,7 @@ func (c *Hub) Run() {
 			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
-				conn.send <- message
+				conn.Write(message)
 				return true
 			})
 		}
