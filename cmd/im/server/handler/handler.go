@@ -29,14 +29,14 @@ func InitRouter() {
 }
 
 func connect(ctx context.Context, c *app.RequestContext) {
-	err := Hub.upgrader.Upgrade(c, func(ws *websocket.Conn) {
+	err := hub.upgrader.Upgrade(c, func(ws *websocket.Conn) {
 		// todo 获取用户信息
 		client := NewClient(ctx, ws, "admin", uuid.NewString(), "pc")
 		msg, err := rpc.ImSrvClient.MetaMsg(ctx, &im.Message{
 			Timestamp: tool.TimeNowUnixMilli(),
 			Action:    "send",
 			UserId:    client.userId,
-			Hostname:  Hub.HostName,
+			Hostname:  hub.HostName,
 			Device:    client.device,
 			From:      client.linkID,
 			To:        "im-rpc",
@@ -48,7 +48,7 @@ func connect(ctx context.Context, c *app.RequestContext) {
 			return
 		}
 		initClient(client)
-		Hub.register <- client
+		hub.register <- client
 		go client.listenAndWrite()
 		client.listenAndRead()
 

@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="lock">
-      <change afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/read.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/read.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/main.go" afterDir="false" />
@@ -55,41 +55,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
-    "Go 测试.github.com/xu756/imlogic/cmd/im/server 中的 TestServerInit.executor": "Run",
-    "Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter.executor": "Run",
-    "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey.executor": "Run",
-    "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_Keys.executor": "Run",
-    "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient.executor": "Run",
-    "Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet.executor": "Run",
-    "Go 测试.github.com/xu756/imlogic/common/config 中的 Test.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/xu756",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/cmd/im/server 中的 TestServerInit.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_Keys.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet.executor&quot;: &quot;Run&quot;,
+    &quot;Go 测试.github.com/xu756/imlogic/common/config 中的 Test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/xu756&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite",
-      "postgresql",
-      "redis"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;,
+      &quot;postgresql&quot;,
+      &quot;redis&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/common/types" />

@@ -5,5 +5,5 @@ import (
 )
 
 func (c *Client) logic(msg *types.Message) {
-	Hub.broadcast <- msg
+	hub.broadcast <- msg
 }

@@ -40,7 +40,7 @@ func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device s
 		userId: userId,
 		device: device,
 		//reader: make(chan *Message, 1024),
-		writer: make(chan *types.Message),
+		writer: make(chan *types.Message, 1024),
 	}
 }
 
@@ -71,7 +71,6 @@ func (c *Client) listenAndWrite() {
 			if !ok {
 				return
 			}
-			msg.To = c.linkID
 			c.Write(msg)
 		}
 
@@ -83,12 +82,12 @@ func (c *Client) close() {
 	c.Lock()
 	defer c.Unlock()
 	if c.isOpen {
-		Hub.unregister <- c
+		hub.unregister <- c
 		close(c.writer)
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, &im.Message{
 			UserId:    c.userId,
-			Hostname:  Hub.HostName,
+			Hostname:  hub.HostName,
 			Device:    c.device,
 			Timestamp: tool.TimeNowUnixMilli(),
 			Action:    "send",
@@ -107,6 +106,7 @@ func (c *Client) close() {
 }
 
 func (c *Client) Write(msg *types.Message) {
+	msg.To = c.linkID
 	err := c.ws.WriteJSON(&msg)
 	if err != nil {
 		c.close()

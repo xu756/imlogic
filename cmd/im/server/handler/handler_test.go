@@ -7,7 +7,7 @@ import (
 
 func TestInitRouter(t *testing.T) {
 	config.Init("../../../../configs/dev.yaml")
-	go Hub.Run()
+	go hub.Run()
 	InitRouter()
 	HttpServer.Spin()
 }

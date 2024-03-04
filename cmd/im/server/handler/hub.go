@@ -8,13 +8,13 @@ import (
 	"sync"
 )
 
-var Hub = newHub()
+var hub *Hub
 
-func newHub() *hub {
+func NewHub() *Hub {
 	hostname, _ := os.Hostname()
-	return &hub{
+	hub = &Hub{
 		HostName:   hostname,
-		broadcast:  make(chan *types.Message),
+		broadcast:  make(chan *types.Message, 1024),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		upgrader: websocket.HertzUpgrader{
@@ -23,9 +23,10 @@ func newHub() *hub {
 			},
 		},
 	}
+	return hub
 }
 
-func (c *hub) Run() {
+func (c *Hub) Run() {
 	for {
 		select {
 		case conn := <-c.register:
@@ -36,7 +37,6 @@ func (c *hub) Run() {
 			message.Action = "broadcast"
 			c.Clients.Range(func(key, value interface{}) bool {
 				conn := value.(*Client)
-				message.To = "all"
 				conn.Write(message)
 				return true
 			})
@@ -44,7 +44,7 @@ func (c *hub) Run() {
 	}
 }
 
-type hub struct {
+type Hub struct {
 	Clients    sync.Map
 	HostName   string
 	upgrader   websocket.HertzUpgrader
@@ -53,15 +53,15 @@ type hub struct {
 	unregister chan *Client
 }
 
-func (c *hub) add(conn *Client) {
+func (c *Hub) add(conn *Client) {
 	c.Clients.Store(conn.linkID, conn)
 }
 
-func (c *hub) del(conn *Client) {
+func (c *Hub) del(conn *Client) {
 	c.Clients.Delete(conn.linkID)
 }
 
-func (c *hub) GetConn(linkID string) (bool, *Client) {
+func (c *Hub) GetConn(linkID string) (bool, *Client) {
 	conn, ok := c.Clients.Load(linkID)
 	if ok {
 		return true, conn.(*Client)

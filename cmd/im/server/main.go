@@ -20,7 +20,7 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	// todo 添加处理服务
-	go handler.Hub.Run()
+	go handler.NewHub().Run()
 	handler.InitRouter()
 	rpc.Init()
 
