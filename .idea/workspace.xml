@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="new">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/hub.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/rpc.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

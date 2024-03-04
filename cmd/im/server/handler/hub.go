@@ -58,7 +58,6 @@ func (c *Hub) add(conn *Client) {
 }
 
 func (c *Hub) del(conn *Client) {
-
 	c.Clients.Delete(conn.linkID)
 }
 

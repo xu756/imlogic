@@ -11,7 +11,6 @@ import (
 	"github.com/xu756/imlogic/common/types"
 	"github.com/xu756/imlogic/internal/result"
 	"github.com/xu756/imlogic/internal/tool"
-	"github.com/xu756/imlogic/kitex_gen/im"
 )
 
 var HttpServer *server.Hertz
@@ -32,17 +31,7 @@ func connect(ctx context.Context, c *app.RequestContext) {
 	err := hub.upgrader.Upgrade(c, func(ws *websocket.Conn) {
 		// todo 获取用户信息
 		client := NewClient(ctx, ws, "admin", uuid.NewString(), "pc")
-		msg, err := rpc.ImSrvClient.MetaMsg(ctx, &im.Message{
-			Timestamp: tool.TimeNowUnixMilli(),
-			Action:    "send",
-			UserId:    client.userId,
-			Hostname:  hub.HostName,
-			Device:    client.device,
-			From:      client.linkID,
-			To:        "im-rpc",
-			MsgType:   "meta",
-			MsgMeta:   &im.MsgMeta{DetailType: "connect", Version: config.GetVersion()},
-		})
+		msg, err := rpc.ImSrvClient.MetaMsg(ctx, client.connectMsg())
 		if err != nil || msg.Success == false {
 			result.HttpError(c, err)
 			return
@@ -50,6 +39,7 @@ func connect(ctx context.Context, c *app.RequestContext) {
 		initClient(client)
 		hub.register <- client
 		go client.listenAndWrite()
+		go client.listenRpcMsg()
 		client.listenAndRead()
 
 	})
