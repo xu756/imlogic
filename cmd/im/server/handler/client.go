@@ -8,7 +8,6 @@ import (
 	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
 	"log"
-	"sync"
 	"time"
 )
 
@@ -20,7 +19,6 @@ var (
 type Client struct {
 	ctx    context.Context
 	cancel context.CancelFunc
-	sync.RWMutex
 	linkID string // websocket 连接 id
 	userId string // 用户id
 	device string // 设备类型
@@ -48,8 +46,9 @@ func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device s
 func (c *Client) listenAndRead() {
 	defer c.close()
 	//  设置读取超时时间 心跳
-	msg := new(types.Message)
+
 	for {
+		msg := &types.Message{}
 		err := c.ws.ReadJSON(msg)
 		if err != nil {
 			return
@@ -79,8 +78,7 @@ func (c *Client) listenAndWrite() {
 
 // close 关闭连接
 func (c *Client) close() {
-	c.Lock()
-	defer c.Unlock()
+
 	if c.isOpen {
 		hub.unregister <- c
 		close(c.writer)
@@ -106,7 +104,8 @@ func (c *Client) close() {
 }
 
 func (c *Client) Write(msg *types.Message) {
-	err := c.ws.WriteJSON(&msg)
+	msg.MsgId = c.linkID
+	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()
 		return
