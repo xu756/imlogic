@@ -20,8 +20,10 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	// todo 添加处理服务
-	go handler.NewHub().Run()
-	handler.InitRouter()
+	go func() {
+		handler.NewHub().Run()
+	}()
+
 	rpc.Init()
 
 	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.ImServerAddr)
@@ -32,16 +34,16 @@ func main() {
 		server.WithServiceAddr(addr),
 		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
-	hlog.Infof("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
-
-	hlog.Infof("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
-
 	go func() {
 		err = svr.Run()
 		if err != nil {
 			log.Printf(err.Error())
 			return
 		}
+		hlog.Infof("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
 	}()
+	hlog.Infof("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
+	handler.InitRouter()
 	handler.HttpServer.Spin()
+
 }

@@ -24,7 +24,7 @@ type Client struct {
 	device string // 设备类型
 	ws     *websocket.Conn
 	isOpen bool
-	writer chan *types.Message
+	send   chan *types.Message
 }
 
 // NewClient 创建一个新的连接
@@ -37,8 +37,7 @@ func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device s
 		linkID: linkID,
 		userId: userId,
 		device: device,
-		//reader: make(chan *Message, 1024),
-		writer: make(chan *types.Message, 1024),
+		send:   make(chan *types.Message, 1024),
 	}
 }
 
@@ -66,7 +65,7 @@ func (c *Client) listenAndWrite() {
 		select {
 		case <-c.ctx.Done():
 			return
-		case msg, ok := <-c.writer:
+		case msg, ok := <-c.send:
 			if !ok {
 				return
 			}
@@ -81,7 +80,7 @@ func (c *Client) close() {
 
 	if c.isOpen {
 		hub.unregister <- c
-		close(c.writer)
+		close(c.send)
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, &im.Message{
 			UserId:    c.userId,
@@ -105,6 +104,12 @@ func (c *Client) close() {
 
 func (c *Client) Write(msg *types.Message) {
 	msg.MsgId = c.linkID
+	ok, nc := hub.GetConn(c.linkID)
+	if !ok {
+		log.Print("找不到连接")
+		return
+	}
+	log.Print(nc.linkID == msg.MsgId)
 	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()
