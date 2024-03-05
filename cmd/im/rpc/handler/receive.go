@@ -1,27 +1,19 @@
 package handler
 
 import (
+	"context"
 	"github.com/xu756/imlogic/kitex_gen/im"
 )
 
-func (i ImRpcImpl) Receive(stream im.ImSrv_ReceiveServer) (err error) {
-	for {
-		msg, err := stream.Recv()
-		if err != nil {
-			return err
-		}
-		err = stream.Send(&im.Message{
-			MsgId:     msg.MsgId,
-			From:      msg.From,
-			To:        msg.To,
-			Timestamp: msg.Timestamp,
-			Params: map[string]string{
-				"send": "ok",
-			},
-		})
-		if err != nil {
-			stream.Close()
-			return err
-		}
+func (i ImRpcImpl) Receive(ctx context.Context, req *im.Message) (res *im.Message, err error) {
+	res = &im.Message{
+		MsgId:     req.MsgId,
+		From:      req.From,
+		To:        req.To,
+		Timestamp: req.Timestamp,
+		Params: map[string]string{
+			"send": "ok",
+		},
 	}
+	return
 }

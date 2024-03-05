@@ -18,16 +18,17 @@ type MsgContent struct {
 }
 
 type Message struct {
+	LinkId     string            `json:"linkId"`    // 连接id
 	MsgId      string            `json:"msgId"`     // 消息id uuid 前端生成
-	Device     string            `json:"device"`    // 设备类型 pc | mobile | pad | web | other
 	Timestamp  int64             `json:"timestamp"` // 消息时间戳
-	Params     map[string]string `json:"params"`    // 消息参数
+	Device     string            `json:"device"`    // 设备类型 pc | mobile | pad | web | other
 	Action     string            `json:"action"`    // 消息动作 send | receive | broadcast
 	From       string            `json:"from"`      // 发送者 uuid
 	To         string            `json:"to"`        // 接收者 uuid
 	MsgType    string            `json:"msgType"`   // meta | text | image | file | audio | video | location | custom
 	MsgMeta    MsgMeta           `json:"msgMeta"`   // msgType = meta 时，此字段有值
 	MsgContent MsgContent        `json:"msgContent"`
+	Params     map[string]string `json:"params"` // 消息参数
 }
 
 func RpcMsgToMsg(msg *im.Message) *Message {

@@ -9,7 +9,6 @@ import (
 	"github.com/xu756/imlogic/common/types"
 	"github.com/xu756/imlogic/internal/tool"
 	"github.com/xu756/imlogic/kitex_gen/im"
-	"github.com/xu756/imlogic/kitex_gen/im/imsrv"
 	"log"
 	"sync"
 	"time"
@@ -22,54 +21,29 @@ var (
 
 type Client struct {
 	sync.RWMutex
-	ctx       context.Context
-	cancel    context.CancelFunc
-	rpcClient imsrv.ImSrv_ReceiveClient
-	linkID    string // websocket 连接 id
-	userId    string // 用户id
-	device    string // 设备类型
-	ws        *websocket.Conn
-	isOpen    bool
-	send      chan *types.Message
-	rpcSend   chan *types.Message
+	ctx     context.Context
+	cancel  context.CancelFunc
+	linkID  string // websocket 连接 id
+	userId  string // 用户id
+	device  string // 设备类型
+	ws      *websocket.Conn
+	isOpen  bool
+	send    chan *types.Message
+	rpcSend chan *types.Message
 }
 
 // NewClient 创建一个新的连接
 func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device string) *Client {
 	ctx, cancel := context.WithCancel(ctx)
-	rpcClient, err := rpc.ImSrvClient.Receive(ctx)
-	if err != nil {
-		panic(err)
-	}
 	return &Client{
-		ctx:       ctx,
-		cancel:    cancel,
-		ws:        ws,
-		isOpen:    true,
-		rpcClient: rpcClient,
-		linkID:    linkID,
-		userId:    userId,
-		device:    device,
-		send:      make(chan *types.Message, 1024),
-	}
-}
-
-func (c *Client) listenRpcMsg() {
-	defer func() {
-		c.close()
-		c.rpcClient.Close()
-	}()
-	for {
-		select {
-		case <-c.ctx.Done():
-			return
-		default:
-			recMsg, err := c.rpcClient.Recv()
-			if err != nil {
-				return
-			}
-			hub.broadcast <- types.RpcMsgToMsg(recMsg)
-		}
+		ctx:    ctx,
+		cancel: cancel,
+		ws:     ws,
+		isOpen: true,
+		linkID: linkID,
+		userId: userId,
+		device: device,
+		send:   make(chan *types.Message, 1024),
 	}
 }
 
@@ -78,7 +52,6 @@ func (c *Client) listenAndRead() {
 
 	defer func() {
 		c.close()
-		c.rpcClient.Close()
 	}()
 	for {
 		select {
@@ -113,11 +86,13 @@ func (c *Client) listenAndRead() {
 				},
 				Params: msg.Params,
 			}
-			err = c.rpcClient.Send(rpcMsg)
-			if err != nil {
-				return
-			}
-
+			go func() {
+				receive, err := rpc.ImSrvClient.Receive(c.ctx, rpcMsg)
+				if err != nil {
+					return
+				}
+				hub.broadcast <- types.RpcMsgToMsg(receive)
+			}()
 		}
 	}
 
@@ -149,7 +124,6 @@ func (c *Client) close() {
 		hub.unregister <- c
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, c.disconnectMsg())
-		c.rpcClient.Close()
 		hub.del(c)
 		c.cancel() // 取消上下文  listenAndRead listenAndWrite 同时退出
 		if err := c.ws.Close(); err != nil {
@@ -160,7 +134,7 @@ func (c *Client) close() {
 }
 
 func (c *Client) Write(msg *types.Message) {
-	msg.To = c.linkID
+	msg.LinkId = c.linkID
 	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()

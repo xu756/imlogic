@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="im server ok">
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="proto">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/types/msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/types/msg.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/idl/im.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/im.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +205,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="im.proto" />
     <MESSAGE value="imserver" />
     <MESSAGE value="rpc" />
     <MESSAGE value="ws" />
@@ -222,7 +229,8 @@
     <MESSAGE value="lock" />
     <MESSAGE value="new" />
     <MESSAGE value="im server ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="im server ok" />
+    <MESSAGE value="proto" />
+    <option name="LAST_COMMIT_MESSAGE" value="proto" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

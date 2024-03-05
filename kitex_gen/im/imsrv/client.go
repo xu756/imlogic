@@ -6,29 +6,19 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	streaming "github.com/cloudwego/kitex/pkg/streaming"
-	transport "github.com/cloudwego/kitex/transport"
 	im "github.com/xu756/imlogic/kitex_gen/im"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	Receive(ctx context.Context, callOptions ...callopt.Option) (stream ImSrv_ReceiveClient, err error)
+	Receive(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.Message, err error)
 	MetaMsg(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-}
-
-type ImSrv_ReceiveClient interface {
-	streaming.Stream
-	Send(*im.Message) error
-	Recv() (*im.Message, error)
 }
 
 // NewClient creates a client for the service defined in IDL.
 func NewClient(destService string, opts ...client.Option) (Client, error) {
 	var options []client.Option
 	options = append(options, client.WithDestService(destService))
-
-	options = append(options, client.WithTransportProtocol(transport.GRPC))
 
 	options = append(options, opts...)
 
@@ -54,9 +44,9 @@ type kImSrvClient struct {
 	*kClient
 }
 
-func (p *kImSrvClient) Receive(ctx context.Context, callOptions ...callopt.Option) (stream ImSrv_ReceiveClient, err error) {
+func (p *kImSrvClient) Receive(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.Message, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.Receive(ctx)
+	return p.kClient.Receive(ctx, Req)
 }
 
 func (p *kImSrvClient) MetaMsg(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {

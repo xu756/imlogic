@@ -4,7 +4,6 @@ package imsrv
 
 import (
 	"context"
-	"fmt"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 	streaming "github.com/cloudwego/kitex/pkg/streaming"
@@ -29,7 +28,6 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"PackageName":     "im",
 		"ServiceFilePath": ``,
 	}
-	extra["streaming"] = true
 	svcInfo := &kitex.ServiceInfo{
 		ServiceName:     serviceName,
 		HandlerType:     handlerType,
@@ -42,36 +40,30 @@ func NewServiceInfo() *kitex.ServiceInfo {
 }
 
 func receiveHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	st := arg.(*streaming.Args).Stream
-	stream := &imSrvReceiveServer{st}
-	return handler.(im.ImSrv).Receive(stream)
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(im.Message)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(im.ImSrv).Receive(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *ReceiveArgs:
+		success, err := handler.(im.ImSrv).Receive(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*ReceiveResult)
+		realResult.Success = success
+	}
+	return nil
 }
-
-type imSrvReceiveClient struct {
-	streaming.Stream
-}
-
-func (x *imSrvReceiveClient) Send(m *im.Message) error {
-	return x.Stream.SendMsg(m)
-}
-func (x *imSrvReceiveClient) Recv() (*im.Message, error) {
-	m := new(im.Message)
-	return m, x.Stream.RecvMsg(m)
-}
-
-type imSrvReceiveServer struct {
-	streaming.Stream
-}
-
-func (x *imSrvReceiveServer) Send(m *im.Message) error {
-	return x.Stream.SendMsg(m)
-}
-
-func (x *imSrvReceiveServer) Recv() (*im.Message, error) {
-	m := new(im.Message)
-	return m, x.Stream.RecvMsg(m)
-}
-
 func newReceiveArgs() interface{} {
 	return &ReceiveArgs{}
 }
@@ -363,18 +355,14 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) Receive(ctx context.Context) (ImSrv_ReceiveClient, error) {
-	streamClient, ok := p.c.(client.Streaming)
-	if !ok {
-		return nil, fmt.Errorf("client not support streaming")
+func (p *kClient) Receive(ctx context.Context, Req *im.Message) (r *im.Message, err error) {
+	var _args ReceiveArgs
+	_args.Req = Req
+	var _result ReceiveResult
+	if err = p.c.Call(ctx, "Receive", &_args, &_result); err != nil {
+		return
 	}
-	res := new(streaming.Result)
-	err := streamClient.Stream(ctx, "Receive", nil, res)
-	if err != nil {
-		return nil, err
-	}
-	stream := &imSrvReceiveClient{res.Stream}
-	return stream, nil
+	return _result.GetSuccess(), nil
 }
 
 func (p *kClient) MetaMsg(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {

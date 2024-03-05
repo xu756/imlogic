@@ -40,14 +40,9 @@ message MessageRes {
     bool success = 4;
 }
 
-
-
-
-
-
 // 处理websocket消息
 service ImSrv {
-    rpc Receive(stream  Message) returns (stream Message) {}
+    rpc Receive(Message) returns (Message) {}
     rpc MetaMsg(Message) returns (MessageRes) {}
 
 }

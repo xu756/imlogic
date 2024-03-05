@@ -39,7 +39,6 @@ func connect(ctx context.Context, c *app.RequestContext) {
 		initClient(client)
 		hub.register <- client
 		go client.listenAndWrite()
-		go client.listenRpcMsg()
 		client.listenAndRead()
 
 	})
@@ -54,6 +53,7 @@ func initClient(c *Client) {
 	c.isOpen = true
 	c.ws.SetReadLimit(1024 * 1024 * 100)
 	err := c.ws.WriteJSON(types.Message{
+		LinkId:    c.linkID,
 		MsgId:     uuid.NewString(),
 		Device:    c.device,
 		Timestamp: tool.TimeNowUnixMilli(),
