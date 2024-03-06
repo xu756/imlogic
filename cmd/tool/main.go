@@ -20,6 +20,9 @@ func main() {
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
+	h.GET("/", func(ctx context.Context, c *app.RequestContext) {
+		c.JSON(200, "pong")
+	})
 	h.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
 		upgrader.Upgrade(c, func(ws *websocket.Conn) {
 			defer ws.Close()
