@@ -5,7 +5,7 @@ import (
 	"github.com/hertz-contrib/websocket"
 )
 
-func Ping(Addr string, ws *websocket.Conn) {
+func AddrPing(Addr string, ws *websocket.Conn) {
 	defer ws.Close()
 	pinger := ping.New(Addr)
 	pinger.Count = 3

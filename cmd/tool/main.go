@@ -28,7 +28,7 @@ func main() {
 				if err != nil {
 					return
 				}
-				go Ping(req.Addr, ws)
+				go AddrPing(req.Addr, ws)
 			}
 		})
 	})

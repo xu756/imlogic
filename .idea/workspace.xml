@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="proto">
-      <change afterPath="$PROJECT_DIR$/cmd/tool/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/tool/ping.go" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="ping tool">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/tool/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/tool/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/tool/ping.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/tool/ping.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +197,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="imserver" />
     <MESSAGE value="rpc" />
     <MESSAGE value="ws" />
     <MESSAGE value="coding conf" />
@@ -225,7 +221,8 @@
     <MESSAGE value="new" />
     <MESSAGE value="im server ok" />
     <MESSAGE value="proto" />
-    <option name="LAST_COMMIT_MESSAGE" value="proto" />
+    <MESSAGE value="ping tool" />
+    <option name="LAST_COMMIT_MESSAGE" value="ping tool" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
