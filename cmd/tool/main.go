@@ -16,7 +16,7 @@ var upgrader = websocket.HertzUpgrader{}
 
 func main() {
 	h := server.Default(
-		server.WithHostPorts("0.0.0.0:8080"),
+		server.WithHostPorts("0.0.0.0:7888"),
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
