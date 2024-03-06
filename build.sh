@@ -24,6 +24,7 @@ case "${DOCKER_IMAGE_NAME}" in
   "api") mapped_value="api" ;;
   "im-rpc") mapped_value="im/rpc" ;;
   "im-server") mapped_value="im/server" ;;
+  "tool") mapped_value="tool" ;;
   *)
     echo "没有找到${DOCKER_IMAGE_NAME}的映射值。"
     exit 2

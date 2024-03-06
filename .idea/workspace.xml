@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="proto">
+      <change afterPath="$PROJECT_DIR$/cmd/tool/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/tool/ping.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/server/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/types/msg.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/types/msg.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/idl/im.proto" beforeDir="false" afterPath="$PROJECT_DIR$/idl/im.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/im.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" beforeDir="false" afterPath="$PROJECT_DIR$/kitex_gen/im/imsrv/imsrv.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +56,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go 构建.go build github.com/xu756/imlogic/cmd/tool.executor&quot;: &quot;Run&quot;,
     &quot;Go 测试.github.com/xu756/imlogic/cmd/im/server 中的 TestServerInit.executor&quot;: &quot;Run&quot;,
     &quot;Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter.executor&quot;: &quot;Run&quot;,
     &quot;Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey.executor&quot;: &quot;Run&quot;,
@@ -93,14 +91,23 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cmd" />
       <recent name="$PROJECT_DIR$/common/types" />
       <recent name="$PROJECT_DIR$/configs" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/deploy" />
-      <recent name="$PROJECT_DIR$/cmd/im" />
     </key>
   </component>
-  <component name="RunManager" selected="Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter">
+  <component name="RunManager" selected="Go 构建.go build github.com/xu756/imlogic/cmd/tool">
+    <configuration name="go build github.com/xu756/imlogic/cmd/tool" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="imlogic" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/xu756/imlogic/cmd/tool" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/cmd/tool/main.go" />
+      <method v="2" />
+    </configuration>
     <configuration name="github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="imlogic" />
       <working_directory value="$PROJECT_DIR$/cmd/im/server/handler" />
@@ -149,18 +156,6 @@
       <pattern value="^\QTestNewCacheClient\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="imlogic" />
-      <working_directory value="$PROJECT_DIR$/common/cache" />
-      <root_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="github.com/xu756/imlogic/common/cache" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestNewCacheGet\E$" />
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
         <settings />
@@ -169,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go 构建.go build github.com/xu756/imlogic/cmd/tool" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/cmd/im/server/handler 中的 TestInitRouter" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_DelKey" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestClient_Keys" />
         <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheClient" />
-        <item itemvalue="Go 测试.github.com/xu756/imlogic/common/cache 中的 TestNewCacheGet" />
       </list>
     </recent_temporary>
   </component>
