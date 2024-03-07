@@ -15,41 +15,42 @@ import (
 )
 
 var (
-	pongWait   = 50 * time.Second // 测试 暂时设置为 4s
+	pongWait   = 10 * time.Second // 测试 暂时设置为 4s
 	pingPeriod = (pongWait * 9) / 10
 )
 
 type Client struct {
 	sync.RWMutex
-	ctx     context.Context
-	cancel  context.CancelFunc
-	linkID  string // websocket 连接 id
-	userId  string // 用户id
-	device  string // 设备类型
-	ws      *websocket.Conn
-	isOpen  bool
-	send    chan *types.Message
-	rpcSend chan *types.Message
+	ctx       context.Context
+	cancel    context.CancelFunc
+	linkID    string // websocket 连接 id
+	userId    string // 用户id
+	device    string // 设备类型
+	ws        *websocket.Conn
+	isOpen    bool
+	send      chan *types.Message
+	rpcSend   chan *types.Message
+	heartbeat *time.Ticker
 }
 
 // NewClient 创建一个新的连接
 func NewClient(ctx context.Context, ws *websocket.Conn, userId, linkID, device string) *Client {
 	ctx, cancel := context.WithCancel(ctx)
 	return &Client{
-		ctx:    ctx,
-		cancel: cancel,
-		ws:     ws,
-		isOpen: true,
-		linkID: linkID,
-		userId: userId,
-		device: device,
-		send:   make(chan *types.Message, 1024),
+		ctx:       ctx,
+		cancel:    cancel,
+		ws:        ws,
+		isOpen:    true,
+		linkID:    linkID,
+		userId:    userId,
+		device:    device,
+		send:      make(chan *types.Message, 1024),
+		heartbeat: time.NewTicker(pingPeriod),
 	}
 }
 
 // listenAndRead 监听并读取消息
 func (c *Client) listenAndRead() {
-
 	defer func() {
 		c.close()
 	}()
@@ -68,7 +69,7 @@ func (c *Client) listenAndRead() {
 				UserId:    c.userId,
 				Hostname:  hub.HostName,
 				Timestamp: msg.Timestamp,
-				Device:    msg.Device,
+				Device:    c.device,
 				Action:    msg.Action,
 				From:      c.linkID,
 				To:        msg.To,
@@ -91,7 +92,7 @@ func (c *Client) listenAndRead() {
 				if err != nil {
 					return
 				}
-				hub.broadcast <- types.RpcMsgToMsg(receive)
+				c.send <- types.RpcMsgToMsg(receive)
 			}()
 		}
 	}
@@ -110,7 +111,11 @@ func (c *Client) listenAndWrite() {
 				return
 			}
 			c.Write(msg)
-
+		case <-c.heartbeat.C:
+			_, err := rpc.ImSrvClient.MetaMsg(c.ctx, c.heartbeatMsg())
+			if err != nil {
+				return
+			}
 		}
 
 	}

@@ -8,6 +8,7 @@ import (
 )
 
 func (i ImRpcImpl) MetaMsg(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+	res = &im.MessageRes{}
 	switch req.MsgMeta.DetailType {
 	case "connect":
 		// todo
@@ -30,10 +31,9 @@ func (i ImRpcImpl) MetaMsg(ctx context.Context, req *im.Message) (res *im.Messag
 		break
 
 	}
-	return &im.MessageRes{
-		MsgId:   req.MsgId,
-		From:    req.To,
-		To:      req.From,
-		Success: true,
-	}, nil
+	res.MsgId = req.MsgId
+	res.From = req.To
+	res.To = req.From
+	res.Success = true
+	return
 }

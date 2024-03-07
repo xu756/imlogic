@@ -36,6 +36,7 @@ func RpcMsgToMsg(msg *im.Message) *Message {
 		MsgId:     msg.MsgId,
 		Timestamp: msg.Timestamp,
 		Params:    msg.Params,
+		Device:    msg.Device,
 		Action:    msg.Action,
 		From:      msg.From,
 		To:        msg.To,
@@ -57,5 +58,12 @@ func RpcMsgToMsg(msg *im.Message) *Message {
 		}
 	}
 	return &newMsg
+}
 
+func RpcMsgResToMsg(msg *im.MessageRes) *Message {
+	return &Message{
+		MsgId: msg.MsgId,
+		From:  msg.From,
+		To:    msg.To,
+	}
 }
