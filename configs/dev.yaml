@@ -41,3 +41,9 @@ MinioConfig:
   SecretAccessKey: "" # 需要您提供具体值
   UseSSL: false # 假设为 false，需要您根据实际情况调整
   BucketName: "" # 需要您提供具体值
+
+InfluxdbConfig:
+    Addr: "https://influxdb.imlogic.cn/"
+    Token: "e6MVtazaHxsiq-Y_G0q2AoesqOj4nkv5ZTBy0Lb9aFOXMXGh2tFGHQR8h3-WNv-sLR_Ppy52GYMjeA4nOP5QTA=="
+    Org: "xu756"
+    Bucket: "imlogic"
