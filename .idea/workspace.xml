@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="ping tool">
-      <change afterPath="$PROJECT_DIR$/common/influxdb/client.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/influxdb/connect.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/influxdb/connect_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/influxdb/msg.go" afterDir="false" />
+    <list default="true" id="e9f5b959-c9ff-4caf-8bcc-9ac7286a29f1" name="更改" comment="new">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/tool/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/dev.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/dev.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/im/rpc/handler/receive.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,11 +218,11 @@
     <MESSAGE value="format" />
     <MESSAGE value="update" />
     <MESSAGE value="lock" />
-    <MESSAGE value="new" />
     <MESSAGE value="im server ok" />
     <MESSAGE value="proto" />
     <MESSAGE value="ping tool" />
-    <option name="LAST_COMMIT_MESSAGE" value="ping tool" />
+    <MESSAGE value="new" />
+    <option name="LAST_COMMIT_MESSAGE" value="new" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
