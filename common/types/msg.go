@@ -34,6 +34,7 @@ type Message struct {
 func RpcMsgToMsg(msg *im.Message) *Message {
 	newMsg := Message{
 		MsgId:     msg.MsgId,
+		LinkId:    msg.LinkId,
 		Timestamp: msg.Timestamp,
 		Params:    msg.Params,
 		Device:    msg.Device,

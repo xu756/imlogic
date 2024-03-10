@@ -36,6 +36,7 @@ func connect(ctx context.Context, c *app.RequestContext) {
 			result.HttpError(c, err)
 			return
 		}
+		//client.rpcMetaMsg(client.connectMsg())
 		initClient(client)
 		hub.register <- client
 		go client.listenAndWrite()
@@ -58,7 +59,7 @@ func initClient(c *Client) {
 		Device:    c.device,
 		Timestamp: tool.TimeNowUnixMilli(),
 		From:      "im-rpc",
-		To:        c.linkID,
+		To:        c.userId,
 		MsgType:   "meta",
 		MsgMeta: types.MsgMeta{
 			DetailType: "heartbeat",

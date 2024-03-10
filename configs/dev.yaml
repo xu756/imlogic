@@ -44,6 +44,6 @@ MinioConfig:
 
 InfluxdbConfig:
     Addr: "https://influxdb.imlogic.cn/"
-    Token: "e6MVtazaHxsiq-Y_G0q2AoesqOj4nkv5ZTBy0Lb9aFOXMXGh2tFGHQR8h3-WNv-sLR_Ppy52GYMjeA4nOP5QTA=="
+    Token: "1q2w3e4r5t6y7u8i9o0p"
     Org: "xu756"
     Bucket: "imlogic"

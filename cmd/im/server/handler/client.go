@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	pongWait   = 10 * time.Second // 测试 暂时设置为 4s
+	pongWait   = 60 * time.Second // 测试 暂时设置为 4s
 	pingPeriod = (pongWait * 9) / 10
 )
 
@@ -29,7 +29,6 @@ type Client struct {
 	ws        *websocket.Conn
 	isOpen    bool
 	send      chan *types.Message
-	rpcSend   chan *types.Message
 	heartbeat *time.Ticker
 }
 
@@ -66,12 +65,12 @@ func (c *Client) listenAndRead() {
 			}
 			rpcMsg := &im.Message{
 				MsgId:     uuid.NewString(),
-				UserId:    c.userId,
+				LinkId:    c.linkID,
 				Hostname:  hub.HostName,
 				Timestamp: msg.Timestamp,
 				Device:    c.device,
 				Action:    msg.Action,
-				From:      c.linkID,
+				From:      c.userId,
 				To:        msg.To,
 				MsgType:   msg.MsgType,
 				MsgMeta: &im.MsgMeta{
@@ -112,10 +111,7 @@ func (c *Client) listenAndWrite() {
 			}
 			c.Write(msg)
 		case <-c.heartbeat.C:
-			_, err := rpc.ImSrvClient.MetaMsg(c.ctx, c.heartbeatMsg())
-			if err != nil {
-				return
-			}
+			go c.rpcMetaMsg(c.heartbeatMsg())
 		}
 
 	}
@@ -140,6 +136,7 @@ func (c *Client) close() {
 
 func (c *Client) Write(msg *types.Message) {
 	msg.LinkId = c.linkID
+	msg.MsgMeta.Version = config.GetVersion()
 	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()
@@ -153,10 +150,10 @@ func (c *Client) connectMsg() *im.Message {
 		Timestamp: tool.TimeNowUnixMilli(),
 		MsgId:     uuid.NewString(),
 		Action:    "send",
-		UserId:    c.userId,
+		LinkId:    c.linkID,
 		Hostname:  hub.HostName,
 		Device:    c.device,
-		From:      c.linkID,
+		From:      c.userId,
 		To:        "im-rpc",
 		MsgType:   "meta",
 		MsgMeta:   &im.MsgMeta{DetailType: "connect", Version: config.GetVersion()},
@@ -170,9 +167,9 @@ func (c *Client) heartbeatMsg() *im.Message {
 		MsgId:     uuid.NewString(),
 		Device:    c.device,
 		Hostname:  hub.HostName,
-		From:      c.linkID,
+		From:      c.userId,
 		To:        "im-rpc",
-		UserId:    c.userId,
+		LinkId:    c.linkID,
 		MsgType:   "meta",
 		MsgMeta: &im.MsgMeta{
 			DetailType: "heartbeat",
@@ -187,8 +184,8 @@ func (c *Client) disconnectMsg() *im.Message {
 		Device:    c.device,
 		MsgId:     uuid.NewString(),
 		Timestamp: tool.TimeNowUnixMilli(),
-		From:      c.linkID,
-		UserId:    c.userId,
+		From:      c.userId,
+		LinkId:    c.linkID,
 		Hostname:  hub.HostName,
 		To:        "im-rpc",
 		MsgType:   "meta",
@@ -196,5 +193,18 @@ func (c *Client) disconnectMsg() *im.Message {
 			DetailType: "disconnect",
 			Version:    config.GetVersion(),
 		},
+	}
+}
+
+// rpcMetaMsg
+func (c *Client) rpcMetaMsg(msg *im.Message) {
+	res, err := rpc.ImSrvClient.MetaMsg(c.ctx, msg)
+	if err != nil || res.Success == false {
+		return
+	}
+	c.send <- &types.Message{
+		MsgId: res.MsgId,
+		From:  res.From,
+		To:    res.To,
 	}
 }

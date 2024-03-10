@@ -193,7 +193,7 @@ func (x *Message) fastReadField1(buf []byte, _type int8) (offset int, err error)
 }
 
 func (x *Message) fastReadField2(buf []byte, _type int8) (offset int, err error) {
-	x.UserId, offset, err = fastpb.ReadString(buf, _type)
+	x.LinkId, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -434,10 +434,10 @@ func (x *Message) fastWriteField1(buf []byte) (offset int) {
 }
 
 func (x *Message) fastWriteField2(buf []byte) (offset int) {
-	if x.UserId == "" {
+	if x.LinkId == "" {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 2, x.GetUserId())
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetLinkId())
 	return offset
 }
 
@@ -677,10 +677,10 @@ func (x *Message) sizeField1() (n int) {
 }
 
 func (x *Message) sizeField2() (n int) {
-	if x.UserId == "" {
+	if x.LinkId == "" {
 		return n
 	}
-	n += fastpb.SizeString(2, x.GetUserId())
+	n += fastpb.SizeString(2, x.GetLinkId())
 	return n
 }
 
@@ -830,7 +830,7 @@ var fieldIDToName_MsgContent = map[int32]string{
 
 var fieldIDToName_Message = map[int32]string{
 	1:  "MsgId",
-	2:  "UserId",
+	2:  "LinkId",
 	3:  "Hostname",
 	4:  "Timestamp",
 	5:  "Device",

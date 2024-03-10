@@ -6,11 +6,12 @@ import (
 )
 
 func (i ImRpcImpl) Receive(ctx context.Context, req *im.Message) (res *im.Message, err error) {
-	//err = i.Influxdb.CreateMsg(ctx, req)
-	//if err != nil {
-	//	return nil, err
-	//}
+	err = i.Influxdb.CreateMsg(ctx, req)
+	if err != nil {
+		return nil, err
+	}
 	res = &im.Message{
+		LinkId:    req.LinkId,
 		MsgId:     req.MsgId,
 		From:      req.From,
 		To:        req.To,

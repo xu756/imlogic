@@ -20,13 +20,13 @@ message MsgContent {
 
 message Message {
     string msg_id = 1;
-    string user_id = 2;
+    string link_id = 2;
     string hostname = 3;
     int64 timestamp = 4;
     string device = 5;
     string action = 6;
-    string from = 7;
-    string to = 8;
+    string from = 7;    // 发送者
+    string to = 8;    // 接收者
     string msg_type = 9;
     MsgMeta msg_meta = 10;
     MsgContent msg_content = 11;
