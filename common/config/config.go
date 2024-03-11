@@ -1,16 +1,16 @@
 package config
 
 type Config struct {
-	Addr           Addr           `yaml:"Addr"`
-	Rpc            Rpc            `yaml:"Rpc"`
-	DbConfig       DbConfig       `yaml:"DbConfig"`
-	RedisConfig    RedisConfig    `yaml:"RedisConfig"`
-	JwtConfig      JwtConfig      `yaml:"JwtConfig"`
-	MqUrl          string         `yaml:"MqUrl"`
-	Version        string         `yaml:"Version"`
-	EmailConfig    EmailConfig    `yaml:"EmailConfig"`
-	MinioConfig    MinioConfig    `yaml:"MinioConfig"`
-	InfluxdbConfig InfluxdbConfig `yaml:"InfluxdbConfig"`
+	Addr        Addr        `yaml:"Addr"`
+	Rpc         Rpc         `yaml:"Rpc"`
+	DbConfig    DbConfig    `yaml:"DbConfig"`
+	RedisConfig RedisConfig `yaml:"RedisConfig"`
+	JwtConfig   JwtConfig   `yaml:"JwtConfig"`
+	MqUrl       string      `yaml:"MqUrl"`
+	Version     string      `yaml:"Version"`
+	EmailConfig EmailConfig `yaml:"EmailConfig"`
+	MinioConfig MinioConfig `yaml:"MinioConfig"`
+	MongodbUrl  string      `yaml:"MongodbUrl"`
 }
 
 type Addr struct {
@@ -61,13 +61,6 @@ type MinioConfig struct {
 	SecretAccessKey string `yaml:"SecretAccessKey"`
 	UseSSL          bool   `yaml:"UseSSL"`
 	BucketName      string `yaml:"BucketName"`
-}
-
-type InfluxdbConfig struct {
-	Addr   string `yaml:"Addr"`
-	Token  string `yaml:"Token"`
-	Org    string `yaml:"Org"`
-	Bucket string `yaml:"Bucket"`
 }
 
 func GetVersion() string {

@@ -1,4 +1,4 @@
-package influxdb
+package mongodb
 
 var _ Client = (*customClient)(nil)
 

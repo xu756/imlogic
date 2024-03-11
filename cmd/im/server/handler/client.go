@@ -67,7 +67,7 @@ func (c *Client) listenAndRead() {
 				MsgId:     uuid.NewString(),
 				LinkId:    c.linkID,
 				Hostname:  hub.HostName,
-				Timestamp: msg.Timestamp,
+				Timestamp: tool.TimeNowUnixMilli(),
 				Device:    c.device,
 				Action:    msg.Action,
 				From:      c.userId,
@@ -125,7 +125,6 @@ func (c *Client) close() {
 		hub.unregister <- c
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		_, _ = rpc.ImSrvClient.MetaMsg(c.ctx, c.disconnectMsg())
-		hub.del(c)
 		c.cancel() // 取消上下文  listenAndRead listenAndWrite 同时退出
 		if err := c.ws.Close(); err != nil {
 			log.Print("close:", err)

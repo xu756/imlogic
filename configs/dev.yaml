@@ -42,8 +42,4 @@ MinioConfig:
   UseSSL: false # 假设为 false，需要您根据实际情况调整
   BucketName: "" # 需要您提供具体值
 
-InfluxdbConfig:
-    Addr: "https://influxdb.imlogic.cn/"
-    Token: "1q2w3e4r5t6y7u8i9o0p"
-    Org: "xu756"
-    Bucket: "imlogic"
+MongodbUrl: "mongodb://root:fyU0bj2KLndYN6CKYubb@110.40.208.122:17017"

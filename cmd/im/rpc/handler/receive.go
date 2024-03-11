@@ -6,7 +6,7 @@ import (
 )
 
 func (i ImRpcImpl) Receive(ctx context.Context, req *im.Message) (res *im.Message, err error) {
-	err = i.Influxdb.CreateMsg(ctx, req)
+	err = i.mongodb.CreateMsg(ctx, req)
 	if err != nil {
 		return nil, err
 	}
