@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/xu756/imlogic/ent/group"
+	"imlogic/ent/group"
 )
 
 // GroupCreate is the builder for creating a Group entity.

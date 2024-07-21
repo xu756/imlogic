@@ -2,11 +2,12 @@ package mongodb
 
 import (
 	"context"
-	"github.com/xu756/imlogic/common/types"
-	"github.com/xu756/imlogic/kitex_gen/im"
+	"imlogic/common/types"
+	"imlogic/kitex_gen/im"
+	"log"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"log"
 )
 
 var (

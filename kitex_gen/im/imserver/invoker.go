@@ -4,7 +4,7 @@ package imserver
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	im "github.com/xu756/imlogic/kitex_gen/im"
+	im "imlogic/kitex_gen/im"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

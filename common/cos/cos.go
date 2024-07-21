@@ -3,8 +3,9 @@ package cos
 import (
 	"context"
 	"fmt"
+	"imlogic/common/config"
+
 	"github.com/minio/minio-go/v7"
-	"server/common/config"
 )
 
 var _ Client = (*cosClient)(nil)

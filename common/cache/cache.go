@@ -3,9 +3,10 @@ package cache
 import (
 	"context"
 	"encoding/json"
-	"github.com/redis/go-redis/v9"
-	"github.com/xu756/imlogic/common/config"
+	"imlogic/common/config"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
 type Client struct {

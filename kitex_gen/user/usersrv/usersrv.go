@@ -7,7 +7,7 @@ import (
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 	streaming "github.com/cloudwego/kitex/pkg/streaming"
-	user "github.com/xu756/imlogic/kitex_gen/user"
+	user "imlogic/kitex_gen/user"
 	proto "google.golang.org/protobuf/proto"
 )
 

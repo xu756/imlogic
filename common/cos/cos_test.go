@@ -2,7 +2,7 @@ package cos
 
 import (
 	"context"
-	"server/common/config"
+	"imlogic/common/config"
 	"testing"
 )
 

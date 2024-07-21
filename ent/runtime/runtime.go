@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/xu756/imlogic/ent/runtime.go
+// The schema-stitching logic is generated in imlogic/ent/runtime.go
 
 const (
 	Version = "v0.13.0"                                         // Version of ent codegen.

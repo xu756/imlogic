@@ -1,11 +1,12 @@
 package schema
 
 import (
+	"imlogic/ent/schema/mixin"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"github.com/google/uuid"
-	"github.com/xu756/imlogic/ent/schema/mixin"
 )
 
 // User holds the schema definition for the User entity.

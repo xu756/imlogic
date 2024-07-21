@@ -1,9 +1,9 @@
 package msg
 
 import (
-	"github.com/xu756/imlogic/common/config"
-	"github.com/xu756/imlogic/internal/email"
-	"github.com/xu756/imlogic/internal/xerr"
+	"imlogic/common/config"
+	"imlogic/internal/email"
+	"imlogic/internal/xerr"
 	"log"
 	"net/smtp"
 )

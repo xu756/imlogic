@@ -9,16 +9,16 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/xu756/imlogic/ent/migrate"
+	"imlogic/ent/migrate"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
-	"github.com/xu756/imlogic/ent/group"
-	"github.com/xu756/imlogic/ent/role"
-	"github.com/xu756/imlogic/ent/user"
-	"github.com/xu756/imlogic/ent/usergroup"
-	"github.com/xu756/imlogic/ent/userrole"
+	"imlogic/ent/group"
+	"imlogic/ent/role"
+	"imlogic/ent/user"
+	"imlogic/ent/usergroup"
+	"imlogic/ent/userrole"
 )
 
 // Client is the client that holds all ent builders.

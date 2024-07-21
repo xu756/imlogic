@@ -1,9 +1,10 @@
 package schema
 
 import (
+	"imlogic/ent/schema/mixin"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"github.com/xu756/imlogic/ent/schema/mixin"
 )
 
 // UserGroup holds the schema definition for the UserGroup entity.

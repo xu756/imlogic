@@ -2,9 +2,10 @@ package result
 
 import (
 	"errors"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/xu756/imlogic/internal/xerr"
+	"imlogic/internal/xerr"
 	"net/http"
+
+	"github.com/cloudwego/hertz/pkg/app"
 )
 
 func HttpSuccess(c *app.RequestContext, resp interface{}) {

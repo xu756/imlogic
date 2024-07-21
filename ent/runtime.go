@@ -5,12 +5,12 @@ package ent
 import (
 	"time"
 
-	"github.com/xu756/imlogic/ent/group"
-	"github.com/xu756/imlogic/ent/role"
-	"github.com/xu756/imlogic/ent/schema"
-	"github.com/xu756/imlogic/ent/user"
-	"github.com/xu756/imlogic/ent/usergroup"
-	"github.com/xu756/imlogic/ent/userrole"
+	"imlogic/ent/group"
+	"imlogic/ent/role"
+	"imlogic/ent/schema"
+	"imlogic/ent/user"
+	"imlogic/ent/usergroup"
+	"imlogic/ent/userrole"
 )
 
 // The init function reads all schema descriptors with runtime code

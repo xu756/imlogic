@@ -1,7 +1,7 @@
 package result
 
 import (
-	"github.com/xu756/imlogic/internal/tool"
+	"imlogic/internal/tool"
 	"time"
 )
 

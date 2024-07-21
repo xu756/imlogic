@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/xu756/imlogic/ent/usergroup"
+	"imlogic/ent/usergroup"
 )
 
 // UserGroup is the model entity for the UserGroup schema.

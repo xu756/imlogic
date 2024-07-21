@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/xu756/imlogic/ent/userrole"
+	"imlogic/ent/userrole"
 )
 
 // UserRole is the model entity for the UserRole schema.

@@ -12,11 +12,11 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/xu756/imlogic/ent/group"
-	"github.com/xu756/imlogic/ent/role"
-	"github.com/xu756/imlogic/ent/user"
-	"github.com/xu756/imlogic/ent/usergroup"
-	"github.com/xu756/imlogic/ent/userrole"
+	"imlogic/ent/group"
+	"imlogic/ent/role"
+	"imlogic/ent/user"
+	"imlogic/ent/usergroup"
+	"imlogic/ent/userrole"
 )
 
 // ent aliases to avoid import conflicts in user's code.

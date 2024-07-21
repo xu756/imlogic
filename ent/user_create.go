@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/xu756/imlogic/ent/user"
+	"imlogic/ent/user"
 )
 
 // UserCreate is the builder for creating a User entity.

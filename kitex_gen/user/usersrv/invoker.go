@@ -4,7 +4,7 @@ package usersrv
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	user "github.com/xu756/imlogic/kitex_gen/user"
+	user "imlogic/kitex_gen/user"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

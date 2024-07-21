@@ -2,7 +2,7 @@ package mongodb
 
 import (
 	"context"
-	"github.com/xu756/imlogic/common/config"
+	"imlogic/common/config"
 	"testing"
 )
 

@@ -1,12 +1,13 @@
 package xjwt
 
 import (
+	"imlogic/common/config"
+	"imlogic/internal/tool"
+	"imlogic/internal/xerr"
+	"time"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/xu756/imlogic/common/config"
-	"github.com/xu756/imlogic/internal/tool"
-	"github.com/xu756/imlogic/internal/xerr"
-	"time"
 )
 
 type AuthInfo struct {

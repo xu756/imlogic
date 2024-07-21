@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/xu756/imlogic/ent"
+	"imlogic/ent"
 	// required by schema hooks.
-	_ "github.com/xu756/imlogic/ent/runtime"
+	_ "imlogic/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/xu756/imlogic/ent/migrate"
+	"imlogic/ent/migrate"
 )
 
 type (

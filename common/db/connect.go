@@ -2,12 +2,13 @@ package db
 
 import (
 	"context"
-	"entgo.io/ent/dialect/sql"
-	_ "github.com/lib/pq"
-	"github.com/xu756/imlogic/ent"
-	"github.com/xu756/imlogic/ent/migrate"
+	"imlogic/ent"
+	"imlogic/ent/migrate"
 	"log"
 	"time"
+
+	"entgo.io/ent/dialect/sql"
+	_ "github.com/lib/pq"
 )
 
 type customModel struct {

@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/xu756/imlogic/ent/role"
+	"imlogic/ent/role"
 )
 
 // RoleCreate is the builder for creating a Role entity.

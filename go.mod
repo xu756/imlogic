@@ -1,4 +1,4 @@
-module github.com/xu756/imlogic
+module imlogic
 
 go 1.22.0
 

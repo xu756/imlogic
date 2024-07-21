@@ -1,6 +1,6 @@
 package types
 
-import "github.com/xu756/imlogic/kitex_gen/im"
+import "imlogic/kitex_gen/im"
 
 // MsgMeta 消息元数据
 type MsgMeta struct {

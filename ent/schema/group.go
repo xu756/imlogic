@@ -1,10 +1,11 @@
 package schema
 
 import (
+	"imlogic/ent/schema/mixin"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"github.com/google/uuid"
-	"github.com/xu756/imlogic/ent/schema/mixin"
 )
 
 // Group holds the schema definition for the Group entity.

@@ -3,7 +3,7 @@ package imserver
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	im "github.com/xu756/imlogic/kitex_gen/im"
+	im "imlogic/kitex_gen/im"
 )
 
 // NewServer creates a server.Server with the given handler and options.

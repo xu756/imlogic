@@ -2,9 +2,9 @@ package db
 
 import (
 	"context"
-	"github.com/xu756/imlogic/ent"
-	"github.com/xu756/imlogic/ent/user"
-	"github.com/xu756/imlogic/internal/xerr"
+	"imlogic/ent"
+	"imlogic/ent/user"
+	"imlogic/internal/xerr"
 )
 
 type dbUserModel interface {

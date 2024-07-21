@@ -1,7 +1,7 @@
 package mq
 
 import (
-	"server/common/config"
+	"imlogic/common/config"
 	"testing"
 )
 
@@ -14,6 +14,5 @@ import (
 
 func TestInit(t *testing.T) {
 	config.Init("../../configs/dev.yaml")
-	Init()
 
 }

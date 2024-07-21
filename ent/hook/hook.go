@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/xu756/imlogic/ent"
+	"imlogic/ent"
 )
 
 // The GroupFunc type is an adapter to allow the use of ordinary

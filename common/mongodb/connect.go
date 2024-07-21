@@ -2,11 +2,12 @@ package mongodb
 
 import (
 	"context"
-	"github.com/xu756/imlogic/common/config"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"imlogic/common/config"
 	"log"
 	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type customClient struct {

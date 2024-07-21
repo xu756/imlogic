@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/xu756/imlogic/ent/group"
-	"github.com/xu756/imlogic/ent/predicate"
+	"imlogic/ent/group"
+	"imlogic/ent/predicate"
 )
 
 // GroupQuery is the builder for querying Group entities.

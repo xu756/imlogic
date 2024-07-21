@@ -1,9 +1,10 @@
 package cos
 
 import (
+	"imlogic/common/config"
+
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"server/common/config"
 )
 
 type cosClient struct {

@@ -10,8 +10,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/xu756/imlogic/ent/predicate"
-	"github.com/xu756/imlogic/ent/userrole"
+	"imlogic/ent/predicate"
+	"imlogic/ent/userrole"
 )
 
 // UserRoleQuery is the builder for querying UserRole entities.

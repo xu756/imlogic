@@ -3,7 +3,7 @@ package cache
 import (
 	"context"
 	"encoding/json"
-	"github.com/xu756/imlogic/common/config"
+	"imlogic/common/config"
 	"testing"
 )
 
