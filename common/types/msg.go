@@ -27,8 +27,9 @@ type Message struct {
 	MsgId      string     `json:"msg_id"`      // 消息id uuid 前端生成
 	Timestamp  int64      `json:"timestamp"`   // 消息时间戳
 	ChatType   ChatType   `json:"chat_type"`   // 聊天类型	单聊 | 群聊 ｜ 系统消息｜ 通知
-	From       int64      `json:"from"`        // 发送者 uuid(用户唯一)
-	To         int64      `json:"to"`          // 接收者 uuid(用户唯一/组)
+	Sender     int64      `json:"sender"`      // 发送者
+	ChatId     int64      `json:"chat_id"`     // 聊天id
+	GroupId    int64      `json:"group_id"`    // 群id
 	MsgType    MsgType    `json:"msg_type"`    // 消息类型
 	MsgContent MsgContent `json:"msg_content"` // 消息内容
 }

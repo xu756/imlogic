@@ -8,15 +8,15 @@ import (
 	"entgo.io/ent/schema/index"
 )
 
-// Message holds the schema definition for the Message entity.
-type Message struct {
+// GroupMessage holds the schema definition for the GroupMessage entity.
+type GroupMessage struct {
 	ent.Schema
 }
 
-// Fields of the Message.
-func (Message) Fields() []ent.Field {
+// Fields of the GroupMessage.
+func (GroupMessage) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("chat_id").Comment("聊天id"),
+		field.Int64("group_id").Comment("群id"),
 		field.Enum("msg_type").GoType(types.MsgType(0)).Comment("消息类型"),
 		field.String("msg_id").Comment("消息id"),
 		field.Int64("timestamp").Comment("消息时间戳"),
@@ -25,14 +25,14 @@ func (Message) Fields() []ent.Field {
 	}
 }
 
-// Edges of the Message.
-func (Message) Edges() []ent.Edge {
+// Edges of the GroupMessage.
+func (GroupMessage) Edges() []ent.Edge {
 	return nil
 }
 
-// Indexes of the Message.
-func (Message) Indexes() []ent.Index {
+// Indexes of the GroupMessage.
+func (GroupMessage) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("msg_id", "sender_id", "chat_id"),
+		index.Fields("msg_id", "sender_id", "group_id"),
 	}
 }

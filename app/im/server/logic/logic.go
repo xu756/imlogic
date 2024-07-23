@@ -17,8 +17,9 @@ func Msglogic(c *client.Client, msg *types.Message) {
 		MsgId:    msg.MsgId,
 		LinkId:   msg.LinkId,
 		ChatType: im.ChatType(msg.ChatType),
-		From:     msg.From,
-		To:       msg.To,
+		Sender:   msg.Sender,
+		ChatId:   msg.ChatId,
+		GroupId:  msg.GroupId,
 		MsgType:  im.MsgType(msg.MsgType),
 	}
 	switch msg.MsgType {
@@ -26,8 +27,8 @@ func Msglogic(c *client.Client, msg *types.Message) {
 		var textMsg = new(im.TextMsg)
 		textMsg.Common = commonMsg
 		textMsg.Content = msg.MsgContent.Content
-		res, err := service.ImSrv.TextMessage(c.Ctx, textMsg)
-		if err != nil || res.Success == false {
+		_, err := service.ImSrv.TextMessage(c.Ctx, textMsg)
+		if err != nil {
 			log.Print("send text message failed", err)
 			return
 		}
@@ -43,8 +44,8 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			})
 		}
 		imgMsg.Img = imgs
-		res, err := service.ImSrv.ImageMessage(c.Ctx, imgMsg)
-		if err != nil || res.Success == false {
+		_, err := service.ImSrv.ImageMessage(c.Ctx, imgMsg)
+		if err != nil {
 			log.Print("send image message failed", err)
 			return
 		}
@@ -56,8 +57,8 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Uid: msg.MsgContent.File.UID,
 			Url: msg.MsgContent.File.URL,
 		}
-		res, err := service.ImSrv.FileMessage(c.Ctx, fileMsg)
-		if err != nil || res.Success == false {
+		_, err := service.ImSrv.FileMessage(c.Ctx, fileMsg)
+		if err != nil {
 			log.Print("send file message failed", err)
 			return
 		}
@@ -70,8 +71,8 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Url:      msg.MsgContent.Audio.URL,
 			Duration: msg.MsgContent.Audio.Duration,
 		}
-		res, err := service.ImSrv.AudioMessage(c.Ctx, audioMsg)
-		if err != nil || res.Success == false {
+		_, err := service.ImSrv.AudioMessage(c.Ctx, audioMsg)
+		if err != nil {
 			log.Print("send audio message failed", err)
 			return
 		}
@@ -84,8 +85,8 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Url:      msg.MsgContent.Video.URL,
 			Duration: msg.MsgContent.Video.Duration,
 		}
-		res, err := service.ImSrv.VideoMessage(c.Ctx, videoMsg)
-		if err != nil || res.Success == false {
+		_, err := service.ImSrv.VideoMessage(c.Ctx, videoMsg)
+		if err != nil {
 			log.Print("send video message failed", err)
 			return
 		}

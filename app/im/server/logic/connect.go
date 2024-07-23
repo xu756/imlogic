@@ -44,7 +44,7 @@ func initClient(c *client.Client) {
 		LinkId:    c.LinkId,
 		MsgId:     uuid.NewString(),
 		Timestamp: tool.TimeNowUnixMilli(),
-		To:        c.UserId,
+		ChatType:  types.SystemMessage,
 		MsgMeta: types.MsgMeta{
 			Detail:  "connect",
 			Version: "1.0",

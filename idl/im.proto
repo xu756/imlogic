@@ -56,9 +56,10 @@ message CommonMsg {
     string msg_id = 2;
     int64 timestamp = 3;
     ChatType chat_type = 4;
-    int64 from = 5;
-    int64 to = 6;
-    MsgType msg_type = 7;
+    int64 sender = 5;
+    int64 chat_id = 6;
+    int64 group_id = 7;
+    MsgType msg_type = 8;
 }
 
 
@@ -111,14 +112,15 @@ message Message {
     string msg_id = 2;
     int64 timestamp = 3;
     ChatType chat_type = 4;
-    int64 from = 5;
-    int64 to = 6;
-    MsgType msg_type = 7;
-    TextMsg text = 8;
-    ImgMsg img = 9;
-    FileMsg file = 10;
-    AudioMsg audio = 11;
-    VideoMsg video = 12;
+    int64 sender = 5;
+    int64 chat_id = 6;
+    int64 group_id = 7;
+    MsgType msg_type = 8;
+    TextMsg text = 9;
+    ImgMsg img = 10;
+    FileMsg file = 11;
+    AudioMsg audio = 12;
+    VideoMsg video = 13;
 }
 
 

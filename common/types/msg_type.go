@@ -14,3 +14,16 @@ const (
 	// 视频消息
 	Video MsgType = 4
 )
+
+func (MsgType) Values() (kinds []string) {
+	for _, s := range []MsgType{
+		Text,
+		Image,
+		File,
+		Audio,
+		Video,
+	} {
+		kinds = append(kinds, string(s))
+	}
+	return
+}

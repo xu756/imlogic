@@ -16,7 +16,7 @@ type UserGroup struct {
 // Fields of the UserGroup.
 func (UserGroup) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("created_at").Immutable().Default(time.Now).Comment("创建时间"),
+		field.Time("join_at").Immutable().Default(time.Now).Comment("加群时间"),
 		field.Int64("user_id").Comment("用户id"),
 		field.Int64("group_id").Comment("组id"),
 	}
