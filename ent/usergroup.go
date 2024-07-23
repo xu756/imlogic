@@ -4,32 +4,21 @@ package ent
 
 import (
 	"fmt"
+	"imlogic/ent/usergroup"
 	"strings"
 	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/usergroup"
 )
 
 // UserGroup is the model entity for the UserGroup schema.
 type UserGroup struct {
 	config `json:"-"`
 	// ID of the ent.
-	// id
-	ID int64 `json:"id,omitempty"`
-	// 创建时间
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	// 更新时间
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// 删除状态
-	Deleted bool `json:"deleted,omitempty"`
-	// 创建人
-	Creator int64 `json:"creator,omitempty"`
-	// 修改人
-	Editor int64 `json:"editor,omitempty"`
-	// 版本号
-	Version int64 `json:"version,omitempty"`
+	ID int `json:"id,omitempty"`
+	// 加群时间
+	JoinAt time.Time `json:"join_at,omitempty"`
 	// 用户id
 	UserID int64 `json:"user_id,omitempty"`
 	// 组id
@@ -42,11 +31,9 @@ func (*UserGroup) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case usergroup.FieldDeleted:
-			values[i] = new(sql.NullBool)
-		case usergroup.FieldID, usergroup.FieldCreator, usergroup.FieldEditor, usergroup.FieldVersion, usergroup.FieldUserID, usergroup.FieldGroupID:
+		case usergroup.FieldID, usergroup.FieldUserID, usergroup.FieldGroupID:
 			values[i] = new(sql.NullInt64)
-		case usergroup.FieldCreatedAt, usergroup.FieldUpdatedAt:
+		case usergroup.FieldJoinAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -68,42 +55,12 @@ func (ug *UserGroup) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			ug.ID = int64(value.Int64)
-		case usergroup.FieldCreatedAt:
+			ug.ID = int(value.Int64)
+		case usergroup.FieldJoinAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+				return fmt.Errorf("unexpected type %T for field join_at", values[i])
 			} else if value.Valid {
-				ug.CreatedAt = value.Time
-			}
-		case usergroup.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				ug.UpdatedAt = value.Time
-			}
-		case usergroup.FieldDeleted:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted", values[i])
-			} else if value.Valid {
-				ug.Deleted = value.Bool
-			}
-		case usergroup.FieldCreator:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field creator", values[i])
-			} else if value.Valid {
-				ug.Creator = value.Int64
-			}
-		case usergroup.FieldEditor:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field editor", values[i])
-			} else if value.Valid {
-				ug.Editor = value.Int64
-			}
-		case usergroup.FieldVersion:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field version", values[i])
-			} else if value.Valid {
-				ug.Version = value.Int64
+				ug.JoinAt = value.Time
 			}
 		case usergroup.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -153,23 +110,8 @@ func (ug *UserGroup) String() string {
 	var builder strings.Builder
 	builder.WriteString("UserGroup(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ug.ID))
-	builder.WriteString("created_at=")
-	builder.WriteString(ug.CreatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(ug.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("deleted=")
-	builder.WriteString(fmt.Sprintf("%v", ug.Deleted))
-	builder.WriteString(", ")
-	builder.WriteString("creator=")
-	builder.WriteString(fmt.Sprintf("%v", ug.Creator))
-	builder.WriteString(", ")
-	builder.WriteString("editor=")
-	builder.WriteString(fmt.Sprintf("%v", ug.Editor))
-	builder.WriteString(", ")
-	builder.WriteString("version=")
-	builder.WriteString(fmt.Sprintf("%v", ug.Version))
+	builder.WriteString("join_at=")
+	builder.WriteString(ug.JoinAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", ug.UserID))

@@ -6,13 +6,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"imlogic/ent/predicate"
+	"imlogic/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/user"
 )
 
 // UserUpdate is the builder for updating User entities.
@@ -48,24 +48,17 @@ func (uu *UserUpdate) SetNillableDeleted(b *bool) *UserUpdate {
 	return uu
 }
 
-// SetCreator sets the "creator" field.
-func (uu *UserUpdate) SetCreator(i int64) *UserUpdate {
-	uu.mutation.ResetCreator()
-	uu.mutation.SetCreator(i)
+// SetUUID sets the "uuid" field.
+func (uu *UserUpdate) SetUUID(s string) *UserUpdate {
+	uu.mutation.SetUUID(s)
 	return uu
 }
 
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableCreator(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetCreator(*i)
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableUUID(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetUUID(*s)
 	}
-	return uu
-}
-
-// AddCreator adds i to the "creator" field.
-func (uu *UserUpdate) AddCreator(i int64) *UserUpdate {
-	uu.mutation.AddCreator(i)
 	return uu
 }
 
@@ -87,27 +80,6 @@ func (uu *UserUpdate) SetNillableEditor(i *int64) *UserUpdate {
 // AddEditor adds i to the "editor" field.
 func (uu *UserUpdate) AddEditor(i int64) *UserUpdate {
 	uu.mutation.AddEditor(i)
-	return uu
-}
-
-// SetVersion sets the "version" field.
-func (uu *UserUpdate) SetVersion(i int64) *UserUpdate {
-	uu.mutation.ResetVersion()
-	uu.mutation.SetVersion(i)
-	return uu
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableVersion(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetVersion(*i)
-	}
-	return uu
-}
-
-// AddVersion adds i to the "version" field.
-func (uu *UserUpdate) AddVersion(i int64) *UserUpdate {
-	uu.mutation.AddVersion(i)
 	return uu
 }
 
@@ -163,6 +135,20 @@ func (uu *UserUpdate) SetAvatar(s string) *UserUpdate {
 func (uu *UserUpdate) SetNillableAvatar(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetAvatar(*s)
+	}
+	return uu
+}
+
+// SetDesc sets the "desc" field.
+func (uu *UserUpdate) SetDesc(s string) *UserUpdate {
+	uu.mutation.SetDesc(s)
+	return uu
+}
+
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDesc(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetDesc(*s)
 	}
 	return uu
 }
@@ -223,23 +209,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Deleted(); ok {
 		_spec.SetField(user.FieldDeleted, field.TypeBool, value)
 	}
-	if value, ok := uu.mutation.Creator(); ok {
-		_spec.SetField(user.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedCreator(); ok {
-		_spec.AddField(user.FieldCreator, field.TypeInt64, value)
+	if value, ok := uu.mutation.UUID(); ok {
+		_spec.SetField(user.FieldUUID, field.TypeString, value)
 	}
 	if value, ok := uu.mutation.Editor(); ok {
 		_spec.SetField(user.FieldEditor, field.TypeInt64, value)
 	}
 	if value, ok := uu.mutation.AddedEditor(); ok {
 		_spec.AddField(user.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.Version(); ok {
-		_spec.SetField(user.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedVersion(); ok {
-		_spec.AddField(user.FieldVersion, field.TypeInt64, value)
 	}
 	if value, ok := uu.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
@@ -252,6 +229,9 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.Desc(); ok {
+		_spec.SetField(user.FieldDesc, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -293,24 +273,17 @@ func (uuo *UserUpdateOne) SetNillableDeleted(b *bool) *UserUpdateOne {
 	return uuo
 }
 
-// SetCreator sets the "creator" field.
-func (uuo *UserUpdateOne) SetCreator(i int64) *UserUpdateOne {
-	uuo.mutation.ResetCreator()
-	uuo.mutation.SetCreator(i)
+// SetUUID sets the "uuid" field.
+func (uuo *UserUpdateOne) SetUUID(s string) *UserUpdateOne {
+	uuo.mutation.SetUUID(s)
 	return uuo
 }
 
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCreator(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetCreator(*i)
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableUUID(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetUUID(*s)
 	}
-	return uuo
-}
-
-// AddCreator adds i to the "creator" field.
-func (uuo *UserUpdateOne) AddCreator(i int64) *UserUpdateOne {
-	uuo.mutation.AddCreator(i)
 	return uuo
 }
 
@@ -332,27 +305,6 @@ func (uuo *UserUpdateOne) SetNillableEditor(i *int64) *UserUpdateOne {
 // AddEditor adds i to the "editor" field.
 func (uuo *UserUpdateOne) AddEditor(i int64) *UserUpdateOne {
 	uuo.mutation.AddEditor(i)
-	return uuo
-}
-
-// SetVersion sets the "version" field.
-func (uuo *UserUpdateOne) SetVersion(i int64) *UserUpdateOne {
-	uuo.mutation.ResetVersion()
-	uuo.mutation.SetVersion(i)
-	return uuo
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableVersion(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetVersion(*i)
-	}
-	return uuo
-}
-
-// AddVersion adds i to the "version" field.
-func (uuo *UserUpdateOne) AddVersion(i int64) *UserUpdateOne {
-	uuo.mutation.AddVersion(i)
 	return uuo
 }
 
@@ -408,6 +360,20 @@ func (uuo *UserUpdateOne) SetAvatar(s string) *UserUpdateOne {
 func (uuo *UserUpdateOne) SetNillableAvatar(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetAvatar(*s)
+	}
+	return uuo
+}
+
+// SetDesc sets the "desc" field.
+func (uuo *UserUpdateOne) SetDesc(s string) *UserUpdateOne {
+	uuo.mutation.SetDesc(s)
+	return uuo
+}
+
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDesc(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetDesc(*s)
 	}
 	return uuo
 }
@@ -498,23 +464,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if value, ok := uuo.mutation.Deleted(); ok {
 		_spec.SetField(user.FieldDeleted, field.TypeBool, value)
 	}
-	if value, ok := uuo.mutation.Creator(); ok {
-		_spec.SetField(user.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedCreator(); ok {
-		_spec.AddField(user.FieldCreator, field.TypeInt64, value)
+	if value, ok := uuo.mutation.UUID(); ok {
+		_spec.SetField(user.FieldUUID, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.Editor(); ok {
 		_spec.SetField(user.FieldEditor, field.TypeInt64, value)
 	}
 	if value, ok := uuo.mutation.AddedEditor(); ok {
 		_spec.AddField(user.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.Version(); ok {
-		_spec.SetField(user.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedVersion(); ok {
-		_spec.AddField(user.FieldVersion, field.TypeInt64, value)
 	}
 	if value, ok := uuo.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
@@ -527,6 +484,9 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Avatar(); ok {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Desc(); ok {
+		_spec.SetField(user.FieldDesc, field.TypeString, value)
 	}
 	_node = &User{config: uuo.config}
 	_spec.Assign = _node.assignValues

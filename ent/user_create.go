@@ -6,11 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"imlogic/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/user"
 )
 
 // UserCreate is the builder for creating a User entity.
@@ -62,16 +62,16 @@ func (uc *UserCreate) SetNillableDeleted(b *bool) *UserCreate {
 	return uc
 }
 
-// SetCreator sets the "creator" field.
-func (uc *UserCreate) SetCreator(i int64) *UserCreate {
-	uc.mutation.SetCreator(i)
+// SetUUID sets the "uuid" field.
+func (uc *UserCreate) SetUUID(s string) *UserCreate {
+	uc.mutation.SetUUID(s)
 	return uc
 }
 
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (uc *UserCreate) SetNillableCreator(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetCreator(*i)
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (uc *UserCreate) SetNillableUUID(s *string) *UserCreate {
+	if s != nil {
+		uc.SetUUID(*s)
 	}
 	return uc
 }
@@ -90,37 +90,17 @@ func (uc *UserCreate) SetNillableEditor(i *int64) *UserCreate {
 	return uc
 }
 
-// SetVersion sets the "version" field.
-func (uc *UserCreate) SetVersion(i int64) *UserCreate {
-	uc.mutation.SetVersion(i)
-	return uc
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (uc *UserCreate) SetNillableVersion(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetVersion(*i)
-	}
-	return uc
-}
-
-// SetUUID sets the "uuid" field.
-func (uc *UserCreate) SetUUID(s string) *UserCreate {
-	uc.mutation.SetUUID(s)
-	return uc
-}
-
-// SetNillableUUID sets the "uuid" field if the given value is not nil.
-func (uc *UserCreate) SetNillableUUID(s *string) *UserCreate {
-	if s != nil {
-		uc.SetUUID(*s)
-	}
-	return uc
-}
-
 // SetUsername sets the "username" field.
 func (uc *UserCreate) SetUsername(s string) *UserCreate {
 	uc.mutation.SetUsername(s)
+	return uc
+}
+
+// SetNillableUsername sets the "username" field if the given value is not nil.
+func (uc *UserCreate) SetNillableUsername(s *string) *UserCreate {
+	if s != nil {
+		uc.SetUsername(*s)
+	}
 	return uc
 }
 
@@ -130,9 +110,25 @@ func (uc *UserCreate) SetPassword(s string) *UserCreate {
 	return uc
 }
 
+// SetNillablePassword sets the "password" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePassword(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPassword(*s)
+	}
+	return uc
+}
+
 // SetMobile sets the "mobile" field.
 func (uc *UserCreate) SetMobile(s string) *UserCreate {
 	uc.mutation.SetMobile(s)
+	return uc
+}
+
+// SetNillableMobile sets the "mobile" field if the given value is not nil.
+func (uc *UserCreate) SetNillableMobile(s *string) *UserCreate {
+	if s != nil {
+		uc.SetMobile(*s)
+	}
 	return uc
 }
 
@@ -150,16 +146,16 @@ func (uc *UserCreate) SetNillableAvatar(s *string) *UserCreate {
 	return uc
 }
 
-// SetDevice sets the "device" field.
-func (uc *UserCreate) SetDevice(s string) *UserCreate {
-	uc.mutation.SetDevice(s)
+// SetDesc sets the "desc" field.
+func (uc *UserCreate) SetDesc(s string) *UserCreate {
+	uc.mutation.SetDesc(s)
 	return uc
 }
 
-// SetNillableDevice sets the "device" field if the given value is not nil.
-func (uc *UserCreate) SetNillableDevice(s *string) *UserCreate {
+// SetNillableDesc sets the "desc" field if the given value is not nil.
+func (uc *UserCreate) SetNillableDesc(s *string) *UserCreate {
 	if s != nil {
-		uc.SetDevice(*s)
+		uc.SetDesc(*s)
 	}
 	return uc
 }
@@ -217,29 +213,33 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultDeleted
 		uc.mutation.SetDeleted(v)
 	}
-	if _, ok := uc.mutation.Creator(); !ok {
-		v := user.DefaultCreator
-		uc.mutation.SetCreator(v)
+	if _, ok := uc.mutation.UUID(); !ok {
+		v := user.DefaultUUID()
+		uc.mutation.SetUUID(v)
 	}
 	if _, ok := uc.mutation.Editor(); !ok {
 		v := user.DefaultEditor
 		uc.mutation.SetEditor(v)
 	}
-	if _, ok := uc.mutation.Version(); !ok {
-		v := user.DefaultVersion
-		uc.mutation.SetVersion(v)
+	if _, ok := uc.mutation.Username(); !ok {
+		v := user.DefaultUsername
+		uc.mutation.SetUsername(v)
 	}
-	if _, ok := uc.mutation.UUID(); !ok {
-		v := user.DefaultUUID()
-		uc.mutation.SetUUID(v)
+	if _, ok := uc.mutation.Password(); !ok {
+		v := user.DefaultPassword
+		uc.mutation.SetPassword(v)
+	}
+	if _, ok := uc.mutation.Mobile(); !ok {
+		v := user.DefaultMobile
+		uc.mutation.SetMobile(v)
 	}
 	if _, ok := uc.mutation.Avatar(); !ok {
 		v := user.DefaultAvatar
 		uc.mutation.SetAvatar(v)
 	}
-	if _, ok := uc.mutation.Device(); !ok {
-		v := user.DefaultDevice
-		uc.mutation.SetDevice(v)
+	if _, ok := uc.mutation.Desc(); !ok {
+		v := user.DefaultDesc
+		uc.mutation.SetDesc(v)
 	}
 }
 
@@ -254,17 +254,11 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Deleted(); !ok {
 		return &ValidationError{Name: "deleted", err: errors.New(`ent: missing required field "User.deleted"`)}
 	}
-	if _, ok := uc.mutation.Creator(); !ok {
-		return &ValidationError{Name: "creator", err: errors.New(`ent: missing required field "User.creator"`)}
+	if _, ok := uc.mutation.UUID(); !ok {
+		return &ValidationError{Name: "uuid", err: errors.New(`ent: missing required field "User.uuid"`)}
 	}
 	if _, ok := uc.mutation.Editor(); !ok {
 		return &ValidationError{Name: "editor", err: errors.New(`ent: missing required field "User.editor"`)}
-	}
-	if _, ok := uc.mutation.Version(); !ok {
-		return &ValidationError{Name: "version", err: errors.New(`ent: missing required field "User.version"`)}
-	}
-	if _, ok := uc.mutation.UUID(); !ok {
-		return &ValidationError{Name: "uuid", err: errors.New(`ent: missing required field "User.uuid"`)}
 	}
 	if _, ok := uc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "User.username"`)}
@@ -278,8 +272,8 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Avatar(); !ok {
 		return &ValidationError{Name: "avatar", err: errors.New(`ent: missing required field "User.avatar"`)}
 	}
-	if _, ok := uc.mutation.Device(); !ok {
-		return &ValidationError{Name: "device", err: errors.New(`ent: missing required field "User.device"`)}
+	if _, ok := uc.mutation.Desc(); !ok {
+		return &ValidationError{Name: "desc", err: errors.New(`ent: missing required field "User.desc"`)}
 	}
 	return nil
 }
@@ -325,21 +319,13 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldDeleted, field.TypeBool, value)
 		_node.Deleted = value
 	}
-	if value, ok := uc.mutation.Creator(); ok {
-		_spec.SetField(user.FieldCreator, field.TypeInt64, value)
-		_node.Creator = value
+	if value, ok := uc.mutation.UUID(); ok {
+		_spec.SetField(user.FieldUUID, field.TypeString, value)
+		_node.UUID = value
 	}
 	if value, ok := uc.mutation.Editor(); ok {
 		_spec.SetField(user.FieldEditor, field.TypeInt64, value)
 		_node.Editor = value
-	}
-	if value, ok := uc.mutation.Version(); ok {
-		_spec.SetField(user.FieldVersion, field.TypeInt64, value)
-		_node.Version = value
-	}
-	if value, ok := uc.mutation.UUID(); ok {
-		_spec.SetField(user.FieldUUID, field.TypeString, value)
-		_node.UUID = value
 	}
 	if value, ok := uc.mutation.Username(); ok {
 		_spec.SetField(user.FieldUsername, field.TypeString, value)
@@ -357,9 +343,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldAvatar, field.TypeString, value)
 		_node.Avatar = value
 	}
-	if value, ok := uc.mutation.Device(); ok {
-		_spec.SetField(user.FieldDevice, field.TypeString, value)
-		_node.Device = value
+	if value, ok := uc.mutation.Desc(); ok {
+		_spec.SetField(user.FieldDesc, field.TypeString, value)
+		_node.Desc = value
 	}
 	return _node, _spec
 }

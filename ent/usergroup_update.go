@@ -6,13 +6,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
+	"imlogic/ent/predicate"
+	"imlogic/ent/usergroup"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/usergroup"
 )
 
 // UserGroupUpdate is the builder for updating UserGroup entities.
@@ -25,89 +24,6 @@ type UserGroupUpdate struct {
 // Where appends a list predicates to the UserGroupUpdate builder.
 func (ugu *UserGroupUpdate) Where(ps ...predicate.UserGroup) *UserGroupUpdate {
 	ugu.mutation.Where(ps...)
-	return ugu
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (ugu *UserGroupUpdate) SetUpdatedAt(t time.Time) *UserGroupUpdate {
-	ugu.mutation.SetUpdatedAt(t)
-	return ugu
-}
-
-// SetDeleted sets the "deleted" field.
-func (ugu *UserGroupUpdate) SetDeleted(b bool) *UserGroupUpdate {
-	ugu.mutation.SetDeleted(b)
-	return ugu
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (ugu *UserGroupUpdate) SetNillableDeleted(b *bool) *UserGroupUpdate {
-	if b != nil {
-		ugu.SetDeleted(*b)
-	}
-	return ugu
-}
-
-// SetCreator sets the "creator" field.
-func (ugu *UserGroupUpdate) SetCreator(i int64) *UserGroupUpdate {
-	ugu.mutation.ResetCreator()
-	ugu.mutation.SetCreator(i)
-	return ugu
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (ugu *UserGroupUpdate) SetNillableCreator(i *int64) *UserGroupUpdate {
-	if i != nil {
-		ugu.SetCreator(*i)
-	}
-	return ugu
-}
-
-// AddCreator adds i to the "creator" field.
-func (ugu *UserGroupUpdate) AddCreator(i int64) *UserGroupUpdate {
-	ugu.mutation.AddCreator(i)
-	return ugu
-}
-
-// SetEditor sets the "editor" field.
-func (ugu *UserGroupUpdate) SetEditor(i int64) *UserGroupUpdate {
-	ugu.mutation.ResetEditor()
-	ugu.mutation.SetEditor(i)
-	return ugu
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (ugu *UserGroupUpdate) SetNillableEditor(i *int64) *UserGroupUpdate {
-	if i != nil {
-		ugu.SetEditor(*i)
-	}
-	return ugu
-}
-
-// AddEditor adds i to the "editor" field.
-func (ugu *UserGroupUpdate) AddEditor(i int64) *UserGroupUpdate {
-	ugu.mutation.AddEditor(i)
-	return ugu
-}
-
-// SetVersion sets the "version" field.
-func (ugu *UserGroupUpdate) SetVersion(i int64) *UserGroupUpdate {
-	ugu.mutation.ResetVersion()
-	ugu.mutation.SetVersion(i)
-	return ugu
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (ugu *UserGroupUpdate) SetNillableVersion(i *int64) *UserGroupUpdate {
-	if i != nil {
-		ugu.SetVersion(*i)
-	}
-	return ugu
-}
-
-// AddVersion adds i to the "version" field.
-func (ugu *UserGroupUpdate) AddVersion(i int64) *UserGroupUpdate {
-	ugu.mutation.AddVersion(i)
 	return ugu
 }
 
@@ -160,7 +76,6 @@ func (ugu *UserGroupUpdate) Mutation() *UserGroupMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ugu *UserGroupUpdate) Save(ctx context.Context) (int, error) {
-	ugu.defaults()
 	return withHooks(ctx, ugu.sqlSave, ugu.mutation, ugu.hooks)
 }
 
@@ -186,46 +101,14 @@ func (ugu *UserGroupUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ugu *UserGroupUpdate) defaults() {
-	if _, ok := ugu.mutation.UpdatedAt(); !ok {
-		v := usergroup.UpdateDefaultUpdatedAt()
-		ugu.mutation.SetUpdatedAt(v)
-	}
-}
-
 func (ugu *UserGroupUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(usergroup.Table, usergroup.Columns, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewUpdateSpec(usergroup.Table, usergroup.Columns, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt))
 	if ps := ugu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := ugu.mutation.UpdatedAt(); ok {
-		_spec.SetField(usergroup.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := ugu.mutation.Deleted(); ok {
-		_spec.SetField(usergroup.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := ugu.mutation.Creator(); ok {
-		_spec.SetField(usergroup.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := ugu.mutation.AddedCreator(); ok {
-		_spec.AddField(usergroup.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := ugu.mutation.Editor(); ok {
-		_spec.SetField(usergroup.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := ugu.mutation.AddedEditor(); ok {
-		_spec.AddField(usergroup.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := ugu.mutation.Version(); ok {
-		_spec.SetField(usergroup.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := ugu.mutation.AddedVersion(); ok {
-		_spec.AddField(usergroup.FieldVersion, field.TypeInt64, value)
 	}
 	if value, ok := ugu.mutation.UserID(); ok {
 		_spec.SetField(usergroup.FieldUserID, field.TypeInt64, value)
@@ -257,89 +140,6 @@ type UserGroupUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *UserGroupMutation
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (uguo *UserGroupUpdateOne) SetUpdatedAt(t time.Time) *UserGroupUpdateOne {
-	uguo.mutation.SetUpdatedAt(t)
-	return uguo
-}
-
-// SetDeleted sets the "deleted" field.
-func (uguo *UserGroupUpdateOne) SetDeleted(b bool) *UserGroupUpdateOne {
-	uguo.mutation.SetDeleted(b)
-	return uguo
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (uguo *UserGroupUpdateOne) SetNillableDeleted(b *bool) *UserGroupUpdateOne {
-	if b != nil {
-		uguo.SetDeleted(*b)
-	}
-	return uguo
-}
-
-// SetCreator sets the "creator" field.
-func (uguo *UserGroupUpdateOne) SetCreator(i int64) *UserGroupUpdateOne {
-	uguo.mutation.ResetCreator()
-	uguo.mutation.SetCreator(i)
-	return uguo
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (uguo *UserGroupUpdateOne) SetNillableCreator(i *int64) *UserGroupUpdateOne {
-	if i != nil {
-		uguo.SetCreator(*i)
-	}
-	return uguo
-}
-
-// AddCreator adds i to the "creator" field.
-func (uguo *UserGroupUpdateOne) AddCreator(i int64) *UserGroupUpdateOne {
-	uguo.mutation.AddCreator(i)
-	return uguo
-}
-
-// SetEditor sets the "editor" field.
-func (uguo *UserGroupUpdateOne) SetEditor(i int64) *UserGroupUpdateOne {
-	uguo.mutation.ResetEditor()
-	uguo.mutation.SetEditor(i)
-	return uguo
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (uguo *UserGroupUpdateOne) SetNillableEditor(i *int64) *UserGroupUpdateOne {
-	if i != nil {
-		uguo.SetEditor(*i)
-	}
-	return uguo
-}
-
-// AddEditor adds i to the "editor" field.
-func (uguo *UserGroupUpdateOne) AddEditor(i int64) *UserGroupUpdateOne {
-	uguo.mutation.AddEditor(i)
-	return uguo
-}
-
-// SetVersion sets the "version" field.
-func (uguo *UserGroupUpdateOne) SetVersion(i int64) *UserGroupUpdateOne {
-	uguo.mutation.ResetVersion()
-	uguo.mutation.SetVersion(i)
-	return uguo
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (uguo *UserGroupUpdateOne) SetNillableVersion(i *int64) *UserGroupUpdateOne {
-	if i != nil {
-		uguo.SetVersion(*i)
-	}
-	return uguo
-}
-
-// AddVersion adds i to the "version" field.
-func (uguo *UserGroupUpdateOne) AddVersion(i int64) *UserGroupUpdateOne {
-	uguo.mutation.AddVersion(i)
-	return uguo
 }
 
 // SetUserID sets the "user_id" field.
@@ -404,7 +204,6 @@ func (uguo *UserGroupUpdateOne) Select(field string, fields ...string) *UserGrou
 
 // Save executes the query and returns the updated UserGroup entity.
 func (uguo *UserGroupUpdateOne) Save(ctx context.Context) (*UserGroup, error) {
-	uguo.defaults()
 	return withHooks(ctx, uguo.sqlSave, uguo.mutation, uguo.hooks)
 }
 
@@ -430,16 +229,8 @@ func (uguo *UserGroupUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (uguo *UserGroupUpdateOne) defaults() {
-	if _, ok := uguo.mutation.UpdatedAt(); !ok {
-		v := usergroup.UpdateDefaultUpdatedAt()
-		uguo.mutation.SetUpdatedAt(v)
-	}
-}
-
 func (uguo *UserGroupUpdateOne) sqlSave(ctx context.Context) (_node *UserGroup, err error) {
-	_spec := sqlgraph.NewUpdateSpec(usergroup.Table, usergroup.Columns, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewUpdateSpec(usergroup.Table, usergroup.Columns, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt))
 	id, ok := uguo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "UserGroup.id" for update`)}
@@ -463,30 +254,6 @@ func (uguo *UserGroupUpdateOne) sqlSave(ctx context.Context) (_node *UserGroup, 
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := uguo.mutation.UpdatedAt(); ok {
-		_spec.SetField(usergroup.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := uguo.mutation.Deleted(); ok {
-		_spec.SetField(usergroup.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := uguo.mutation.Creator(); ok {
-		_spec.SetField(usergroup.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uguo.mutation.AddedCreator(); ok {
-		_spec.AddField(usergroup.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uguo.mutation.Editor(); ok {
-		_spec.SetField(usergroup.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uguo.mutation.AddedEditor(); ok {
-		_spec.AddField(usergroup.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uguo.mutation.Version(); ok {
-		_spec.SetField(usergroup.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := uguo.mutation.AddedVersion(); ok {
-		_spec.AddField(usergroup.FieldVersion, field.TypeInt64, value)
 	}
 	if value, ok := uguo.mutation.UserID(); ok {
 		_spec.SetField(usergroup.FieldUserID, field.TypeInt64, value)

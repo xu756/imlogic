@@ -4,12 +4,12 @@ package ent
 
 import (
 	"context"
+	"imlogic/ent/predicate"
+	"imlogic/ent/usergroup"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/usergroup"
 )
 
 // UserGroupDelete is the builder for deleting a UserGroup entity.
@@ -40,7 +40,7 @@ func (ugd *UserGroupDelete) ExecX(ctx context.Context) int {
 }
 
 func (ugd *UserGroupDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(usergroup.Table, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewDeleteSpec(usergroup.Table, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt))
 	if ps := ugd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {

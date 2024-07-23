@@ -4,12 +4,12 @@ package ent
 
 import (
 	"context"
+	"imlogic/ent/group"
+	"imlogic/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/group"
-	"imlogic/ent/predicate"
 )
 
 // GroupDelete is the builder for deleting a Group entity.

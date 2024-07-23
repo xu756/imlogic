@@ -3,10 +3,10 @@
 package role
 
 import (
+	"imlogic/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.
@@ -59,44 +59,14 @@ func CreatedAt(v time.Time) predicate.Role {
 	return predicate.Role(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldUpdatedAt, v))
+// GroupID applies equality check predicate on the "group_id" field. It's identical to GroupIDEQ.
+func GroupID(v int64) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldGroupID, v))
 }
 
-// Deleted applies equality check predicate on the "deleted" field. It's identical to DeletedEQ.
-func Deleted(v bool) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldDeleted, v))
-}
-
-// Creator applies equality check predicate on the "creator" field. It's identical to CreatorEQ.
-func Creator(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldCreator, v))
-}
-
-// Editor applies equality check predicate on the "editor" field. It's identical to EditorEQ.
-func Editor(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldEditor, v))
-}
-
-// Version applies equality check predicate on the "version" field. It's identical to VersionEQ.
-func Version(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldVersion, v))
-}
-
-// ParentID applies equality check predicate on the "parent_id" field. It's identical to ParentIDEQ.
-func ParentID(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldParentID, v))
-}
-
-// Level applies equality check predicate on the "level" field. It's identical to LevelEQ.
-func Level(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldLevel, v))
-}
-
-// RoleName applies equality check predicate on the "role_name" field. It's identical to RoleNameEQ.
-func RoleName(v string) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldRoleName, v))
+// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
+func Name(v string) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldName, v))
 }
 
 // Intro applies equality check predicate on the "intro" field. It's identical to IntroEQ.
@@ -144,319 +114,109 @@ func CreatedAtLTE(v time.Time) predicate.Role {
 	return predicate.Role(sql.FieldLTE(FieldCreatedAt, v))
 }
 
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldUpdatedAt, v))
+// GroupIDEQ applies the EQ predicate on the "group_id" field.
+func GroupIDEQ(v int64) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldGroupID, v))
 }
 
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldUpdatedAt, v))
+// GroupIDNEQ applies the NEQ predicate on the "group_id" field.
+func GroupIDNEQ(v int64) predicate.Role {
+	return predicate.Role(sql.FieldNEQ(FieldGroupID, v))
 }
 
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...time.Time) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldUpdatedAt, vs...))
+// GroupIDIn applies the In predicate on the "group_id" field.
+func GroupIDIn(vs ...int64) predicate.Role {
+	return predicate.Role(sql.FieldIn(FieldGroupID, vs...))
 }
 
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...time.Time) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldUpdatedAt, vs...))
+// GroupIDNotIn applies the NotIn predicate on the "group_id" field.
+func GroupIDNotIn(vs ...int64) predicate.Role {
+	return predicate.Role(sql.FieldNotIn(FieldGroupID, vs...))
 }
 
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldUpdatedAt, v))
+// GroupIDGT applies the GT predicate on the "group_id" field.
+func GroupIDGT(v int64) predicate.Role {
+	return predicate.Role(sql.FieldGT(FieldGroupID, v))
 }
 
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldUpdatedAt, v))
+// GroupIDGTE applies the GTE predicate on the "group_id" field.
+func GroupIDGTE(v int64) predicate.Role {
+	return predicate.Role(sql.FieldGTE(FieldGroupID, v))
 }
 
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldUpdatedAt, v))
+// GroupIDLT applies the LT predicate on the "group_id" field.
+func GroupIDLT(v int64) predicate.Role {
+	return predicate.Role(sql.FieldLT(FieldGroupID, v))
 }
 
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v time.Time) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldUpdatedAt, v))
+// GroupIDLTE applies the LTE predicate on the "group_id" field.
+func GroupIDLTE(v int64) predicate.Role {
+	return predicate.Role(sql.FieldLTE(FieldGroupID, v))
 }
 
-// DeletedEQ applies the EQ predicate on the "deleted" field.
-func DeletedEQ(v bool) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldDeleted, v))
+// NameEQ applies the EQ predicate on the "name" field.
+func NameEQ(v string) predicate.Role {
+	return predicate.Role(sql.FieldEQ(FieldName, v))
 }
 
-// DeletedNEQ applies the NEQ predicate on the "deleted" field.
-func DeletedNEQ(v bool) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldDeleted, v))
+// NameNEQ applies the NEQ predicate on the "name" field.
+func NameNEQ(v string) predicate.Role {
+	return predicate.Role(sql.FieldNEQ(FieldName, v))
 }
 
-// CreatorEQ applies the EQ predicate on the "creator" field.
-func CreatorEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldCreator, v))
+// NameIn applies the In predicate on the "name" field.
+func NameIn(vs ...string) predicate.Role {
+	return predicate.Role(sql.FieldIn(FieldName, vs...))
 }
 
-// CreatorNEQ applies the NEQ predicate on the "creator" field.
-func CreatorNEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldCreator, v))
+// NameNotIn applies the NotIn predicate on the "name" field.
+func NameNotIn(vs ...string) predicate.Role {
+	return predicate.Role(sql.FieldNotIn(FieldName, vs...))
 }
 
-// CreatorIn applies the In predicate on the "creator" field.
-func CreatorIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldCreator, vs...))
+// NameGT applies the GT predicate on the "name" field.
+func NameGT(v string) predicate.Role {
+	return predicate.Role(sql.FieldGT(FieldName, v))
 }
 
-// CreatorNotIn applies the NotIn predicate on the "creator" field.
-func CreatorNotIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldCreator, vs...))
+// NameGTE applies the GTE predicate on the "name" field.
+func NameGTE(v string) predicate.Role {
+	return predicate.Role(sql.FieldGTE(FieldName, v))
 }
 
-// CreatorGT applies the GT predicate on the "creator" field.
-func CreatorGT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldCreator, v))
+// NameLT applies the LT predicate on the "name" field.
+func NameLT(v string) predicate.Role {
+	return predicate.Role(sql.FieldLT(FieldName, v))
 }
 
-// CreatorGTE applies the GTE predicate on the "creator" field.
-func CreatorGTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldCreator, v))
+// NameLTE applies the LTE predicate on the "name" field.
+func NameLTE(v string) predicate.Role {
+	return predicate.Role(sql.FieldLTE(FieldName, v))
 }
 
-// CreatorLT applies the LT predicate on the "creator" field.
-func CreatorLT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldCreator, v))
+// NameContains applies the Contains predicate on the "name" field.
+func NameContains(v string) predicate.Role {
+	return predicate.Role(sql.FieldContains(FieldName, v))
 }
 
-// CreatorLTE applies the LTE predicate on the "creator" field.
-func CreatorLTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldCreator, v))
+// NameHasPrefix applies the HasPrefix predicate on the "name" field.
+func NameHasPrefix(v string) predicate.Role {
+	return predicate.Role(sql.FieldHasPrefix(FieldName, v))
 }
 
-// EditorEQ applies the EQ predicate on the "editor" field.
-func EditorEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldEditor, v))
+// NameHasSuffix applies the HasSuffix predicate on the "name" field.
+func NameHasSuffix(v string) predicate.Role {
+	return predicate.Role(sql.FieldHasSuffix(FieldName, v))
 }
 
-// EditorNEQ applies the NEQ predicate on the "editor" field.
-func EditorNEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldEditor, v))
+// NameEqualFold applies the EqualFold predicate on the "name" field.
+func NameEqualFold(v string) predicate.Role {
+	return predicate.Role(sql.FieldEqualFold(FieldName, v))
 }
 
-// EditorIn applies the In predicate on the "editor" field.
-func EditorIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldEditor, vs...))
-}
-
-// EditorNotIn applies the NotIn predicate on the "editor" field.
-func EditorNotIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldEditor, vs...))
-}
-
-// EditorGT applies the GT predicate on the "editor" field.
-func EditorGT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldEditor, v))
-}
-
-// EditorGTE applies the GTE predicate on the "editor" field.
-func EditorGTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldEditor, v))
-}
-
-// EditorLT applies the LT predicate on the "editor" field.
-func EditorLT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldEditor, v))
-}
-
-// EditorLTE applies the LTE predicate on the "editor" field.
-func EditorLTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldEditor, v))
-}
-
-// VersionEQ applies the EQ predicate on the "version" field.
-func VersionEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldVersion, v))
-}
-
-// VersionNEQ applies the NEQ predicate on the "version" field.
-func VersionNEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldVersion, v))
-}
-
-// VersionIn applies the In predicate on the "version" field.
-func VersionIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldVersion, vs...))
-}
-
-// VersionNotIn applies the NotIn predicate on the "version" field.
-func VersionNotIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldVersion, vs...))
-}
-
-// VersionGT applies the GT predicate on the "version" field.
-func VersionGT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldVersion, v))
-}
-
-// VersionGTE applies the GTE predicate on the "version" field.
-func VersionGTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldVersion, v))
-}
-
-// VersionLT applies the LT predicate on the "version" field.
-func VersionLT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldVersion, v))
-}
-
-// VersionLTE applies the LTE predicate on the "version" field.
-func VersionLTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldVersion, v))
-}
-
-// ParentIDEQ applies the EQ predicate on the "parent_id" field.
-func ParentIDEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldParentID, v))
-}
-
-// ParentIDNEQ applies the NEQ predicate on the "parent_id" field.
-func ParentIDNEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldParentID, v))
-}
-
-// ParentIDIn applies the In predicate on the "parent_id" field.
-func ParentIDIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldParentID, vs...))
-}
-
-// ParentIDNotIn applies the NotIn predicate on the "parent_id" field.
-func ParentIDNotIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldParentID, vs...))
-}
-
-// ParentIDGT applies the GT predicate on the "parent_id" field.
-func ParentIDGT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldParentID, v))
-}
-
-// ParentIDGTE applies the GTE predicate on the "parent_id" field.
-func ParentIDGTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldParentID, v))
-}
-
-// ParentIDLT applies the LT predicate on the "parent_id" field.
-func ParentIDLT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldParentID, v))
-}
-
-// ParentIDLTE applies the LTE predicate on the "parent_id" field.
-func ParentIDLTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldParentID, v))
-}
-
-// LevelEQ applies the EQ predicate on the "level" field.
-func LevelEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldLevel, v))
-}
-
-// LevelNEQ applies the NEQ predicate on the "level" field.
-func LevelNEQ(v int64) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldLevel, v))
-}
-
-// LevelIn applies the In predicate on the "level" field.
-func LevelIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldLevel, vs...))
-}
-
-// LevelNotIn applies the NotIn predicate on the "level" field.
-func LevelNotIn(vs ...int64) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldLevel, vs...))
-}
-
-// LevelGT applies the GT predicate on the "level" field.
-func LevelGT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldLevel, v))
-}
-
-// LevelGTE applies the GTE predicate on the "level" field.
-func LevelGTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldLevel, v))
-}
-
-// LevelLT applies the LT predicate on the "level" field.
-func LevelLT(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldLevel, v))
-}
-
-// LevelLTE applies the LTE predicate on the "level" field.
-func LevelLTE(v int64) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldLevel, v))
-}
-
-// RoleNameEQ applies the EQ predicate on the "role_name" field.
-func RoleNameEQ(v string) predicate.Role {
-	return predicate.Role(sql.FieldEQ(FieldRoleName, v))
-}
-
-// RoleNameNEQ applies the NEQ predicate on the "role_name" field.
-func RoleNameNEQ(v string) predicate.Role {
-	return predicate.Role(sql.FieldNEQ(FieldRoleName, v))
-}
-
-// RoleNameIn applies the In predicate on the "role_name" field.
-func RoleNameIn(vs ...string) predicate.Role {
-	return predicate.Role(sql.FieldIn(FieldRoleName, vs...))
-}
-
-// RoleNameNotIn applies the NotIn predicate on the "role_name" field.
-func RoleNameNotIn(vs ...string) predicate.Role {
-	return predicate.Role(sql.FieldNotIn(FieldRoleName, vs...))
-}
-
-// RoleNameGT applies the GT predicate on the "role_name" field.
-func RoleNameGT(v string) predicate.Role {
-	return predicate.Role(sql.FieldGT(FieldRoleName, v))
-}
-
-// RoleNameGTE applies the GTE predicate on the "role_name" field.
-func RoleNameGTE(v string) predicate.Role {
-	return predicate.Role(sql.FieldGTE(FieldRoleName, v))
-}
-
-// RoleNameLT applies the LT predicate on the "role_name" field.
-func RoleNameLT(v string) predicate.Role {
-	return predicate.Role(sql.FieldLT(FieldRoleName, v))
-}
-
-// RoleNameLTE applies the LTE predicate on the "role_name" field.
-func RoleNameLTE(v string) predicate.Role {
-	return predicate.Role(sql.FieldLTE(FieldRoleName, v))
-}
-
-// RoleNameContains applies the Contains predicate on the "role_name" field.
-func RoleNameContains(v string) predicate.Role {
-	return predicate.Role(sql.FieldContains(FieldRoleName, v))
-}
-
-// RoleNameHasPrefix applies the HasPrefix predicate on the "role_name" field.
-func RoleNameHasPrefix(v string) predicate.Role {
-	return predicate.Role(sql.FieldHasPrefix(FieldRoleName, v))
-}
-
-// RoleNameHasSuffix applies the HasSuffix predicate on the "role_name" field.
-func RoleNameHasSuffix(v string) predicate.Role {
-	return predicate.Role(sql.FieldHasSuffix(FieldRoleName, v))
-}
-
-// RoleNameEqualFold applies the EqualFold predicate on the "role_name" field.
-func RoleNameEqualFold(v string) predicate.Role {
-	return predicate.Role(sql.FieldEqualFold(FieldRoleName, v))
-}
-
-// RoleNameContainsFold applies the ContainsFold predicate on the "role_name" field.
-func RoleNameContainsFold(v string) predicate.Role {
-	return predicate.Role(sql.FieldContainsFold(FieldRoleName, v))
+// NameContainsFold applies the ContainsFold predicate on the "name" field.
+func NameContainsFold(v string) predicate.Role {
+	return predicate.Role(sql.FieldContainsFold(FieldName, v))
 }
 
 // IntroEQ applies the EQ predicate on the "intro" field.

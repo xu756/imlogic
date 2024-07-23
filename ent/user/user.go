@@ -19,14 +19,10 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeleted holds the string denoting the deleted field in the database.
 	FieldDeleted = "deleted"
-	// FieldCreator holds the string denoting the creator field in the database.
-	FieldCreator = "creator"
-	// FieldEditor holds the string denoting the editor field in the database.
-	FieldEditor = "editor"
-	// FieldVersion holds the string denoting the version field in the database.
-	FieldVersion = "version"
 	// FieldUUID holds the string denoting the uuid field in the database.
 	FieldUUID = "uuid"
+	// FieldEditor holds the string denoting the editor field in the database.
+	FieldEditor = "editor"
 	// FieldUsername holds the string denoting the username field in the database.
 	FieldUsername = "username"
 	// FieldPassword holds the string denoting the password field in the database.
@@ -35,8 +31,8 @@ const (
 	FieldMobile = "mobile"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
-	// FieldDevice holds the string denoting the device field in the database.
-	FieldDevice = "device"
+	// FieldDesc holds the string denoting the desc field in the database.
+	FieldDesc = "desc"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -47,15 +43,13 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeleted,
-	FieldCreator,
-	FieldEditor,
-	FieldVersion,
 	FieldUUID,
+	FieldEditor,
 	FieldUsername,
 	FieldPassword,
 	FieldMobile,
 	FieldAvatar,
-	FieldDevice,
+	FieldDesc,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -77,18 +71,20 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultDeleted holds the default value on creation for the "deleted" field.
 	DefaultDeleted bool
-	// DefaultCreator holds the default value on creation for the "creator" field.
-	DefaultCreator int64
-	// DefaultEditor holds the default value on creation for the "editor" field.
-	DefaultEditor int64
-	// DefaultVersion holds the default value on creation for the "version" field.
-	DefaultVersion int64
 	// DefaultUUID holds the default value on creation for the "uuid" field.
 	DefaultUUID func() string
+	// DefaultEditor holds the default value on creation for the "editor" field.
+	DefaultEditor int64
+	// DefaultUsername holds the default value on creation for the "username" field.
+	DefaultUsername string
+	// DefaultPassword holds the default value on creation for the "password" field.
+	DefaultPassword string
+	// DefaultMobile holds the default value on creation for the "mobile" field.
+	DefaultMobile string
 	// DefaultAvatar holds the default value on creation for the "avatar" field.
 	DefaultAvatar string
-	// DefaultDevice holds the default value on creation for the "device" field.
-	DefaultDevice string
+	// DefaultDesc holds the default value on creation for the "desc" field.
+	DefaultDesc string
 )
 
 // OrderOption defines the ordering options for the User queries.
@@ -114,24 +110,14 @@ func ByDeleted(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDeleted, opts...).ToFunc()
 }
 
-// ByCreator orders the results by the creator field.
-func ByCreator(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreator, opts...).ToFunc()
+// ByUUID orders the results by the uuid field.
+func ByUUID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUUID, opts...).ToFunc()
 }
 
 // ByEditor orders the results by the editor field.
 func ByEditor(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEditor, opts...).ToFunc()
-}
-
-// ByVersion orders the results by the version field.
-func ByVersion(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldVersion, opts...).ToFunc()
-}
-
-// ByUUID orders the results by the uuid field.
-func ByUUID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUUID, opts...).ToFunc()
 }
 
 // ByUsername orders the results by the username field.
@@ -154,7 +140,7 @@ func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
 }
 
-// ByDevice orders the results by the device field.
-func ByDevice(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDevice, opts...).ToFunc()
+// ByDesc orders the results by the desc field.
+func ByDesc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldDesc, opts...).ToFunc()
 }

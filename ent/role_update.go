@@ -6,13 +6,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
+	"imlogic/ent/predicate"
+	"imlogic/ent/role"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/role"
 )
 
 // RoleUpdate is the builder for updating Role entities.
@@ -28,141 +27,37 @@ func (ru *RoleUpdate) Where(ps ...predicate.Role) *RoleUpdate {
 	return ru
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ru *RoleUpdate) SetUpdatedAt(t time.Time) *RoleUpdate {
-	ru.mutation.SetUpdatedAt(t)
+// SetGroupID sets the "group_id" field.
+func (ru *RoleUpdate) SetGroupID(i int64) *RoleUpdate {
+	ru.mutation.ResetGroupID()
+	ru.mutation.SetGroupID(i)
 	return ru
 }
 
-// SetDeleted sets the "deleted" field.
-func (ru *RoleUpdate) SetDeleted(b bool) *RoleUpdate {
-	ru.mutation.SetDeleted(b)
-	return ru
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableDeleted(b *bool) *RoleUpdate {
-	if b != nil {
-		ru.SetDeleted(*b)
-	}
-	return ru
-}
-
-// SetCreator sets the "creator" field.
-func (ru *RoleUpdate) SetCreator(i int64) *RoleUpdate {
-	ru.mutation.ResetCreator()
-	ru.mutation.SetCreator(i)
-	return ru
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableCreator(i *int64) *RoleUpdate {
+// SetNillableGroupID sets the "group_id" field if the given value is not nil.
+func (ru *RoleUpdate) SetNillableGroupID(i *int64) *RoleUpdate {
 	if i != nil {
-		ru.SetCreator(*i)
+		ru.SetGroupID(*i)
 	}
 	return ru
 }
 
-// AddCreator adds i to the "creator" field.
-func (ru *RoleUpdate) AddCreator(i int64) *RoleUpdate {
-	ru.mutation.AddCreator(i)
+// AddGroupID adds i to the "group_id" field.
+func (ru *RoleUpdate) AddGroupID(i int64) *RoleUpdate {
+	ru.mutation.AddGroupID(i)
 	return ru
 }
 
-// SetEditor sets the "editor" field.
-func (ru *RoleUpdate) SetEditor(i int64) *RoleUpdate {
-	ru.mutation.ResetEditor()
-	ru.mutation.SetEditor(i)
+// SetName sets the "name" field.
+func (ru *RoleUpdate) SetName(s string) *RoleUpdate {
+	ru.mutation.SetName(s)
 	return ru
 }
 
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableEditor(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetEditor(*i)
-	}
-	return ru
-}
-
-// AddEditor adds i to the "editor" field.
-func (ru *RoleUpdate) AddEditor(i int64) *RoleUpdate {
-	ru.mutation.AddEditor(i)
-	return ru
-}
-
-// SetVersion sets the "version" field.
-func (ru *RoleUpdate) SetVersion(i int64) *RoleUpdate {
-	ru.mutation.ResetVersion()
-	ru.mutation.SetVersion(i)
-	return ru
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableVersion(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetVersion(*i)
-	}
-	return ru
-}
-
-// AddVersion adds i to the "version" field.
-func (ru *RoleUpdate) AddVersion(i int64) *RoleUpdate {
-	ru.mutation.AddVersion(i)
-	return ru
-}
-
-// SetParentID sets the "parent_id" field.
-func (ru *RoleUpdate) SetParentID(i int64) *RoleUpdate {
-	ru.mutation.ResetParentID()
-	ru.mutation.SetParentID(i)
-	return ru
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableParentID(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetParentID(*i)
-	}
-	return ru
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (ru *RoleUpdate) AddParentID(i int64) *RoleUpdate {
-	ru.mutation.AddParentID(i)
-	return ru
-}
-
-// SetLevel sets the "level" field.
-func (ru *RoleUpdate) SetLevel(i int64) *RoleUpdate {
-	ru.mutation.ResetLevel()
-	ru.mutation.SetLevel(i)
-	return ru
-}
-
-// SetNillableLevel sets the "level" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableLevel(i *int64) *RoleUpdate {
-	if i != nil {
-		ru.SetLevel(*i)
-	}
-	return ru
-}
-
-// AddLevel adds i to the "level" field.
-func (ru *RoleUpdate) AddLevel(i int64) *RoleUpdate {
-	ru.mutation.AddLevel(i)
-	return ru
-}
-
-// SetRoleName sets the "role_name" field.
-func (ru *RoleUpdate) SetRoleName(s string) *RoleUpdate {
-	ru.mutation.SetRoleName(s)
-	return ru
-}
-
-// SetNillableRoleName sets the "role_name" field if the given value is not nil.
-func (ru *RoleUpdate) SetNillableRoleName(s *string) *RoleUpdate {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (ru *RoleUpdate) SetNillableName(s *string) *RoleUpdate {
 	if s != nil {
-		ru.SetRoleName(*s)
+		ru.SetName(*s)
 	}
 	return ru
 }
@@ -188,7 +83,6 @@ func (ru *RoleUpdate) Mutation() *RoleMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ru *RoleUpdate) Save(ctx context.Context) (int, error) {
-	ru.defaults()
 	return withHooks(ctx, ru.sqlSave, ru.mutation, ru.hooks)
 }
 
@@ -214,19 +108,11 @@ func (ru *RoleUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ru *RoleUpdate) defaults() {
-	if _, ok := ru.mutation.UpdatedAt(); !ok {
-		v := role.UpdateDefaultUpdatedAt()
-		ru.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ru *RoleUpdate) check() error {
-	if v, ok := ru.mutation.RoleName(); ok {
-		if err := role.RoleNameValidator(v); err != nil {
-			return &ValidationError{Name: "role_name", err: fmt.Errorf(`ent: validator failed for field "Role.role_name": %w`, err)}
+	if v, ok := ru.mutation.Name(); ok {
+		if err := role.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Role.name": %w`, err)}
 		}
 	}
 	return nil
@@ -244,44 +130,14 @@ func (ru *RoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := ru.mutation.UpdatedAt(); ok {
-		_spec.SetField(role.FieldUpdatedAt, field.TypeTime, value)
+	if value, ok := ru.mutation.GroupID(); ok {
+		_spec.SetField(role.FieldGroupID, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.Deleted(); ok {
-		_spec.SetField(role.FieldDeleted, field.TypeBool, value)
+	if value, ok := ru.mutation.AddedGroupID(); ok {
+		_spec.AddField(role.FieldGroupID, field.TypeInt64, value)
 	}
-	if value, ok := ru.mutation.Creator(); ok {
-		_spec.SetField(role.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedCreator(); ok {
-		_spec.AddField(role.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.Editor(); ok {
-		_spec.SetField(role.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedEditor(); ok {
-		_spec.AddField(role.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.Version(); ok {
-		_spec.SetField(role.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedVersion(); ok {
-		_spec.AddField(role.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.ParentID(); ok {
-		_spec.SetField(role.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedParentID(); ok {
-		_spec.AddField(role.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.Level(); ok {
-		_spec.SetField(role.FieldLevel, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.AddedLevel(); ok {
-		_spec.AddField(role.FieldLevel, field.TypeInt64, value)
-	}
-	if value, ok := ru.mutation.RoleName(); ok {
-		_spec.SetField(role.FieldRoleName, field.TypeString, value)
+	if value, ok := ru.mutation.Name(); ok {
+		_spec.SetField(role.FieldName, field.TypeString, value)
 	}
 	if value, ok := ru.mutation.Intro(); ok {
 		_spec.SetField(role.FieldIntro, field.TypeString, value)
@@ -306,141 +162,37 @@ type RoleUpdateOne struct {
 	mutation *RoleMutation
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (ruo *RoleUpdateOne) SetUpdatedAt(t time.Time) *RoleUpdateOne {
-	ruo.mutation.SetUpdatedAt(t)
+// SetGroupID sets the "group_id" field.
+func (ruo *RoleUpdateOne) SetGroupID(i int64) *RoleUpdateOne {
+	ruo.mutation.ResetGroupID()
+	ruo.mutation.SetGroupID(i)
 	return ruo
 }
 
-// SetDeleted sets the "deleted" field.
-func (ruo *RoleUpdateOne) SetDeleted(b bool) *RoleUpdateOne {
-	ruo.mutation.SetDeleted(b)
-	return ruo
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableDeleted(b *bool) *RoleUpdateOne {
-	if b != nil {
-		ruo.SetDeleted(*b)
-	}
-	return ruo
-}
-
-// SetCreator sets the "creator" field.
-func (ruo *RoleUpdateOne) SetCreator(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetCreator()
-	ruo.mutation.SetCreator(i)
-	return ruo
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableCreator(i *int64) *RoleUpdateOne {
+// SetNillableGroupID sets the "group_id" field if the given value is not nil.
+func (ruo *RoleUpdateOne) SetNillableGroupID(i *int64) *RoleUpdateOne {
 	if i != nil {
-		ruo.SetCreator(*i)
+		ruo.SetGroupID(*i)
 	}
 	return ruo
 }
 
-// AddCreator adds i to the "creator" field.
-func (ruo *RoleUpdateOne) AddCreator(i int64) *RoleUpdateOne {
-	ruo.mutation.AddCreator(i)
+// AddGroupID adds i to the "group_id" field.
+func (ruo *RoleUpdateOne) AddGroupID(i int64) *RoleUpdateOne {
+	ruo.mutation.AddGroupID(i)
 	return ruo
 }
 
-// SetEditor sets the "editor" field.
-func (ruo *RoleUpdateOne) SetEditor(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetEditor()
-	ruo.mutation.SetEditor(i)
+// SetName sets the "name" field.
+func (ruo *RoleUpdateOne) SetName(s string) *RoleUpdateOne {
+	ruo.mutation.SetName(s)
 	return ruo
 }
 
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableEditor(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetEditor(*i)
-	}
-	return ruo
-}
-
-// AddEditor adds i to the "editor" field.
-func (ruo *RoleUpdateOne) AddEditor(i int64) *RoleUpdateOne {
-	ruo.mutation.AddEditor(i)
-	return ruo
-}
-
-// SetVersion sets the "version" field.
-func (ruo *RoleUpdateOne) SetVersion(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetVersion()
-	ruo.mutation.SetVersion(i)
-	return ruo
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableVersion(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetVersion(*i)
-	}
-	return ruo
-}
-
-// AddVersion adds i to the "version" field.
-func (ruo *RoleUpdateOne) AddVersion(i int64) *RoleUpdateOne {
-	ruo.mutation.AddVersion(i)
-	return ruo
-}
-
-// SetParentID sets the "parent_id" field.
-func (ruo *RoleUpdateOne) SetParentID(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetParentID()
-	ruo.mutation.SetParentID(i)
-	return ruo
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableParentID(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetParentID(*i)
-	}
-	return ruo
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (ruo *RoleUpdateOne) AddParentID(i int64) *RoleUpdateOne {
-	ruo.mutation.AddParentID(i)
-	return ruo
-}
-
-// SetLevel sets the "level" field.
-func (ruo *RoleUpdateOne) SetLevel(i int64) *RoleUpdateOne {
-	ruo.mutation.ResetLevel()
-	ruo.mutation.SetLevel(i)
-	return ruo
-}
-
-// SetNillableLevel sets the "level" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableLevel(i *int64) *RoleUpdateOne {
-	if i != nil {
-		ruo.SetLevel(*i)
-	}
-	return ruo
-}
-
-// AddLevel adds i to the "level" field.
-func (ruo *RoleUpdateOne) AddLevel(i int64) *RoleUpdateOne {
-	ruo.mutation.AddLevel(i)
-	return ruo
-}
-
-// SetRoleName sets the "role_name" field.
-func (ruo *RoleUpdateOne) SetRoleName(s string) *RoleUpdateOne {
-	ruo.mutation.SetRoleName(s)
-	return ruo
-}
-
-// SetNillableRoleName sets the "role_name" field if the given value is not nil.
-func (ruo *RoleUpdateOne) SetNillableRoleName(s *string) *RoleUpdateOne {
+// SetNillableName sets the "name" field if the given value is not nil.
+func (ruo *RoleUpdateOne) SetNillableName(s *string) *RoleUpdateOne {
 	if s != nil {
-		ruo.SetRoleName(*s)
+		ruo.SetName(*s)
 	}
 	return ruo
 }
@@ -479,7 +231,6 @@ func (ruo *RoleUpdateOne) Select(field string, fields ...string) *RoleUpdateOne 
 
 // Save executes the query and returns the updated Role entity.
 func (ruo *RoleUpdateOne) Save(ctx context.Context) (*Role, error) {
-	ruo.defaults()
 	return withHooks(ctx, ruo.sqlSave, ruo.mutation, ruo.hooks)
 }
 
@@ -505,19 +256,11 @@ func (ruo *RoleUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ruo *RoleUpdateOne) defaults() {
-	if _, ok := ruo.mutation.UpdatedAt(); !ok {
-		v := role.UpdateDefaultUpdatedAt()
-		ruo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ruo *RoleUpdateOne) check() error {
-	if v, ok := ruo.mutation.RoleName(); ok {
-		if err := role.RoleNameValidator(v); err != nil {
-			return &ValidationError{Name: "role_name", err: fmt.Errorf(`ent: validator failed for field "Role.role_name": %w`, err)}
+	if v, ok := ruo.mutation.Name(); ok {
+		if err := role.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Role.name": %w`, err)}
 		}
 	}
 	return nil
@@ -552,44 +295,14 @@ func (ruo *RoleUpdateOne) sqlSave(ctx context.Context) (_node *Role, err error) 
 			}
 		}
 	}
-	if value, ok := ruo.mutation.UpdatedAt(); ok {
-		_spec.SetField(role.FieldUpdatedAt, field.TypeTime, value)
+	if value, ok := ruo.mutation.GroupID(); ok {
+		_spec.SetField(role.FieldGroupID, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.Deleted(); ok {
-		_spec.SetField(role.FieldDeleted, field.TypeBool, value)
+	if value, ok := ruo.mutation.AddedGroupID(); ok {
+		_spec.AddField(role.FieldGroupID, field.TypeInt64, value)
 	}
-	if value, ok := ruo.mutation.Creator(); ok {
-		_spec.SetField(role.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedCreator(); ok {
-		_spec.AddField(role.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.Editor(); ok {
-		_spec.SetField(role.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedEditor(); ok {
-		_spec.AddField(role.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.Version(); ok {
-		_spec.SetField(role.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedVersion(); ok {
-		_spec.AddField(role.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.ParentID(); ok {
-		_spec.SetField(role.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedParentID(); ok {
-		_spec.AddField(role.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.Level(); ok {
-		_spec.SetField(role.FieldLevel, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.AddedLevel(); ok {
-		_spec.AddField(role.FieldLevel, field.TypeInt64, value)
-	}
-	if value, ok := ruo.mutation.RoleName(); ok {
-		_spec.SetField(role.FieldRoleName, field.TypeString, value)
+	if value, ok := ruo.mutation.Name(); ok {
+		_spec.SetField(role.FieldName, field.TypeString, value)
 	}
 	if value, ok := ruo.mutation.Intro(); ok {
 		_spec.SetField(role.FieldIntro, field.TypeString, value)

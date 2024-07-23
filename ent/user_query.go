@@ -5,13 +5,13 @@ package ent
 import (
 	"context"
 	"fmt"
+	"imlogic/ent/predicate"
+	"imlogic/ent/user"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/user"
 )
 
 // UserQuery is the builder for querying User entities.

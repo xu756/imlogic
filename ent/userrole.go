@@ -4,32 +4,18 @@ package ent
 
 import (
 	"fmt"
+	"imlogic/ent/userrole"
 	"strings"
-	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/userrole"
 )
 
 // UserRole is the model entity for the UserRole schema.
 type UserRole struct {
 	config `json:"-"`
 	// ID of the ent.
-	// id
-	ID int64 `json:"id,omitempty"`
-	// 创建时间
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	// 更新时间
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// 删除状态
-	Deleted bool `json:"deleted,omitempty"`
-	// 创建人
-	Creator int64 `json:"creator,omitempty"`
-	// 修改人
-	Editor int64 `json:"editor,omitempty"`
-	// 版本号
-	Version int64 `json:"version,omitempty"`
+	ID int `json:"id,omitempty"`
 	// 用户id
 	UserID int64 `json:"user_id,omitempty"`
 	// 角色id
@@ -42,12 +28,8 @@ func (*UserRole) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case userrole.FieldDeleted:
-			values[i] = new(sql.NullBool)
-		case userrole.FieldID, userrole.FieldCreator, userrole.FieldEditor, userrole.FieldVersion, userrole.FieldUserID, userrole.FieldRoleID:
+		case userrole.FieldID, userrole.FieldUserID, userrole.FieldRoleID:
 			values[i] = new(sql.NullInt64)
-		case userrole.FieldCreatedAt, userrole.FieldUpdatedAt:
-			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -68,43 +50,7 @@ func (ur *UserRole) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			ur.ID = int64(value.Int64)
-		case userrole.FieldCreatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field created_at", values[i])
-			} else if value.Valid {
-				ur.CreatedAt = value.Time
-			}
-		case userrole.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				ur.UpdatedAt = value.Time
-			}
-		case userrole.FieldDeleted:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted", values[i])
-			} else if value.Valid {
-				ur.Deleted = value.Bool
-			}
-		case userrole.FieldCreator:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field creator", values[i])
-			} else if value.Valid {
-				ur.Creator = value.Int64
-			}
-		case userrole.FieldEditor:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field editor", values[i])
-			} else if value.Valid {
-				ur.Editor = value.Int64
-			}
-		case userrole.FieldVersion:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field version", values[i])
-			} else if value.Valid {
-				ur.Version = value.Int64
-			}
+			ur.ID = int(value.Int64)
 		case userrole.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
@@ -153,24 +99,6 @@ func (ur *UserRole) String() string {
 	var builder strings.Builder
 	builder.WriteString("UserRole(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ur.ID))
-	builder.WriteString("created_at=")
-	builder.WriteString(ur.CreatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(ur.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("deleted=")
-	builder.WriteString(fmt.Sprintf("%v", ur.Deleted))
-	builder.WriteString(", ")
-	builder.WriteString("creator=")
-	builder.WriteString(fmt.Sprintf("%v", ur.Creator))
-	builder.WriteString(", ")
-	builder.WriteString("editor=")
-	builder.WriteString(fmt.Sprintf("%v", ur.Editor))
-	builder.WriteString(", ")
-	builder.WriteString("version=")
-	builder.WriteString(fmt.Sprintf("%v", ur.Version))
-	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", ur.UserID))
 	builder.WriteString(", ")

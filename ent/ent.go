@@ -6,17 +6,20 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"imlogic/ent/chat"
+	"imlogic/ent/group"
+	"imlogic/ent/groupmessage"
+	"imlogic/ent/message"
+	"imlogic/ent/role"
+	"imlogic/ent/user"
+	"imlogic/ent/usergroup"
+	"imlogic/ent/userrole"
 	"reflect"
 	"sync"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"imlogic/ent/group"
-	"imlogic/ent/role"
-	"imlogic/ent/user"
-	"imlogic/ent/usergroup"
-	"imlogic/ent/userrole"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -77,11 +80,14 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			group.Table:     group.ValidColumn,
-			role.Table:      role.ValidColumn,
-			user.Table:      user.ValidColumn,
-			usergroup.Table: usergroup.ValidColumn,
-			userrole.Table:  userrole.ValidColumn,
+			chat.Table:         chat.ValidColumn,
+			group.Table:        group.ValidColumn,
+			groupmessage.Table: groupmessage.ValidColumn,
+			message.Table:      message.ValidColumn,
+			role.Table:         role.ValidColumn,
+			user.Table:         user.ValidColumn,
+			usergroup.Table:    usergroup.ValidColumn,
+			userrole.Table:     userrole.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

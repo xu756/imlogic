@@ -5,13 +5,13 @@ package ent
 import (
 	"context"
 	"fmt"
+	"imlogic/ent/predicate"
+	"imlogic/ent/role"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/role"
 )
 
 // RoleQuery is the builder for querying Role entities.

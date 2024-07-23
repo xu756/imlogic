@@ -5,13 +5,13 @@ package ent
 import (
 	"context"
 	"fmt"
+	"imlogic/ent/predicate"
+	"imlogic/ent/usergroup"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/usergroup"
 )
 
 // UserGroupQuery is the builder for querying UserGroup entities.
@@ -81,8 +81,8 @@ func (ugq *UserGroupQuery) FirstX(ctx context.Context) *UserGroup {
 
 // FirstID returns the first UserGroup ID from the query.
 // Returns a *NotFoundError when no UserGroup ID was found.
-func (ugq *UserGroupQuery) FirstID(ctx context.Context) (id int64, err error) {
-	var ids []int64
+func (ugq *UserGroupQuery) FirstID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = ugq.Limit(1).IDs(setContextOp(ctx, ugq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -94,7 +94,7 @@ func (ugq *UserGroupQuery) FirstID(ctx context.Context) (id int64, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (ugq *UserGroupQuery) FirstIDX(ctx context.Context) int64 {
+func (ugq *UserGroupQuery) FirstIDX(ctx context.Context) int {
 	id, err := ugq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -132,8 +132,8 @@ func (ugq *UserGroupQuery) OnlyX(ctx context.Context) *UserGroup {
 // OnlyID is like Only, but returns the only UserGroup ID in the query.
 // Returns a *NotSingularError when more than one UserGroup ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (ugq *UserGroupQuery) OnlyID(ctx context.Context) (id int64, err error) {
-	var ids []int64
+func (ugq *UserGroupQuery) OnlyID(ctx context.Context) (id int, err error) {
+	var ids []int
 	if ids, err = ugq.Limit(2).IDs(setContextOp(ctx, ugq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -149,7 +149,7 @@ func (ugq *UserGroupQuery) OnlyID(ctx context.Context) (id int64, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (ugq *UserGroupQuery) OnlyIDX(ctx context.Context) int64 {
+func (ugq *UserGroupQuery) OnlyIDX(ctx context.Context) int {
 	id, err := ugq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -177,7 +177,7 @@ func (ugq *UserGroupQuery) AllX(ctx context.Context) []*UserGroup {
 }
 
 // IDs executes the query and returns a list of UserGroup IDs.
-func (ugq *UserGroupQuery) IDs(ctx context.Context) (ids []int64, err error) {
+func (ugq *UserGroupQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if ugq.ctx.Unique == nil && ugq.path != nil {
 		ugq.Unique(true)
 	}
@@ -189,7 +189,7 @@ func (ugq *UserGroupQuery) IDs(ctx context.Context) (ids []int64, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (ugq *UserGroupQuery) IDsX(ctx context.Context) []int64 {
+func (ugq *UserGroupQuery) IDsX(ctx context.Context) []int {
 	ids, err := ugq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -261,12 +261,12 @@ func (ugq *UserGroupQuery) Clone() *UserGroupQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		JoinAt time.Time `json:"join_at,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.UserGroup.Query().
-//		GroupBy(usergroup.FieldCreatedAt).
+//		GroupBy(usergroup.FieldJoinAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (ugq *UserGroupQuery) GroupBy(field string, fields ...string) *UserGroupGroupBy {
@@ -284,11 +284,11 @@ func (ugq *UserGroupQuery) GroupBy(field string, fields ...string) *UserGroupGro
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		JoinAt time.Time `json:"join_at,omitempty"`
 //	}
 //
 //	client.UserGroup.Query().
-//		Select(usergroup.FieldCreatedAt).
+//		Select(usergroup.FieldJoinAt).
 //		Scan(ctx, &v)
 func (ugq *UserGroupQuery) Select(fields ...string) *UserGroupSelect {
 	ugq.ctx.Fields = append(ugq.ctx.Fields, fields...)
@@ -364,7 +364,7 @@ func (ugq *UserGroupQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (ugq *UserGroupQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(usergroup.Table, usergroup.Columns, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewQuerySpec(usergroup.Table, usergroup.Columns, sqlgraph.NewFieldSpec(usergroup.FieldID, field.TypeInt))
 	_spec.From = ugq.sql
 	if unique := ugq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

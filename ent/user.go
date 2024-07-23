@@ -4,12 +4,12 @@ package ent
 
 import (
 	"fmt"
+	"imlogic/ent/user"
 	"strings"
 	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/user"
 )
 
 // User is the model entity for the User schema.
@@ -24,24 +24,20 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// 删除状态
 	Deleted bool `json:"deleted,omitempty"`
-	// 创建人
-	Creator int64 `json:"creator,omitempty"`
+	// 群uuid
+	UUID string `json:"uuid,omitempty"`
 	// 修改人
 	Editor int64 `json:"editor,omitempty"`
-	// 版本号
-	Version int64 `json:"version,omitempty"`
-	// 用户uuid
-	UUID string `json:"uuid,omitempty"`
 	// 姓名
 	Username string `json:"username,omitempty"`
 	// 密码
-	Password string `json:"password,omitempty"`
+	Password string `json:"-"`
 	// 手机号
 	Mobile string `json:"mobile,omitempty"`
 	// 头像
 	Avatar string `json:"avatar,omitempty"`
-	// 设备
-	Device       string `json:"device,omitempty"`
+	// 描述
+	Desc         string `json:"desc,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -52,9 +48,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldDeleted:
 			values[i] = new(sql.NullBool)
-		case user.FieldID, user.FieldCreator, user.FieldEditor, user.FieldVersion:
+		case user.FieldID, user.FieldEditor:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUUID, user.FieldUsername, user.FieldPassword, user.FieldMobile, user.FieldAvatar, user.FieldDevice:
+		case user.FieldUUID, user.FieldUsername, user.FieldPassword, user.FieldMobile, user.FieldAvatar, user.FieldDesc:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -97,29 +93,17 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Deleted = value.Bool
 			}
-		case user.FieldCreator:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field creator", values[i])
+		case user.FieldUUID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field uuid", values[i])
 			} else if value.Valid {
-				u.Creator = value.Int64
+				u.UUID = value.String
 			}
 		case user.FieldEditor:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field editor", values[i])
 			} else if value.Valid {
 				u.Editor = value.Int64
-			}
-		case user.FieldVersion:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field version", values[i])
-			} else if value.Valid {
-				u.Version = value.Int64
-			}
-		case user.FieldUUID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field uuid", values[i])
-			} else if value.Valid {
-				u.UUID = value.String
 			}
 		case user.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -145,11 +129,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Avatar = value.String
 			}
-		case user.FieldDevice:
+		case user.FieldDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field device", values[i])
+				return fmt.Errorf("unexpected type %T for field desc", values[i])
 			} else if value.Valid {
-				u.Device = value.String
+				u.Desc = value.String
 			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
@@ -196,23 +180,16 @@ func (u *User) String() string {
 	builder.WriteString("deleted=")
 	builder.WriteString(fmt.Sprintf("%v", u.Deleted))
 	builder.WriteString(", ")
-	builder.WriteString("creator=")
-	builder.WriteString(fmt.Sprintf("%v", u.Creator))
+	builder.WriteString("uuid=")
+	builder.WriteString(u.UUID)
 	builder.WriteString(", ")
 	builder.WriteString("editor=")
 	builder.WriteString(fmt.Sprintf("%v", u.Editor))
 	builder.WriteString(", ")
-	builder.WriteString("version=")
-	builder.WriteString(fmt.Sprintf("%v", u.Version))
-	builder.WriteString(", ")
-	builder.WriteString("uuid=")
-	builder.WriteString(u.UUID)
-	builder.WriteString(", ")
 	builder.WriteString("username=")
 	builder.WriteString(u.Username)
 	builder.WriteString(", ")
-	builder.WriteString("password=")
-	builder.WriteString(u.Password)
+	builder.WriteString("password=<sensitive>")
 	builder.WriteString(", ")
 	builder.WriteString("mobile=")
 	builder.WriteString(u.Mobile)
@@ -220,8 +197,8 @@ func (u *User) String() string {
 	builder.WriteString("avatar=")
 	builder.WriteString(u.Avatar)
 	builder.WriteString(", ")
-	builder.WriteString("device=")
-	builder.WriteString(u.Device)
+	builder.WriteString("desc=")
+	builder.WriteString(u.Desc)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -15,22 +15,10 @@ const (
 	FieldID = "id"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
-	// FieldDeleted holds the string denoting the deleted field in the database.
-	FieldDeleted = "deleted"
-	// FieldCreator holds the string denoting the creator field in the database.
-	FieldCreator = "creator"
-	// FieldEditor holds the string denoting the editor field in the database.
-	FieldEditor = "editor"
-	// FieldVersion holds the string denoting the version field in the database.
-	FieldVersion = "version"
-	// FieldParentID holds the string denoting the parent_id field in the database.
-	FieldParentID = "parent_id"
-	// FieldLevel holds the string denoting the level field in the database.
-	FieldLevel = "level"
-	// FieldRoleName holds the string denoting the role_name field in the database.
-	FieldRoleName = "role_name"
+	// FieldGroupID holds the string denoting the group_id field in the database.
+	FieldGroupID = "group_id"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldIntro holds the string denoting the intro field in the database.
 	FieldIntro = "intro"
 	// Table holds the table name of the role in the database.
@@ -41,14 +29,8 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
-	FieldUpdatedAt,
-	FieldDeleted,
-	FieldCreator,
-	FieldEditor,
-	FieldVersion,
-	FieldParentID,
-	FieldLevel,
-	FieldRoleName,
+	FieldGroupID,
+	FieldName,
 	FieldIntro,
 }
 
@@ -65,24 +47,12 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
-	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultDeleted holds the default value on creation for the "deleted" field.
-	DefaultDeleted bool
-	// DefaultCreator holds the default value on creation for the "creator" field.
-	DefaultCreator int64
-	// DefaultEditor holds the default value on creation for the "editor" field.
-	DefaultEditor int64
-	// DefaultVersion holds the default value on creation for the "version" field.
-	DefaultVersion int64
-	// DefaultParentID holds the default value on creation for the "parent_id" field.
-	DefaultParentID int64
-	// DefaultLevel holds the default value on creation for the "level" field.
-	DefaultLevel int64
-	// RoleNameValidator is a validator for the "role_name" field. It is called by the builders before save.
-	RoleNameValidator func(string) error
+	// DefaultGroupID holds the default value on creation for the "group_id" field.
+	DefaultGroupID int64
+	// NameValidator is a validator for the "name" field. It is called by the builders before save.
+	NameValidator func(string) error
+	// DefaultIntro holds the default value on creation for the "intro" field.
+	DefaultIntro string
 )
 
 // OrderOption defines the ordering options for the Role queries.
@@ -98,44 +68,14 @@ func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
 }
 
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
+// ByGroupID orders the results by the group_id field.
+func ByGroupID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldGroupID, opts...).ToFunc()
 }
 
-// ByDeleted orders the results by the deleted field.
-func ByDeleted(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeleted, opts...).ToFunc()
-}
-
-// ByCreator orders the results by the creator field.
-func ByCreator(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreator, opts...).ToFunc()
-}
-
-// ByEditor orders the results by the editor field.
-func ByEditor(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldEditor, opts...).ToFunc()
-}
-
-// ByVersion orders the results by the version field.
-func ByVersion(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldVersion, opts...).ToFunc()
-}
-
-// ByParentID orders the results by the parent_id field.
-func ByParentID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldParentID, opts...).ToFunc()
-}
-
-// ByLevel orders the results by the level field.
-func ByLevel(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldLevel, opts...).ToFunc()
-}
-
-// ByRoleName orders the results by the role_name field.
-func ByRoleName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRoleName, opts...).ToFunc()
+// ByName orders the results by the name field.
+func ByName(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldName, opts...).ToFunc()
 }
 
 // ByIntro orders the results by the intro field.

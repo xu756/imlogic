@@ -4,12 +4,12 @@ package ent
 
 import (
 	"fmt"
+	"imlogic/ent/role"
 	"strings"
 	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/role"
 )
 
 // Role is the model entity for the Role schema.
@@ -20,22 +20,10 @@ type Role struct {
 	ID int64 `json:"id,omitempty"`
 	// 创建时间
 	CreatedAt time.Time `json:"created_at,omitempty"`
-	// 更新时间
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// 删除状态
-	Deleted bool `json:"deleted,omitempty"`
-	// 创建人
-	Creator int64 `json:"creator,omitempty"`
-	// 修改人
-	Editor int64 `json:"editor,omitempty"`
-	// 版本号
-	Version int64 `json:"version,omitempty"`
-	// 父角色id
-	ParentID int64 `json:"parent_id,omitempty"`
-	// 权限层级
-	Level int64 `json:"level,omitempty"`
+	// 组id
+	GroupID int64 `json:"group_id,omitempty"`
 	// 角色名
-	RoleName string `json:"role_name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// 角色介绍
 	Intro        string `json:"intro,omitempty"`
 	selectValues sql.SelectValues
@@ -46,13 +34,11 @@ func (*Role) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case role.FieldDeleted:
-			values[i] = new(sql.NullBool)
-		case role.FieldID, role.FieldCreator, role.FieldEditor, role.FieldVersion, role.FieldParentID, role.FieldLevel:
+		case role.FieldID, role.FieldGroupID:
 			values[i] = new(sql.NullInt64)
-		case role.FieldRoleName, role.FieldIntro:
+		case role.FieldName, role.FieldIntro:
 			values[i] = new(sql.NullString)
-		case role.FieldCreatedAt, role.FieldUpdatedAt:
+		case role.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -81,53 +67,17 @@ func (r *Role) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				r.CreatedAt = value.Time
 			}
-		case role.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				r.UpdatedAt = value.Time
-			}
-		case role.FieldDeleted:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted", values[i])
-			} else if value.Valid {
-				r.Deleted = value.Bool
-			}
-		case role.FieldCreator:
+		case role.FieldGroupID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field creator", values[i])
+				return fmt.Errorf("unexpected type %T for field group_id", values[i])
 			} else if value.Valid {
-				r.Creator = value.Int64
+				r.GroupID = value.Int64
 			}
-		case role.FieldEditor:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field editor", values[i])
-			} else if value.Valid {
-				r.Editor = value.Int64
-			}
-		case role.FieldVersion:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field version", values[i])
-			} else if value.Valid {
-				r.Version = value.Int64
-			}
-		case role.FieldParentID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
-			} else if value.Valid {
-				r.ParentID = value.Int64
-			}
-		case role.FieldLevel:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field level", values[i])
-			} else if value.Valid {
-				r.Level = value.Int64
-			}
-		case role.FieldRoleName:
+		case role.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field role_name", values[i])
+				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				r.RoleName = value.String
+				r.Name = value.String
 			}
 		case role.FieldIntro:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -174,29 +124,11 @@ func (r *Role) String() string {
 	builder.WriteString("created_at=")
 	builder.WriteString(r.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(r.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString("group_id=")
+	builder.WriteString(fmt.Sprintf("%v", r.GroupID))
 	builder.WriteString(", ")
-	builder.WriteString("deleted=")
-	builder.WriteString(fmt.Sprintf("%v", r.Deleted))
-	builder.WriteString(", ")
-	builder.WriteString("creator=")
-	builder.WriteString(fmt.Sprintf("%v", r.Creator))
-	builder.WriteString(", ")
-	builder.WriteString("editor=")
-	builder.WriteString(fmt.Sprintf("%v", r.Editor))
-	builder.WriteString(", ")
-	builder.WriteString("version=")
-	builder.WriteString(fmt.Sprintf("%v", r.Version))
-	builder.WriteString(", ")
-	builder.WriteString("parent_id=")
-	builder.WriteString(fmt.Sprintf("%v", r.ParentID))
-	builder.WriteString(", ")
-	builder.WriteString("level=")
-	builder.WriteString(fmt.Sprintf("%v", r.Level))
-	builder.WriteString(", ")
-	builder.WriteString("role_name=")
-	builder.WriteString(r.RoleName)
+	builder.WriteString("name=")
+	builder.WriteString(r.Name)
 	builder.WriteString(", ")
 	builder.WriteString("intro=")
 	builder.WriteString(r.Intro)

@@ -5,13 +5,13 @@ package ent
 import (
 	"context"
 	"fmt"
+	"imlogic/ent/group"
+	"imlogic/ent/predicate"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/group"
-	"imlogic/ent/predicate"
 )
 
 // GroupQuery is the builder for querying Group entities.
@@ -261,12 +261,12 @@ func (gq *GroupQuery) Clone() *GroupQuery {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		UUID string `json:"uuid,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Group.Query().
-//		GroupBy(group.FieldCreatedAt).
+//		GroupBy(group.FieldUUID).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (gq *GroupQuery) GroupBy(field string, fields ...string) *GroupGroupBy {
@@ -284,11 +284,11 @@ func (gq *GroupQuery) GroupBy(field string, fields ...string) *GroupGroupBy {
 // Example:
 //
 //	var v []struct {
-//		CreatedAt time.Time `json:"created_at,omitempty"`
+//		UUID string `json:"uuid,omitempty"`
 //	}
 //
 //	client.Group.Query().
-//		Select(group.FieldCreatedAt).
+//		Select(group.FieldUUID).
 //		Scan(ctx, &v)
 func (gq *GroupQuery) Select(fields ...string) *GroupSelect {
 	gq.ctx.Fields = append(gq.ctx.Fields, fields...)

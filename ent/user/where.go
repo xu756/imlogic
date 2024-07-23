@@ -3,10 +3,10 @@
 package user
 
 import (
+	"imlogic/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.
@@ -69,24 +69,14 @@ func Deleted(v bool) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldDeleted, v))
 }
 
-// Creator applies equality check predicate on the "creator" field. It's identical to CreatorEQ.
-func Creator(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldCreator, v))
+// UUID applies equality check predicate on the "uuid" field. It's identical to UUIDEQ.
+func UUID(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldUUID, v))
 }
 
 // Editor applies equality check predicate on the "editor" field. It's identical to EditorEQ.
 func Editor(v int64) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldEditor, v))
-}
-
-// Version applies equality check predicate on the "version" field. It's identical to VersionEQ.
-func Version(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldVersion, v))
-}
-
-// UUID applies equality check predicate on the "uuid" field. It's identical to UUIDEQ.
-func UUID(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldUUID, v))
 }
 
 // Username applies equality check predicate on the "username" field. It's identical to UsernameEQ.
@@ -109,9 +99,9 @@ func Avatar(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldAvatar, v))
 }
 
-// Device applies equality check predicate on the "device" field. It's identical to DeviceEQ.
-func Device(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldDevice, v))
+// Desc applies equality check predicate on the "desc" field. It's identical to DescEQ.
+func Desc(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldDesc, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -204,126 +194,6 @@ func DeletedNEQ(v bool) predicate.User {
 	return predicate.User(sql.FieldNEQ(FieldDeleted, v))
 }
 
-// CreatorEQ applies the EQ predicate on the "creator" field.
-func CreatorEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldCreator, v))
-}
-
-// CreatorNEQ applies the NEQ predicate on the "creator" field.
-func CreatorNEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldCreator, v))
-}
-
-// CreatorIn applies the In predicate on the "creator" field.
-func CreatorIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldIn(FieldCreator, vs...))
-}
-
-// CreatorNotIn applies the NotIn predicate on the "creator" field.
-func CreatorNotIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldCreator, vs...))
-}
-
-// CreatorGT applies the GT predicate on the "creator" field.
-func CreatorGT(v int64) predicate.User {
-	return predicate.User(sql.FieldGT(FieldCreator, v))
-}
-
-// CreatorGTE applies the GTE predicate on the "creator" field.
-func CreatorGTE(v int64) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldCreator, v))
-}
-
-// CreatorLT applies the LT predicate on the "creator" field.
-func CreatorLT(v int64) predicate.User {
-	return predicate.User(sql.FieldLT(FieldCreator, v))
-}
-
-// CreatorLTE applies the LTE predicate on the "creator" field.
-func CreatorLTE(v int64) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldCreator, v))
-}
-
-// EditorEQ applies the EQ predicate on the "editor" field.
-func EditorEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldEditor, v))
-}
-
-// EditorNEQ applies the NEQ predicate on the "editor" field.
-func EditorNEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldEditor, v))
-}
-
-// EditorIn applies the In predicate on the "editor" field.
-func EditorIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldIn(FieldEditor, vs...))
-}
-
-// EditorNotIn applies the NotIn predicate on the "editor" field.
-func EditorNotIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldEditor, vs...))
-}
-
-// EditorGT applies the GT predicate on the "editor" field.
-func EditorGT(v int64) predicate.User {
-	return predicate.User(sql.FieldGT(FieldEditor, v))
-}
-
-// EditorGTE applies the GTE predicate on the "editor" field.
-func EditorGTE(v int64) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldEditor, v))
-}
-
-// EditorLT applies the LT predicate on the "editor" field.
-func EditorLT(v int64) predicate.User {
-	return predicate.User(sql.FieldLT(FieldEditor, v))
-}
-
-// EditorLTE applies the LTE predicate on the "editor" field.
-func EditorLTE(v int64) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldEditor, v))
-}
-
-// VersionEQ applies the EQ predicate on the "version" field.
-func VersionEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldVersion, v))
-}
-
-// VersionNEQ applies the NEQ predicate on the "version" field.
-func VersionNEQ(v int64) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldVersion, v))
-}
-
-// VersionIn applies the In predicate on the "version" field.
-func VersionIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldIn(FieldVersion, vs...))
-}
-
-// VersionNotIn applies the NotIn predicate on the "version" field.
-func VersionNotIn(vs ...int64) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldVersion, vs...))
-}
-
-// VersionGT applies the GT predicate on the "version" field.
-func VersionGT(v int64) predicate.User {
-	return predicate.User(sql.FieldGT(FieldVersion, v))
-}
-
-// VersionGTE applies the GTE predicate on the "version" field.
-func VersionGTE(v int64) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldVersion, v))
-}
-
-// VersionLT applies the LT predicate on the "version" field.
-func VersionLT(v int64) predicate.User {
-	return predicate.User(sql.FieldLT(FieldVersion, v))
-}
-
-// VersionLTE applies the LTE predicate on the "version" field.
-func VersionLTE(v int64) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldVersion, v))
-}
-
 // UUIDEQ applies the EQ predicate on the "uuid" field.
 func UUIDEQ(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldUUID, v))
@@ -387,6 +257,46 @@ func UUIDEqualFold(v string) predicate.User {
 // UUIDContainsFold applies the ContainsFold predicate on the "uuid" field.
 func UUIDContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldUUID, v))
+}
+
+// EditorEQ applies the EQ predicate on the "editor" field.
+func EditorEQ(v int64) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldEditor, v))
+}
+
+// EditorNEQ applies the NEQ predicate on the "editor" field.
+func EditorNEQ(v int64) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldEditor, v))
+}
+
+// EditorIn applies the In predicate on the "editor" field.
+func EditorIn(vs ...int64) predicate.User {
+	return predicate.User(sql.FieldIn(FieldEditor, vs...))
+}
+
+// EditorNotIn applies the NotIn predicate on the "editor" field.
+func EditorNotIn(vs ...int64) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldEditor, vs...))
+}
+
+// EditorGT applies the GT predicate on the "editor" field.
+func EditorGT(v int64) predicate.User {
+	return predicate.User(sql.FieldGT(FieldEditor, v))
+}
+
+// EditorGTE applies the GTE predicate on the "editor" field.
+func EditorGTE(v int64) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldEditor, v))
+}
+
+// EditorLT applies the LT predicate on the "editor" field.
+func EditorLT(v int64) predicate.User {
+	return predicate.User(sql.FieldLT(FieldEditor, v))
+}
+
+// EditorLTE applies the LTE predicate on the "editor" field.
+func EditorLTE(v int64) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldEditor, v))
 }
 
 // UsernameEQ applies the EQ predicate on the "username" field.
@@ -649,69 +559,69 @@ func AvatarContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldAvatar, v))
 }
 
-// DeviceEQ applies the EQ predicate on the "device" field.
-func DeviceEQ(v string) predicate.User {
-	return predicate.User(sql.FieldEQ(FieldDevice, v))
+// DescEQ applies the EQ predicate on the "desc" field.
+func DescEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldDesc, v))
 }
 
-// DeviceNEQ applies the NEQ predicate on the "device" field.
-func DeviceNEQ(v string) predicate.User {
-	return predicate.User(sql.FieldNEQ(FieldDevice, v))
+// DescNEQ applies the NEQ predicate on the "desc" field.
+func DescNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldDesc, v))
 }
 
-// DeviceIn applies the In predicate on the "device" field.
-func DeviceIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldIn(FieldDevice, vs...))
+// DescIn applies the In predicate on the "desc" field.
+func DescIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldDesc, vs...))
 }
 
-// DeviceNotIn applies the NotIn predicate on the "device" field.
-func DeviceNotIn(vs ...string) predicate.User {
-	return predicate.User(sql.FieldNotIn(FieldDevice, vs...))
+// DescNotIn applies the NotIn predicate on the "desc" field.
+func DescNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldDesc, vs...))
 }
 
-// DeviceGT applies the GT predicate on the "device" field.
-func DeviceGT(v string) predicate.User {
-	return predicate.User(sql.FieldGT(FieldDevice, v))
+// DescGT applies the GT predicate on the "desc" field.
+func DescGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldDesc, v))
 }
 
-// DeviceGTE applies the GTE predicate on the "device" field.
-func DeviceGTE(v string) predicate.User {
-	return predicate.User(sql.FieldGTE(FieldDevice, v))
+// DescGTE applies the GTE predicate on the "desc" field.
+func DescGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldDesc, v))
 }
 
-// DeviceLT applies the LT predicate on the "device" field.
-func DeviceLT(v string) predicate.User {
-	return predicate.User(sql.FieldLT(FieldDevice, v))
+// DescLT applies the LT predicate on the "desc" field.
+func DescLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldDesc, v))
 }
 
-// DeviceLTE applies the LTE predicate on the "device" field.
-func DeviceLTE(v string) predicate.User {
-	return predicate.User(sql.FieldLTE(FieldDevice, v))
+// DescLTE applies the LTE predicate on the "desc" field.
+func DescLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldDesc, v))
 }
 
-// DeviceContains applies the Contains predicate on the "device" field.
-func DeviceContains(v string) predicate.User {
-	return predicate.User(sql.FieldContains(FieldDevice, v))
+// DescContains applies the Contains predicate on the "desc" field.
+func DescContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldDesc, v))
 }
 
-// DeviceHasPrefix applies the HasPrefix predicate on the "device" field.
-func DeviceHasPrefix(v string) predicate.User {
-	return predicate.User(sql.FieldHasPrefix(FieldDevice, v))
+// DescHasPrefix applies the HasPrefix predicate on the "desc" field.
+func DescHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldDesc, v))
 }
 
-// DeviceHasSuffix applies the HasSuffix predicate on the "device" field.
-func DeviceHasSuffix(v string) predicate.User {
-	return predicate.User(sql.FieldHasSuffix(FieldDevice, v))
+// DescHasSuffix applies the HasSuffix predicate on the "desc" field.
+func DescHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldDesc, v))
 }
 
-// DeviceEqualFold applies the EqualFold predicate on the "device" field.
-func DeviceEqualFold(v string) predicate.User {
-	return predicate.User(sql.FieldEqualFold(FieldDevice, v))
+// DescEqualFold applies the EqualFold predicate on the "desc" field.
+func DescEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldDesc, v))
 }
 
-// DeviceContainsFold applies the ContainsFold predicate on the "device" field.
-func DeviceContainsFold(v string) predicate.User {
-	return predicate.User(sql.FieldContainsFold(FieldDevice, v))
+// DescContainsFold applies the ContainsFold predicate on the "desc" field.
+func DescContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldDesc, v))
 }
 
 // And groups predicates with the AND operator between them.

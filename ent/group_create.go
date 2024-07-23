@@ -6,11 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"imlogic/ent/group"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/group"
 )
 
 // GroupCreate is the builder for creating a Group entity.
@@ -18,6 +18,20 @@ type GroupCreate struct {
 	config
 	mutation *GroupMutation
 	hooks    []Hook
+}
+
+// SetUUID sets the "uuid" field.
+func (gc *GroupCreate) SetUUID(s string) *GroupCreate {
+	gc.mutation.SetUUID(s)
+	return gc
+}
+
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (gc *GroupCreate) SetNillableUUID(s *string) *GroupCreate {
+	if s != nil {
+		gc.SetUUID(*s)
+	}
+	return gc
 }
 
 // SetCreatedAt sets the "created_at" field.
@@ -44,104 +58,6 @@ func (gc *GroupCreate) SetUpdatedAt(t time.Time) *GroupCreate {
 func (gc *GroupCreate) SetNillableUpdatedAt(t *time.Time) *GroupCreate {
 	if t != nil {
 		gc.SetUpdatedAt(*t)
-	}
-	return gc
-}
-
-// SetDeleted sets the "deleted" field.
-func (gc *GroupCreate) SetDeleted(b bool) *GroupCreate {
-	gc.mutation.SetDeleted(b)
-	return gc
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableDeleted(b *bool) *GroupCreate {
-	if b != nil {
-		gc.SetDeleted(*b)
-	}
-	return gc
-}
-
-// SetCreator sets the "creator" field.
-func (gc *GroupCreate) SetCreator(i int64) *GroupCreate {
-	gc.mutation.SetCreator(i)
-	return gc
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableCreator(i *int64) *GroupCreate {
-	if i != nil {
-		gc.SetCreator(*i)
-	}
-	return gc
-}
-
-// SetEditor sets the "editor" field.
-func (gc *GroupCreate) SetEditor(i int64) *GroupCreate {
-	gc.mutation.SetEditor(i)
-	return gc
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableEditor(i *int64) *GroupCreate {
-	if i != nil {
-		gc.SetEditor(*i)
-	}
-	return gc
-}
-
-// SetVersion sets the "version" field.
-func (gc *GroupCreate) SetVersion(i int64) *GroupCreate {
-	gc.mutation.SetVersion(i)
-	return gc
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableVersion(i *int64) *GroupCreate {
-	if i != nil {
-		gc.SetVersion(*i)
-	}
-	return gc
-}
-
-// SetUUID sets the "uuid" field.
-func (gc *GroupCreate) SetUUID(s string) *GroupCreate {
-	gc.mutation.SetUUID(s)
-	return gc
-}
-
-// SetNillableUUID sets the "uuid" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableUUID(s *string) *GroupCreate {
-	if s != nil {
-		gc.SetUUID(*s)
-	}
-	return gc
-}
-
-// SetParentID sets the "parent_id" field.
-func (gc *GroupCreate) SetParentID(i int64) *GroupCreate {
-	gc.mutation.SetParentID(i)
-	return gc
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableParentID(i *int64) *GroupCreate {
-	if i != nil {
-		gc.SetParentID(*i)
-	}
-	return gc
-}
-
-// SetLevel sets the "level" field.
-func (gc *GroupCreate) SetLevel(i int64) *GroupCreate {
-	gc.mutation.SetLevel(i)
-	return gc
-}
-
-// SetNillableLevel sets the "level" field if the given value is not nil.
-func (gc *GroupCreate) SetNillableLevel(i *int64) *GroupCreate {
-	if i != nil {
-		gc.SetLevel(*i)
 	}
 	return gc
 }
@@ -199,6 +115,10 @@ func (gc *GroupCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (gc *GroupCreate) defaults() {
+	if _, ok := gc.mutation.UUID(); !ok {
+		v := group.DefaultUUID()
+		gc.mutation.SetUUID(v)
+	}
 	if _, ok := gc.mutation.CreatedAt(); !ok {
 		v := group.DefaultCreatedAt()
 		gc.mutation.SetCreatedAt(v)
@@ -207,64 +127,18 @@ func (gc *GroupCreate) defaults() {
 		v := group.DefaultUpdatedAt()
 		gc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := gc.mutation.Deleted(); !ok {
-		v := group.DefaultDeleted
-		gc.mutation.SetDeleted(v)
-	}
-	if _, ok := gc.mutation.Creator(); !ok {
-		v := group.DefaultCreator
-		gc.mutation.SetCreator(v)
-	}
-	if _, ok := gc.mutation.Editor(); !ok {
-		v := group.DefaultEditor
-		gc.mutation.SetEditor(v)
-	}
-	if _, ok := gc.mutation.Version(); !ok {
-		v := group.DefaultVersion
-		gc.mutation.SetVersion(v)
-	}
-	if _, ok := gc.mutation.UUID(); !ok {
-		v := group.DefaultUUID()
-		gc.mutation.SetUUID(v)
-	}
-	if _, ok := gc.mutation.ParentID(); !ok {
-		v := group.DefaultParentID
-		gc.mutation.SetParentID(v)
-	}
-	if _, ok := gc.mutation.Level(); !ok {
-		v := group.DefaultLevel
-		gc.mutation.SetLevel(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
 func (gc *GroupCreate) check() error {
+	if _, ok := gc.mutation.UUID(); !ok {
+		return &ValidationError{Name: "uuid", err: errors.New(`ent: missing required field "Group.uuid"`)}
+	}
 	if _, ok := gc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Group.created_at"`)}
 	}
 	if _, ok := gc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Group.updated_at"`)}
-	}
-	if _, ok := gc.mutation.Deleted(); !ok {
-		return &ValidationError{Name: "deleted", err: errors.New(`ent: missing required field "Group.deleted"`)}
-	}
-	if _, ok := gc.mutation.Creator(); !ok {
-		return &ValidationError{Name: "creator", err: errors.New(`ent: missing required field "Group.creator"`)}
-	}
-	if _, ok := gc.mutation.Editor(); !ok {
-		return &ValidationError{Name: "editor", err: errors.New(`ent: missing required field "Group.editor"`)}
-	}
-	if _, ok := gc.mutation.Version(); !ok {
-		return &ValidationError{Name: "version", err: errors.New(`ent: missing required field "Group.version"`)}
-	}
-	if _, ok := gc.mutation.UUID(); !ok {
-		return &ValidationError{Name: "uuid", err: errors.New(`ent: missing required field "Group.uuid"`)}
-	}
-	if _, ok := gc.mutation.ParentID(); !ok {
-		return &ValidationError{Name: "parent_id", err: errors.New(`ent: missing required field "Group.parent_id"`)}
-	}
-	if _, ok := gc.mutation.Level(); !ok {
-		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Group.level"`)}
 	}
 	if _, ok := gc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Group.name"`)}
@@ -309,6 +183,10 @@ func (gc *GroupCreate) createSpec() (*Group, *sqlgraph.CreateSpec) {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
+	if value, ok := gc.mutation.UUID(); ok {
+		_spec.SetField(group.FieldUUID, field.TypeString, value)
+		_node.UUID = value
+	}
 	if value, ok := gc.mutation.CreatedAt(); ok {
 		_spec.SetField(group.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
@@ -316,34 +194,6 @@ func (gc *GroupCreate) createSpec() (*Group, *sqlgraph.CreateSpec) {
 	if value, ok := gc.mutation.UpdatedAt(); ok {
 		_spec.SetField(group.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
-	}
-	if value, ok := gc.mutation.Deleted(); ok {
-		_spec.SetField(group.FieldDeleted, field.TypeBool, value)
-		_node.Deleted = value
-	}
-	if value, ok := gc.mutation.Creator(); ok {
-		_spec.SetField(group.FieldCreator, field.TypeInt64, value)
-		_node.Creator = value
-	}
-	if value, ok := gc.mutation.Editor(); ok {
-		_spec.SetField(group.FieldEditor, field.TypeInt64, value)
-		_node.Editor = value
-	}
-	if value, ok := gc.mutation.Version(); ok {
-		_spec.SetField(group.FieldVersion, field.TypeInt64, value)
-		_node.Version = value
-	}
-	if value, ok := gc.mutation.UUID(); ok {
-		_spec.SetField(group.FieldUUID, field.TypeString, value)
-		_node.UUID = value
-	}
-	if value, ok := gc.mutation.ParentID(); ok {
-		_spec.SetField(group.FieldParentID, field.TypeInt64, value)
-		_node.ParentID = value
-	}
-	if value, ok := gc.mutation.Level(); ok {
-		_spec.SetField(group.FieldLevel, field.TypeInt64, value)
-		_node.Level = value
 	}
 	if value, ok := gc.mutation.Name(); ok {
 		_spec.SetField(group.FieldName, field.TypeString, value)

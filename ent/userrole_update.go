@@ -6,13 +6,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
+	"imlogic/ent/predicate"
+	"imlogic/ent/userrole"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/predicate"
-	"imlogic/ent/userrole"
 )
 
 // UserRoleUpdate is the builder for updating UserRole entities.
@@ -25,89 +24,6 @@ type UserRoleUpdate struct {
 // Where appends a list predicates to the UserRoleUpdate builder.
 func (uru *UserRoleUpdate) Where(ps ...predicate.UserRole) *UserRoleUpdate {
 	uru.mutation.Where(ps...)
-	return uru
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (uru *UserRoleUpdate) SetUpdatedAt(t time.Time) *UserRoleUpdate {
-	uru.mutation.SetUpdatedAt(t)
-	return uru
-}
-
-// SetDeleted sets the "deleted" field.
-func (uru *UserRoleUpdate) SetDeleted(b bool) *UserRoleUpdate {
-	uru.mutation.SetDeleted(b)
-	return uru
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (uru *UserRoleUpdate) SetNillableDeleted(b *bool) *UserRoleUpdate {
-	if b != nil {
-		uru.SetDeleted(*b)
-	}
-	return uru
-}
-
-// SetCreator sets the "creator" field.
-func (uru *UserRoleUpdate) SetCreator(i int64) *UserRoleUpdate {
-	uru.mutation.ResetCreator()
-	uru.mutation.SetCreator(i)
-	return uru
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (uru *UserRoleUpdate) SetNillableCreator(i *int64) *UserRoleUpdate {
-	if i != nil {
-		uru.SetCreator(*i)
-	}
-	return uru
-}
-
-// AddCreator adds i to the "creator" field.
-func (uru *UserRoleUpdate) AddCreator(i int64) *UserRoleUpdate {
-	uru.mutation.AddCreator(i)
-	return uru
-}
-
-// SetEditor sets the "editor" field.
-func (uru *UserRoleUpdate) SetEditor(i int64) *UserRoleUpdate {
-	uru.mutation.ResetEditor()
-	uru.mutation.SetEditor(i)
-	return uru
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (uru *UserRoleUpdate) SetNillableEditor(i *int64) *UserRoleUpdate {
-	if i != nil {
-		uru.SetEditor(*i)
-	}
-	return uru
-}
-
-// AddEditor adds i to the "editor" field.
-func (uru *UserRoleUpdate) AddEditor(i int64) *UserRoleUpdate {
-	uru.mutation.AddEditor(i)
-	return uru
-}
-
-// SetVersion sets the "version" field.
-func (uru *UserRoleUpdate) SetVersion(i int64) *UserRoleUpdate {
-	uru.mutation.ResetVersion()
-	uru.mutation.SetVersion(i)
-	return uru
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (uru *UserRoleUpdate) SetNillableVersion(i *int64) *UserRoleUpdate {
-	if i != nil {
-		uru.SetVersion(*i)
-	}
-	return uru
-}
-
-// AddVersion adds i to the "version" field.
-func (uru *UserRoleUpdate) AddVersion(i int64) *UserRoleUpdate {
-	uru.mutation.AddVersion(i)
 	return uru
 }
 
@@ -160,7 +76,6 @@ func (uru *UserRoleUpdate) Mutation() *UserRoleMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (uru *UserRoleUpdate) Save(ctx context.Context) (int, error) {
-	uru.defaults()
 	return withHooks(ctx, uru.sqlSave, uru.mutation, uru.hooks)
 }
 
@@ -186,46 +101,14 @@ func (uru *UserRoleUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (uru *UserRoleUpdate) defaults() {
-	if _, ok := uru.mutation.UpdatedAt(); !ok {
-		v := userrole.UpdateDefaultUpdatedAt()
-		uru.mutation.SetUpdatedAt(v)
-	}
-}
-
 func (uru *UserRoleUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(userrole.Table, userrole.Columns, sqlgraph.NewFieldSpec(userrole.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewUpdateSpec(userrole.Table, userrole.Columns, sqlgraph.NewFieldSpec(userrole.FieldID, field.TypeInt))
 	if ps := uru.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := uru.mutation.UpdatedAt(); ok {
-		_spec.SetField(userrole.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := uru.mutation.Deleted(); ok {
-		_spec.SetField(userrole.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := uru.mutation.Creator(); ok {
-		_spec.SetField(userrole.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uru.mutation.AddedCreator(); ok {
-		_spec.AddField(userrole.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uru.mutation.Editor(); ok {
-		_spec.SetField(userrole.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uru.mutation.AddedEditor(); ok {
-		_spec.AddField(userrole.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uru.mutation.Version(); ok {
-		_spec.SetField(userrole.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := uru.mutation.AddedVersion(); ok {
-		_spec.AddField(userrole.FieldVersion, field.TypeInt64, value)
 	}
 	if value, ok := uru.mutation.UserID(); ok {
 		_spec.SetField(userrole.FieldUserID, field.TypeInt64, value)
@@ -257,89 +140,6 @@ type UserRoleUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *UserRoleMutation
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (uruo *UserRoleUpdateOne) SetUpdatedAt(t time.Time) *UserRoleUpdateOne {
-	uruo.mutation.SetUpdatedAt(t)
-	return uruo
-}
-
-// SetDeleted sets the "deleted" field.
-func (uruo *UserRoleUpdateOne) SetDeleted(b bool) *UserRoleUpdateOne {
-	uruo.mutation.SetDeleted(b)
-	return uruo
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (uruo *UserRoleUpdateOne) SetNillableDeleted(b *bool) *UserRoleUpdateOne {
-	if b != nil {
-		uruo.SetDeleted(*b)
-	}
-	return uruo
-}
-
-// SetCreator sets the "creator" field.
-func (uruo *UserRoleUpdateOne) SetCreator(i int64) *UserRoleUpdateOne {
-	uruo.mutation.ResetCreator()
-	uruo.mutation.SetCreator(i)
-	return uruo
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (uruo *UserRoleUpdateOne) SetNillableCreator(i *int64) *UserRoleUpdateOne {
-	if i != nil {
-		uruo.SetCreator(*i)
-	}
-	return uruo
-}
-
-// AddCreator adds i to the "creator" field.
-func (uruo *UserRoleUpdateOne) AddCreator(i int64) *UserRoleUpdateOne {
-	uruo.mutation.AddCreator(i)
-	return uruo
-}
-
-// SetEditor sets the "editor" field.
-func (uruo *UserRoleUpdateOne) SetEditor(i int64) *UserRoleUpdateOne {
-	uruo.mutation.ResetEditor()
-	uruo.mutation.SetEditor(i)
-	return uruo
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (uruo *UserRoleUpdateOne) SetNillableEditor(i *int64) *UserRoleUpdateOne {
-	if i != nil {
-		uruo.SetEditor(*i)
-	}
-	return uruo
-}
-
-// AddEditor adds i to the "editor" field.
-func (uruo *UserRoleUpdateOne) AddEditor(i int64) *UserRoleUpdateOne {
-	uruo.mutation.AddEditor(i)
-	return uruo
-}
-
-// SetVersion sets the "version" field.
-func (uruo *UserRoleUpdateOne) SetVersion(i int64) *UserRoleUpdateOne {
-	uruo.mutation.ResetVersion()
-	uruo.mutation.SetVersion(i)
-	return uruo
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (uruo *UserRoleUpdateOne) SetNillableVersion(i *int64) *UserRoleUpdateOne {
-	if i != nil {
-		uruo.SetVersion(*i)
-	}
-	return uruo
-}
-
-// AddVersion adds i to the "version" field.
-func (uruo *UserRoleUpdateOne) AddVersion(i int64) *UserRoleUpdateOne {
-	uruo.mutation.AddVersion(i)
-	return uruo
 }
 
 // SetUserID sets the "user_id" field.
@@ -404,7 +204,6 @@ func (uruo *UserRoleUpdateOne) Select(field string, fields ...string) *UserRoleU
 
 // Save executes the query and returns the updated UserRole entity.
 func (uruo *UserRoleUpdateOne) Save(ctx context.Context) (*UserRole, error) {
-	uruo.defaults()
 	return withHooks(ctx, uruo.sqlSave, uruo.mutation, uruo.hooks)
 }
 
@@ -430,16 +229,8 @@ func (uruo *UserRoleUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (uruo *UserRoleUpdateOne) defaults() {
-	if _, ok := uruo.mutation.UpdatedAt(); !ok {
-		v := userrole.UpdateDefaultUpdatedAt()
-		uruo.mutation.SetUpdatedAt(v)
-	}
-}
-
 func (uruo *UserRoleUpdateOne) sqlSave(ctx context.Context) (_node *UserRole, err error) {
-	_spec := sqlgraph.NewUpdateSpec(userrole.Table, userrole.Columns, sqlgraph.NewFieldSpec(userrole.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewUpdateSpec(userrole.Table, userrole.Columns, sqlgraph.NewFieldSpec(userrole.FieldID, field.TypeInt))
 	id, ok := uruo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "UserRole.id" for update`)}
@@ -463,30 +254,6 @@ func (uruo *UserRoleUpdateOne) sqlSave(ctx context.Context) (_node *UserRole, er
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := uruo.mutation.UpdatedAt(); ok {
-		_spec.SetField(userrole.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := uruo.mutation.Deleted(); ok {
-		_spec.SetField(userrole.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := uruo.mutation.Creator(); ok {
-		_spec.SetField(userrole.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uruo.mutation.AddedCreator(); ok {
-		_spec.AddField(userrole.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := uruo.mutation.Editor(); ok {
-		_spec.SetField(userrole.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uruo.mutation.AddedEditor(); ok {
-		_spec.AddField(userrole.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := uruo.mutation.Version(); ok {
-		_spec.SetField(userrole.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := uruo.mutation.AddedVersion(); ok {
-		_spec.AddField(userrole.FieldVersion, field.TypeInt64, value)
 	}
 	if value, ok := uruo.mutation.UserID(); ok {
 		_spec.SetField(userrole.FieldUserID, field.TypeInt64, value)

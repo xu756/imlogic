@@ -4,13 +4,13 @@ package enttest
 
 import (
 	"context"
-
 	"imlogic/ent"
 	// required by schema hooks.
 	_ "imlogic/ent/runtime"
 
-	"entgo.io/ent/dialect/sql/schema"
 	"imlogic/ent/migrate"
+
+	"entgo.io/ent/dialect/sql/schema"
 )
 
 type (

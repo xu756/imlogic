@@ -8,18 +8,33 @@ import (
 )
 
 var (
+	// ChatsColumns holds the columns for the "chats" table.
+	ChatsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "uuid", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "user1_id", Type: field.TypeInt64},
+		{Name: "user2_id", Type: field.TypeInt64},
+	}
+	// ChatsTable holds the schema information for the "chats" table.
+	ChatsTable = &schema.Table{
+		Name:       "chats",
+		Columns:    ChatsColumns,
+		PrimaryKey: []*schema.Column{ChatsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "chat_uuid",
+				Unique:  true,
+				Columns: []*schema.Column{ChatsColumns[1]},
+			},
+		},
+	}
 	// GroupsColumns holds the columns for the "groups" table.
 	GroupsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "uuid", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted", Type: field.TypeBool, Default: false},
-		{Name: "creator", Type: field.TypeInt64, Default: 0},
-		{Name: "editor", Type: field.TypeInt64, Default: 1},
-		{Name: "version", Type: field.TypeInt64, Default: 0},
-		{Name: "uuid", Type: field.TypeString, Unique: true},
-		{Name: "parent_id", Type: field.TypeInt64, Default: 0},
-		{Name: "level", Type: field.TypeInt64, Default: 0},
 		{Name: "name", Type: field.TypeString},
 		{Name: "intro", Type: field.TypeString},
 	}
@@ -29,19 +44,59 @@ var (
 		Columns:    GroupsColumns,
 		PrimaryKey: []*schema.Column{GroupsColumns[0]},
 	}
+	// GroupMessagesColumns holds the columns for the "group_messages" table.
+	GroupMessagesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "group_id", Type: field.TypeInt64},
+		{Name: "msg_type", Type: field.TypeInt32},
+		{Name: "msg_id", Type: field.TypeString},
+		{Name: "timestamp", Type: field.TypeInt64},
+		{Name: "sender_id", Type: field.TypeInt64},
+		{Name: "content", Type: field.TypeJSON},
+	}
+	// GroupMessagesTable holds the schema information for the "group_messages" table.
+	GroupMessagesTable = &schema.Table{
+		Name:       "group_messages",
+		Columns:    GroupMessagesColumns,
+		PrimaryKey: []*schema.Column{GroupMessagesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "groupmessage_msg_id_sender_id_group_id",
+				Unique:  false,
+				Columns: []*schema.Column{GroupMessagesColumns[3], GroupMessagesColumns[5], GroupMessagesColumns[1]},
+			},
+		},
+	}
+	// MessagesColumns holds the columns for the "messages" table.
+	MessagesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "chat_id", Type: field.TypeInt64},
+		{Name: "msg_type", Type: field.TypeInt32},
+		{Name: "msg_id", Type: field.TypeString},
+		{Name: "timestamp", Type: field.TypeInt64},
+		{Name: "sender_id", Type: field.TypeInt64},
+		{Name: "content", Type: field.TypeJSON},
+	}
+	// MessagesTable holds the schema information for the "messages" table.
+	MessagesTable = &schema.Table{
+		Name:       "messages",
+		Columns:    MessagesColumns,
+		PrimaryKey: []*schema.Column{MessagesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "message_msg_id_sender_id_chat_id",
+				Unique:  false,
+				Columns: []*schema.Column{MessagesColumns[3], MessagesColumns[5], MessagesColumns[1]},
+			},
+		},
+	}
 	// RolesColumns holds the columns for the "roles" table.
 	RolesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted", Type: field.TypeBool, Default: false},
-		{Name: "creator", Type: field.TypeInt64, Default: 0},
-		{Name: "editor", Type: field.TypeInt64, Default: 1},
-		{Name: "version", Type: field.TypeInt64, Default: 0},
-		{Name: "parent_id", Type: field.TypeInt64, Default: 0},
-		{Name: "level", Type: field.TypeInt64, Default: 0},
-		{Name: "role_name", Type: field.TypeString},
-		{Name: "intro", Type: field.TypeString},
+		{Name: "group_id", Type: field.TypeInt64, Default: 0},
+		{Name: "name", Type: field.TypeString},
+		{Name: "intro", Type: field.TypeString, Default: ""},
 	}
 	// RolesTable holds the schema information for the "roles" table.
 	RolesTable = &schema.Table{
@@ -55,15 +110,13 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted", Type: field.TypeBool, Default: false},
-		{Name: "creator", Type: field.TypeInt64, Default: 0},
-		{Name: "editor", Type: field.TypeInt64, Default: 1},
-		{Name: "version", Type: field.TypeInt64, Default: 0},
-		{Name: "uuid", Type: field.TypeString, Unique: true},
-		{Name: "username", Type: field.TypeString},
-		{Name: "password", Type: field.TypeString},
-		{Name: "mobile", Type: field.TypeString, Unique: true},
-		{Name: "avatar", Type: field.TypeString, Default: "https://cos.imlogic.cn/appadmin/images/avatar.jpeg"},
-		{Name: "device", Type: field.TypeString, Default: "mini"},
+		{Name: "uuid", Type: field.TypeString},
+		{Name: "editor", Type: field.TypeInt64, Default: 0},
+		{Name: "username", Type: field.TypeString, Default: ""},
+		{Name: "password", Type: field.TypeString, Default: ""},
+		{Name: "mobile", Type: field.TypeString, Default: ""},
+		{Name: "avatar", Type: field.TypeString, Default: ""},
+		{Name: "desc", Type: field.TypeString, Default: "此用户没有任何记录"},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -74,24 +127,19 @@ var (
 			{
 				Name:    "user_uuid",
 				Unique:  true,
-				Columns: []*schema.Column{UsersColumns[7]},
+				Columns: []*schema.Column{UsersColumns[4]},
 			},
 			{
 				Name:    "user_username_mobile",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[8], UsersColumns[10]},
+				Columns: []*schema.Column{UsersColumns[6], UsersColumns[8]},
 			},
 		},
 	}
 	// UserGroupsColumns holds the columns for the "user_groups" table.
 	UserGroupsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted", Type: field.TypeBool, Default: false},
-		{Name: "creator", Type: field.TypeInt64, Default: 0},
-		{Name: "editor", Type: field.TypeInt64, Default: 1},
-		{Name: "version", Type: field.TypeInt64, Default: 0},
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "join_at", Type: field.TypeTime},
 		{Name: "user_id", Type: field.TypeInt64},
 		{Name: "group_id", Type: field.TypeInt64},
 	}
@@ -100,16 +148,17 @@ var (
 		Name:       "user_groups",
 		Columns:    UserGroupsColumns,
 		PrimaryKey: []*schema.Column{UserGroupsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "usergroup_user_id_group_id",
+				Unique:  false,
+				Columns: []*schema.Column{UserGroupsColumns[2], UserGroupsColumns[3]},
+			},
+		},
 	}
 	// UserRolesColumns holds the columns for the "user_roles" table.
 	UserRolesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "deleted", Type: field.TypeBool, Default: false},
-		{Name: "creator", Type: field.TypeInt64, Default: 0},
-		{Name: "editor", Type: field.TypeInt64, Default: 1},
-		{Name: "version", Type: field.TypeInt64, Default: 0},
+		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "user_id", Type: field.TypeInt64},
 		{Name: "role_id", Type: field.TypeInt64},
 	}
@@ -121,7 +170,10 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		ChatsTable,
 		GroupsTable,
+		GroupMessagesTable,
+		MessagesTable,
 		RolesTable,
 		UsersTable,
 		UserGroupsTable,

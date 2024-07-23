@@ -6,11 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"imlogic/ent/role"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/role"
 )
 
 // RoleCreate is the builder for creating a Role entity.
@@ -34,113 +34,37 @@ func (rc *RoleCreate) SetNillableCreatedAt(t *time.Time) *RoleCreate {
 	return rc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (rc *RoleCreate) SetUpdatedAt(t time.Time) *RoleCreate {
-	rc.mutation.SetUpdatedAt(t)
+// SetGroupID sets the "group_id" field.
+func (rc *RoleCreate) SetGroupID(i int64) *RoleCreate {
+	rc.mutation.SetGroupID(i)
 	return rc
 }
 
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableUpdatedAt(t *time.Time) *RoleCreate {
-	if t != nil {
-		rc.SetUpdatedAt(*t)
-	}
-	return rc
-}
-
-// SetDeleted sets the "deleted" field.
-func (rc *RoleCreate) SetDeleted(b bool) *RoleCreate {
-	rc.mutation.SetDeleted(b)
-	return rc
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableDeleted(b *bool) *RoleCreate {
-	if b != nil {
-		rc.SetDeleted(*b)
-	}
-	return rc
-}
-
-// SetCreator sets the "creator" field.
-func (rc *RoleCreate) SetCreator(i int64) *RoleCreate {
-	rc.mutation.SetCreator(i)
-	return rc
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableCreator(i *int64) *RoleCreate {
+// SetNillableGroupID sets the "group_id" field if the given value is not nil.
+func (rc *RoleCreate) SetNillableGroupID(i *int64) *RoleCreate {
 	if i != nil {
-		rc.SetCreator(*i)
+		rc.SetGroupID(*i)
 	}
 	return rc
 }
 
-// SetEditor sets the "editor" field.
-func (rc *RoleCreate) SetEditor(i int64) *RoleCreate {
-	rc.mutation.SetEditor(i)
-	return rc
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableEditor(i *int64) *RoleCreate {
-	if i != nil {
-		rc.SetEditor(*i)
-	}
-	return rc
-}
-
-// SetVersion sets the "version" field.
-func (rc *RoleCreate) SetVersion(i int64) *RoleCreate {
-	rc.mutation.SetVersion(i)
-	return rc
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableVersion(i *int64) *RoleCreate {
-	if i != nil {
-		rc.SetVersion(*i)
-	}
-	return rc
-}
-
-// SetParentID sets the "parent_id" field.
-func (rc *RoleCreate) SetParentID(i int64) *RoleCreate {
-	rc.mutation.SetParentID(i)
-	return rc
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableParentID(i *int64) *RoleCreate {
-	if i != nil {
-		rc.SetParentID(*i)
-	}
-	return rc
-}
-
-// SetLevel sets the "level" field.
-func (rc *RoleCreate) SetLevel(i int64) *RoleCreate {
-	rc.mutation.SetLevel(i)
-	return rc
-}
-
-// SetNillableLevel sets the "level" field if the given value is not nil.
-func (rc *RoleCreate) SetNillableLevel(i *int64) *RoleCreate {
-	if i != nil {
-		rc.SetLevel(*i)
-	}
-	return rc
-}
-
-// SetRoleName sets the "role_name" field.
-func (rc *RoleCreate) SetRoleName(s string) *RoleCreate {
-	rc.mutation.SetRoleName(s)
+// SetName sets the "name" field.
+func (rc *RoleCreate) SetName(s string) *RoleCreate {
+	rc.mutation.SetName(s)
 	return rc
 }
 
 // SetIntro sets the "intro" field.
 func (rc *RoleCreate) SetIntro(s string) *RoleCreate {
 	rc.mutation.SetIntro(s)
+	return rc
+}
+
+// SetNillableIntro sets the "intro" field if the given value is not nil.
+func (rc *RoleCreate) SetNillableIntro(s *string) *RoleCreate {
+	if s != nil {
+		rc.SetIntro(*s)
+	}
 	return rc
 }
 
@@ -189,33 +113,13 @@ func (rc *RoleCreate) defaults() {
 		v := role.DefaultCreatedAt()
 		rc.mutation.SetCreatedAt(v)
 	}
-	if _, ok := rc.mutation.UpdatedAt(); !ok {
-		v := role.DefaultUpdatedAt()
-		rc.mutation.SetUpdatedAt(v)
+	if _, ok := rc.mutation.GroupID(); !ok {
+		v := role.DefaultGroupID
+		rc.mutation.SetGroupID(v)
 	}
-	if _, ok := rc.mutation.Deleted(); !ok {
-		v := role.DefaultDeleted
-		rc.mutation.SetDeleted(v)
-	}
-	if _, ok := rc.mutation.Creator(); !ok {
-		v := role.DefaultCreator
-		rc.mutation.SetCreator(v)
-	}
-	if _, ok := rc.mutation.Editor(); !ok {
-		v := role.DefaultEditor
-		rc.mutation.SetEditor(v)
-	}
-	if _, ok := rc.mutation.Version(); !ok {
-		v := role.DefaultVersion
-		rc.mutation.SetVersion(v)
-	}
-	if _, ok := rc.mutation.ParentID(); !ok {
-		v := role.DefaultParentID
-		rc.mutation.SetParentID(v)
-	}
-	if _, ok := rc.mutation.Level(); !ok {
-		v := role.DefaultLevel
-		rc.mutation.SetLevel(v)
+	if _, ok := rc.mutation.Intro(); !ok {
+		v := role.DefaultIntro
+		rc.mutation.SetIntro(v)
 	}
 }
 
@@ -224,33 +128,15 @@ func (rc *RoleCreate) check() error {
 	if _, ok := rc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Role.created_at"`)}
 	}
-	if _, ok := rc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Role.updated_at"`)}
+	if _, ok := rc.mutation.GroupID(); !ok {
+		return &ValidationError{Name: "group_id", err: errors.New(`ent: missing required field "Role.group_id"`)}
 	}
-	if _, ok := rc.mutation.Deleted(); !ok {
-		return &ValidationError{Name: "deleted", err: errors.New(`ent: missing required field "Role.deleted"`)}
+	if _, ok := rc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Role.name"`)}
 	}
-	if _, ok := rc.mutation.Creator(); !ok {
-		return &ValidationError{Name: "creator", err: errors.New(`ent: missing required field "Role.creator"`)}
-	}
-	if _, ok := rc.mutation.Editor(); !ok {
-		return &ValidationError{Name: "editor", err: errors.New(`ent: missing required field "Role.editor"`)}
-	}
-	if _, ok := rc.mutation.Version(); !ok {
-		return &ValidationError{Name: "version", err: errors.New(`ent: missing required field "Role.version"`)}
-	}
-	if _, ok := rc.mutation.ParentID(); !ok {
-		return &ValidationError{Name: "parent_id", err: errors.New(`ent: missing required field "Role.parent_id"`)}
-	}
-	if _, ok := rc.mutation.Level(); !ok {
-		return &ValidationError{Name: "level", err: errors.New(`ent: missing required field "Role.level"`)}
-	}
-	if _, ok := rc.mutation.RoleName(); !ok {
-		return &ValidationError{Name: "role_name", err: errors.New(`ent: missing required field "Role.role_name"`)}
-	}
-	if v, ok := rc.mutation.RoleName(); ok {
-		if err := role.RoleNameValidator(v); err != nil {
-			return &ValidationError{Name: "role_name", err: fmt.Errorf(`ent: validator failed for field "Role.role_name": %w`, err)}
+	if v, ok := rc.mutation.Name(); ok {
+		if err := role.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Role.name": %w`, err)}
 		}
 	}
 	if _, ok := rc.mutation.Intro(); !ok {
@@ -292,37 +178,13 @@ func (rc *RoleCreate) createSpec() (*Role, *sqlgraph.CreateSpec) {
 		_spec.SetField(role.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := rc.mutation.UpdatedAt(); ok {
-		_spec.SetField(role.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
+	if value, ok := rc.mutation.GroupID(); ok {
+		_spec.SetField(role.FieldGroupID, field.TypeInt64, value)
+		_node.GroupID = value
 	}
-	if value, ok := rc.mutation.Deleted(); ok {
-		_spec.SetField(role.FieldDeleted, field.TypeBool, value)
-		_node.Deleted = value
-	}
-	if value, ok := rc.mutation.Creator(); ok {
-		_spec.SetField(role.FieldCreator, field.TypeInt64, value)
-		_node.Creator = value
-	}
-	if value, ok := rc.mutation.Editor(); ok {
-		_spec.SetField(role.FieldEditor, field.TypeInt64, value)
-		_node.Editor = value
-	}
-	if value, ok := rc.mutation.Version(); ok {
-		_spec.SetField(role.FieldVersion, field.TypeInt64, value)
-		_node.Version = value
-	}
-	if value, ok := rc.mutation.ParentID(); ok {
-		_spec.SetField(role.FieldParentID, field.TypeInt64, value)
-		_node.ParentID = value
-	}
-	if value, ok := rc.mutation.Level(); ok {
-		_spec.SetField(role.FieldLevel, field.TypeInt64, value)
-		_node.Level = value
-	}
-	if value, ok := rc.mutation.RoleName(); ok {
-		_spec.SetField(role.FieldRoleName, field.TypeString, value)
-		_node.RoleName = value
+	if value, ok := rc.mutation.Name(); ok {
+		_spec.SetField(role.FieldName, field.TypeString, value)
+		_node.Name = value
 	}
 	if value, ok := rc.mutation.Intro(); ok {
 		_spec.SetField(role.FieldIntro, field.TypeString, value)

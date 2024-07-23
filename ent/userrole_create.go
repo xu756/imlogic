@@ -6,11 +6,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
+	"imlogic/ent/userrole"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/userrole"
 )
 
 // UserRoleCreate is the builder for creating a UserRole entity.
@@ -18,90 +17,6 @@ type UserRoleCreate struct {
 	config
 	mutation *UserRoleMutation
 	hooks    []Hook
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (urc *UserRoleCreate) SetCreatedAt(t time.Time) *UserRoleCreate {
-	urc.mutation.SetCreatedAt(t)
-	return urc
-}
-
-// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (urc *UserRoleCreate) SetNillableCreatedAt(t *time.Time) *UserRoleCreate {
-	if t != nil {
-		urc.SetCreatedAt(*t)
-	}
-	return urc
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (urc *UserRoleCreate) SetUpdatedAt(t time.Time) *UserRoleCreate {
-	urc.mutation.SetUpdatedAt(t)
-	return urc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (urc *UserRoleCreate) SetNillableUpdatedAt(t *time.Time) *UserRoleCreate {
-	if t != nil {
-		urc.SetUpdatedAt(*t)
-	}
-	return urc
-}
-
-// SetDeleted sets the "deleted" field.
-func (urc *UserRoleCreate) SetDeleted(b bool) *UserRoleCreate {
-	urc.mutation.SetDeleted(b)
-	return urc
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (urc *UserRoleCreate) SetNillableDeleted(b *bool) *UserRoleCreate {
-	if b != nil {
-		urc.SetDeleted(*b)
-	}
-	return urc
-}
-
-// SetCreator sets the "creator" field.
-func (urc *UserRoleCreate) SetCreator(i int64) *UserRoleCreate {
-	urc.mutation.SetCreator(i)
-	return urc
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (urc *UserRoleCreate) SetNillableCreator(i *int64) *UserRoleCreate {
-	if i != nil {
-		urc.SetCreator(*i)
-	}
-	return urc
-}
-
-// SetEditor sets the "editor" field.
-func (urc *UserRoleCreate) SetEditor(i int64) *UserRoleCreate {
-	urc.mutation.SetEditor(i)
-	return urc
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (urc *UserRoleCreate) SetNillableEditor(i *int64) *UserRoleCreate {
-	if i != nil {
-		urc.SetEditor(*i)
-	}
-	return urc
-}
-
-// SetVersion sets the "version" field.
-func (urc *UserRoleCreate) SetVersion(i int64) *UserRoleCreate {
-	urc.mutation.SetVersion(i)
-	return urc
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (urc *UserRoleCreate) SetNillableVersion(i *int64) *UserRoleCreate {
-	if i != nil {
-		urc.SetVersion(*i)
-	}
-	return urc
 }
 
 // SetUserID sets the "user_id" field.
@@ -116,12 +31,6 @@ func (urc *UserRoleCreate) SetRoleID(i int64) *UserRoleCreate {
 	return urc
 }
 
-// SetID sets the "id" field.
-func (urc *UserRoleCreate) SetID(i int64) *UserRoleCreate {
-	urc.mutation.SetID(i)
-	return urc
-}
-
 // Mutation returns the UserRoleMutation object of the builder.
 func (urc *UserRoleCreate) Mutation() *UserRoleMutation {
 	return urc.mutation
@@ -129,7 +38,6 @@ func (urc *UserRoleCreate) Mutation() *UserRoleMutation {
 
 // Save creates the UserRole in the database.
 func (urc *UserRoleCreate) Save(ctx context.Context) (*UserRole, error) {
-	urc.defaults()
 	return withHooks(ctx, urc.sqlSave, urc.mutation, urc.hooks)
 }
 
@@ -155,54 +63,8 @@ func (urc *UserRoleCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (urc *UserRoleCreate) defaults() {
-	if _, ok := urc.mutation.CreatedAt(); !ok {
-		v := userrole.DefaultCreatedAt()
-		urc.mutation.SetCreatedAt(v)
-	}
-	if _, ok := urc.mutation.UpdatedAt(); !ok {
-		v := userrole.DefaultUpdatedAt()
-		urc.mutation.SetUpdatedAt(v)
-	}
-	if _, ok := urc.mutation.Deleted(); !ok {
-		v := userrole.DefaultDeleted
-		urc.mutation.SetDeleted(v)
-	}
-	if _, ok := urc.mutation.Creator(); !ok {
-		v := userrole.DefaultCreator
-		urc.mutation.SetCreator(v)
-	}
-	if _, ok := urc.mutation.Editor(); !ok {
-		v := userrole.DefaultEditor
-		urc.mutation.SetEditor(v)
-	}
-	if _, ok := urc.mutation.Version(); !ok {
-		v := userrole.DefaultVersion
-		urc.mutation.SetVersion(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (urc *UserRoleCreate) check() error {
-	if _, ok := urc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "UserRole.created_at"`)}
-	}
-	if _, ok := urc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "UserRole.updated_at"`)}
-	}
-	if _, ok := urc.mutation.Deleted(); !ok {
-		return &ValidationError{Name: "deleted", err: errors.New(`ent: missing required field "UserRole.deleted"`)}
-	}
-	if _, ok := urc.mutation.Creator(); !ok {
-		return &ValidationError{Name: "creator", err: errors.New(`ent: missing required field "UserRole.creator"`)}
-	}
-	if _, ok := urc.mutation.Editor(); !ok {
-		return &ValidationError{Name: "editor", err: errors.New(`ent: missing required field "UserRole.editor"`)}
-	}
-	if _, ok := urc.mutation.Version(); !ok {
-		return &ValidationError{Name: "version", err: errors.New(`ent: missing required field "UserRole.version"`)}
-	}
 	if _, ok := urc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "UserRole.user_id"`)}
 	}
@@ -223,10 +85,8 @@ func (urc *UserRoleCreate) sqlSave(ctx context.Context) (*UserRole, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != _node.ID {
-		id := _spec.ID.Value.(int64)
-		_node.ID = int64(id)
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	urc.mutation.id = &_node.ID
 	urc.mutation.done = true
 	return _node, nil
@@ -235,36 +95,8 @@ func (urc *UserRoleCreate) sqlSave(ctx context.Context) (*UserRole, error) {
 func (urc *UserRoleCreate) createSpec() (*UserRole, *sqlgraph.CreateSpec) {
 	var (
 		_node = &UserRole{config: urc.config}
-		_spec = sqlgraph.NewCreateSpec(userrole.Table, sqlgraph.NewFieldSpec(userrole.FieldID, field.TypeInt64))
+		_spec = sqlgraph.NewCreateSpec(userrole.Table, sqlgraph.NewFieldSpec(userrole.FieldID, field.TypeInt))
 	)
-	if id, ok := urc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = id
-	}
-	if value, ok := urc.mutation.CreatedAt(); ok {
-		_spec.SetField(userrole.FieldCreatedAt, field.TypeTime, value)
-		_node.CreatedAt = value
-	}
-	if value, ok := urc.mutation.UpdatedAt(); ok {
-		_spec.SetField(userrole.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
-	}
-	if value, ok := urc.mutation.Deleted(); ok {
-		_spec.SetField(userrole.FieldDeleted, field.TypeBool, value)
-		_node.Deleted = value
-	}
-	if value, ok := urc.mutation.Creator(); ok {
-		_spec.SetField(userrole.FieldCreator, field.TypeInt64, value)
-		_node.Creator = value
-	}
-	if value, ok := urc.mutation.Editor(); ok {
-		_spec.SetField(userrole.FieldEditor, field.TypeInt64, value)
-		_node.Editor = value
-	}
-	if value, ok := urc.mutation.Version(); ok {
-		_spec.SetField(userrole.FieldVersion, field.TypeInt64, value)
-		_node.Version = value
-	}
 	if value, ok := urc.mutation.UserID(); ok {
 		_spec.SetField(userrole.FieldUserID, field.TypeInt64, value)
 		_node.UserID = value
@@ -294,7 +126,6 @@ func (urcb *UserRoleCreateBulk) Save(ctx context.Context) ([]*UserRole, error) {
 	for i := range urcb.builders {
 		func(i int, root context.Context) {
 			builder := urcb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*UserRoleMutation)
 				if !ok {
@@ -321,9 +152,9 @@ func (urcb *UserRoleCreateBulk) Save(ctx context.Context) ([]*UserRole, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
+				if specs[i].ID.Value != nil {
 					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int64(id)
+					nodes[i].ID = int(id)
 				}
 				mutation.done = true
 				return nodes[i], nil

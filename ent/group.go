@@ -4,12 +4,12 @@ package ent
 
 import (
 	"fmt"
+	"imlogic/ent/group"
 	"strings"
 	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"imlogic/ent/group"
 )
 
 // Group is the model entity for the Group schema.
@@ -18,24 +18,12 @@ type Group struct {
 	// ID of the ent.
 	// id
 	ID int64 `json:"id,omitempty"`
+	// 群uuid
+	UUID string `json:"uuid,omitempty"`
 	// 创建时间
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// 更新时间
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// 删除状态
-	Deleted bool `json:"deleted,omitempty"`
-	// 创建人
-	Creator int64 `json:"creator,omitempty"`
-	// 修改人
-	Editor int64 `json:"editor,omitempty"`
-	// 版本号
-	Version int64 `json:"version,omitempty"`
-	// 组uuid
-	UUID string `json:"uuid,omitempty"`
-	// 父组id
-	ParentID int64 `json:"parent_id,omitempty"`
-	// 组层级
-	Level int64 `json:"level,omitempty"`
 	// 组名
 	Name string `json:"name,omitempty"`
 	// 组介绍
@@ -48,9 +36,7 @@ func (*Group) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case group.FieldDeleted:
-			values[i] = new(sql.NullBool)
-		case group.FieldID, group.FieldCreator, group.FieldEditor, group.FieldVersion, group.FieldParentID, group.FieldLevel:
+		case group.FieldID:
 			values[i] = new(sql.NullInt64)
 		case group.FieldUUID, group.FieldName, group.FieldIntro:
 			values[i] = new(sql.NullString)
@@ -77,6 +63,12 @@ func (gr *Group) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			gr.ID = int64(value.Int64)
+		case group.FieldUUID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field uuid", values[i])
+			} else if value.Valid {
+				gr.UUID = value.String
+			}
 		case group.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
@@ -88,48 +80,6 @@ func (gr *Group) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				gr.UpdatedAt = value.Time
-			}
-		case group.FieldDeleted:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field deleted", values[i])
-			} else if value.Valid {
-				gr.Deleted = value.Bool
-			}
-		case group.FieldCreator:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field creator", values[i])
-			} else if value.Valid {
-				gr.Creator = value.Int64
-			}
-		case group.FieldEditor:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field editor", values[i])
-			} else if value.Valid {
-				gr.Editor = value.Int64
-			}
-		case group.FieldVersion:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field version", values[i])
-			} else if value.Valid {
-				gr.Version = value.Int64
-			}
-		case group.FieldUUID:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field uuid", values[i])
-			} else if value.Valid {
-				gr.UUID = value.String
-			}
-		case group.FieldParentID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
-			} else if value.Valid {
-				gr.ParentID = value.Int64
-			}
-		case group.FieldLevel:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field level", values[i])
-			} else if value.Valid {
-				gr.Level = value.Int64
 			}
 		case group.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -179,32 +129,14 @@ func (gr *Group) String() string {
 	var builder strings.Builder
 	builder.WriteString("Group(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", gr.ID))
+	builder.WriteString("uuid=")
+	builder.WriteString(gr.UUID)
+	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(gr.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
 	builder.WriteString(gr.UpdatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("deleted=")
-	builder.WriteString(fmt.Sprintf("%v", gr.Deleted))
-	builder.WriteString(", ")
-	builder.WriteString("creator=")
-	builder.WriteString(fmt.Sprintf("%v", gr.Creator))
-	builder.WriteString(", ")
-	builder.WriteString("editor=")
-	builder.WriteString(fmt.Sprintf("%v", gr.Editor))
-	builder.WriteString(", ")
-	builder.WriteString("version=")
-	builder.WriteString(fmt.Sprintf("%v", gr.Version))
-	builder.WriteString(", ")
-	builder.WriteString("uuid=")
-	builder.WriteString(gr.UUID)
-	builder.WriteString(", ")
-	builder.WriteString("parent_id=")
-	builder.WriteString(fmt.Sprintf("%v", gr.ParentID))
-	builder.WriteString(", ")
-	builder.WriteString("level=")
-	builder.WriteString(fmt.Sprintf("%v", gr.Level))
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(gr.Name)

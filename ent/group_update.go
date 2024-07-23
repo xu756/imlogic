@@ -6,13 +6,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"imlogic/ent/group"
+	"imlogic/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"imlogic/ent/group"
-	"imlogic/ent/predicate"
 )
 
 // GroupUpdate is the builder for updating Group entities.
@@ -28,128 +28,23 @@ func (gu *GroupUpdate) Where(ps ...predicate.Group) *GroupUpdate {
 	return gu
 }
 
+// SetUUID sets the "uuid" field.
+func (gu *GroupUpdate) SetUUID(s string) *GroupUpdate {
+	gu.mutation.SetUUID(s)
+	return gu
+}
+
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (gu *GroupUpdate) SetNillableUUID(s *string) *GroupUpdate {
+	if s != nil {
+		gu.SetUUID(*s)
+	}
+	return gu
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (gu *GroupUpdate) SetUpdatedAt(t time.Time) *GroupUpdate {
 	gu.mutation.SetUpdatedAt(t)
-	return gu
-}
-
-// SetDeleted sets the "deleted" field.
-func (gu *GroupUpdate) SetDeleted(b bool) *GroupUpdate {
-	gu.mutation.SetDeleted(b)
-	return gu
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableDeleted(b *bool) *GroupUpdate {
-	if b != nil {
-		gu.SetDeleted(*b)
-	}
-	return gu
-}
-
-// SetCreator sets the "creator" field.
-func (gu *GroupUpdate) SetCreator(i int64) *GroupUpdate {
-	gu.mutation.ResetCreator()
-	gu.mutation.SetCreator(i)
-	return gu
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableCreator(i *int64) *GroupUpdate {
-	if i != nil {
-		gu.SetCreator(*i)
-	}
-	return gu
-}
-
-// AddCreator adds i to the "creator" field.
-func (gu *GroupUpdate) AddCreator(i int64) *GroupUpdate {
-	gu.mutation.AddCreator(i)
-	return gu
-}
-
-// SetEditor sets the "editor" field.
-func (gu *GroupUpdate) SetEditor(i int64) *GroupUpdate {
-	gu.mutation.ResetEditor()
-	gu.mutation.SetEditor(i)
-	return gu
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableEditor(i *int64) *GroupUpdate {
-	if i != nil {
-		gu.SetEditor(*i)
-	}
-	return gu
-}
-
-// AddEditor adds i to the "editor" field.
-func (gu *GroupUpdate) AddEditor(i int64) *GroupUpdate {
-	gu.mutation.AddEditor(i)
-	return gu
-}
-
-// SetVersion sets the "version" field.
-func (gu *GroupUpdate) SetVersion(i int64) *GroupUpdate {
-	gu.mutation.ResetVersion()
-	gu.mutation.SetVersion(i)
-	return gu
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableVersion(i *int64) *GroupUpdate {
-	if i != nil {
-		gu.SetVersion(*i)
-	}
-	return gu
-}
-
-// AddVersion adds i to the "version" field.
-func (gu *GroupUpdate) AddVersion(i int64) *GroupUpdate {
-	gu.mutation.AddVersion(i)
-	return gu
-}
-
-// SetParentID sets the "parent_id" field.
-func (gu *GroupUpdate) SetParentID(i int64) *GroupUpdate {
-	gu.mutation.ResetParentID()
-	gu.mutation.SetParentID(i)
-	return gu
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableParentID(i *int64) *GroupUpdate {
-	if i != nil {
-		gu.SetParentID(*i)
-	}
-	return gu
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (gu *GroupUpdate) AddParentID(i int64) *GroupUpdate {
-	gu.mutation.AddParentID(i)
-	return gu
-}
-
-// SetLevel sets the "level" field.
-func (gu *GroupUpdate) SetLevel(i int64) *GroupUpdate {
-	gu.mutation.ResetLevel()
-	gu.mutation.SetLevel(i)
-	return gu
-}
-
-// SetNillableLevel sets the "level" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableLevel(i *int64) *GroupUpdate {
-	if i != nil {
-		gu.SetLevel(*i)
-	}
-	return gu
-}
-
-// AddLevel adds i to the "level" field.
-func (gu *GroupUpdate) AddLevel(i int64) *GroupUpdate {
-	gu.mutation.AddLevel(i)
 	return gu
 }
 
@@ -244,41 +139,11 @@ func (gu *GroupUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := gu.mutation.UUID(); ok {
+		_spec.SetField(group.FieldUUID, field.TypeString, value)
+	}
 	if value, ok := gu.mutation.UpdatedAt(); ok {
 		_spec.SetField(group.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := gu.mutation.Deleted(); ok {
-		_spec.SetField(group.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := gu.mutation.Creator(); ok {
-		_spec.SetField(group.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.AddedCreator(); ok {
-		_spec.AddField(group.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.Editor(); ok {
-		_spec.SetField(group.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.AddedEditor(); ok {
-		_spec.AddField(group.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.Version(); ok {
-		_spec.SetField(group.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.AddedVersion(); ok {
-		_spec.AddField(group.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.ParentID(); ok {
-		_spec.SetField(group.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.AddedParentID(); ok {
-		_spec.AddField(group.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.Level(); ok {
-		_spec.SetField(group.FieldLevel, field.TypeInt64, value)
-	}
-	if value, ok := gu.mutation.AddedLevel(); ok {
-		_spec.AddField(group.FieldLevel, field.TypeInt64, value)
 	}
 	if value, ok := gu.mutation.Name(); ok {
 		_spec.SetField(group.FieldName, field.TypeString, value)
@@ -306,128 +171,23 @@ type GroupUpdateOne struct {
 	mutation *GroupMutation
 }
 
+// SetUUID sets the "uuid" field.
+func (guo *GroupUpdateOne) SetUUID(s string) *GroupUpdateOne {
+	guo.mutation.SetUUID(s)
+	return guo
+}
+
+// SetNillableUUID sets the "uuid" field if the given value is not nil.
+func (guo *GroupUpdateOne) SetNillableUUID(s *string) *GroupUpdateOne {
+	if s != nil {
+		guo.SetUUID(*s)
+	}
+	return guo
+}
+
 // SetUpdatedAt sets the "updated_at" field.
 func (guo *GroupUpdateOne) SetUpdatedAt(t time.Time) *GroupUpdateOne {
 	guo.mutation.SetUpdatedAt(t)
-	return guo
-}
-
-// SetDeleted sets the "deleted" field.
-func (guo *GroupUpdateOne) SetDeleted(b bool) *GroupUpdateOne {
-	guo.mutation.SetDeleted(b)
-	return guo
-}
-
-// SetNillableDeleted sets the "deleted" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableDeleted(b *bool) *GroupUpdateOne {
-	if b != nil {
-		guo.SetDeleted(*b)
-	}
-	return guo
-}
-
-// SetCreator sets the "creator" field.
-func (guo *GroupUpdateOne) SetCreator(i int64) *GroupUpdateOne {
-	guo.mutation.ResetCreator()
-	guo.mutation.SetCreator(i)
-	return guo
-}
-
-// SetNillableCreator sets the "creator" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableCreator(i *int64) *GroupUpdateOne {
-	if i != nil {
-		guo.SetCreator(*i)
-	}
-	return guo
-}
-
-// AddCreator adds i to the "creator" field.
-func (guo *GroupUpdateOne) AddCreator(i int64) *GroupUpdateOne {
-	guo.mutation.AddCreator(i)
-	return guo
-}
-
-// SetEditor sets the "editor" field.
-func (guo *GroupUpdateOne) SetEditor(i int64) *GroupUpdateOne {
-	guo.mutation.ResetEditor()
-	guo.mutation.SetEditor(i)
-	return guo
-}
-
-// SetNillableEditor sets the "editor" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableEditor(i *int64) *GroupUpdateOne {
-	if i != nil {
-		guo.SetEditor(*i)
-	}
-	return guo
-}
-
-// AddEditor adds i to the "editor" field.
-func (guo *GroupUpdateOne) AddEditor(i int64) *GroupUpdateOne {
-	guo.mutation.AddEditor(i)
-	return guo
-}
-
-// SetVersion sets the "version" field.
-func (guo *GroupUpdateOne) SetVersion(i int64) *GroupUpdateOne {
-	guo.mutation.ResetVersion()
-	guo.mutation.SetVersion(i)
-	return guo
-}
-
-// SetNillableVersion sets the "version" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableVersion(i *int64) *GroupUpdateOne {
-	if i != nil {
-		guo.SetVersion(*i)
-	}
-	return guo
-}
-
-// AddVersion adds i to the "version" field.
-func (guo *GroupUpdateOne) AddVersion(i int64) *GroupUpdateOne {
-	guo.mutation.AddVersion(i)
-	return guo
-}
-
-// SetParentID sets the "parent_id" field.
-func (guo *GroupUpdateOne) SetParentID(i int64) *GroupUpdateOne {
-	guo.mutation.ResetParentID()
-	guo.mutation.SetParentID(i)
-	return guo
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableParentID(i *int64) *GroupUpdateOne {
-	if i != nil {
-		guo.SetParentID(*i)
-	}
-	return guo
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (guo *GroupUpdateOne) AddParentID(i int64) *GroupUpdateOne {
-	guo.mutation.AddParentID(i)
-	return guo
-}
-
-// SetLevel sets the "level" field.
-func (guo *GroupUpdateOne) SetLevel(i int64) *GroupUpdateOne {
-	guo.mutation.ResetLevel()
-	guo.mutation.SetLevel(i)
-	return guo
-}
-
-// SetNillableLevel sets the "level" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableLevel(i *int64) *GroupUpdateOne {
-	if i != nil {
-		guo.SetLevel(*i)
-	}
-	return guo
-}
-
-// AddLevel adds i to the "level" field.
-func (guo *GroupUpdateOne) AddLevel(i int64) *GroupUpdateOne {
-	guo.mutation.AddLevel(i)
 	return guo
 }
 
@@ -552,41 +312,11 @@ func (guo *GroupUpdateOne) sqlSave(ctx context.Context) (_node *Group, err error
 			}
 		}
 	}
+	if value, ok := guo.mutation.UUID(); ok {
+		_spec.SetField(group.FieldUUID, field.TypeString, value)
+	}
 	if value, ok := guo.mutation.UpdatedAt(); ok {
 		_spec.SetField(group.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := guo.mutation.Deleted(); ok {
-		_spec.SetField(group.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := guo.mutation.Creator(); ok {
-		_spec.SetField(group.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.AddedCreator(); ok {
-		_spec.AddField(group.FieldCreator, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.Editor(); ok {
-		_spec.SetField(group.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.AddedEditor(); ok {
-		_spec.AddField(group.FieldEditor, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.Version(); ok {
-		_spec.SetField(group.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.AddedVersion(); ok {
-		_spec.AddField(group.FieldVersion, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.ParentID(); ok {
-		_spec.SetField(group.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.AddedParentID(); ok {
-		_spec.AddField(group.FieldParentID, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.Level(); ok {
-		_spec.SetField(group.FieldLevel, field.TypeInt64, value)
-	}
-	if value, ok := guo.mutation.AddedLevel(); ok {
-		_spec.AddField(group.FieldLevel, field.TypeInt64, value)
 	}
 	if value, ok := guo.mutation.Name(); ok {
 		_spec.SetField(group.FieldName, field.TypeString, value)
