@@ -1,53 +1,144 @@
 syntax = "proto3";
 
 option go_package = "im";
-
 package im;
 
 
-message MsgMeta {
-    string detail_type = 1;
-    string version = 2;
+enum ChatType {
+    PrivateChat = 0;
+    GroupChat = 1;
+    SystemMessage = 2;
+    SystemNotice =3;
 }
 
-message MsgContent {
-    string detail_type = 1;
-    string text = 2;
-    string img_url = 3;
-    string audio_url = 4;
-    string video_url = 5;
+enum MsgType {
+    Text = 0;
+    Image = 1;
+    File = 2;
+    Audio = 3;
+    Video = 4;
+}
+// 图片消息
+message ImageType {
+    string uid = 1;
+    string url = 2;
 }
 
-message Message {
-    string msg_id = 1;
-    string link_id = 2;
-    string hostname = 3;
-    int64 timestamp = 4;
-    string device = 5;
-    string action = 6;
-    string from = 7;    // 发送者
-    string to = 8;    // 接收者
-    string msg_type = 9;
-    MsgMeta msg_meta = 10;
-    MsgContent msg_content = 11;
-    map<string, string> params = 12;
+// 文件消息
+message FileType {
+    string uid = 1;
+    string url = 2;
+}
+
+// 音频消息
+message AudioType {
+    string uid = 1;
+    string url = 2;
+    int64 duration = 3;
+}
+// 视频
+message VideoType {
+    string uid = 1;
+    string url = 2;
+    int64 duration = 3;
+}
+
+
+enum WsStatus{
+    Connect = 0;
+    Disconnect = 1;
+    Heartbeat = 2;
+} 
+
+
+message CommonMsg {
+    string link_id = 1;
+    string msg_id = 2;
+    int64 timestamp = 3;
+    ChatType chat_type = 4;
+    int64 from = 5;
+    int64 to = 6;
+    MsgType msg_type = 7;
+}
+
+
+message TextMsg {
+    CommonMsg common = 1;
+    string content  = 2;
+}
+message ImgMsg {
+    CommonMsg common = 1;
+    repeated ImageType img  = 2;
+}
+message FileMsg {
+    CommonMsg common = 1;
+    FileType file = 2;
+}
+message AudioMsg {
+    CommonMsg common = 1;
+    AudioType audio = 2;
+}
+message VideoMsg {
+    CommonMsg common = 1;
+    VideoType video = 2;
+}
+
+message MetaMsg {
+    string link_id = 1;
+    int64 user_id = 2;
+    WsStatus status = 3;
+    string  device= 4;
+
 }
 
 message MessageRes {
-    string msg_id = 1;
-    string from = 2;
-    string to = 3;
-    bool success = 4;
+    bool success = 1;
+    string msg_id = 2;
 }
+
+
+message MsgContent {
+    MsgType msg_type = 1;
+    string content = 2;
+    repeated ImageType img = 3;
+    FileType file = 4;
+    AudioType audio = 5;
+    VideoType video = 6;
+}
+
+message Message {
+    string link_id = 1;
+    string msg_id = 2;
+    int64 timestamp = 3;
+    ChatType chat_type = 4;
+    int64 from = 5;
+    int64 to = 6;
+    MsgType msg_type = 7;
+    TextMsg text = 8;
+    ImgMsg img = 9;
+    FileMsg file = 10;
+    AudioMsg audio = 11;
+    VideoMsg video = 12;
+}
+
 
 // 处理websocket消息
 service ImSrv {
-    rpc Receive(Message) returns (Message) {}
-    rpc MetaMsg(Message) returns (MessageRes) {}
-
+    // 元消息
+    rpc MetaMessage(MetaMsg) returns (MessageRes) {}
+    // 文本消息
+    rpc TextMessage(TextMsg) returns (MessageRes) {}
+    // 图片消息
+    rpc ImageMessage(ImgMsg) returns (MessageRes) {}
+    // 文件消息
+    rpc FileMessage(FileMsg) returns (MessageRes) {}
+    // 音频消息
+    rpc AudioMessage(AudioMsg) returns (MessageRes) {}
+    // 视频消息
+    rpc VideoMessage(VideoMsg) returns (MessageRes) {}
 }
 
 // 其他服务发送消息
 service ImServer{
-    rpc Send(Message) returns (MessageRes) {}
+    rpc SendMsg(Message) returns (MessageRes) {}
 }

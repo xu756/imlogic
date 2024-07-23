@@ -1,8 +1,6 @@
 package schema
 
 import (
-	"imlogic/ent/schema/mixin"
-
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 )
@@ -10,13 +8,6 @@ import (
 // UserRole holds the schema definition for the UserRole entity.
 type UserRole struct {
 	ent.Schema
-}
-
-// Mixin of the UserRole.
-func (UserRole) Mixin() []ent.Mixin {
-	return []ent.Mixin{
-		mixin.Mixin{},
-	}
 }
 
 // Fields of the UserRole.

@@ -1,47 +1,19 @@
 package xerr
 
-// 全局码
+// 返回给用户的
 const (
 	OK = 200 + iota
+	ParamErrCode
 	SystemErrCode
-	DbFind
-	DbCreate
-	DbUpdate
-	DbDelete
-	Param
-	DbConnect
-	RedisConnectErr
-	RoleErr
-	RedisErr
+	RoleErrCode
+	WarnCode
 )
 
-// 用户模块码
+// 系统错误 弹窗提示
 const (
-	UserExist = 220 + iota
-	UserPasswordErr
-	UserLoginOut
-	UserExpired
-	UserDeleteErr
-	UserNotExist
-	UserRegisterErr
-	UserUpdateErr
-	UserMobileNotExist
-)
-
-// JWT 模块码
-const (
-	JwtCreateErr = 230 + iota
-	JwtParseErr
-	JwtAuthEmpty
-	JwtAuthErr
-	CaptchaErr
-	CaptchaExpired
-	NotSameUser
-)
-
-// Send 发送信息
-const (
-	SendEmailErr = 250 + iota
-	SendSmsErr
-	CaptchaNotExist
+	DbErrCode = 4001 + iota
+	RedisErrCode
+	SmsErrCode
+	EmailErrCode
+	UnmarshalErrCode
 )

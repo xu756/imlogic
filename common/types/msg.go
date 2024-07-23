@@ -1,70 +1,78 @@
 package types
 
-import "imlogic/kitex_gen/im"
+import (
+	"encoding/json"
+	"imlogic/kitex_gen/im"
+	"log"
+)
 
 // MsgMeta 消息元数据
 type MsgMeta struct {
-	DetailType string `json:"detailType"` //  connect | disconnect | heartbeat
-	Version    string `json:"version"`    // 1.0
+	Detail  string `json:"detail"`  //  connect | disconnect | heartbeat
+	Version string `json:"version"` // 1.0
 }
 
 // MsgContent 消息
 type MsgContent struct {
-	DetailType string `json:"detailType"` //  private | group | broadcast
-	Text       string `json:"text"`       // 文本消息
-	ImgUrl     string `json:"imgUrl"`     // 图片消息
-	AudioUrl   string `json:"audioUrl"`   // 音频消息
-	VideoUrl   string `json:"videoUrl"`   // 视频消息
+	Content string      `json:"content"` // 文本内容
+	Img     []ImageType `json:"img"`     // 图片
+	File    FileType    `json:"file"`    // 文件
+	Video   VideoType   `json:"video"`   // 视频
+	Audio   AudioType   `json:"audio"`   // 音频
 }
 
 type Message struct {
-	LinkId     string            `json:"linkId"`    // 连接id
-	MsgId      string            `json:"msgId"`     // 消息id uuid 前端生成
-	Timestamp  int64             `json:"timestamp"` // 消息时间戳
-	Device     string            `json:"device"`    // 设备类型 pc | mobile | pad | web | other
-	Action     string            `json:"action"`    // 消息动作 send | receive | broadcast
-	From       string            `json:"from"`      // 发送者 uuid
-	To         string            `json:"to"`        // 接收者 uuid
-	MsgType    string            `json:"msgType"`   // meta | text | image | file | audio | video | location | custom
-	MsgMeta    MsgMeta           `json:"msgMeta"`   // msgType = meta 时，此字段有值
-	MsgContent MsgContent        `json:"msgContent"`
-	Params     map[string]string `json:"params"` // 消息参数
+	MsgMeta    MsgMeta    `json:"msg_meta"`    // 消息元数据
+	LinkId     string     `json:"link_id"`     // 连接id
+	MsgId      string     `json:"msg_id"`      // 消息id uuid 前端生成
+	Timestamp  int64      `json:"timestamp"`   // 消息时间戳
+	ChatType   ChatType   `json:"chat_type"`   // 聊天类型	单聊 | 群聊 ｜ 系统消息｜ 通知
+	From       int64      `json:"from"`        // 发送者 uuid(用户唯一)
+	To         int64      `json:"to"`          // 接收者 uuid(用户唯一/组)
+	MsgType    MsgType    `json:"msg_type"`    // 消息类型
+	MsgContent MsgContent `json:"msg_content"` // 消息内容
 }
 
-func RpcMsgToMsg(msg *im.Message) *Message {
-	newMsg := Message{
-		MsgId:     msg.MsgId,
-		LinkId:    msg.LinkId,
-		Timestamp: msg.Timestamp,
-		Params:    msg.Params,
-		Device:    msg.Device,
-		Action:    msg.Action,
-		From:      msg.From,
-		To:        msg.To,
-		MsgType:   msg.MsgType,
+func RpcMsgToMsg(rpcMsg *im.Message) (msg *Message) {
+
+	// newMsg := Message{
+	// 	LinkId:    msg.LinkId,
+	// 	MsgId:     msg.MsgId,
+	// 	Timestamp: msg.Timestamp,
+	// 	ChatType:  ChatType(msg.ChatType),
+	// 	From:      msg.From,
+	// 	To:        msg.To,
+	// 	MsgType:   MsgType(msg.GetMsgType()),
+	// 	MsgContent: MsgContent{
+	// 		Content: msg.GetText().Content,
+	// 		// Img:     imgs,
+	// 		File: FileType{
+	// 			UID: msg.GetContent().File.Uid,
+	// 			URL: msg.GetContent().File.Url,
+	// 		},
+	// 		Video: VideoType{
+	// 			UID: msg.GetContent().Video.Uid,
+	// 			URL: msg.GetContent().Video.Url,
+	// 		},
+	// 		Audio: AudioType{
+	// 			UID: msg.GetContent().Audio.Uid,
+	// 			URL: msg.GetContent().Audio.Url,
+	// 		},
+	// 	},
+	// }
+	jsonStr, err := json.Marshal(rpcMsg)
+	if err != nil {
+		log.Print(err)
+		return nil
 	}
-	if msg.MsgMeta != nil {
-		newMsg.MsgMeta = MsgMeta{
-			DetailType: msg.MsgMeta.DetailType,
-			Version:    msg.MsgMeta.Version,
-		}
+	err = json.Unmarshal(jsonStr, &msg)
+	if err != nil {
+		log.Print(err)
+		return nil
 	}
-	if msg.MsgContent != nil {
-		newMsg.MsgContent = MsgContent{
-			DetailType: msg.MsgContent.DetailType,
-			Text:       msg.MsgContent.Text,
-			ImgUrl:     msg.MsgContent.ImgUrl,
-			AudioUrl:   msg.MsgContent.AudioUrl,
-			VideoUrl:   msg.MsgContent.VideoUrl,
-		}
-	}
-	return &newMsg
+	return msg
 }
 
 func RpcMsgResToMsg(msg *im.MessageRes) *Message {
-	return &Message{
-		MsgId: msg.MsgId,
-		From:  msg.From,
-		To:    msg.To,
-	}
+	return &Message{}
 }

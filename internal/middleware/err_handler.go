@@ -13,7 +13,7 @@ func ClientErrorHandler(ctx context.Context, err error) error {
 	match := re.FindStringSubmatch(err.Error())
 	if len(match) == 3 {
 		code, _ := strconv.Atoi(match[1])
-		return xerr.ErrMsg(int32(code))
+		return xerr.GetCodeError(int32(code))
 	}
 	return err
 }

@@ -2,6 +2,8 @@ package xerr
 
 import (
 	"fmt"
+	types "imlogic/common/types"
+	"imlogic/internal/xlog"
 )
 
 /**
@@ -11,6 +13,13 @@ import (
 type CodeError struct {
 	Code int32  `json:"code"`
 	Msg  string `json:"msg"`
+}
+
+func GetCodeError(code int32) CodeError {
+	return CodeError{
+		Code: code,
+		Msg:  message[code],
+	}
 }
 
 func (e CodeError) Error() string {
@@ -25,75 +34,55 @@ func GetMsg(code int32) string {
 	return message[code]
 }
 
-func ErrMsg(code int32) error {
+func WarnMsg(format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
 	return CodeError{
-		Code: code,
-		Msg:  message[code],
+		Code: WarnCode,
+		Msg:  msg,
 	}
-
-}
-func ParamErr() error {
-	return CodeError{
-		Code: Param,
-		Msg:  message[Param],
-	}
-
 }
 
-func SystemErr() error {
+func RoleErr(format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
+	xlog.ErrLog(types.RedisErrCode, msg, nil)
+	return CodeError{
+		Code: RoleErrCode,
+		Msg:  message[RoleErrCode],
+	}
+}
+
+func DbErr(err error, format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
+	xlog.ErrLog(types.DbErrCode, msg, err)
 	return CodeError{
 		Code: SystemErrCode,
 		Msg:  message[SystemErrCode],
 	}
 }
 
-func DbErr(code int32, msg string) error {
+func RedisErr(err error, format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
+	xlog.ErrLog(types.RedisErrCode, msg, err)
 	return CodeError{
-		Code: code,
-		Msg:  msg,
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
 	}
 }
 
-func DbConnectErr() error {
-	return DbErr(DbConnect, message[DbConnect])
-}
-
-func DbFindErr() error {
-	//return CodeError{
-	//	Code: DbFind,
-	//	Msg:  message[DbFind],
-	//}
-	return DbErr(DbFind, message[DbFind])
-}
-
-func DbCreateErr() error {
-	//return CodeError{
-	//	Code: DbCreate,
-	//	Msg:  message[DbCreate],
-	//}
-	return DbErr(DbCreate, message[DbCreate])
-}
-
-func DbUpdateErr() error {
-	//return CodeError{
-	//	Code: DbUpdate,
-	//	Msg:  message[DbUpdate],
-	//}
-	return DbErr(DbUpdate, message[DbUpdate])
-}
-
-func DbDeleteErr() error {
-	//return CodeError{
-	//	Code: DbDelete,
-	//	Msg:  message[DbDelete],
-	//}
-	return DbErr(DbDelete, message[DbDelete])
-
-}
-
-func CacheErr() error {
+func UnmarshalErr(msg string) error {
+	xlog.ErrLog(types.UnmarshalErrCode, msg, nil)
 	return CodeError{
-		Code: RedisErr,
-		Msg:  message[RedisErr],
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+
+}
+
+func UploadImageErr(err error, format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
+	xlog.ErrLog(types.UploadImageFail, msg, err)
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
 	}
 }

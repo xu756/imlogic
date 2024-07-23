@@ -10,38 +10,18 @@ import (
 type dbUserModel interface {
 	FindUserByUsername(ctx context.Context, username, device string) (userInfo *ent.User, err error)
 	FindUserByMobile(ctx context.Context, mobile, device string) (userInfo *ent.User, err error)
-	FindUserByUUID(tx *ent.Tx, uuid, device string) (userInfo *ent.User, err error)
-	CreateUser(ctx context.Context, username, password, mobile, device string, creator int64) (userInfo *ent.User, err error)
-	UpdateUserAvatar(ctx context.Context, uuid string, avatar, device string, editor int64) (userInfo *ent.User, err error)
+	FindUserByUUID(ctx context.Context, uuid, device string) (userInfo *ent.User, err error)
 }
 
 // FindUserByUsername 根据用户名查找用户
 func (m *customModel) FindUserByUsername(ctx context.Context, username, device string) (userInfo *ent.User, err error) {
-	tx, err := m.client.Tx(ctx)
-	if err != nil {
-		return nil, xerr.DbConnectErr()
-	}
-	userInfo, err = tx.User.Query().
+	userInfo, err = m.client.User.Query().
 		Where(user.Username(username), user.Deleted(false), user.Device(device)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
-		return nil, xerr.ErrMsg(xerr.UserNotExist)
+		return nil, xerr.WarnMsg("用户不存在 用户名:%s", username)
 	case err != nil:
-		return nil, xerr.DbFindErr()
-	default:
-		return userInfo, tx.Commit()
-	}
-}
-
-// FindUserByUUID 根据UUID查找用户
-func FindUserByUUID(tx *ent.Tx, uuid string) (userInfo *ent.User, err error) {
-	userInfo, err = tx.User.Query().
-		Where(user.UUID(uuid), user.Deleted(false)).First(context.Background())
-	switch {
-	case ent.IsNotFound(err):
-		return nil, xerr.ErrMsg(xerr.UserNotExist)
-	case err != nil:
-		return nil, xerr.DbFindErr()
+		return nil, xerr.DbErr(err, "查询用户失败 用户名:%s", username)
 	default:
 		return userInfo, nil
 	}
@@ -49,29 +29,21 @@ func FindUserByUUID(tx *ent.Tx, uuid string) (userInfo *ent.User, err error) {
 
 // FindUserByMobile 根据手机号查找用户
 func (m *customModel) FindUserByMobile(ctx context.Context, mobile, device string) (userInfo *ent.User, err error) {
-	tx, err := m.client.Tx(ctx)
-	if err != nil {
-		return nil, xerr.DbConnectErr()
-	}
-	userInfo, err = tx.User.Query().
+	userInfo, err = m.client.User.Query().
 		Where(user.Mobile(mobile), user.Device(device), user.Deleted(false)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
-		return nil, xerr.ErrMsg(xerr.UserNotExist)
+		return nil, xerr.WarnMsg("用户不存在 手机号:%s", mobile)
 	case err != nil:
-		return nil, xerr.DbFindErr()
+		return nil, xerr.DbErr(err, "查询用户失败 手机号:%s", mobile)
 	default:
-		return userInfo, tx.Commit()
+		return userInfo, nil
 	}
 }
 
 // CreateUser 创建用户
 func (m *customModel) CreateUser(ctx context.Context, username, password, mobile, device string, creator int64) (userInfo *ent.User, err error) {
-	tx, err := m.client.Tx(ctx)
-	if err != nil {
-		return nil, xerr.DbConnectErr()
-	}
-	userInfo, err = tx.User.Create().
+	userInfo, err = m.client.User.Create().
 		SetUsername(username).
 		SetPassword(password).
 		SetMobile(mobile).
@@ -82,48 +54,22 @@ func (m *customModel) CreateUser(ctx context.Context, username, password, mobile
 		Save(ctx)
 	switch {
 	case ent.IsConstraintError(err):
-		return nil, xerr.ErrMsg(xerr.UserExist)
+		return nil, xerr.WarnMsg("用户已存在 用户名:%s 手机号:%s", username, mobile)
 	case err != nil:
-		return nil, xerr.DbCreateErr()
+		return nil, xerr.DbErr(err, "创建用户失败 用户名:%s 手机号:%s", username, mobile)
 	default:
-		return userInfo, tx.Commit()
+		return userInfo, nil
 	}
 }
 
-// UpdateUserAvatar 更新用户头像
-func (m *customModel) UpdateUserAvatar(ctx context.Context, uuid string, avatar, device string, editor int64) (userInfo *ent.User, err error) {
-	tx, err := m.client.Tx(ctx)
-	if err != nil {
-		return nil, xerr.DbConnectErr()
-	}
-	User, err := FindUserByUUID(tx, uuid)
-	if err != nil {
-		return nil, err
-	}
-	if User.Avatar != avatar {
-		User, err := tx.User.UpdateOne(User).
-			SetAvatar(avatar).
-			SetEditor(editor).
-			SetVersion(User.Version + 1).
-			Where(user.UUID(uuid)).
-			Save(ctx)
-		if err != nil {
-			return nil, xerr.DbUpdateErr()
-		}
-		return User, tx.Commit()
-	} else {
-		return User, tx.Commit()
-	}
-}
-
-func (m *customModel) FindUserByUUID(tx *ent.Tx, uuid, device string) (userInfo *ent.User, err error) {
-	userInfo, err = tx.User.Query().
-		Where(user.UUID(uuid), user.Deleted(false)).First(context.Background())
+func (m *customModel) FindUserByUUID(ctx context.Context, uuid, device string) (userInfo *ent.User, err error) {
+	userInfo, err = m.client.User.Query().
+		Where(user.UUID(uuid), user.Deleted(false)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
-		return nil, xerr.ErrMsg(xerr.UserNotExist)
+		return nil, xerr.WarnMsg("用户不存在 用户uuid:%s", uuid)
 	case err != nil:
-		return nil, xerr.DbFindErr()
+		return nil, xerr.DbErr(err, "查询用户失败 用户uuid:%s", uuid)
 	default:
 		return userInfo, nil
 	}

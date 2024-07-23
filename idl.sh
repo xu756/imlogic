@@ -1,1 +1,1 @@
-kitex -module imlogic  idl/im.proto
+kitex -module imlogic  -service ImSrv idl/im.proto 

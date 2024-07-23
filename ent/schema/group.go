@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"imlogic/ent/schema/mixin"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
@@ -13,22 +13,15 @@ type Group struct {
 	ent.Schema
 }
 
-// Mixin of the Group.
-func (Group) Mixin() []ent.Mixin {
-	return []ent.Mixin{
-		mixin.Mixin{},
-	}
-}
-
 // Fields of the Group.
 func (Group) Fields() []ent.Field {
 	return []ent.Field{
+		field.Int64("id").Unique().Immutable().StorageKey("id").Comment("id"),
 		field.String("uuid").DefaultFunc(func() string {
-			return uuid.New().String()
-		}).
-			Unique().Immutable().Comment("组uuid"),
-		field.Int64("parent_id").Default(0).Comment("父组id"),
-		field.Int64("level").Default(0).Comment("组层级"),
+			return "user-" + uuid.New().String()
+		}).Comment("群uuid"),
+		field.Time("created_at").Immutable().Default(time.Now).Comment("创建时间"),
+		field.Time("updated_at").Default(time.Now).UpdateDefault(time.Now).Comment("更新时间"),
 		field.String("name").NotEmpty().Comment("组名"),
 		field.String("intro").Comment("组介绍"),
 	}

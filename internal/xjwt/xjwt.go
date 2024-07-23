@@ -11,8 +11,8 @@ import (
 )
 
 type AuthInfo struct {
-	UserUuid string `json:"uuid"`    // 用户Uuid
-	Version  int64  `json:"version"` // 用户版本
+	UserId int64  `json:"id"`     // 用户ID
+	Device string `json:"device"` // 设备
 }
 
 type Jwt struct {
@@ -52,11 +52,11 @@ type customJwtClaims struct {
 }
 
 // NewJwtToken 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwtToken(UserUuid string, version int64) (string, error) {
+func (j *Jwt) NewJwtToken(UserId int64, device string) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
-			UserUuid: UserUuid,
-			Version:  version,
+			UserId: UserId,
+			Device: device,
 		},
 		RegisteredClaims: jwt.RegisteredClaims{
 			NotBefore: jwt.NewNumericDate(tool.TimeNow()),   // 生效时间
@@ -67,7 +67,7 @@ func (j *Jwt) NewJwtToken(UserUuid string, version int64) (string, error) {
 	// 根据 claims 生成token对象
 	token, err := j.createToken(c)
 	if err != nil {
-		return "", xerr.ErrMsg(xerr.JwtCreateErr)
+		return "", xerr.RoleErr("jwt生成失败")
 	}
 	return token, nil
 }
@@ -79,17 +79,28 @@ func (j *Jwt) createToken(claims customJwtClaims) (string, error) {
 	return t.SignedString([]byte(j.SignKey))
 }
 
-// GetUserInfoFromToken 从token解析
-func (j *Jwt) GetUserInfoFromToken(c *app.RequestContext) (*AuthInfo, error) {
-	token, err := j.parseTokenString(string(c.Cookie("token")))
+// GetUserInfoFromHeardToken 从token解析
+func (j *Jwt) GetUserInfoFromHeardToken(c *app.RequestContext) (*AuthInfo, error) {
+	token, err := j.parseTokenString(string(c.GetHeader("Authorization")))
 	if err != nil {
-		return nil, xerr.ErrMsg(xerr.JwtParseErr)
+		return nil, xerr.RoleErr("jwt解析失败")
 	}
 	if claims, ok := token.Claims.(*customJwtClaims); ok && token.Valid {
 		return &claims.User, nil
 	}
-	return nil, xerr.ErrMsg(xerr.JwtParseErr)
+	return nil, xerr.RoleErr("jwt解析失败")
+}
 
+// GetUserInfoFromCookieToken 从token解析
+func (j *Jwt) GetUserInfoFromCookieToken(c *app.RequestContext) (*AuthInfo, error) {
+	token, err := j.parseTokenString(string(c.Cookie("AppAdminToken")))
+	if err != nil {
+		return nil, xerr.RoleErr("jwt解析失败")
+	}
+	if claims, ok := token.Claims.(*customJwtClaims); ok && token.Valid {
+		return &claims.User, nil
+	}
+	return nil, xerr.RoleErr("jwt解析失败")
 }
 
 // parseTokenString 解析token

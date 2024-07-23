@@ -6,7 +6,7 @@ import (
 	"net"
 
 	"imlogic/app/im/server/handler"
-	"imlogic/app/im/server/rpc"
+	"imlogic/app/im/server/logic"
 	"imlogic/common/config"
 	"imlogic/internal/middleware"
 	"imlogic/kitex_gen/im/imserver"
@@ -19,18 +19,14 @@ var file = flag.String("f", "", "config file path")
 func main() {
 	flag.Parse()
 	config.Init(*file)
-	// todo 添加处理服务
-	go func() {
-		handler.NewHub().Run()
-	}()
-
-	rpc.Init()
+	logic.InitService()
 
 	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.ImServerAddr)
 	if err != nil {
 		log.Fatal(err)
 	}
-	svr := imserver.NewServer(handler.NewImServerImpl(),
+	svr := imserver.NewServer(
+		logic.NewImServerImpl(),
 		server.WithServiceAddr(addr),
 		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
