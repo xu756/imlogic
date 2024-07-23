@@ -57,13 +57,13 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 }
 
 func (c *Client) Listen() {
-	go c.ListenAndWrite()
-	c.ListenAndRead()
+	go c.listenAndWrite()
+	c.listenAndRead()
 
 }
 
 // listenAndRead 监听并读取消息
-func (c *Client) ListenAndRead() {
+func (c *Client) listenAndRead() {
 	defer func() {
 		c.close()
 	}()
@@ -84,7 +84,7 @@ func (c *Client) ListenAndRead() {
 }
 
 // listenAndWrite 监听并写入消息
-func (c *Client) ListenAndWrite() {
+func (c *Client) listenAndWrite() {
 	defer c.close()
 	for {
 		select {

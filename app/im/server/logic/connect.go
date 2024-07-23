@@ -46,8 +46,6 @@ func Logic(ws *websocket.Conn) {
 		onClose,
 		MetaMsg, Msglogic)
 	service.hub.AddOneClient(conn)
-	go conn.ListenAndWrite()
-	conn.ListenAndRead()
 
 }
 
