@@ -6,6 +6,7 @@ import (
 	"imlogic/common/db"
 	"imlogic/common/mongodb"
 	"imlogic/kitex_gen/im"
+	"log"
 )
 
 type ImRpcImpl struct {
@@ -31,6 +32,7 @@ func (i *ImRpcImpl) ImageMessage(ctx context.Context, req *im.ImgMsg) (res *im.M
 
 // TextMessage implements im.ImSrv.
 func (i *ImRpcImpl) TextMessage(ctx context.Context, req *im.TextMsg) (res *im.MessageRes, err error) {
+	log.Println("receive text message")
 	panic("unimplemented")
 }
 

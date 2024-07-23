@@ -17,7 +17,7 @@ type Message struct {
 func (Message) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int64("chat_id").Comment("聊天id"),
-		field.Enum("msg_type").GoType(types.MsgType(0)).Comment("消息类型"),
+		field.Int32("msg_type").Comment("消息类型"),
 		field.String("msg_id").Comment("消息id"),
 		field.Int64("timestamp").Comment("消息时间戳"),
 		field.Int64("sender_id").Comment("发送者id"),
