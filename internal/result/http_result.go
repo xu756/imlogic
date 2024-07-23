@@ -22,6 +22,6 @@ func HttpError(c *app.RequestContext, err error) {
 }
 
 func HttpParamErr(c *app.RequestContext) {
-	c.JSON(http.StatusOK, errorRes(xerr.Param, xerr.GetMsg(xerr.Param)))
+	c.JSON(http.StatusOK, errorRes(xerr.ParamErrCode, xerr.GetMsg(xerr.ParamErrCode)))
 	c.Abort()
 }

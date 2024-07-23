@@ -20,7 +20,7 @@ func SendEmail(to string, content string) error {
 	err := e.Send(config.RunData.EmailConfig.SMTPAddr, smtp.PlainAuth("", config.RunData.EmailConfig.From, config.RunData.EmailConfig.Password, config.RunData.EmailConfig.Host))
 	if err != nil {
 		log.Print(err)
-		return xerr.ErrMsg(xerr.SendEmailErr)
+		return xerr.SmsErr(err, "发送邮件失败")
 	}
 	return nil
 }

@@ -13,7 +13,6 @@ const (
 const (
 	DbErrCode = 4001 + iota
 	RedisErrCode
-	SmsErrCode
 	EmailErrCode
 	UnmarshalErrCode
 )

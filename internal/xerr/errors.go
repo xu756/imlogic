@@ -86,3 +86,13 @@ func UploadImageErr(err error, format string, v ...interface{}) error {
 		Msg:  message[SystemErrCode],
 	}
 }
+
+
+func SmsErr(err error, format string, v ...interface{}) error {
+	msg := fmt.Sprintf(format, v...)
+	xlog.ErrLog(types.SmsErrCode, msg, err)
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+}
