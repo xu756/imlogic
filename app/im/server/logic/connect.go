@@ -28,7 +28,6 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID, device string, u
 		IsOpen:    true,
 		LinkId:    linkID,
 		UserId:    userId,
-		Device:    device,
 		Send:      make(chan *types.Message, 1024),
 		Heartbeat: time.NewTicker(pingPeriod),
 		OnClose:   Close,

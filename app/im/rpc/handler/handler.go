@@ -27,13 +27,15 @@ func (i *ImRpcImpl) FileMessage(ctx context.Context, req *im.FileMsg) (res *im.M
 
 // ImageMessage implements im.ImSrv.
 func (i *ImRpcImpl) ImageMessage(ctx context.Context, req *im.ImgMsg) (res *im.MessageRes, err error) {
-	panic("unimplemented")
+	log.Println("receive image message")
+	return &im.MessageRes{}, nil
 }
 
 // TextMessage implements im.ImSrv.
 func (i *ImRpcImpl) TextMessage(ctx context.Context, req *im.TextMsg) (res *im.MessageRes, err error) {
 	log.Println("receive text message")
-	panic("unimplemented")
+	log.Print(req)
+	return &im.MessageRes{}, nil
 }
 
 // VideoMessage implements im.ImSrv.

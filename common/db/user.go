@@ -8,15 +8,15 @@ import (
 )
 
 type dbUserModel interface {
-	FindUserByUsername(ctx context.Context, username, device string) (userInfo *ent.User, err error)
-	FindUserByMobile(ctx context.Context, mobile, device string) (userInfo *ent.User, err error)
-	FindUserByUUID(ctx context.Context, uuid, device string) (userInfo *ent.User, err error)
+	FindUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error)
+	FindUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error)
+	FindUserByUUID(ctx context.Context, uuid string) (userInfo *ent.User, err error)
 }
 
 // FindUserByUsername 根据用户名查找用户
-func (m *customModel) FindUserByUsername(ctx context.Context, username, device string) (userInfo *ent.User, err error) {
+func (m *customModel) FindUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error) {
 	userInfo, err = m.client.User.Query().
-		Where(user.Username(username), user.Deleted(false), user.Device(device)).First(ctx)
+		Where(user.Username(username), user.Deleted(false)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
 		return nil, xerr.WarnMsg("用户不存在 用户名:%s", username)
@@ -28,9 +28,9 @@ func (m *customModel) FindUserByUsername(ctx context.Context, username, device s
 }
 
 // FindUserByMobile 根据手机号查找用户
-func (m *customModel) FindUserByMobile(ctx context.Context, mobile, device string) (userInfo *ent.User, err error) {
+func (m *customModel) FindUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error) {
 	userInfo, err = m.client.User.Query().
-		Where(user.Mobile(mobile), user.Device(device), user.Deleted(false)).First(ctx)
+		Where(user.Mobile(mobile), user.Deleted(false)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
 		return nil, xerr.WarnMsg("用户不存在 手机号:%s", mobile)
@@ -42,15 +42,12 @@ func (m *customModel) FindUserByMobile(ctx context.Context, mobile, device strin
 }
 
 // CreateUser 创建用户
-func (m *customModel) CreateUser(ctx context.Context, username, password, mobile, device string, creator int64) (userInfo *ent.User, err error) {
+func (m *customModel) CreateUser(ctx context.Context, username, password, mobile string, editor int64) (userInfo *ent.User, err error) {
 	userInfo, err = m.client.User.Create().
 		SetUsername(username).
 		SetPassword(password).
 		SetMobile(mobile).
-		SetCreator(creator).
-		SetEditor(creator).
-		SetDevice(device).
-		SetVersion(1).
+		SetEditor(editor).
 		Save(ctx)
 	switch {
 	case ent.IsConstraintError(err):
@@ -62,7 +59,7 @@ func (m *customModel) CreateUser(ctx context.Context, username, password, mobile
 	}
 }
 
-func (m *customModel) FindUserByUUID(ctx context.Context, uuid, device string) (userInfo *ent.User, err error) {
+func (m *customModel) FindUserByUUID(ctx context.Context, uuid string) (userInfo *ent.User, err error) {
 	userInfo, err = m.client.User.Query().
 		Where(user.UUID(uuid), user.Deleted(false)).First(ctx)
 	switch {

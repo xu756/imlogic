@@ -18,7 +18,6 @@ type Client struct {
 	Cancel    context.CancelFunc
 	LinkId    string // websocket 连接 id
 	UserId    int64  // 用户id
-	Device    string // 设备类型
 	Ws        *websocket.Conn
 	IsOpen    bool
 	Send      chan *types.Message
@@ -100,7 +99,6 @@ func (c *Client) ConnectMsg() *im.MetaMsg {
 		LinkId: c.LinkId,
 		UserId: c.UserId,
 		Status: im.WsStatus_Connect,
-		Device: c.Device,
 	}
 }
 

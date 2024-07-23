@@ -11,8 +11,8 @@ import (
 )
 
 type AuthInfo struct {
-	UserId int64  `json:"id"`     // 用户ID
-	Device string `json:"device"` // 设备
+	UserId   int64  `json:"id"`   // 用户ID
+	UserUuid string `json:"uuid"` // 用户UUID
 }
 
 type Jwt struct {
@@ -52,11 +52,11 @@ type customJwtClaims struct {
 }
 
 // NewJwtToken 生成jwt，返回 token 字符串
-func (j *Jwt) NewJwtToken(UserId int64, device string) (string, error) {
+func (j *Jwt) NewJwtToken(UserId int64, uuid string) (string, error) {
 	c := customJwtClaims{
 		User: AuthInfo{
-			UserId: UserId,
-			Device: device,
+			UserId:   UserId,
+			UserUuid: uuid,
 		},
 		RegisteredClaims: jwt.RegisteredClaims{
 			NotBefore: jwt.NewNumericDate(tool.TimeNow()),   // 生效时间

@@ -97,8 +97,13 @@ func Msglogic(c *client.Client, msg *types.Message) {
 // rpcMetaMsg
 func MetaMsg(ctx context.Context, c *client.Client, msg *im.MetaMsg) {
 	res, err := service.ImSrv.MetaMessage(ctx, msg)
-	if err != nil || res.Success == false {
+	if err != nil {
 		log.Print("send meta message failed", err)
+		c.Ctx.Done()
+		return
+	}
+	if !res.Success {
+		log.Print("send meta message failed", res)
 		c.Ctx.Done()
 		return
 	}
