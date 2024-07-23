@@ -52,8 +52,14 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 		MetaMsg:   MetaMsg,
 	}
 	conn.OnConnect(conn)
-
+	go conn.Listen()
 	return conn
+}
+
+func (c *Client) Listen() {
+	go c.ListenAndWrite()
+	c.ListenAndRead()
+
 }
 
 // listenAndRead 监听并读取消息
