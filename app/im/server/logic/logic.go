@@ -22,12 +22,14 @@ func Msglogic(c *client.Client, msg *types.Message) {
 		GroupId:  msg.GroupId,
 		MsgType:  im.MsgType(msg.MsgType),
 	}
+	ctx := context.Background()
+
 	switch msg.MsgType {
 	case types.Text:
 		var textMsg = new(im.TextMsg)
 		textMsg.Common = commonMsg
 		textMsg.Content = msg.MsgContent.Content
-		_, err := service.ImSrv.TextMessage(c.Ctx, textMsg)
+		_, err := service.ImSrv.TextMessage(ctx, textMsg)
 		if err != nil {
 			log.Print("send text message failed", err)
 			return
@@ -44,7 +46,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			})
 		}
 		imgMsg.Img = imgs
-		_, err := service.ImSrv.ImageMessage(c.Ctx, imgMsg)
+		_, err := service.ImSrv.ImageMessage(ctx, imgMsg)
 		if err != nil {
 			log.Print("send image message failed", err)
 			return
@@ -57,7 +59,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Uid: msg.MsgContent.File.UID,
 			Url: msg.MsgContent.File.URL,
 		}
-		_, err := service.ImSrv.FileMessage(c.Ctx, fileMsg)
+		_, err := service.ImSrv.FileMessage(ctx, fileMsg)
 		if err != nil {
 			log.Print("send file message failed", err)
 			return
@@ -71,7 +73,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Url:      msg.MsgContent.Audio.URL,
 			Duration: msg.MsgContent.Audio.Duration,
 		}
-		_, err := service.ImSrv.AudioMessage(c.Ctx, audioMsg)
+		_, err := service.ImSrv.AudioMessage(ctx, audioMsg)
 		if err != nil {
 			log.Print("send audio message failed", err)
 			return
@@ -85,7 +87,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Url:      msg.MsgContent.Video.URL,
 			Duration: msg.MsgContent.Video.Duration,
 		}
-		_, err := service.ImSrv.VideoMessage(c.Ctx, videoMsg)
+		_, err := service.ImSrv.VideoMessage(ctx, videoMsg)
 		if err != nil {
 			log.Print("send video message failed", err)
 			return
@@ -95,16 +97,17 @@ func Msglogic(c *client.Client, msg *types.Message) {
 }
 
 // rpcMetaMsg
-func MetaMsg(ctx context.Context, c *client.Client, msg *im.MetaMsg) {
+func MetaMsg(c *client.Client, msg *im.MetaMsg) {
+	ctx := context.Background()
 	res, err := service.ImSrv.MetaMessage(ctx, msg)
 	if err != nil {
 		log.Print("send meta message failed", err)
-		c.Ctx.Done()
+		ctx.Done()
 		return
 	}
 	if !res.Success {
 		log.Print("send meta message failed", res)
-		c.Ctx.Done()
+		ctx.Done()
 		return
 	}
 

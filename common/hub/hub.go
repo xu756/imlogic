@@ -15,8 +15,8 @@ type Hub struct {
 	hostName   string
 	upgrader   websocket.HertzUpgrader
 	broadcast  chan *types.Message
-	Register   chan *client.Client
-	Unregister chan *client.Client
+	register   chan *client.Client
+	unregister chan *client.Client
 }
 
 func NewHub() *Hub {
@@ -24,8 +24,8 @@ func NewHub() *Hub {
 	hub := &Hub{
 		hostName:   hostname,
 		broadcast:  make(chan *types.Message, 1024),
-		Register:   make(chan *client.Client),
-		Unregister: make(chan *client.Client),
+		register:   make(chan *client.Client),
+		unregister: make(chan *client.Client),
 		upgrader: websocket.HertzUpgrader{
 			CheckOrigin: func(ctx *app.RequestContext) bool {
 				return true
@@ -36,17 +36,17 @@ func NewHub() *Hub {
 	return hub
 }
 
-func (c *Hub) run() {
+func (h *Hub) run() {
 	for {
 		select {
-		case conn := <-c.Register:
-			c.add(conn)
-		case conn := <-c.Unregister:
-			c.del(conn)
-		case message := <-c.broadcast:
-			c.clients.Range(func(key, value interface{}) bool {
+		case conn := <-h.register:
+			h.clients.Store(conn.LinkId, conn)
+		case conn := <-h.unregister:
+			h.clients.Delete(conn.LinkId)
+		case message := <-h.broadcast:
+			h.clients.Range(func(key, value interface{}) bool {
 				conn := value.(*client.Client)
-				conn.Write(message)
+				conn.SendMsg(message)
 				return true
 			})
 		}
@@ -61,18 +61,19 @@ func (h *Hub) UpgradeOneWs(c *app.RequestContext, handler func(ws *websocket.Con
 	return nil
 }
 
-func (h *Hub) add(conn *client.Client) {
-	h.clients.Store(conn.LinkId, conn)
+func (h *Hub) AddOneClient(conn *client.Client) {
+	h.register <- conn
+
 }
 
-func (h *Hub) del(conn *client.Client) {
-	h.clients.Delete(conn.LinkId)
+func (h *Hub) DelOneClient(conn *client.Client) {
+	h.unregister <- conn
 }
 
 func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
 	conn, ok := h.clients.Load(LinkId)
 	if ok {
-		conn.(*client.Client).Send <- msg
+		conn.(*client.Client).SendMsg(msg)
 		return true
 	}
 	return false

@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"imlogic/common/config"
 	"imlogic/common/types"
 	"imlogic/kitex_gen/im"
 	"log"
@@ -14,31 +13,61 @@ import (
 
 type Client struct {
 	sync.RWMutex
-	Ctx       context.Context
-	Cancel    context.CancelFunc
+	ctx       context.Context
+	cancel    context.CancelFunc
 	LinkId    string // websocket 连接 id
 	UserId    int64  // 用户id
-	Ws        *websocket.Conn
-	IsOpen    bool
-	Send      chan *types.Message
-	Heartbeat *time.Ticker
-	MetaMsg   func(msg *im.MetaMsg)
+	ws        *websocket.Conn
+	isOpen    bool
+	send      chan *types.Message
+	heartbeat *time.Ticker
+	MetaMsg   func(*Client, *im.MetaMsg)
 	Logic     func(*Client, *types.Message)
+	OnConnect func(*Client)
 	OnClose   func(*Client)
+}
+
+func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId int64,
+	heartbeat time.Duration,
+	OnConnect func(*Client),
+	OnClose func(*Client),
+	MetaMsg func(*Client, *im.MetaMsg),
+	Msglogic func(*Client, *types.Message),
+
+) *Client {
+	ctx, cancel := context.WithCancel(ctx)
+	ws.SetReadLimit(1024 * 1024 * 100)
+	conn := &Client{
+		ctx:       ctx,
+		cancel:    cancel,
+		ws:        ws,
+		LinkId:    linkID,
+		isOpen:    true,
+		UserId:    userId,
+		send:      make(chan *types.Message, 1024),
+		heartbeat: time.NewTicker(60 * time.Second),
+		OnConnect: OnConnect,
+		OnClose:   OnClose,
+		Logic:     Msglogic,
+		MetaMsg:   MetaMsg,
+	}
+	conn.OnConnect(conn)
+
+	return conn
 }
 
 // listenAndRead 监听并读取消息
 func (c *Client) ListenAndRead() {
 	defer func() {
-		c.Close()
+		c.close()
 	}()
 	for {
 		select {
-		case <-c.Ctx.Done():
+		case <-c.ctx.Done():
 			return
 		default:
 			msg := &types.Message{}
-			err := c.Ws.ReadJSON(msg)
+			err := c.ws.ReadJSON(msg)
 			if err != nil {
 				return
 			}
@@ -50,45 +79,48 @@ func (c *Client) ListenAndRead() {
 
 // listenAndWrite 监听并写入消息
 func (c *Client) ListenAndWrite() {
-	defer c.Close()
+	defer c.close()
 	for {
 		select {
-		case <-c.Ctx.Done():
+		case <-c.ctx.Done():
 			return
-		case msg, ok := <-c.Send:
+		case msg, ok := <-c.send:
 			if !ok {
 				return
 			}
-			c.Write(msg)
-		case <-c.Heartbeat.C:
+			c.write(msg)
+		case <-c.heartbeat.C:
 			// go c.MetaMsg(c.heartbeatMsg())
 		}
 
 	}
 }
 
+func (c *Client) SendMsg(msg *types.Message) {
+	c.send <- msg
+}
+
 // close 关闭连接
-func (c *Client) Close() {
+func (c *Client) close() {
 	c.Lock()
 	defer c.Unlock()
-	if c.IsOpen {
+	if c.isOpen {
 		c.OnClose(c)
-		c.Ws.WriteMessage(websocket.CloseMessage, []byte{})
-		go c.MetaMsg(c.DisconnectMsg())
-		c.Cancel()
-		if err := c.Ws.Close(); err != nil {
+		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
+		go c.MetaMsg(c, c.DisconnectMsg())
+		c.cancel()
+		if err := c.ws.Close(); err != nil {
 			log.Print("close:", err)
 		}
-		c.IsOpen = false
+		c.isOpen = false
 	}
 }
 
-func (c *Client) Write(msg *types.Message) {
+func (c *Client) write(msg *types.Message) {
 	msg.LinkId = c.LinkId
-	msg.MsgMeta.Version = config.GetVersion()
-	err := c.Ws.WriteJSON(msg)
+	err := c.ws.WriteJSON(msg)
 	if err != nil {
-		c.Close()
+		c.close()
 		return
 	}
 }

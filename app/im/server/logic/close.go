@@ -1,7 +1,11 @@
 package logic
 
-import "imlogic/common/client"
+import (
+	"imlogic/common/client"
+	"log"
+)
 
-func Close(c *client.Client) {
-	service.hub.Unregister <- c
+func onClose(c *client.Client) {
+	service.hub.DelOneClient(c)
+	log.Print("onclose")
 }

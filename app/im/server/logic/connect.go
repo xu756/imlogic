@@ -19,29 +19,11 @@ var (
 	pingPeriod = (pongWait * 9) / 10
 )
 
-// NewClient 创建一个新的连接
-func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId int64) *client.Client {
-	ctx, cancel := context.WithCancel(ctx)
-	return &client.Client{
-		Ctx:       ctx,
-		Cancel:    cancel,
-		Ws:        ws,
-		IsOpen:    true,
-		LinkId:    linkID,
-		UserId:    userId,
-		Send:      make(chan *types.Message, 1024),
-		Heartbeat: time.NewTicker(pingPeriod),
-		OnClose:   Close,
-		Logic:     Msglogic,
-	}
-}
-
-// 发送连接消息
-func initClient(c *client.Client) {
-	c.IsOpen = true
-	c.Ws.SetReadLimit(1024 * 1024 * 100)
-	err := c.Ws.WriteJSON(types.Message{
-		LinkId:    c.LinkId,
+// 连接时
+func onConnect(conn *client.Client) {
+	log.Print("onconnect")
+	conn.SendMsg(&types.Message{
+		LinkId:    conn.LinkId,
 		MsgId:     uuid.NewString(),
 		Timestamp: tool.TimeNowUnixMilli(),
 		ChatType:  types.SystemMessage,
@@ -50,24 +32,27 @@ func initClient(c *client.Client) {
 			Version: "1.0",
 		},
 	})
-	if err != nil {
-		c.Close()
-		return
-	}
+	MetaMsg(conn, conn.ConnectMsg())
+
+}
+
+func Logic(ws *websocket.Conn) {
+	ctx := context.Background()
+	conn := client.NewClient(ctx, ws,
+		uuid.NewString(),
+		0,
+		60*time.Second,
+		onConnect,
+		onClose,
+		MetaMsg, Msglogic)
+	service.hub.AddOneClient(conn)
+	go conn.ListenAndWrite()
+	conn.ListenAndRead()
 
 }
 
 func Connect(ctx context.Context, c *app.RequestContext) {
-	err := service.hub.UpgradeOneWs(c, func(ws *websocket.Conn) {
-		// todo 获取用户信息
-		wsClient := NewClient(ctx, ws, uuid.NewString(), 0)
-		MetaMsg(ctx, wsClient, wsClient.ConnectMsg())
-		initClient(wsClient)
-		service.hub.Register <- wsClient
-		go wsClient.ListenAndWrite()
-		wsClient.ListenAndRead()
-	})
-
+	err := service.hub.UpgradeOneWs(c, Logic)
 	if err != nil {
 		log.Print(err)
 		result.HttpError(c, err)
