@@ -34,7 +34,7 @@ func (i *ImRpcImpl) ImageMessage(ctx context.Context, req *im.ImgMsg) (res *im.M
 // TextMessage implements im.ImSrv.
 func (i *ImRpcImpl) TextMessage(ctx context.Context, req *im.TextMsg) (res *im.MessageRes, err error) {
 	log.Println("receive text message")
-	log.Print(req)
+	log.Print(req.Content)
 	return &im.MessageRes{}, nil
 }
 

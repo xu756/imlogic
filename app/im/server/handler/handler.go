@@ -16,7 +16,7 @@ func InitRouter() {
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
-	//h.Use(middleware.HertzJwt())
-	h.GET("/connect", logic.Connect)
+	router := h.Group("/api")
+	router.GET("/connect", logic.Connect)
 	HttpServer = h
 }

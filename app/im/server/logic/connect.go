@@ -6,6 +6,7 @@ import (
 	"imlogic/common/types"
 	"imlogic/internal/result"
 	"imlogic/internal/tool"
+	"log"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -19,7 +20,7 @@ var (
 )
 
 // NewClient 创建一个新的连接
-func NewClient(ctx context.Context, ws *websocket.Conn, linkID, device string, userId int64) *client.Client {
+func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId int64) *client.Client {
 	ctx, cancel := context.WithCancel(ctx)
 	return &client.Client{
 		Ctx:       ctx,
@@ -59,7 +60,7 @@ func initClient(c *client.Client) {
 func Connect(ctx context.Context, c *app.RequestContext) {
 	err := service.hub.UpgradeOneWs(c, func(ws *websocket.Conn) {
 		// todo 获取用户信息
-		wsClient := NewClient(ctx, ws, uuid.NewString(), "pc", 0)
+		wsClient := NewClient(ctx, ws, uuid.NewString(), 0)
 		MetaMsg(ctx, wsClient, wsClient.ConnectMsg())
 		initClient(wsClient)
 		service.hub.Register <- wsClient
@@ -68,6 +69,7 @@ func Connect(ctx context.Context, c *app.RequestContext) {
 	})
 
 	if err != nil {
+		log.Print(err)
 		result.HttpError(c, err)
 		return
 	}
