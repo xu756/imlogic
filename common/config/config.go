@@ -8,8 +8,9 @@ type Config struct {
 	JwtConfig   JwtConfig   `yaml:"JwtConfig"`
 	MqUrl       string      `yaml:"MqUrl"`
 	Version     string      `yaml:"Version"`
-	EmailConfig EmailConfig `yaml:"EmailConfig"`
-	MinioConfig MinioConfig `yaml:"MinioConfig"`
+	CosUrl      string      `yaml:"cosUrl"`
+	UploadPath  string      `yaml:"uploadPath"`
+	Minio       Minio       `yaml:"minio"`
 	MongodbUrl  string      `yaml:"MongodbUrl"`
 }
 
@@ -48,19 +49,12 @@ type JwtConfig struct {
 	Expire  int64  `yaml:"Expire"`
 }
 
-type EmailConfig struct {
-	SMTPAddr string `yaml:"SMTPAddr"`
-	Password string `yaml:"Password"`
-	From     string `yaml:"From"`
-	Host     string `yaml:"Host"`
-}
-
-type MinioConfig struct {
+type Minio struct {
 	Endpoint        string `yaml:"Endpoint"`
 	AccessKeyID     string `yaml:"AccessKeyID"`
 	SecretAccessKey string `yaml:"SecretAccessKey"`
 	UseSSL          bool   `yaml:"UseSSL"`
-	BucketName      string `yaml:"BucketName"`
+	Bucket          string `yaml:"Bucket"`
 }
 
 func GetVersion() string {
