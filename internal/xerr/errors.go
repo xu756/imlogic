@@ -1,9 +1,12 @@
 package xerr
 
 import (
+	"errors"
 	"fmt"
 	types "imlogic/common/types"
 	"imlogic/internal/xlog"
+
+	"google.golang.org/grpc/codes"
 )
 
 /**
@@ -87,7 +90,6 @@ func UploadImageErr(err error, format string, v ...interface{}) error {
 	}
 }
 
-
 func SmsErr(err error, format string, v ...interface{}) error {
 	msg := fmt.Sprintf(format, v...)
 	xlog.ErrLog(types.SmsErrCode, msg, err)
@@ -95,4 +97,12 @@ func SmsErr(err error, format string, v ...interface{}) error {
 		Code: SystemErrCode,
 		Msg:  message[SystemErrCode],
 	}
+}
+
+func GetErrorCode(err error) (codes.Code, bool) {
+	var xErr CodeError
+	if !errors.As(err, &xErr) {
+		return 0, false
+	}
+	return codes.Code(xErr.Code), true
 }
