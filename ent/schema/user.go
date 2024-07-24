@@ -23,7 +23,7 @@ func (User) Fields() []ent.Field {
 		field.Bool("deleted").Default(false).Comment("删除状态"),
 		field.String("uuid").DefaultFunc(func() string {
 			return "user-" + uuid.New().String()
-		}).Comment("群uuid"),
+		}).Comment("用户uuid"),
 		field.Int64("editor").Default(0).Comment("修改人"),
 		field.String("username").Default("").Comment("姓名"),
 		field.String("password").Default("").Sensitive().Comment("密码"),

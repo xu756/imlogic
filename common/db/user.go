@@ -8,13 +8,13 @@ import (
 )
 
 type dbUserModel interface {
-	FindUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error)
-	FindUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error)
+	GetOneUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error)
+	GetOneUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error)
 	FindUserByUUID(ctx context.Context, uuid string) (userInfo *ent.User, err error)
 }
 
-// FindUserByUsername 根据用户名查找用户
-func (m *customModel) FindUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error) {
+// 根据用户名查找用户
+func (m *customModel) GetOneUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error) {
 	userInfo, err = m.client.User.Query().
 		Where(user.Username(username), user.Deleted(false)).First(ctx)
 	switch {
@@ -27,8 +27,8 @@ func (m *customModel) FindUserByUsername(ctx context.Context, username string) (
 	}
 }
 
-// FindUserByMobile 根据手机号查找用户
-func (m *customModel) FindUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error) {
+// 根据手机号查找用户
+func (m *customModel) GetOneUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error) {
 	userInfo, err = m.client.User.Query().
 		Where(user.Mobile(mobile), user.Deleted(false)).First(ctx)
 	switch {

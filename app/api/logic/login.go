@@ -1,4 +1,4 @@
-package router
+package logic
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/route"
 )
 
-func UserRoute(r *route.RouterGroup) {
+func LoginRoute(r *route.RouterGroup) {
 	r.POST("/account", loginByPassword)
 	r.POST("/mobile", loginByMobile)
 	r.POST("/captcha", sendCaptcha)
@@ -28,10 +28,8 @@ func loginByPassword(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	res, err := rpc.UserClient.LoginByPassword(ctx, &user.LoginByPasswordReq{
-		Username:  req.Username,
-		Password:  req.Password,
-		SessionId: req.SessionId,
-		Device:    req.Device,
+		Username: req.Username,
+		Password: req.Password,
 	})
 	if err != nil {
 		result.HttpError(c, err)
@@ -54,7 +52,6 @@ func loginByMobile(ctx context.Context, c *app.RequestContext) {
 		Mobile:    req.Mobile,
 		Captcha:   req.Captcha,
 		SessionId: req.SessionId,
-		Device:    req.Device,
 	})
 	if err != nil {
 		result.HttpError(c, err)

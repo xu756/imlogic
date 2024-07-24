@@ -93,7 +93,7 @@ func (j *Jwt) GetUserInfoFromHeardToken(c *app.RequestContext) (*AuthInfo, error
 
 // GetUserInfoFromCookieToken 从token解析
 func (j *Jwt) GetUserInfoFromCookieToken(c *app.RequestContext) (*AuthInfo, error) {
-	token, err := j.parseTokenString(string(c.Cookie("AppAdminToken")))
+	token, err := j.parseTokenString(string(c.Cookie("ImlogicToken")))
 	if err != nil {
 		return nil, xerr.RoleErr("jwt解析失败")
 	}

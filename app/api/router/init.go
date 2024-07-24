@@ -1,6 +1,7 @@
 package router
 
 import (
+	"imlogic/app/api/logic"
 	"imlogic/common/config"
 	"imlogic/internal/middleware"
 
@@ -17,6 +18,6 @@ func InitRouter() {
 	)
 	h.Use(middleware.HertzJwt())
 	router := h.Group("/api")
-	UserRoute(router.Group("/user"))
+	logic.LoginRoute(router.Group("/login"))
 	HttpServer = h
 }

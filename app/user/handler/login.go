@@ -8,7 +8,7 @@ import (
 )
 
 func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *user.LoginByPasswordReq) (resp *user.LoginRes, err error) {
-	userInfo, err := s.Model.FindUserByUsername(ctx, req.Username)
+	userInfo, err := s.Model.GetOneUserByUsername(ctx, req.Username)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *user.LoginByPa
 }
 
 func (s *PublicSrvImpl) LoginByMobile(ctx context.Context, req *user.LoginByMobileReq) (resp *user.LoginRes, err error) {
-	userInfo, err := s.Model.FindUserByMobile(ctx, req.Mobile)
+	userInfo, err := s.Model.GetOneUserByMobile(ctx, req.Mobile)
 	if err != nil {
 		return nil, err
 	}
