@@ -1,18 +1,16 @@
 package xjwt
 
-import "testing"
+import (
+	"imlogic/common/config"
+	"testing"
+)
 
 func TestNewJwt(t *testing.T) {
-	//token, err := NewJwt(1,[]uint64{1,2})
-	//if err != nil {
-	//	t.Error(err)
-	//	return
-	//}
-	//t.Log(token)
-	//user, err := GetTokenFromToken(token)
-	//if err != nil {
-	//	t.Error(err)
-	//	return
-	//}
-	//t.Log(user)
+	config.Init("../../configs/dev.yaml")
+	jwt := NewJwt()
+	token, err := jwt.NewJwtToken(1, "222222")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(token)
 }
