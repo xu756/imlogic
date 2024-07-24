@@ -34,7 +34,7 @@ JwtConfig:
 
 MqUrl: amqp://root:PTXzAMnVe7bdYj@localhost:5672/
 Version: v1
-MinioConfig:
+Minio:
   Endpoint: cos.imlogic.cn
   AccessKeyID: nJQ8MGtvnWfgHJXu0pFS 
   SecretAccessKey:  

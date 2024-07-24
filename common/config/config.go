@@ -10,7 +10,7 @@ type Config struct {
 	Version     string      `yaml:"Version"`
 	CosUrl      string      `yaml:"cosUrl"`
 	UploadPath  string      `yaml:"uploadPath"`
-	Minio       Minio       `yaml:"minio"`
+	Minio       Minio       `yaml:"Minio"`
 	MongodbUrl  string      `yaml:"MongodbUrl"`
 }
 
