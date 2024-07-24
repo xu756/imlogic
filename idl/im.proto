@@ -108,19 +108,12 @@ message MsgContent {
 }
 
 message Message {
-    string link_id = 1;
-    string msg_id = 2;
-    int64 timestamp = 3;
-    ChatType chat_type = 4;
-    int64 sender = 5;
-    int64 chat_id = 6;
-    int64 group_id = 7;
-    MsgType msg_type = 8;
-    TextMsg text = 9;
-    ImgMsg img = 10;
-    FileMsg file = 11;
-    AudioMsg audio = 12;
-    VideoMsg video = 13;
+    CommonMsg common = 1;
+    TextMsg text = 2;
+    ImgMsg img = 3;
+    FileMsg file = 4;
+    AudioMsg audio = 5;
+    VideoMsg video = 6;
 }
 
 

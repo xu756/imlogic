@@ -11,7 +11,7 @@ type ImServerImpl struct {
 }
 
 func (i ImServerImpl) SendMsg(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
-	ok := service.hub.SendoneMsg(req.LinkId, types.RpcMsgToMsg(req))
+	ok := service.hub.SendoneMsg(req.Common.LinkId, types.RpcMsgToMsg(req))
 	if !ok {
 		return &im.MessageRes{
 			Success: false,
