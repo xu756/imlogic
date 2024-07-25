@@ -16,7 +16,7 @@ func InitRouter() {
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
-	router := h.Group("/api")
+	router := h.Group("/api/im")
 	router.GET("/connect", logic.Connect)
 	HttpServer = h
 }
