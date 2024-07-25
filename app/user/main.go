@@ -10,6 +10,7 @@ import (
 	"imlogic/internal/middleware"
 	"imlogic/kitex_gen/user/usersrv"
 
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"
 )
 
@@ -18,6 +19,7 @@ var file = flag.String("f", "", "config file path")
 func main() {
 	flag.Parse()
 	config.Init(*file)
+	klog.SetLevel(klog.LevelTrace)
 	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.UserAddr)
 	if err != nil {
 		log.Fatal(err)

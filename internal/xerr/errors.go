@@ -28,6 +28,9 @@ func GetCodeError(code int32) CodeError {
 func (e CodeError) Error() string {
 	return fmt.Sprintf("code:%d,msg:%s", e.Code, e.Msg)
 }
+func (e CodeError) RpcErr() error {
+	return errors.New(e.Msg)
+}
 
 func (e CodeError) GetCode() int32 {
 	return e.Code
