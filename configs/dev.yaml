@@ -29,7 +29,7 @@ cosUrl: https://cos.imlogic.cn/appserver
 
 JwtConfig:
   SignKey: Tqede8rNvZvbKmjqYpQRvwLxsGR
-  Expire: 3600
+  Expire: 3600000
 
 
 MqUrl: amqp://root:PTXzAMnVe7bdYj@localhost:5672/
