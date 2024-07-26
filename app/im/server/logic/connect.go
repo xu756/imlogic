@@ -17,7 +17,7 @@ var (
 )
 
 func Connect(ctx context.Context, c *app.RequestContext) {
-	userInfo, err := service.Jwt.GetUserInfoFromHeardToken(c)
+	userInfo, err := service.Jwt.GetUserInfoFromCookieToken(c)
 	if err != nil {
 		result.HttpError(c, err)
 		return
