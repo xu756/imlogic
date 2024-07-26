@@ -19,7 +19,7 @@ var file = flag.String("f", "", "config file path")
 func main() {
 	flag.Parse()
 	config.Init(*file)
-	klog.SetLevel(klog.LevelTrace)
+	klog.SetLevel(klog.LevelFatal)
 	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.UserAddr)
 	if err != nil {
 		log.Fatal(err)
