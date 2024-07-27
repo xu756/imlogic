@@ -14,6 +14,7 @@ import (
 	"imlogic/ent/predicate"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
+	"imlogic/ent/userconn"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
 	"sync"
@@ -38,6 +39,7 @@ const (
 	TypeMessage      = "Message"
 	TypeRole         = "Role"
 	TypeUser         = "User"
+	TypeUserConn     = "UserConn"
 	TypeUserGroup    = "UserGroup"
 	TypeUserRole     = "UserRole"
 )
@@ -3997,6 +3999,584 @@ func (m *UserMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *UserMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown User edge %s", name)
+}
+
+// UserConnMutation represents an operation that mutates the UserConn nodes in the graph.
+type UserConnMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int
+	link_id       *string
+	link_time     *time.Time
+	user_id       *int64
+	adduser_id    *int64
+	host_name     *string
+	device        *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*UserConn, error)
+	predicates    []predicate.UserConn
+}
+
+var _ ent.Mutation = (*UserConnMutation)(nil)
+
+// userconnOption allows management of the mutation configuration using functional options.
+type userconnOption func(*UserConnMutation)
+
+// newUserConnMutation creates new mutation for the UserConn entity.
+func newUserConnMutation(c config, op Op, opts ...userconnOption) *UserConnMutation {
+	m := &UserConnMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeUserConn,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withUserConnID sets the ID field of the mutation.
+func withUserConnID(id int) userconnOption {
+	return func(m *UserConnMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *UserConn
+		)
+		m.oldValue = func(ctx context.Context) (*UserConn, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().UserConn.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withUserConn sets the old UserConn of the mutation.
+func withUserConn(node *UserConn) userconnOption {
+	return func(m *UserConnMutation) {
+		m.oldValue = func(context.Context) (*UserConn, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m UserConnMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m UserConnMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *UserConnMutation) ID() (id int, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *UserConnMutation) IDs(ctx context.Context) ([]int, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().UserConn.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetLinkID sets the "link_id" field.
+func (m *UserConnMutation) SetLinkID(s string) {
+	m.link_id = &s
+}
+
+// LinkID returns the value of the "link_id" field in the mutation.
+func (m *UserConnMutation) LinkID() (r string, exists bool) {
+	v := m.link_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLinkID returns the old "link_id" field's value of the UserConn entity.
+// If the UserConn object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserConnMutation) OldLinkID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLinkID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLinkID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLinkID: %w", err)
+	}
+	return oldValue.LinkID, nil
+}
+
+// ResetLinkID resets all changes to the "link_id" field.
+func (m *UserConnMutation) ResetLinkID() {
+	m.link_id = nil
+}
+
+// SetLinkTime sets the "link_time" field.
+func (m *UserConnMutation) SetLinkTime(t time.Time) {
+	m.link_time = &t
+}
+
+// LinkTime returns the value of the "link_time" field in the mutation.
+func (m *UserConnMutation) LinkTime() (r time.Time, exists bool) {
+	v := m.link_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLinkTime returns the old "link_time" field's value of the UserConn entity.
+// If the UserConn object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserConnMutation) OldLinkTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLinkTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLinkTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLinkTime: %w", err)
+	}
+	return oldValue.LinkTime, nil
+}
+
+// ResetLinkTime resets all changes to the "link_time" field.
+func (m *UserConnMutation) ResetLinkTime() {
+	m.link_time = nil
+}
+
+// SetUserID sets the "user_id" field.
+func (m *UserConnMutation) SetUserID(i int64) {
+	m.user_id = &i
+	m.adduser_id = nil
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *UserConnMutation) UserID() (r int64, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the UserConn entity.
+// If the UserConn object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserConnMutation) OldUserID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// AddUserID adds i to the "user_id" field.
+func (m *UserConnMutation) AddUserID(i int64) {
+	if m.adduser_id != nil {
+		*m.adduser_id += i
+	} else {
+		m.adduser_id = &i
+	}
+}
+
+// AddedUserID returns the value that was added to the "user_id" field in this mutation.
+func (m *UserConnMutation) AddedUserID() (r int64, exists bool) {
+	v := m.adduser_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *UserConnMutation) ResetUserID() {
+	m.user_id = nil
+	m.adduser_id = nil
+}
+
+// SetHostName sets the "host_name" field.
+func (m *UserConnMutation) SetHostName(s string) {
+	m.host_name = &s
+}
+
+// HostName returns the value of the "host_name" field in the mutation.
+func (m *UserConnMutation) HostName() (r string, exists bool) {
+	v := m.host_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHostName returns the old "host_name" field's value of the UserConn entity.
+// If the UserConn object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserConnMutation) OldHostName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHostName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHostName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHostName: %w", err)
+	}
+	return oldValue.HostName, nil
+}
+
+// ResetHostName resets all changes to the "host_name" field.
+func (m *UserConnMutation) ResetHostName() {
+	m.host_name = nil
+}
+
+// SetDevice sets the "device" field.
+func (m *UserConnMutation) SetDevice(s string) {
+	m.device = &s
+}
+
+// Device returns the value of the "device" field in the mutation.
+func (m *UserConnMutation) Device() (r string, exists bool) {
+	v := m.device
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDevice returns the old "device" field's value of the UserConn entity.
+// If the UserConn object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserConnMutation) OldDevice(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDevice is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDevice requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDevice: %w", err)
+	}
+	return oldValue.Device, nil
+}
+
+// ResetDevice resets all changes to the "device" field.
+func (m *UserConnMutation) ResetDevice() {
+	m.device = nil
+}
+
+// Where appends a list predicates to the UserConnMutation builder.
+func (m *UserConnMutation) Where(ps ...predicate.UserConn) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the UserConnMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *UserConnMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.UserConn, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *UserConnMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *UserConnMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (UserConn).
+func (m *UserConnMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *UserConnMutation) Fields() []string {
+	fields := make([]string, 0, 5)
+	if m.link_id != nil {
+		fields = append(fields, userconn.FieldLinkID)
+	}
+	if m.link_time != nil {
+		fields = append(fields, userconn.FieldLinkTime)
+	}
+	if m.user_id != nil {
+		fields = append(fields, userconn.FieldUserID)
+	}
+	if m.host_name != nil {
+		fields = append(fields, userconn.FieldHostName)
+	}
+	if m.device != nil {
+		fields = append(fields, userconn.FieldDevice)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *UserConnMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case userconn.FieldLinkID:
+		return m.LinkID()
+	case userconn.FieldLinkTime:
+		return m.LinkTime()
+	case userconn.FieldUserID:
+		return m.UserID()
+	case userconn.FieldHostName:
+		return m.HostName()
+	case userconn.FieldDevice:
+		return m.Device()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *UserConnMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case userconn.FieldLinkID:
+		return m.OldLinkID(ctx)
+	case userconn.FieldLinkTime:
+		return m.OldLinkTime(ctx)
+	case userconn.FieldUserID:
+		return m.OldUserID(ctx)
+	case userconn.FieldHostName:
+		return m.OldHostName(ctx)
+	case userconn.FieldDevice:
+		return m.OldDevice(ctx)
+	}
+	return nil, fmt.Errorf("unknown UserConn field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *UserConnMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case userconn.FieldLinkID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLinkID(v)
+		return nil
+	case userconn.FieldLinkTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLinkTime(v)
+		return nil
+	case userconn.FieldUserID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case userconn.FieldHostName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHostName(v)
+		return nil
+	case userconn.FieldDevice:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDevice(v)
+		return nil
+	}
+	return fmt.Errorf("unknown UserConn field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *UserConnMutation) AddedFields() []string {
+	var fields []string
+	if m.adduser_id != nil {
+		fields = append(fields, userconn.FieldUserID)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *UserConnMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case userconn.FieldUserID:
+		return m.AddedUserID()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *UserConnMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case userconn.FieldUserID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUserID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown UserConn numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *UserConnMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *UserConnMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *UserConnMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown UserConn nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *UserConnMutation) ResetField(name string) error {
+	switch name {
+	case userconn.FieldLinkID:
+		m.ResetLinkID()
+		return nil
+	case userconn.FieldLinkTime:
+		m.ResetLinkTime()
+		return nil
+	case userconn.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case userconn.FieldHostName:
+		m.ResetHostName()
+		return nil
+	case userconn.FieldDevice:
+		m.ResetDevice()
+		return nil
+	}
+	return fmt.Errorf("unknown UserConn field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *UserConnMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *UserConnMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *UserConnMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *UserConnMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *UserConnMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *UserConnMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *UserConnMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown UserConn unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *UserConnMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown UserConn edge %s", name)
 }
 
 // UserGroupMutation represents an operation that mutates the UserGroup nodes in the graph.

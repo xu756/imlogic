@@ -80,6 +80,18 @@ func (f UserFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error)
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.UserMutation", m)
 }
 
+// The UserConnFunc type is an adapter to allow the use of ordinary
+// function as UserConn mutator.
+type UserConnFunc func(context.Context, *ent.UserConnMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f UserConnFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.UserConnMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.UserConnMutation", m)
+}
+
 // The UserGroupFunc type is an adapter to allow the use of ordinary
 // function as UserGroup mutator.
 type UserGroupFunc func(context.Context, *ent.UserGroupMutation) (ent.Value, error)

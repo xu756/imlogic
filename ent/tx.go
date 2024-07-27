@@ -24,6 +24,8 @@ type Tx struct {
 	Role *RoleClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// UserConn is the client for interacting with the UserConn builders.
+	UserConn *UserConnClient
 	// UserGroup is the client for interacting with the UserGroup builders.
 	UserGroup *UserGroupClient
 	// UserRole is the client for interacting with the UserRole builders.
@@ -165,6 +167,7 @@ func (tx *Tx) init() {
 	tx.Message = NewMessageClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
 	tx.User = NewUserClient(tx.config)
+	tx.UserConn = NewUserConnClient(tx.config)
 	tx.UserGroup = NewUserGroupClient(tx.config)
 	tx.UserRole = NewUserRoleClient(tx.config)
 }

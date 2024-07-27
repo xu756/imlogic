@@ -17,6 +17,7 @@ import (
 	"imlogic/ent/message"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
+	"imlogic/ent/userconn"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
 
@@ -42,6 +43,8 @@ type Client struct {
 	Role *RoleClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// UserConn is the client for interacting with the UserConn builders.
+	UserConn *UserConnClient
 	// UserGroup is the client for interacting with the UserGroup builders.
 	UserGroup *UserGroupClient
 	// UserRole is the client for interacting with the UserRole builders.
@@ -63,6 +66,7 @@ func (c *Client) init() {
 	c.Message = NewMessageClient(c.config)
 	c.Role = NewRoleClient(c.config)
 	c.User = NewUserClient(c.config)
+	c.UserConn = NewUserConnClient(c.config)
 	c.UserGroup = NewUserGroupClient(c.config)
 	c.UserRole = NewUserRoleClient(c.config)
 }
@@ -163,6 +167,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Message:      NewMessageClient(cfg),
 		Role:         NewRoleClient(cfg),
 		User:         NewUserClient(cfg),
+		UserConn:     NewUserConnClient(cfg),
 		UserGroup:    NewUserGroupClient(cfg),
 		UserRole:     NewUserRoleClient(cfg),
 	}, nil
@@ -190,6 +195,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Message:      NewMessageClient(cfg),
 		Role:         NewRoleClient(cfg),
 		User:         NewUserClient(cfg),
+		UserConn:     NewUserConnClient(cfg),
 		UserGroup:    NewUserGroupClient(cfg),
 		UserRole:     NewUserRoleClient(cfg),
 	}, nil
@@ -221,8 +227,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Chat, c.Group, c.GroupMessage, c.Message, c.Role, c.User, c.UserGroup,
-		c.UserRole,
+		c.Chat, c.Group, c.GroupMessage, c.Message, c.Role, c.User, c.UserConn,
+		c.UserGroup, c.UserRole,
 	} {
 		n.Use(hooks...)
 	}
@@ -232,8 +238,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Chat, c.Group, c.GroupMessage, c.Message, c.Role, c.User, c.UserGroup,
-		c.UserRole,
+		c.Chat, c.Group, c.GroupMessage, c.Message, c.Role, c.User, c.UserConn,
+		c.UserGroup, c.UserRole,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -254,6 +260,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Role.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
+	case *UserConnMutation:
+		return c.UserConn.mutate(ctx, m)
 	case *UserGroupMutation:
 		return c.UserGroup.mutate(ctx, m)
 	case *UserRoleMutation:
@@ -1061,6 +1069,139 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 	}
 }
 
+// UserConnClient is a client for the UserConn schema.
+type UserConnClient struct {
+	config
+}
+
+// NewUserConnClient returns a client for the UserConn from the given config.
+func NewUserConnClient(c config) *UserConnClient {
+	return &UserConnClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `userconn.Hooks(f(g(h())))`.
+func (c *UserConnClient) Use(hooks ...Hook) {
+	c.hooks.UserConn = append(c.hooks.UserConn, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `userconn.Intercept(f(g(h())))`.
+func (c *UserConnClient) Intercept(interceptors ...Interceptor) {
+	c.inters.UserConn = append(c.inters.UserConn, interceptors...)
+}
+
+// Create returns a builder for creating a UserConn entity.
+func (c *UserConnClient) Create() *UserConnCreate {
+	mutation := newUserConnMutation(c.config, OpCreate)
+	return &UserConnCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of UserConn entities.
+func (c *UserConnClient) CreateBulk(builders ...*UserConnCreate) *UserConnCreateBulk {
+	return &UserConnCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *UserConnClient) MapCreateBulk(slice any, setFunc func(*UserConnCreate, int)) *UserConnCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &UserConnCreateBulk{err: fmt.Errorf("calling to UserConnClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*UserConnCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &UserConnCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for UserConn.
+func (c *UserConnClient) Update() *UserConnUpdate {
+	mutation := newUserConnMutation(c.config, OpUpdate)
+	return &UserConnUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *UserConnClient) UpdateOne(uc *UserConn) *UserConnUpdateOne {
+	mutation := newUserConnMutation(c.config, OpUpdateOne, withUserConn(uc))
+	return &UserConnUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *UserConnClient) UpdateOneID(id int) *UserConnUpdateOne {
+	mutation := newUserConnMutation(c.config, OpUpdateOne, withUserConnID(id))
+	return &UserConnUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for UserConn.
+func (c *UserConnClient) Delete() *UserConnDelete {
+	mutation := newUserConnMutation(c.config, OpDelete)
+	return &UserConnDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *UserConnClient) DeleteOne(uc *UserConn) *UserConnDeleteOne {
+	return c.DeleteOneID(uc.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *UserConnClient) DeleteOneID(id int) *UserConnDeleteOne {
+	builder := c.Delete().Where(userconn.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &UserConnDeleteOne{builder}
+}
+
+// Query returns a query builder for UserConn.
+func (c *UserConnClient) Query() *UserConnQuery {
+	return &UserConnQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeUserConn},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a UserConn entity by its id.
+func (c *UserConnClient) Get(ctx context.Context, id int) (*UserConn, error) {
+	return c.Query().Where(userconn.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *UserConnClient) GetX(ctx context.Context, id int) *UserConn {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *UserConnClient) Hooks() []Hook {
+	return c.hooks.UserConn
+}
+
+// Interceptors returns the client interceptors.
+func (c *UserConnClient) Interceptors() []Interceptor {
+	return c.inters.UserConn
+}
+
+func (c *UserConnClient) mutate(ctx context.Context, m *UserConnMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&UserConnCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&UserConnUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&UserConnUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&UserConnDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown UserConn mutation op: %q", m.Op())
+	}
+}
+
 // UserGroupClient is a client for the UserGroup schema.
 type UserGroupClient struct {
 	config
@@ -1330,10 +1471,11 @@ func (c *UserRoleClient) mutate(ctx context.Context, m *UserRoleMutation) (Value
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Chat, Group, GroupMessage, Message, Role, User, UserGroup, UserRole []ent.Hook
+		Chat, Group, GroupMessage, Message, Role, User, UserConn, UserGroup,
+		UserRole []ent.Hook
 	}
 	inters struct {
-		Chat, Group, GroupMessage, Message, Role, User, UserGroup,
+		Chat, Group, GroupMessage, Message, Role, User, UserConn, UserGroup,
 		UserRole []ent.Interceptor
 	}
 )

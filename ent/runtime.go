@@ -8,6 +8,7 @@ import (
 	"imlogic/ent/role"
 	"imlogic/ent/schema"
 	"imlogic/ent/user"
+	"imlogic/ent/userconn"
 	"imlogic/ent/usergroup"
 	"time"
 )
@@ -108,6 +109,20 @@ func init() {
 	userDescDesc := userFields[10].Descriptor()
 	// user.DefaultDesc holds the default value on creation for the desc field.
 	user.DefaultDesc = userDescDesc.Default.(string)
+	userconnFields := schema.UserConn{}.Fields()
+	_ = userconnFields
+	// userconnDescLinkTime is the schema descriptor for link_time field.
+	userconnDescLinkTime := userconnFields[1].Descriptor()
+	// userconn.DefaultLinkTime holds the default value on creation for the link_time field.
+	userconn.DefaultLinkTime = userconnDescLinkTime.Default.(func() time.Time)
+	// userconnDescHostName is the schema descriptor for host_name field.
+	userconnDescHostName := userconnFields[3].Descriptor()
+	// userconn.DefaultHostName holds the default value on creation for the host_name field.
+	userconn.DefaultHostName = userconnDescHostName.Default.(string)
+	// userconnDescDevice is the schema descriptor for device field.
+	userconnDescDevice := userconnFields[4].Descriptor()
+	// userconn.DefaultDevice holds the default value on creation for the device field.
+	userconn.DefaultDevice = userconnDescDevice.Default.(string)
 	usergroupFields := schema.UserGroup{}.Fields()
 	_ = usergroupFields
 	// usergroupDescJoinAt is the schema descriptor for join_at field.

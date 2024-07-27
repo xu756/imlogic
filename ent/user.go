@@ -24,7 +24,7 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// 删除状态
 	Deleted bool `json:"deleted,omitempty"`
-	// 群uuid
+	// 用户uuid
 	UUID string `json:"uuid,omitempty"`
 	// 修改人
 	Editor int64 `json:"editor,omitempty"`

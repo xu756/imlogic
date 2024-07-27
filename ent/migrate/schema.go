@@ -136,6 +136,33 @@ var (
 			},
 		},
 	}
+	// UserConnsColumns holds the columns for the "user_conns" table.
+	UserConnsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "link_id", Type: field.TypeString, Unique: true},
+		{Name: "link_time", Type: field.TypeTime},
+		{Name: "user_id", Type: field.TypeInt64},
+		{Name: "host_name", Type: field.TypeString, Default: ""},
+		{Name: "device", Type: field.TypeString, Default: ""},
+	}
+	// UserConnsTable holds the schema information for the "user_conns" table.
+	UserConnsTable = &schema.Table{
+		Name:       "user_conns",
+		Columns:    UserConnsColumns,
+		PrimaryKey: []*schema.Column{UserConnsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "userconn_link_id",
+				Unique:  true,
+				Columns: []*schema.Column{UserConnsColumns[1]},
+			},
+			{
+				Name:    "userconn_user_id_host_name",
+				Unique:  false,
+				Columns: []*schema.Column{UserConnsColumns[3], UserConnsColumns[4]},
+			},
+		},
+	}
 	// UserGroupsColumns holds the columns for the "user_groups" table.
 	UserGroupsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -176,6 +203,7 @@ var (
 		MessagesTable,
 		RolesTable,
 		UsersTable,
+		UserConnsTable,
 		UserGroupsTable,
 		UserRolesTable,
 	}

@@ -12,6 +12,7 @@ import (
 	"imlogic/ent/message"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
+	"imlogic/ent/userconn"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
 	"reflect"
@@ -86,6 +87,7 @@ func checkColumn(table, column string) error {
 			message.Table:      message.ValidColumn,
 			role.Table:         role.ValidColumn,
 			user.Table:         user.ValidColumn,
+			userconn.Table:     userconn.ValidColumn,
 			usergroup.Table:    usergroup.ValidColumn,
 			userrole.Table:     userrole.ValidColumn,
 		})

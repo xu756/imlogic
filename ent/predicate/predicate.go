@@ -24,6 +24,9 @@ type Role func(*sql.Selector)
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
 
+// UserConn is the predicate function for userconn builders.
+type UserConn func(*sql.Selector)
+
 // UserGroup is the predicate function for usergroup builders.
 type UserGroup func(*sql.Selector)
 
