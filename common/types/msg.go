@@ -1,9 +1,7 @@
 package types
 
 import (
-	"encoding/json"
 	"imlogic/kitex_gen/im"
-	"log"
 )
 
 // MsgMeta 消息元数据
@@ -35,45 +33,40 @@ type Message struct {
 }
 
 func RpcMsgToMsg(rpcMsg *im.Message) (msg *Message) {
-
-	// newMsg := Message{
-	// 	LinkId:    msg.LinkId,
-	// 	MsgId:     msg.MsgId,
-	// 	Timestamp: msg.Timestamp,
-	// 	ChatType:  ChatType(msg.ChatType),
-	// 	From:      msg.From,
-	// 	To:        msg.To,
-	// 	MsgType:   MsgType(msg.GetMsgType()),
-	// 	MsgContent: MsgContent{
-	// 		Content: msg.GetText().Content,
-	// 		// Img:     imgs,
-	// 		File: FileType{
-	// 			UID: msg.GetContent().File.Uid,
-	// 			URL: msg.GetContent().File.Url,
-	// 		},
-	// 		Video: VideoType{
-	// 			UID: msg.GetContent().Video.Uid,
-	// 			URL: msg.GetContent().Video.Url,
-	// 		},
-	// 		Audio: AudioType{
-	// 			UID: msg.GetContent().Audio.Uid,
-	// 			URL: msg.GetContent().Audio.Url,
-	// 		},
-	// 	},
+	msg = &Message{}
+	msg.LinkId = rpcMsg.Common.LinkId
+	msg.MsgId = rpcMsg.Common.MsgId
+	msg.Timestamp = rpcMsg.Common.Timestamp
+	msg.ChatType = ChatType(rpcMsg.Common.ChatType)
+	msg.Sender = rpcMsg.Common.Sender
+	msg.ChatId = rpcMsg.Common.ChatId
+	msg.GroupId = rpcMsg.Common.GroupId
+	msg.MsgType = MsgType(rpcMsg.Common.MsgType)
+	msg.MsgContent.Content = rpcMsg.Content
+	imgs := make([]ImageType, 0)
+	for _, img := range rpcMsg.Img {
+		imgs = append(imgs, ImageType{
+			UID: img.Uid,
+			URL: img.Url,
+		})
+	}
+	msg.MsgContent.Img = imgs
+	// msg.MsgContent.File = FileType{
+	// 	URL: rpcMsg.File.Url,
+	// 	UID: rpcMsg.File.Uid,
 	// }
-	jsonStr, err := json.Marshal(rpcMsg)
-	if err != nil {
-		log.Print(err)
-		return nil
-	}
-	err = json.Unmarshal(jsonStr, &msg)
-	if err != nil {
-		log.Print(err)
-		return nil
-	}
+	// msg.MsgContent.Video = VideoType{
+	// 	URL: rpcMsg.Video.Url,
+	// 	UID: rpcMsg.Video.Uid,
+	// }
+	// msg.MsgContent.Audio = AudioType{
+	// 	URL: rpcMsg.Audio.Url,
+	// 	UID: rpcMsg.Audio.Uid,
+	// }
+	// msg.MsgContent.Audio = AudioType{
+	// 	URL: rpcMsg.Audio.Url,
+	// 	UID: rpcMsg.Audio.Uid,
+	// }
 	return msg
-}
 
-func RpcMsgResToMsg(msg *im.MessageRes) *Message {
-	return &Message{}
 }

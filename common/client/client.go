@@ -97,7 +97,7 @@ func (c *Client) listenAndWrite() {
 			if !ok {
 				return
 			}
-			c.write(msg)
+			go c.write(msg)
 		case <-c.heartbeat.C:
 			// go c.MetaMsg(c.heartbeatMsg())
 		}

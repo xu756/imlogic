@@ -20,12 +20,12 @@ type Service struct {
 }
 
 func InitService() {
-	s, err := imsrv.NewClient("im-server",
+	s, err := imsrv.NewClient("im-rpc",
 		client.WithHostPorts(config.RunData.Rpc.ImRpcAddr),
 		client.WithErrorHandler(middleware.ClientErrorHandler),
 	)
 	if err != nil {
-		log.Print("【 连接 im-server Rpc 失败 】", err)
+		log.Print("【 连接 im Rpc 失败 】", err)
 		panic(err)
 	}
 	service = &Service{

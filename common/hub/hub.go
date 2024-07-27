@@ -78,3 +78,10 @@ func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
 	}
 	return false
 }
+
+func (h *Hub) SendAll(msg *types.Message) {
+	h.clients.Range(func(key, value interface{}) bool {
+		go value.(*client.Client).SendMsg(msg)
+		return true
+	})
+}

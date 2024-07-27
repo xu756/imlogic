@@ -11,7 +11,9 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	SendMsg(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
+	SendMsgToOne(ctx context.Context, Req *im.SendMsgTooneReq, callOptions ...callopt.Option) (r *im.MessageRes, err error)
+	SendMsgToGroup(ctx context.Context, Req *im.SendMsgToGroupReq, callOptions ...callopt.Option) (r *im.SendMsgToGroupRes, err error)
+	SendMsgToAll(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -43,7 +45,17 @@ type kImServerClient struct {
 	*kClient
 }
 
-func (p *kImServerClient) SendMsg(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
+func (p *kImServerClient) SendMsgToOne(ctx context.Context, Req *im.SendMsgTooneReq, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.SendMsg(ctx, Req)
+	return p.kClient.SendMsgToOne(ctx, Req)
+}
+
+func (p *kImServerClient) SendMsgToGroup(ctx context.Context, Req *im.SendMsgToGroupReq, callOptions ...callopt.Option) (r *im.SendMsgToGroupRes, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.SendMsgToGroup(ctx, Req)
+}
+
+func (p *kImServerClient) SendMsgToAll(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.SendMsgToAll(ctx, Req)
 }

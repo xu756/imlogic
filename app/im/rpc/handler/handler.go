@@ -4,15 +4,13 @@ import (
 	"context"
 	"imlogic/common/cache"
 	"imlogic/common/db"
-	"imlogic/common/mongodb"
 	"imlogic/kitex_gen/im"
 	"log"
 )
 
 type ImRpcImpl struct {
-	Model   db.Model
-	Cache   *cache.Client
-	mongodb mongodb.Client
+	Model db.Model
+	Cache *cache.Client
 }
 
 // AudioMessage implements im.ImSrv.
@@ -31,13 +29,6 @@ func (i *ImRpcImpl) ImageMessage(ctx context.Context, req *im.ImgMsg) (res *im.M
 	return &im.MessageRes{}, nil
 }
 
-// TextMessage implements im.ImSrv.
-func (i *ImRpcImpl) TextMessage(ctx context.Context, req *im.TextMsg) (res *im.MessageRes, err error) {
-	log.Println("receive text message")
-	log.Print(req.Content)
-	return &im.MessageRes{}, nil
-}
-
 // VideoMessage implements im.ImSrv.
 func (i *ImRpcImpl) VideoMessage(ctx context.Context, req *im.VideoMsg) (res *im.MessageRes, err error) {
 	panic("unimplemented")
@@ -45,8 +36,7 @@ func (i *ImRpcImpl) VideoMessage(ctx context.Context, req *im.VideoMsg) (res *im
 
 func NewImRpcImpl() *ImRpcImpl {
 	return &ImRpcImpl{
-		Model:   db.NewModel(),
-		Cache:   cache.NewClient(),
-		mongodb: mongodb.NewClient(),
+		Model: db.NewModel(),
+		Cache: cache.NewClient(),
 	}
 }

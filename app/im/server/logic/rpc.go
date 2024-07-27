@@ -10,19 +10,37 @@ import (
 type ImServerImpl struct {
 }
 
-func (i ImServerImpl) SendMsg(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
-	ok := service.hub.SendoneMsg(req.Common.LinkId, types.RpcMsgToMsg(req))
-	if !ok {
-		return &im.MessageRes{
-			Success: false,
-		}, nil
+// SendMsgToGroup implements im.ImServer.
+func (i *ImServerImpl) SendMsgToGroup(ctx context.Context, req *im.SendMsgToGroupReq) (res *im.SendMsgToGroupRes, err error) {
+	res = &im.SendMsgToGroupRes{}
+	for _, linkId := range req.LinkIds {
+		ok := service.hub.SendoneMsg(linkId, types.RpcMsgToMsg(req.Message))
+		if !ok {
+			res.LinkIds = append(res.LinkIds, linkId)
+		}
 	}
-	return &im.MessageRes{
-		Success: true,
-	}, nil
+	return
+}
+
+// SendMsgToOne implements im.ImServer.
+func (i *ImServerImpl) SendMsgToOne(ctx context.Context, req *im.SendMsgTooneReq) (res *im.MessageRes, err error) {
+	res = &im.MessageRes{}
+	ok := service.hub.SendoneMsg(req.LinkId, types.RpcMsgToMsg(req.Message))
+	if !ok {
+		res.Success = false
+		return
+	}
+	res.Success = true
+	return
 }
 
 // NewImServerImpl 创建服务
 func NewImServerImpl() *ImServerImpl {
 	return &ImServerImpl{}
+}
+
+// SendMsgToAll implements im.ImServer.
+func (i *ImServerImpl) SendMsgToAll(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+	service.hub.SendAll(types.RpcMsgToMsg(req))
+	return &im.MessageRes{Success: true}, nil
 }

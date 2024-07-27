@@ -4,6 +4,7 @@ option go_package = "im";
 package im;
 
 
+// 聊天类型
 enum ChatType {
     PrivateChat = 0;
     GroupChat = 1;
@@ -11,6 +12,7 @@ enum ChatType {
     SystemNotice =3;
 }
 
+// 消息类型
 enum MsgType {
     Text = 0;
     Image = 1;
@@ -44,6 +46,7 @@ message VideoType {
 }
 
 
+// websocket状态
 enum WsStatus{
     Connect = 0;
     Disconnect = 1;
@@ -51,6 +54,7 @@ enum WsStatus{
 } 
 
 
+// 公共消息
 message CommonMsg {
     string link_id = 1;
     string msg_id = 2;
@@ -63,27 +67,33 @@ message CommonMsg {
 }
 
 
+// 文本消息
 message TextMsg {
     CommonMsg common = 1;
     string content  = 2;
 }
+// 图片消息
 message ImgMsg {
     CommonMsg common = 1;
     repeated ImageType img  = 2;
 }
+// 文件消息
 message FileMsg {
     CommonMsg common = 1;
     FileType file = 2;
 }
+// 音频消息
 message AudioMsg {
     CommonMsg common = 1;
     AudioType audio = 2;
 }
+// 视频消息
 message VideoMsg {
     CommonMsg common = 1;
     VideoType video = 2;
 }
 
+// 元消息
 message MetaMsg {
     string link_id = 1;
     int64 user_id = 2;
@@ -93,12 +103,13 @@ message MetaMsg {
 
 }
 
+// 返回消息
 message MessageRes {
     bool success = 1;
     string msg_id = 2;
 }
 
-
+// 消息内容
 message MsgContent {
     MsgType msg_type = 1;
     string content = 2;
@@ -108,13 +119,31 @@ message MsgContent {
     VideoType video = 6;
 }
 
+// 消息
 message Message {
     CommonMsg common = 1;
-    TextMsg text = 2;
-    ImgMsg img = 3;
-    FileMsg file = 4;
-    AudioMsg audio = 5;
-    VideoMsg video = 6;
+    string content = 2;
+    repeated ImageType img = 3;
+    FileType file = 4;
+    AudioType audio = 5;
+    VideoType video = 6;
+}
+
+// 发送消息给单个用户
+message SendMsgTooneReq {
+    string link_id = 1;
+    Message message = 2;
+}
+
+// 发送消息给多个用户
+message SendMsgToGroupReq {
+    repeated string link_ids = 1;
+    Message message = 2;
+}
+
+// 发送消息给多个用户失败的用户
+message SendMsgToGroupRes {
+    repeated string link_ids = 1;
 }
 
 
@@ -134,7 +163,12 @@ service ImSrv {
     rpc VideoMessage(VideoMsg) returns (MessageRes) {}
 }
 
-// 其他服务发送消息
+// 发送消息
 service ImServer{
-    rpc SendMsg(Message) returns (MessageRes) {}
+    // 发送消息给单个用户
+    rpc SendMsgToOne(SendMsgTooneReq) returns (MessageRes) {}
+    // 发送消息给多个用户
+    rpc SendMsgToGroup(SendMsgToGroupReq) returns (SendMsgToGroupRes) {}
+    // 发送消息给所有用户
+    rpc SendMsgToAll(Message) returns (MessageRes) {}
 }

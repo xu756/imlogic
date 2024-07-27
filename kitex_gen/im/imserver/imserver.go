@@ -15,10 +15,24 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
-	"SendMsg": kitex.NewMethodInfo(
-		sendMsgHandler,
-		newSendMsgArgs,
-		newSendMsgResult,
+	"SendMsgToOne": kitex.NewMethodInfo(
+		sendMsgToOneHandler,
+		newSendMsgToOneArgs,
+		newSendMsgToOneResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
+	"SendMsgToGroup": kitex.NewMethodInfo(
+		sendMsgToGroupHandler,
+		newSendMsgToGroupArgs,
+		newSendMsgToGroupResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
+	"SendMsgToAll": kitex.NewMethodInfo(
+		sendMsgToAllHandler,
+		newSendMsgToAllArgs,
+		newSendMsgToAllResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
@@ -88,73 +102,73 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 	return svcInfo
 }
 
-func sendMsgHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func sendMsgToOneHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
-		req := new(im.Message)
+		req := new(im.SendMsgTooneReq)
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
-		resp, err := handler.(im.ImServer).SendMsg(ctx, req)
+		resp, err := handler.(im.ImServer).SendMsgToOne(ctx, req)
 		if err != nil {
 			return err
 		}
 		return st.SendMsg(resp)
-	case *SendMsgArgs:
-		success, err := handler.(im.ImServer).SendMsg(ctx, s.Req)
+	case *SendMsgToOneArgs:
+		success, err := handler.(im.ImServer).SendMsgToOne(ctx, s.Req)
 		if err != nil {
 			return err
 		}
-		realResult := result.(*SendMsgResult)
+		realResult := result.(*SendMsgToOneResult)
 		realResult.Success = success
 		return nil
 	default:
 		return errInvalidMessageType
 	}
 }
-func newSendMsgArgs() interface{} {
-	return &SendMsgArgs{}
+func newSendMsgToOneArgs() interface{} {
+	return &SendMsgToOneArgs{}
 }
 
-func newSendMsgResult() interface{} {
-	return &SendMsgResult{}
+func newSendMsgToOneResult() interface{} {
+	return &SendMsgToOneResult{}
 }
 
-type SendMsgArgs struct {
-	Req *im.Message
+type SendMsgToOneArgs struct {
+	Req *im.SendMsgTooneReq
 }
 
-func (p *SendMsgArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *SendMsgToOneArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetReq() {
-		p.Req = new(im.Message)
+		p.Req = new(im.SendMsgTooneReq)
 	}
 	return p.Req.FastRead(buf, _type, number)
 }
 
-func (p *SendMsgArgs) FastWrite(buf []byte) (n int) {
+func (p *SendMsgToOneArgs) FastWrite(buf []byte) (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.FastWrite(buf)
 }
 
-func (p *SendMsgArgs) Size() (n int) {
+func (p *SendMsgToOneArgs) Size() (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.Size()
 }
 
-func (p *SendMsgArgs) Marshal(out []byte) ([]byte, error) {
+func (p *SendMsgToOneArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
 	}
 	return proto.Marshal(p.Req)
 }
 
-func (p *SendMsgArgs) Unmarshal(in []byte) error {
-	msg := new(im.Message)
+func (p *SendMsgToOneArgs) Unmarshal(in []byte) error {
+	msg := new(im.SendMsgTooneReq)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -162,58 +176,58 @@ func (p *SendMsgArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var SendMsgArgs_Req_DEFAULT *im.Message
+var SendMsgToOneArgs_Req_DEFAULT *im.SendMsgTooneReq
 
-func (p *SendMsgArgs) GetReq() *im.Message {
+func (p *SendMsgToOneArgs) GetReq() *im.SendMsgTooneReq {
 	if !p.IsSetReq() {
-		return SendMsgArgs_Req_DEFAULT
+		return SendMsgToOneArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-func (p *SendMsgArgs) IsSetReq() bool {
+func (p *SendMsgToOneArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *SendMsgArgs) GetFirstArgument() interface{} {
+func (p *SendMsgToOneArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-type SendMsgResult struct {
+type SendMsgToOneResult struct {
 	Success *im.MessageRes
 }
 
-var SendMsgResult_Success_DEFAULT *im.MessageRes
+var SendMsgToOneResult_Success_DEFAULT *im.MessageRes
 
-func (p *SendMsgResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *SendMsgToOneResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
 		p.Success = new(im.MessageRes)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
 
-func (p *SendMsgResult) FastWrite(buf []byte) (n int) {
+func (p *SendMsgToOneResult) FastWrite(buf []byte) (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.FastWrite(buf)
 }
 
-func (p *SendMsgResult) Size() (n int) {
+func (p *SendMsgToOneResult) Size() (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.Size()
 }
 
-func (p *SendMsgResult) Marshal(out []byte) ([]byte, error) {
+func (p *SendMsgToOneResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
 		return out, nil
 	}
 	return proto.Marshal(p.Success)
 }
 
-func (p *SendMsgResult) Unmarshal(in []byte) error {
+func (p *SendMsgToOneResult) Unmarshal(in []byte) error {
 	msg := new(im.MessageRes)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
@@ -222,22 +236,328 @@ func (p *SendMsgResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *SendMsgResult) GetSuccess() *im.MessageRes {
+func (p *SendMsgToOneResult) GetSuccess() *im.MessageRes {
 	if !p.IsSetSuccess() {
-		return SendMsgResult_Success_DEFAULT
+		return SendMsgToOneResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-func (p *SendMsgResult) SetSuccess(x interface{}) {
+func (p *SendMsgToOneResult) SetSuccess(x interface{}) {
 	p.Success = x.(*im.MessageRes)
 }
 
-func (p *SendMsgResult) IsSetSuccess() bool {
+func (p *SendMsgToOneResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *SendMsgResult) GetResult() interface{} {
+func (p *SendMsgToOneResult) GetResult() interface{} {
+	return p.Success
+}
+
+func sendMsgToGroupHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(im.SendMsgToGroupReq)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(im.ImServer).SendMsgToGroup(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *SendMsgToGroupArgs:
+		success, err := handler.(im.ImServer).SendMsgToGroup(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*SendMsgToGroupResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newSendMsgToGroupArgs() interface{} {
+	return &SendMsgToGroupArgs{}
+}
+
+func newSendMsgToGroupResult() interface{} {
+	return &SendMsgToGroupResult{}
+}
+
+type SendMsgToGroupArgs struct {
+	Req *im.SendMsgToGroupReq
+}
+
+func (p *SendMsgToGroupArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(im.SendMsgToGroupReq)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *SendMsgToGroupArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *SendMsgToGroupArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *SendMsgToGroupArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *SendMsgToGroupArgs) Unmarshal(in []byte) error {
+	msg := new(im.SendMsgToGroupReq)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var SendMsgToGroupArgs_Req_DEFAULT *im.SendMsgToGroupReq
+
+func (p *SendMsgToGroupArgs) GetReq() *im.SendMsgToGroupReq {
+	if !p.IsSetReq() {
+		return SendMsgToGroupArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *SendMsgToGroupArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *SendMsgToGroupArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type SendMsgToGroupResult struct {
+	Success *im.SendMsgToGroupRes
+}
+
+var SendMsgToGroupResult_Success_DEFAULT *im.SendMsgToGroupRes
+
+func (p *SendMsgToGroupResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(im.SendMsgToGroupRes)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *SendMsgToGroupResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *SendMsgToGroupResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *SendMsgToGroupResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *SendMsgToGroupResult) Unmarshal(in []byte) error {
+	msg := new(im.SendMsgToGroupRes)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *SendMsgToGroupResult) GetSuccess() *im.SendMsgToGroupRes {
+	if !p.IsSetSuccess() {
+		return SendMsgToGroupResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *SendMsgToGroupResult) SetSuccess(x interface{}) {
+	p.Success = x.(*im.SendMsgToGroupRes)
+}
+
+func (p *SendMsgToGroupResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *SendMsgToGroupResult) GetResult() interface{} {
+	return p.Success
+}
+
+func sendMsgToAllHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(im.Message)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(im.ImServer).SendMsgToAll(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *SendMsgToAllArgs:
+		success, err := handler.(im.ImServer).SendMsgToAll(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*SendMsgToAllResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newSendMsgToAllArgs() interface{} {
+	return &SendMsgToAllArgs{}
+}
+
+func newSendMsgToAllResult() interface{} {
+	return &SendMsgToAllResult{}
+}
+
+type SendMsgToAllArgs struct {
+	Req *im.Message
+}
+
+func (p *SendMsgToAllArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(im.Message)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *SendMsgToAllArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *SendMsgToAllArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *SendMsgToAllArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *SendMsgToAllArgs) Unmarshal(in []byte) error {
+	msg := new(im.Message)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var SendMsgToAllArgs_Req_DEFAULT *im.Message
+
+func (p *SendMsgToAllArgs) GetReq() *im.Message {
+	if !p.IsSetReq() {
+		return SendMsgToAllArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *SendMsgToAllArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *SendMsgToAllArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type SendMsgToAllResult struct {
+	Success *im.MessageRes
+}
+
+var SendMsgToAllResult_Success_DEFAULT *im.MessageRes
+
+func (p *SendMsgToAllResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(im.MessageRes)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *SendMsgToAllResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *SendMsgToAllResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *SendMsgToAllResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *SendMsgToAllResult) Unmarshal(in []byte) error {
+	msg := new(im.MessageRes)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *SendMsgToAllResult) GetSuccess() *im.MessageRes {
+	if !p.IsSetSuccess() {
+		return SendMsgToAllResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *SendMsgToAllResult) SetSuccess(x interface{}) {
+	p.Success = x.(*im.MessageRes)
+}
+
+func (p *SendMsgToAllResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *SendMsgToAllResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -251,11 +571,31 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) SendMsg(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
-	var _args SendMsgArgs
+func (p *kClient) SendMsgToOne(ctx context.Context, Req *im.SendMsgTooneReq) (r *im.MessageRes, err error) {
+	var _args SendMsgToOneArgs
 	_args.Req = Req
-	var _result SendMsgResult
-	if err = p.c.Call(ctx, "SendMsg", &_args, &_result); err != nil {
+	var _result SendMsgToOneResult
+	if err = p.c.Call(ctx, "SendMsgToOne", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) SendMsgToGroup(ctx context.Context, Req *im.SendMsgToGroupReq) (r *im.SendMsgToGroupRes, err error) {
+	var _args SendMsgToGroupArgs
+	_args.Req = Req
+	var _result SendMsgToGroupResult
+	if err = p.c.Call(ctx, "SendMsgToGroup", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) SendMsgToAll(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
+	var _args SendMsgToAllArgs
+	_args.Req = Req
+	var _result SendMsgToAllResult
+	if err = p.c.Call(ctx, "SendMsgToAll", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
