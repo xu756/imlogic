@@ -123,6 +123,10 @@ func init() {
 	userconnDescDevice := userconnFields[4].Descriptor()
 	// userconn.DefaultDevice holds the default value on creation for the device field.
 	userconn.DefaultDevice = userconnDescDevice.Default.(string)
+	// userconnDescLastHeartbeatTime is the schema descriptor for last_heartbeat_time field.
+	userconnDescLastHeartbeatTime := userconnFields[5].Descriptor()
+	// userconn.DefaultLastHeartbeatTime holds the default value on creation for the last_heartbeat_time field.
+	userconn.DefaultLastHeartbeatTime = userconnDescLastHeartbeatTime.Default.(func() time.Time)
 	usergroupFields := schema.UserGroup{}.Fields()
 	_ = usergroupFields
 	// usergroupDescJoinAt is the schema descriptor for join_at field.

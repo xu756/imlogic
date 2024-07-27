@@ -26,8 +26,10 @@ type UserConn struct {
 	// 主机名
 	HostName string `json:"host_name,omitempty"`
 	// 设备
-	Device       string `json:"device,omitempty"`
-	selectValues sql.SelectValues
+	Device string `json:"device,omitempty"`
+	// 最后一次心跳时间
+	LastHeartbeatTime time.Time `json:"last_heartbeat_time,omitempty"`
+	selectValues      sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -39,7 +41,7 @@ func (*UserConn) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case userconn.FieldLinkID, userconn.FieldHostName, userconn.FieldDevice:
 			values[i] = new(sql.NullString)
-		case userconn.FieldLinkTime:
+		case userconn.FieldLinkTime, userconn.FieldLastHeartbeatTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -92,6 +94,12 @@ func (uc *UserConn) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				uc.Device = value.String
 			}
+		case userconn.FieldLastHeartbeatTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field last_heartbeat_time", values[i])
+			} else if value.Valid {
+				uc.LastHeartbeatTime = value.Time
+			}
 		default:
 			uc.selectValues.Set(columns[i], values[i])
 		}
@@ -142,6 +150,9 @@ func (uc *UserConn) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("device=")
 	builder.WriteString(uc.Device)
+	builder.WriteString(", ")
+	builder.WriteString("last_heartbeat_time=")
+	builder.WriteString(uc.LastHeartbeatTime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

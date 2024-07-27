@@ -23,6 +23,8 @@ const (
 	FieldHostName = "host_name"
 	// FieldDevice holds the string denoting the device field in the database.
 	FieldDevice = "device"
+	// FieldLastHeartbeatTime holds the string denoting the last_heartbeat_time field in the database.
+	FieldLastHeartbeatTime = "last_heartbeat_time"
 	// Table holds the table name of the userconn in the database.
 	Table = "user_conns"
 )
@@ -35,6 +37,7 @@ var Columns = []string{
 	FieldUserID,
 	FieldHostName,
 	FieldDevice,
+	FieldLastHeartbeatTime,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -54,6 +57,8 @@ var (
 	DefaultHostName string
 	// DefaultDevice holds the default value on creation for the "device" field.
 	DefaultDevice string
+	// DefaultLastHeartbeatTime holds the default value on creation for the "last_heartbeat_time" field.
+	DefaultLastHeartbeatTime func() time.Time
 )
 
 // OrderOption defines the ordering options for the UserConn queries.
@@ -87,4 +92,9 @@ func ByHostName(opts ...sql.OrderTermOption) OrderOption {
 // ByDevice orders the results by the device field.
 func ByDevice(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldDevice, opts...).ToFunc()
+}
+
+// ByLastHeartbeatTime orders the results by the last_heartbeat_time field.
+func ByLastHeartbeatTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldLastHeartbeatTime, opts...).ToFunc()
 }

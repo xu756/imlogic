@@ -4004,19 +4004,20 @@ func (m *UserMutation) ResetEdge(name string) error {
 // UserConnMutation represents an operation that mutates the UserConn nodes in the graph.
 type UserConnMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	link_id       *string
-	link_time     *time.Time
-	user_id       *int64
-	adduser_id    *int64
-	host_name     *string
-	device        *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*UserConn, error)
-	predicates    []predicate.UserConn
+	op                  Op
+	typ                 string
+	id                  *int
+	link_id             *string
+	link_time           *time.Time
+	user_id             *int64
+	adduser_id          *int64
+	host_name           *string
+	device              *string
+	last_heartbeat_time *time.Time
+	clearedFields       map[string]struct{}
+	done                bool
+	oldValue            func(context.Context) (*UserConn, error)
+	predicates          []predicate.UserConn
 }
 
 var _ ent.Mutation = (*UserConnMutation)(nil)
@@ -4317,6 +4318,42 @@ func (m *UserConnMutation) ResetDevice() {
 	m.device = nil
 }
 
+// SetLastHeartbeatTime sets the "last_heartbeat_time" field.
+func (m *UserConnMutation) SetLastHeartbeatTime(t time.Time) {
+	m.last_heartbeat_time = &t
+}
+
+// LastHeartbeatTime returns the value of the "last_heartbeat_time" field in the mutation.
+func (m *UserConnMutation) LastHeartbeatTime() (r time.Time, exists bool) {
+	v := m.last_heartbeat_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastHeartbeatTime returns the old "last_heartbeat_time" field's value of the UserConn entity.
+// If the UserConn object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserConnMutation) OldLastHeartbeatTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLastHeartbeatTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLastHeartbeatTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastHeartbeatTime: %w", err)
+	}
+	return oldValue.LastHeartbeatTime, nil
+}
+
+// ResetLastHeartbeatTime resets all changes to the "last_heartbeat_time" field.
+func (m *UserConnMutation) ResetLastHeartbeatTime() {
+	m.last_heartbeat_time = nil
+}
+
 // Where appends a list predicates to the UserConnMutation builder.
 func (m *UserConnMutation) Where(ps ...predicate.UserConn) {
 	m.predicates = append(m.predicates, ps...)
@@ -4351,7 +4388,7 @@ func (m *UserConnMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserConnMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.link_id != nil {
 		fields = append(fields, userconn.FieldLinkID)
 	}
@@ -4366,6 +4403,9 @@ func (m *UserConnMutation) Fields() []string {
 	}
 	if m.device != nil {
 		fields = append(fields, userconn.FieldDevice)
+	}
+	if m.last_heartbeat_time != nil {
+		fields = append(fields, userconn.FieldLastHeartbeatTime)
 	}
 	return fields
 }
@@ -4385,6 +4425,8 @@ func (m *UserConnMutation) Field(name string) (ent.Value, bool) {
 		return m.HostName()
 	case userconn.FieldDevice:
 		return m.Device()
+	case userconn.FieldLastHeartbeatTime:
+		return m.LastHeartbeatTime()
 	}
 	return nil, false
 }
@@ -4404,6 +4446,8 @@ func (m *UserConnMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldHostName(ctx)
 	case userconn.FieldDevice:
 		return m.OldDevice(ctx)
+	case userconn.FieldLastHeartbeatTime:
+		return m.OldLastHeartbeatTime(ctx)
 	}
 	return nil, fmt.Errorf("unknown UserConn field %s", name)
 }
@@ -4447,6 +4491,13 @@ func (m *UserConnMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDevice(v)
+		return nil
+	case userconn.FieldLastHeartbeatTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastHeartbeatTime(v)
 		return nil
 	}
 	return fmt.Errorf("unknown UserConn field %s", name)
@@ -4526,6 +4577,9 @@ func (m *UserConnMutation) ResetField(name string) error {
 		return nil
 	case userconn.FieldDevice:
 		m.ResetDevice()
+		return nil
+	case userconn.FieldLastHeartbeatTime:
+		m.ResetLastHeartbeatTime()
 		return nil
 	}
 	return fmt.Errorf("unknown UserConn field %s", name)

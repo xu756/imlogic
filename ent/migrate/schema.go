@@ -144,6 +144,7 @@ var (
 		{Name: "user_id", Type: field.TypeInt64},
 		{Name: "host_name", Type: field.TypeString, Default: ""},
 		{Name: "device", Type: field.TypeString, Default: ""},
+		{Name: "last_heartbeat_time", Type: field.TypeTime},
 	}
 	// UserConnsTable holds the schema information for the "user_conns" table.
 	UserConnsTable = &schema.Table{

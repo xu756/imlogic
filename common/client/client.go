@@ -5,6 +5,7 @@ import (
 	"imlogic/common/types"
 	"imlogic/kitex_gen/im"
 	"log"
+	"os"
 	"sync"
 	"time"
 
@@ -17,6 +18,7 @@ type Client struct {
 	cancel    context.CancelFunc
 	LinkId    string // websocket 连接 id
 	UserId    int64  // 用户id
+	hostName  string
 	ws        *websocket.Conn
 	isOpen    bool
 	send      chan *types.Message
@@ -37,9 +39,11 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 ) *Client {
 	ctx, cancel := context.WithCancel(ctx)
 	ws.SetReadLimit(1024 * 1024 * 100)
+	hostname, _ := os.Hostname()
 	conn := &Client{
 		ctx:       ctx,
 		cancel:    cancel,
+		hostName:  hostname,
 		ws:        ws,
 		LinkId:    linkID,
 		isOpen:    true,
@@ -133,24 +137,27 @@ func (c *Client) write(msg *types.Message) {
 // connectMsg 连接消息
 func (c *Client) ConnectMsg() *im.MetaMsg {
 	return &im.MetaMsg{
-		LinkId: c.LinkId,
-		UserId: c.UserId,
-		Status: im.WsStatus_Connect,
+		LinkId:   c.LinkId,
+		UserId:   c.UserId,
+		Status:   im.WsStatus_Connect,
+		HostName: c.hostName,
 	}
 }
 
 // heartbeatMsg 心跳消息
 func (c *Client) HeartbeatMsg() *im.MetaMsg {
 	return &im.MetaMsg{
-		LinkId: c.LinkId,
-		Status: im.WsStatus_Heartbeat,
+		LinkId:   c.LinkId,
+		Status:   im.WsStatus_Heartbeat,
+		HostName: c.hostName,
 	}
 }
 
 // disconnectMsg 断开连接消息
 func (c *Client) DisconnectMsg() *im.MetaMsg {
 	return &im.MetaMsg{
-		LinkId: c.LinkId,
-		Status: im.WsStatus_Disconnect,
+		LinkId:   c.LinkId,
+		Status:   im.WsStatus_Disconnect,
+		HostName: c.hostName,
 	}
 }

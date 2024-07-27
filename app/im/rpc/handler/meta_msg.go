@@ -9,13 +9,26 @@ func (i ImRpcImpl) MetaMessage(ctx context.Context, req *im.MetaMsg) (res *im.Me
 	res = &im.MessageRes{}
 	switch req.Status {
 	case im.WsStatus_Connect:
-		// todo 连接
+		err = i.Model.AddUserConn(ctx, req.UserId, req.HostName, req.Device, req.LinkId)
+		if err != nil {
+			return nil, err
+		}
+		err = i.Model.DeleteUserConnByHeartbeatTime(ctx)
+		if err != nil {
+			return nil, err
+		}
 	case im.WsStatus_Heartbeat:
-		// todo 心跳
+		err = i.Model.UpdateLastHeartbeatTime(ctx, req.UserId, req.HostName, req.Device, req.LinkId)
+		if err != nil {
+			return nil, err
+		}
 	case im.WsStatus_Disconnect:
-		// todo 断开连接
-
+		err = i.Model.DeleteUserConn(ctx, req.UserId, req.HostName, req.Device, req.LinkId)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	res.Success = true
 	res.MsgId = ""
 	return

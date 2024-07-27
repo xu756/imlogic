@@ -21,6 +21,7 @@ func (UserConn) Fields() []ent.Field {
 		field.Int64("user_id").Comment("用户id"),
 		field.String("host_name").Default("").Comment("主机名"),
 		field.String("device").Default("").Comment("设备"),
+		field.Time("last_heartbeat_time").Default(time.Now).Comment("最后一次心跳时间"),
 	}
 }
 

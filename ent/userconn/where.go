@@ -79,6 +79,11 @@ func Device(v string) predicate.UserConn {
 	return predicate.UserConn(sql.FieldEQ(FieldDevice, v))
 }
 
+// LastHeartbeatTime applies equality check predicate on the "last_heartbeat_time" field. It's identical to LastHeartbeatTimeEQ.
+func LastHeartbeatTime(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldEQ(FieldLastHeartbeatTime, v))
+}
+
 // LinkIDEQ applies the EQ predicate on the "link_id" field.
 func LinkIDEQ(v string) predicate.UserConn {
 	return predicate.UserConn(sql.FieldEQ(FieldLinkID, v))
@@ -352,6 +357,46 @@ func DeviceEqualFold(v string) predicate.UserConn {
 // DeviceContainsFold applies the ContainsFold predicate on the "device" field.
 func DeviceContainsFold(v string) predicate.UserConn {
 	return predicate.UserConn(sql.FieldContainsFold(FieldDevice, v))
+}
+
+// LastHeartbeatTimeEQ applies the EQ predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeEQ(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldEQ(FieldLastHeartbeatTime, v))
+}
+
+// LastHeartbeatTimeNEQ applies the NEQ predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeNEQ(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldNEQ(FieldLastHeartbeatTime, v))
+}
+
+// LastHeartbeatTimeIn applies the In predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeIn(vs ...time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldIn(FieldLastHeartbeatTime, vs...))
+}
+
+// LastHeartbeatTimeNotIn applies the NotIn predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeNotIn(vs ...time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldNotIn(FieldLastHeartbeatTime, vs...))
+}
+
+// LastHeartbeatTimeGT applies the GT predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeGT(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldGT(FieldLastHeartbeatTime, v))
+}
+
+// LastHeartbeatTimeGTE applies the GTE predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeGTE(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldGTE(FieldLastHeartbeatTime, v))
+}
+
+// LastHeartbeatTimeLT applies the LT predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeLT(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldLT(FieldLastHeartbeatTime, v))
+}
+
+// LastHeartbeatTimeLTE applies the LTE predicate on the "last_heartbeat_time" field.
+func LastHeartbeatTimeLTE(v time.Time) predicate.UserConn {
+	return predicate.UserConn(sql.FieldLTE(FieldLastHeartbeatTime, v))
 }
 
 // And groups predicates with the AND operator between them.

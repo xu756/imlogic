@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"imlogic/ent/predicate"
 	"imlogic/ent/userconn"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -76,6 +77,20 @@ func (ucu *UserConnUpdate) SetNillableDevice(s *string) *UserConnUpdate {
 	return ucu
 }
 
+// SetLastHeartbeatTime sets the "last_heartbeat_time" field.
+func (ucu *UserConnUpdate) SetLastHeartbeatTime(t time.Time) *UserConnUpdate {
+	ucu.mutation.SetLastHeartbeatTime(t)
+	return ucu
+}
+
+// SetNillableLastHeartbeatTime sets the "last_heartbeat_time" field if the given value is not nil.
+func (ucu *UserConnUpdate) SetNillableLastHeartbeatTime(t *time.Time) *UserConnUpdate {
+	if t != nil {
+		ucu.SetLastHeartbeatTime(*t)
+	}
+	return ucu
+}
+
 // Mutation returns the UserConnMutation object of the builder.
 func (ucu *UserConnUpdate) Mutation() *UserConnMutation {
 	return ucu.mutation
@@ -128,6 +143,9 @@ func (ucu *UserConnUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := ucu.mutation.Device(); ok {
 		_spec.SetField(userconn.FieldDevice, field.TypeString, value)
+	}
+	if value, ok := ucu.mutation.LastHeartbeatTime(); ok {
+		_spec.SetField(userconn.FieldLastHeartbeatTime, field.TypeTime, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ucu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -194,6 +212,20 @@ func (ucuo *UserConnUpdateOne) SetDevice(s string) *UserConnUpdateOne {
 func (ucuo *UserConnUpdateOne) SetNillableDevice(s *string) *UserConnUpdateOne {
 	if s != nil {
 		ucuo.SetDevice(*s)
+	}
+	return ucuo
+}
+
+// SetLastHeartbeatTime sets the "last_heartbeat_time" field.
+func (ucuo *UserConnUpdateOne) SetLastHeartbeatTime(t time.Time) *UserConnUpdateOne {
+	ucuo.mutation.SetLastHeartbeatTime(t)
+	return ucuo
+}
+
+// SetNillableLastHeartbeatTime sets the "last_heartbeat_time" field if the given value is not nil.
+func (ucuo *UserConnUpdateOne) SetNillableLastHeartbeatTime(t *time.Time) *UserConnUpdateOne {
+	if t != nil {
+		ucuo.SetLastHeartbeatTime(*t)
 	}
 	return ucuo
 }
@@ -280,6 +312,9 @@ func (ucuo *UserConnUpdateOne) sqlSave(ctx context.Context) (_node *UserConn, er
 	}
 	if value, ok := ucuo.mutation.Device(); ok {
 		_spec.SetField(userconn.FieldDevice, field.TypeString, value)
+	}
+	if value, ok := ucuo.mutation.LastHeartbeatTime(); ok {
+		_spec.SetField(userconn.FieldLastHeartbeatTime, field.TypeTime, value)
 	}
 	_node = &UserConn{config: ucuo.config}
 	_spec.Assign = _node.assignValues

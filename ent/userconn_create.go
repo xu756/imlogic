@@ -74,6 +74,20 @@ func (ucc *UserConnCreate) SetNillableDevice(s *string) *UserConnCreate {
 	return ucc
 }
 
+// SetLastHeartbeatTime sets the "last_heartbeat_time" field.
+func (ucc *UserConnCreate) SetLastHeartbeatTime(t time.Time) *UserConnCreate {
+	ucc.mutation.SetLastHeartbeatTime(t)
+	return ucc
+}
+
+// SetNillableLastHeartbeatTime sets the "last_heartbeat_time" field if the given value is not nil.
+func (ucc *UserConnCreate) SetNillableLastHeartbeatTime(t *time.Time) *UserConnCreate {
+	if t != nil {
+		ucc.SetLastHeartbeatTime(*t)
+	}
+	return ucc
+}
+
 // Mutation returns the UserConnMutation object of the builder.
 func (ucc *UserConnCreate) Mutation() *UserConnMutation {
 	return ucc.mutation
@@ -121,6 +135,10 @@ func (ucc *UserConnCreate) defaults() {
 		v := userconn.DefaultDevice
 		ucc.mutation.SetDevice(v)
 	}
+	if _, ok := ucc.mutation.LastHeartbeatTime(); !ok {
+		v := userconn.DefaultLastHeartbeatTime()
+		ucc.mutation.SetLastHeartbeatTime(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -139,6 +157,9 @@ func (ucc *UserConnCreate) check() error {
 	}
 	if _, ok := ucc.mutation.Device(); !ok {
 		return &ValidationError{Name: "device", err: errors.New(`ent: missing required field "UserConn.device"`)}
+	}
+	if _, ok := ucc.mutation.LastHeartbeatTime(); !ok {
+		return &ValidationError{Name: "last_heartbeat_time", err: errors.New(`ent: missing required field "UserConn.last_heartbeat_time"`)}
 	}
 	return nil
 }
@@ -185,6 +206,10 @@ func (ucc *UserConnCreate) createSpec() (*UserConn, *sqlgraph.CreateSpec) {
 	if value, ok := ucc.mutation.Device(); ok {
 		_spec.SetField(userconn.FieldDevice, field.TypeString, value)
 		_node.Device = value
+	}
+	if value, ok := ucc.mutation.LastHeartbeatTime(); ok {
+		_spec.SetField(userconn.FieldLastHeartbeatTime, field.TypeTime, value)
+		_node.LastHeartbeatTime = value
 	}
 	return _node, _spec
 }

@@ -5,6 +5,7 @@ import (
 	"imlogic/ent"
 	"imlogic/ent/userconn"
 	"imlogic/internal/xerr"
+	"time"
 )
 
 type dbUserConnModel interface {
@@ -14,6 +15,12 @@ type dbUserConnModel interface {
 	AddUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
 	// 获取所有连接信息
 	GetAllUserConns(ctx context.Context) (userConns []*ent.UserConn, err error)
+	// 删除用户连接信息
+	DeleteUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
+	// 更新最后一次心跳时间
+	UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
+	// 删除最后一次心跳时间大于当前2分钟
+	DeleteUserConnByHeartbeatTime(ctx context.Context) (err error)
 }
 
 // 根据用户ID查找用户连接信息
@@ -38,6 +45,7 @@ func (m *customModel) AddUserConn(ctx context.Context, userId int64, hostName, d
 		SetHostName(hostName).
 		SetDevice(device).
 		SetLinkID(linkId).
+		SetLinkTime(time.Now()).
 		Save(ctx)
 	if err != nil {
 		return xerr.DbErr(err, "添加用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostName, device, linkId)
@@ -54,4 +62,38 @@ func (m *customModel) GetAllUserConns(ctx context.Context) (userConns []*ent.Use
 		return nil, xerr.DbErr(err, "查询所有用户连接信息失败")
 	}
 	return userConns, nil
+}
+
+// 删除用户连接信息
+func (m *customModel) DeleteUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error) {
+	_, err = m.client.UserConn.Delete().
+		Where(userconn.LinkID(linkId)).
+		Exec(ctx)
+	if err != nil {
+		return xerr.DbErr(err, "删除用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostName, device, linkId)
+	}
+	return nil
+}
+
+// 更新最后一次心跳时间
+func (m *customModel) UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostName, device, linkId string) (err error) {
+	_, err = m.client.UserConn.Update().
+		Where(userconn.LinkID(linkId)).
+		SetLastHeartbeatTime(time.Now()).
+		Save(ctx)
+	if err != nil {
+		return xerr.DbErr(err, "更新用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostName, device, linkId)
+	}
+	return nil
+}
+
+// 删除最后一次心跳时间大于当前2分钟
+func (m *customModel) DeleteUserConnByHeartbeatTime(ctx context.Context) (err error) {
+	_, err = m.client.UserConn.Delete().
+		Where(userconn.LastHeartbeatTimeLT(time.Now().Add(-2 * time.Minute))).
+		Exec(ctx)
+	if err != nil {
+		return xerr.DbErr(err, "删除用户连接信息失败")
+	}
+	return nil
 }

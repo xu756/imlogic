@@ -519,6 +519,11 @@ func (x *MetaMsg) FastRead(buf []byte, _type int8, number int32) (offset int, er
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -553,6 +558,11 @@ func (x *MetaMsg) fastReadField3(buf []byte, _type int8) (offset int, err error)
 }
 
 func (x *MetaMsg) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.HostName, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *MetaMsg) fastReadField5(buf []byte, _type int8) (offset int, err error) {
 	x.Device, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
@@ -1129,6 +1139,7 @@ func (x *MetaMsg) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField2(buf[offset:])
 	offset += x.fastWriteField3(buf[offset:])
 	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
 	return offset
 }
 
@@ -1157,10 +1168,18 @@ func (x *MetaMsg) fastWriteField3(buf []byte) (offset int) {
 }
 
 func (x *MetaMsg) fastWriteField4(buf []byte) (offset int) {
+	if x.HostName == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 4, x.GetHostName())
+	return offset
+}
+
+func (x *MetaMsg) fastWriteField5(buf []byte) (offset int) {
 	if x.Device == "" {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 4, x.GetDevice())
+	offset += fastpb.WriteString(buf[offset:], 5, x.GetDevice())
 	return offset
 }
 
@@ -1645,6 +1664,7 @@ func (x *MetaMsg) Size() (n int) {
 	n += x.sizeField2()
 	n += x.sizeField3()
 	n += x.sizeField4()
+	n += x.sizeField5()
 	return n
 }
 
@@ -1673,10 +1693,18 @@ func (x *MetaMsg) sizeField3() (n int) {
 }
 
 func (x *MetaMsg) sizeField4() (n int) {
+	if x.HostName == "" {
+		return n
+	}
+	n += fastpb.SizeString(4, x.GetHostName())
+	return n
+}
+
+func (x *MetaMsg) sizeField5() (n int) {
 	if x.Device == "" {
 		return n
 	}
-	n += fastpb.SizeString(4, x.GetDevice())
+	n += fastpb.SizeString(5, x.GetDevice())
 	return n
 }
 
@@ -1891,7 +1919,8 @@ var fieldIDToName_MetaMsg = map[int32]string{
 	1: "LinkId",
 	2: "UserId",
 	3: "Status",
-	4: "Device",
+	4: "HostName",
+	5: "Device",
 }
 
 var fieldIDToName_MessageRes = map[int32]string{
