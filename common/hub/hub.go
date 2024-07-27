@@ -17,6 +17,7 @@ type Hub struct {
 	broadcast  chan *types.Message
 	register   chan *client.Client
 	unregister chan *client.Client
+	sync.RWMutex
 }
 
 func NewHub() *Hub {
@@ -81,7 +82,7 @@ func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
 
 func (h *Hub) SendAll(msg *types.Message) {
 	h.clients.Range(func(key, value interface{}) bool {
-		go value.(*client.Client).SendMsg(msg)
+		value.(*client.Client).SendMsg(msg)
 		return true
 	})
 }

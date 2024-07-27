@@ -67,9 +67,7 @@ func (c *Client) Listen() {
 
 // listenAndRead 监听并读取消息
 func (c *Client) listenAndRead() {
-	defer func() {
-		c.close()
-	}()
+	defer c.close()
 	for {
 		select {
 		case <-c.ctx.Done():
@@ -126,6 +124,8 @@ func (c *Client) close() {
 }
 
 func (c *Client) write(msg *types.Message) {
+	c.Lock()
+	defer c.Unlock()
 	msg.LinkId = c.LinkId
 	err := c.ws.WriteJSON(msg)
 	if err != nil {

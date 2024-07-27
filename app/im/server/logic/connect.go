@@ -17,16 +17,16 @@ var (
 )
 
 func Connect(ctx context.Context, c *app.RequestContext) {
-	userInfo, err := service.Jwt.GetUserInfoFromCookieToken(c)
-	if err != nil {
-		result.HttpError(c, err)
-		return
-	}
-	err = service.hub.UpgradeOneWs(c, func(ws *websocket.Conn) {
+	// userInfo, err := service.Jwt.GetUserInfoFromCookieToken(c)
+	// if err != nil {
+	// 	result.HttpError(c, err)
+	// 	return
+	// }
+	err := service.hub.UpgradeOneWs(c, func(ws *websocket.Conn) {
 		conn := client.NewClient(
 			ctx, ws,
 			uuid.NewString(),
-			userInfo.UserId,
+			111,
 			pongWait,
 			onConnect,
 			onClose,
