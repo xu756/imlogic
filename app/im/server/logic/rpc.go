@@ -41,6 +41,6 @@ func NewImServerImpl() *ImServerImpl {
 
 // SendMsgToAll implements im.ImServer.
 func (i *ImServerImpl) SendMsgToAll(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
-	go service.hub.SendAll(types.RpcMsgToMsg(req))
+	service.hub.SendAll(types.RpcMsgToMsg(req))
 	return &im.MessageRes{Success: true}, nil
 }
