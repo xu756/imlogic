@@ -60,7 +60,7 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 }
 
 func (c *Client) Listen() {
-	go c.listenAndWrite()
+	// go c.listenAndWrite()
 	c.listenAndRead()
 
 }
@@ -85,26 +85,26 @@ func (c *Client) listenAndRead() {
 }
 
 // listenAndWrite 监听并写入消息
-func (c *Client) listenAndWrite() {
-	defer c.close()
-	for {
-		select {
-		case <-c.ctx.Done():
-			return
-		case msg, ok := <-c.send:
-			if !ok {
-				return
-			}
-			go c.write(msg)
-		case <-c.heartbeat.C:
-			// go c.MetaMsg(c.heartbeatMsg())
-		}
+// func (c *Client) listenAndWrite() {
+// 	defer c.close()
+// 	for {
+// 		select {
+// 		case <-c.ctx.Done():
+// 			return
+// 		case msg, ok := <-c.send:
+// 			if !ok {
+// 				return
+// 			}
+// 			go c.write(msg)
+// 		case <-c.heartbeat.C:
+// 			// go c.MetaMsg(c.heartbeatMsg())
+// 		}
 
-	}
-}
+// 	}
+// }
 
 func (c *Client) SendMsg(msg *types.Message) {
-	c.send <- msg
+	go c.write(msg)
 }
 
 // close 关闭连接

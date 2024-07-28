@@ -81,6 +81,8 @@ func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
 }
 
 func (h *Hub) SendAll(msg *types.Message) {
+	h.Lock()
+	defer h.Unlock()
 	h.clients.Range(func(key, value interface{}) bool {
 		value.(*client.Client).SendMsg(msg)
 		return true
