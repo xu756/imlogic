@@ -11,7 +11,9 @@ import (
 )
 
 type Hub struct {
-	clients    sync.Map
+	clients sync.Map
+	// clients    map[string]*client.Client
+
 	hostName   string
 	upgrader   websocket.HertzUpgrader
 	broadcast  chan *types.Message
@@ -84,7 +86,7 @@ func (h *Hub) SendAll(msg *types.Message) {
 	h.Lock()
 	h.clients.Range(func(key, value interface{}) bool {
 		c := value.(*client.Client)
-		msg.MsgId = key.(string)
+		msg.LinkId = key.(string)
 		c.SendMsg(msg)
 		return true
 	})
