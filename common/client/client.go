@@ -13,12 +13,12 @@ import (
 )
 
 type Client struct {
-	sync.RWMutex
 	ctx        context.Context
 	cancelFunc context.CancelFunc
 	LinkId     string // websocket 连接 id
 	UserId     int64  // 用户id
 	hostName   string
+	lock       sync.Mutex
 	ws         *websocket.Conn
 	send       chan *types.Message
 	heartbeat  *time.Ticker
@@ -111,7 +111,7 @@ func (c *Client) SendMsg(msg *types.Message) {
 
 // close 关闭连接
 func (c *Client) close() {
-	c.Lock()
+	c.lock.Lock()
 	ws := c.getWs()
 	if ws != nil {
 		c.OnClose(c)
@@ -123,26 +123,26 @@ func (c *Client) close() {
 		c.setWs(nil)
 
 	}
-	c.Unlock()
+	c.lock.Unlock()
 }
 
 func (c *Client) getWs() *websocket.Conn {
-	c.Lock()
-	defer c.Unlock()
+	c.lock.Lock()
+	defer c.lock.Unlock()
 	return c.ws
 }
 
 func (c *Client) setWs(ws *websocket.Conn) {
-	c.Lock()
+	c.lock.Lock()
 	c.ws = ws
-	c.Unlock()
+	c.lock.Unlock()
 	if ws == nil {
 		return
 	}
 }
 
 func (c *Client) write(msg *types.Message) {
-	c.Lock()
+	c.lock.Lock()
 	newMsg := &types.Message{}
 	newMsg = msg
 	// newMsg.LinkId = c.LinkId
@@ -150,10 +150,10 @@ func (c *Client) write(msg *types.Message) {
 	err := c.ws.WriteJSON(newMsg)
 	if err != nil {
 		c.close()
-		c.Unlock()
+		c.lock.Unlock()
 		return
 	}
-	c.Unlock()
+	c.lock.Unlock()
 }
 
 // connectMsg 连接消息

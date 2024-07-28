@@ -13,13 +13,12 @@ import (
 type Hub struct {
 	clients sync.Map
 	// clients    map[string]*client.Client
-
+	lock       sync.Mutex
 	hostName   string
 	upgrader   websocket.HertzUpgrader
 	broadcast  chan *types.Message
 	register   chan *client.Client
 	unregister chan *client.Client
-	sync.RWMutex
 }
 
 func NewHub() *Hub {
@@ -83,12 +82,12 @@ func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
 }
 
 func (h *Hub) SendAll(msg *types.Message) {
-	h.Lock()
+	h.lock.Lock()
 	h.clients.Range(func(key, value interface{}) bool {
 		c := value.(*client.Client)
 		msg.LinkId = key.(string)
 		c.SendMsg(msg)
 		return true
 	})
-	h.Unlock()
+	h.lock.Unlock()
 }
