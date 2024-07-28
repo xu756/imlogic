@@ -14,19 +14,18 @@ import (
 
 type Client struct {
 	sync.RWMutex
-	ctx       context.Context
-	cancel    context.CancelFunc
-	LinkId    string // websocket 连接 id
-	UserId    int64  // 用户id
-	hostName  string
-	ws        *websocket.Conn
-	isOpen    bool
-	send      chan *types.Message
-	heartbeat *time.Ticker
-	MetaMsg   func(*Client, *im.MetaMsg)
-	Logic     func(*Client, *types.Message)
-	OnConnect func(*Client)
-	OnClose   func(*Client)
+	ctx        context.Context
+	cancelFunc context.CancelFunc
+	LinkId     string // websocket 连接 id
+	UserId     int64  // 用户id
+	hostName   string
+	ws         *websocket.Conn
+	send       chan *types.Message
+	heartbeat  *time.Ticker
+	MetaMsg    func(*Client, *im.MetaMsg)
+	Logic      func(*Client, *types.Message)
+	OnConnect  func(*Client)
+	OnClose    func(*Client)
 }
 
 func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId int64,
@@ -37,42 +36,45 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 	Msglogic func(*Client, *types.Message),
 
 ) *Client {
-	ctx, cancel := context.WithCancel(ctx)
+	ctx, cancelFunc := context.WithCancel(ctx)
 	ws.SetReadLimit(1024 * 1024 * 100)
 	hostname, _ := os.Hostname()
 	conn := &Client{
-		ctx:       ctx,
-		cancel:    cancel,
-		hostName:  hostname,
-		ws:        ws,
-		LinkId:    linkID,
-		isOpen:    true,
-		UserId:    userId,
-		send:      make(chan *types.Message, 1024),
-		heartbeat: time.NewTicker(60 * time.Second),
-		OnConnect: OnConnect,
-		OnClose:   OnClose,
-		Logic:     Msglogic,
-		MetaMsg:   MetaMsg,
+		ctx:        ctx,
+		cancelFunc: cancelFunc,
+		hostName:   hostname,
+		LinkId:     linkID,
+		UserId:     userId,
+		send:       make(chan *types.Message, 1024),
+		heartbeat:  time.NewTicker(60 * time.Second),
+		OnConnect:  OnConnect,
+		OnClose:    OnClose,
+		Logic:      Msglogic,
+		MetaMsg:    MetaMsg,
 	}
+	go conn.setWs(ws)
 	conn.OnConnect(conn)
 	return conn
 }
 
 func (c *Client) Listen() {
 	// go c.listenAndWrite()
-	c.listenAndRead()
+	c.readMessage()
 
 }
 
 // listenAndRead 监听并读取消息
-func (c *Client) listenAndRead() {
-	defer c.close()
+func (c *Client) readMessage() {
 	for {
 		select {
 		case <-c.ctx.Done():
+
 			return
 		default:
+			ws := c.getWs()
+			if ws == nil {
+				return
+			}
 			msg := &types.Message{}
 			err := c.ws.ReadJSON(msg)
 			if err != nil {
@@ -110,28 +112,45 @@ func (c *Client) SendMsg(msg *types.Message) {
 // close 关闭连接
 func (c *Client) close() {
 	c.Lock()
-	defer c.Unlock()
-	if c.isOpen {
+	ws := c.getWs()
+	if ws != nil {
 		c.OnClose(c)
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
-		go c.MetaMsg(c, c.DisconnectMsg())
-		c.cancel()
+		c.cancelFunc()
 		if err := c.ws.Close(); err != nil {
 			log.Print("close:", err)
 		}
-		c.isOpen = false
+		c.setWs(nil)
+
+	}
+	c.Unlock()
+}
+
+func (c *Client) getWs() *websocket.Conn {
+	c.Lock()
+	defer c.Unlock()
+	return c.ws
+}
+
+func (c *Client) setWs(ws *websocket.Conn) {
+	c.Lock()
+	c.ws = ws
+	c.Unlock()
+	if ws == nil {
+		return
 	}
 }
 
 func (c *Client) write(msg *types.Message) {
 	c.Lock()
-	defer c.Unlock()
 	msg.LinkId = c.LinkId
 	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()
+		c.Unlock()
 		return
 	}
+	c.Unlock()
 }
 
 // connectMsg 连接消息

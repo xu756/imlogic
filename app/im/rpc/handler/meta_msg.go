@@ -3,12 +3,14 @@ package handler
 import (
 	"context"
 	"imlogic/kitex_gen/im"
+	"log"
 )
 
 func (i ImRpcImpl) MetaMessage(ctx context.Context, req *im.MetaMsg) (res *im.MessageRes, err error) {
 	res = &im.MessageRes{}
 	switch req.Status {
 	case im.WsStatus_Connect:
+		log.Print("connect")
 		err = i.Model.AddUserConn(ctx, req.UserId, req.HostName, req.Device, req.LinkId)
 		if err != nil {
 			return nil, err
@@ -23,6 +25,7 @@ func (i ImRpcImpl) MetaMessage(ctx context.Context, req *im.MetaMsg) (res *im.Me
 			return nil, err
 		}
 	case im.WsStatus_Disconnect:
+		log.Print("disconnect")
 		err = i.Model.DeleteUserConn(ctx, req.UserId, req.HostName, req.Device, req.LinkId)
 		if err != nil {
 			return nil, err

@@ -10,6 +10,8 @@ import (
 
 func onClose(c *client.Client) {
 	service.hub.DelOneClient(c)
+	MetaMsg(c, c.DisconnectMsg())
+	
 }
 
 // 连接时
