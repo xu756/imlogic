@@ -12,11 +12,7 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	MetaMessage(ctx context.Context, Req *im.MetaMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-	TextMessage(ctx context.Context, Req *im.TextMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-	ImageMessage(ctx context.Context, Req *im.ImgMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-	FileMessage(ctx context.Context, Req *im.FileMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-	AudioMessage(ctx context.Context, Req *im.AudioMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-	VideoMessage(ctx context.Context, Req *im.VideoMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
+	PushMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -53,27 +49,7 @@ func (p *kImSrvClient) MetaMessage(ctx context.Context, Req *im.MetaMsg, callOpt
 	return p.kClient.MetaMessage(ctx, Req)
 }
 
-func (p *kImSrvClient) TextMessage(ctx context.Context, Req *im.TextMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
+func (p *kImSrvClient) PushMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.TextMessage(ctx, Req)
-}
-
-func (p *kImSrvClient) ImageMessage(ctx context.Context, Req *im.ImgMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.ImageMessage(ctx, Req)
-}
-
-func (p *kImSrvClient) FileMessage(ctx context.Context, Req *im.FileMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.FileMessage(ctx, Req)
-}
-
-func (p *kImSrvClient) AudioMessage(ctx context.Context, Req *im.AudioMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.AudioMessage(ctx, Req)
-}
-
-func (p *kImSrvClient) VideoMessage(ctx context.Context, Req *im.VideoMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
-	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.VideoMessage(ctx, Req)
+	return p.kClient.PushMessage(ctx, Req)
 }

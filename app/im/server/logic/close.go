@@ -11,7 +11,7 @@ import (
 func onClose(c *client.Client) {
 	service.hub.DelOneClient(c)
 	MetaMsg(c, c.DisconnectMsg())
-	
+
 }
 
 // 连接时
@@ -22,10 +22,7 @@ func onConnect(conn *client.Client) {
 		MsgId:     uuid.NewString(),
 		Timestamp: tool.TimeNowUnixMilli(),
 		ChatType:  types.SystemMessage,
-		MsgMeta: types.MsgMeta{
-			Detail:  "connect",
-			Version: "1.0",
-		},
+		Content:   "连接成功",
 	})
 	MetaMsg(conn, conn.ConnectMsg())
 

@@ -20,30 +20,12 @@ enum MsgType {
     Audio = 3;
     Video = 4;
 }
-// 图片消息
-message ImageType {
+// 媒体类型
+message MediaType {
     string uid = 1;
     string url = 2;
 }
 
-// 文件消息
-message FileType {
-    string uid = 1;
-    string url = 2;
-}
-
-// 音频消息
-message AudioType {
-    string uid = 1;
-    string url = 2;
-    int64 duration = 3;
-}
-// 视频
-message VideoType {
-    string uid = 1;
-    string url = 2;
-    int64 duration = 3;
-}
 
 
 // websocket状态
@@ -54,44 +36,6 @@ enum WsStatus{
 } 
 
 
-// 公共消息
-message CommonMsg {
-    string link_id = 1;
-    string msg_id = 2;
-    int64 timestamp = 3;
-    ChatType chat_type = 4;
-    int64 sender = 5;
-    int64 chat_id = 6;
-    int64 group_id = 7;
-    MsgType msg_type = 8;
-}
-
-
-// 文本消息
-message TextMsg {
-    CommonMsg common = 1;
-    string content  = 2;
-}
-// 图片消息
-message ImgMsg {
-    CommonMsg common = 1;
-    repeated ImageType img  = 2;
-}
-// 文件消息
-message FileMsg {
-    CommonMsg common = 1;
-    FileType file = 2;
-}
-// 音频消息
-message AudioMsg {
-    CommonMsg common = 1;
-    AudioType audio = 2;
-}
-// 视频消息
-message VideoMsg {
-    CommonMsg common = 1;
-    VideoType video = 2;
-}
 
 // 元消息
 message MetaMsg {
@@ -109,24 +53,20 @@ message MessageRes {
     string msg_id = 2;
 }
 
-// 消息内容
-message MsgContent {
-    MsgType msg_type = 1;
-    string content = 2;
-    repeated ImageType img = 3;
-    FileType file = 4;
-    AudioType audio = 5;
-    VideoType video = 6;
-}
+
 
 // 消息
 message Message {
-    CommonMsg common = 1;
-    string content = 2;
-    repeated ImageType img = 3;
-    FileType file = 4;
-    AudioType audio = 5;
-    VideoType video = 6;
+    string link_id = 1;
+    string msg_id = 2;
+    int64 timestamp = 3;
+    ChatType chat_type = 4;
+    int64 sender = 5;
+    int64 chat_id = 6;
+    int64 group_id = 7;
+    string content = 8;
+    MsgType msg_type = 9;
+    repeated MediaType media = 10;
 }
 
 // 发送消息给单个用户
@@ -151,16 +91,8 @@ message SendMsgToGroupRes {
 service ImSrv {
     // 元消息
     rpc MetaMessage(MetaMsg) returns (MessageRes) {}
-    // 文本消息
-    rpc TextMessage(TextMsg) returns (MessageRes) {}
-    // 图片消息
-    rpc ImageMessage(ImgMsg) returns (MessageRes) {}
-    // 文件消息
-    rpc FileMessage(FileMsg) returns (MessageRes) {}
-    // 音频消息
-    rpc AudioMessage(AudioMsg) returns (MessageRes) {}
-    // 视频消息
-    rpc VideoMessage(VideoMsg) returns (MessageRes) {}
+    // 消息
+    rpc PushMessage(Message) returns (MessageRes) {}
 }
 
 // 发送消息

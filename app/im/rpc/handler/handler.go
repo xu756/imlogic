@@ -5,7 +5,6 @@ import (
 	"imlogic/common/cache"
 	"imlogic/common/db"
 	"imlogic/kitex_gen/im"
-	"log"
 )
 
 type ImRpcImpl struct {
@@ -13,25 +12,11 @@ type ImRpcImpl struct {
 	Cache *cache.Client
 }
 
-// AudioMessage implements im.ImSrv.
-func (i *ImRpcImpl) AudioMessage(ctx context.Context, req *im.AudioMsg) (res *im.MessageRes, err error) {
-	panic("unimplemented")
-}
-
-// FileMessage implements im.ImSrv.
-func (i *ImRpcImpl) FileMessage(ctx context.Context, req *im.FileMsg) (res *im.MessageRes, err error) {
-	panic("unimplemented")
-}
-
-// ImageMessage implements im.ImSrv.
-func (i *ImRpcImpl) ImageMessage(ctx context.Context, req *im.ImgMsg) (res *im.MessageRes, err error) {
-	log.Println("receive image message")
-	return &im.MessageRes{}, nil
-}
-
-// VideoMessage implements im.ImSrv.
-func (i *ImRpcImpl) VideoMessage(ctx context.Context, req *im.VideoMsg) (res *im.MessageRes, err error) {
-	panic("unimplemented")
+// PushMessage implements im.ImSrv.
+func (i *ImRpcImpl) PushMessage(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+	rpc := NewWsServerRpcClient("devLinux")
+	go rpc.SendMsgToAll(ctx, req)
+	return
 }
 
 func NewImRpcImpl() *ImRpcImpl {

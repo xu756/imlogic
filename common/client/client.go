@@ -65,14 +65,15 @@ func (c *Client) Listen() {
 
 // listenAndRead 监听并读取消息
 func (c *Client) readMessage() {
+	defer c.close()
 	for {
 		select {
 		case <-c.ctx.Done():
 
 			return
 		default:
-			ws := c.getWs()
-			if ws == nil {
+			if c.ws == nil {
+				c.cancelFunc()
 				return
 			}
 			msg := &types.Message{}
@@ -106,14 +107,13 @@ func (c *Client) readMessage() {
 // }
 
 func (c *Client) SendMsg(msg *types.Message) {
-	go c.write(msg)
+	c.write(msg)
 }
 
 // close 关闭连接
 func (c *Client) close() {
 	c.lock.Lock()
-	ws := c.getWs()
-	if ws != nil {
+	if c.ws != nil {
 		c.OnClose(c)
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		c.cancelFunc()
@@ -124,12 +124,6 @@ func (c *Client) close() {
 
 	}
 	c.lock.Unlock()
-}
-
-func (c *Client) getWs() *websocket.Conn {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-	return c.ws
 }
 
 func (c *Client) setWs(ws *websocket.Conn) {
@@ -145,8 +139,10 @@ func (c *Client) write(msg *types.Message) {
 	c.lock.Lock()
 	newMsg := &types.Message{}
 	newMsg = msg
-	// newMsg.LinkId = c.LinkId
-
+	if c.ws == nil {
+		c.lock.Unlock()
+		return
+	}
 	err := c.ws.WriteJSON(newMsg)
 	if err != nil {
 		c.close()

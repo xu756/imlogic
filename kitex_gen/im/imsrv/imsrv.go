@@ -22,38 +22,10 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
-	"TextMessage": kitex.NewMethodInfo(
-		textMessageHandler,
-		newTextMessageArgs,
-		newTextMessageResult,
-		false,
-		kitex.WithStreamingMode(kitex.StreamingUnary),
-	),
-	"ImageMessage": kitex.NewMethodInfo(
-		imageMessageHandler,
-		newImageMessageArgs,
-		newImageMessageResult,
-		false,
-		kitex.WithStreamingMode(kitex.StreamingUnary),
-	),
-	"FileMessage": kitex.NewMethodInfo(
-		fileMessageHandler,
-		newFileMessageArgs,
-		newFileMessageResult,
-		false,
-		kitex.WithStreamingMode(kitex.StreamingUnary),
-	),
-	"AudioMessage": kitex.NewMethodInfo(
-		audioMessageHandler,
-		newAudioMessageArgs,
-		newAudioMessageResult,
-		false,
-		kitex.WithStreamingMode(kitex.StreamingUnary),
-	),
-	"VideoMessage": kitex.NewMethodInfo(
-		videoMessageHandler,
-		newVideoMessageArgs,
-		newVideoMessageResult,
+	"PushMessage": kitex.NewMethodInfo(
+		pushMessageHandler,
+		newPushMessageArgs,
+		newPushMessageResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
@@ -276,73 +248,73 @@ func (p *MetaMessageResult) GetResult() interface{} {
 	return p.Success
 }
 
-func textMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func pushMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
-		req := new(im.TextMsg)
+		req := new(im.Message)
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
-		resp, err := handler.(im.ImSrv).TextMessage(ctx, req)
+		resp, err := handler.(im.ImSrv).PushMessage(ctx, req)
 		if err != nil {
 			return err
 		}
 		return st.SendMsg(resp)
-	case *TextMessageArgs:
-		success, err := handler.(im.ImSrv).TextMessage(ctx, s.Req)
+	case *PushMessageArgs:
+		success, err := handler.(im.ImSrv).PushMessage(ctx, s.Req)
 		if err != nil {
 			return err
 		}
-		realResult := result.(*TextMessageResult)
+		realResult := result.(*PushMessageResult)
 		realResult.Success = success
 		return nil
 	default:
 		return errInvalidMessageType
 	}
 }
-func newTextMessageArgs() interface{} {
-	return &TextMessageArgs{}
+func newPushMessageArgs() interface{} {
+	return &PushMessageArgs{}
 }
 
-func newTextMessageResult() interface{} {
-	return &TextMessageResult{}
+func newPushMessageResult() interface{} {
+	return &PushMessageResult{}
 }
 
-type TextMessageArgs struct {
-	Req *im.TextMsg
+type PushMessageArgs struct {
+	Req *im.Message
 }
 
-func (p *TextMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *PushMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetReq() {
-		p.Req = new(im.TextMsg)
+		p.Req = new(im.Message)
 	}
 	return p.Req.FastRead(buf, _type, number)
 }
 
-func (p *TextMessageArgs) FastWrite(buf []byte) (n int) {
+func (p *PushMessageArgs) FastWrite(buf []byte) (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.FastWrite(buf)
 }
 
-func (p *TextMessageArgs) Size() (n int) {
+func (p *PushMessageArgs) Size() (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.Size()
 }
 
-func (p *TextMessageArgs) Marshal(out []byte) ([]byte, error) {
+func (p *PushMessageArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
 	}
 	return proto.Marshal(p.Req)
 }
 
-func (p *TextMessageArgs) Unmarshal(in []byte) error {
-	msg := new(im.TextMsg)
+func (p *PushMessageArgs) Unmarshal(in []byte) error {
+	msg := new(im.Message)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -350,58 +322,58 @@ func (p *TextMessageArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var TextMessageArgs_Req_DEFAULT *im.TextMsg
+var PushMessageArgs_Req_DEFAULT *im.Message
 
-func (p *TextMessageArgs) GetReq() *im.TextMsg {
+func (p *PushMessageArgs) GetReq() *im.Message {
 	if !p.IsSetReq() {
-		return TextMessageArgs_Req_DEFAULT
+		return PushMessageArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-func (p *TextMessageArgs) IsSetReq() bool {
+func (p *PushMessageArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *TextMessageArgs) GetFirstArgument() interface{} {
+func (p *PushMessageArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-type TextMessageResult struct {
+type PushMessageResult struct {
 	Success *im.MessageRes
 }
 
-var TextMessageResult_Success_DEFAULT *im.MessageRes
+var PushMessageResult_Success_DEFAULT *im.MessageRes
 
-func (p *TextMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *PushMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
 		p.Success = new(im.MessageRes)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
 
-func (p *TextMessageResult) FastWrite(buf []byte) (n int) {
+func (p *PushMessageResult) FastWrite(buf []byte) (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.FastWrite(buf)
 }
 
-func (p *TextMessageResult) Size() (n int) {
+func (p *PushMessageResult) Size() (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.Size()
 }
 
-func (p *TextMessageResult) Marshal(out []byte) ([]byte, error) {
+func (p *PushMessageResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
 		return out, nil
 	}
 	return proto.Marshal(p.Success)
 }
 
-func (p *TextMessageResult) Unmarshal(in []byte) error {
+func (p *PushMessageResult) Unmarshal(in []byte) error {
 	msg := new(im.MessageRes)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
@@ -410,634 +382,22 @@ func (p *TextMessageResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *TextMessageResult) GetSuccess() *im.MessageRes {
+func (p *PushMessageResult) GetSuccess() *im.MessageRes {
 	if !p.IsSetSuccess() {
-		return TextMessageResult_Success_DEFAULT
+		return PushMessageResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-func (p *TextMessageResult) SetSuccess(x interface{}) {
+func (p *PushMessageResult) SetSuccess(x interface{}) {
 	p.Success = x.(*im.MessageRes)
 }
 
-func (p *TextMessageResult) IsSetSuccess() bool {
+func (p *PushMessageResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *TextMessageResult) GetResult() interface{} {
-	return p.Success
-}
-
-func imageMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	switch s := arg.(type) {
-	case *streaming.Args:
-		st := s.Stream
-		req := new(im.ImgMsg)
-		if err := st.RecvMsg(req); err != nil {
-			return err
-		}
-		resp, err := handler.(im.ImSrv).ImageMessage(ctx, req)
-		if err != nil {
-			return err
-		}
-		return st.SendMsg(resp)
-	case *ImageMessageArgs:
-		success, err := handler.(im.ImSrv).ImageMessage(ctx, s.Req)
-		if err != nil {
-			return err
-		}
-		realResult := result.(*ImageMessageResult)
-		realResult.Success = success
-		return nil
-	default:
-		return errInvalidMessageType
-	}
-}
-func newImageMessageArgs() interface{} {
-	return &ImageMessageArgs{}
-}
-
-func newImageMessageResult() interface{} {
-	return &ImageMessageResult{}
-}
-
-type ImageMessageArgs struct {
-	Req *im.ImgMsg
-}
-
-func (p *ImageMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(im.ImgMsg)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *ImageMessageArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *ImageMessageArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
-func (p *ImageMessageArgs) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetReq() {
-		return out, nil
-	}
-	return proto.Marshal(p.Req)
-}
-
-func (p *ImageMessageArgs) Unmarshal(in []byte) error {
-	msg := new(im.ImgMsg)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Req = msg
-	return nil
-}
-
-var ImageMessageArgs_Req_DEFAULT *im.ImgMsg
-
-func (p *ImageMessageArgs) GetReq() *im.ImgMsg {
-	if !p.IsSetReq() {
-		return ImageMessageArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-func (p *ImageMessageArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *ImageMessageArgs) GetFirstArgument() interface{} {
-	return p.Req
-}
-
-type ImageMessageResult struct {
-	Success *im.MessageRes
-}
-
-var ImageMessageResult_Success_DEFAULT *im.MessageRes
-
-func (p *ImageMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(im.MessageRes)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *ImageMessageResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *ImageMessageResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
-
-func (p *ImageMessageResult) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetSuccess() {
-		return out, nil
-	}
-	return proto.Marshal(p.Success)
-}
-
-func (p *ImageMessageResult) Unmarshal(in []byte) error {
-	msg := new(im.MessageRes)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Success = msg
-	return nil
-}
-
-func (p *ImageMessageResult) GetSuccess() *im.MessageRes {
-	if !p.IsSetSuccess() {
-		return ImageMessageResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-func (p *ImageMessageResult) SetSuccess(x interface{}) {
-	p.Success = x.(*im.MessageRes)
-}
-
-func (p *ImageMessageResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *ImageMessageResult) GetResult() interface{} {
-	return p.Success
-}
-
-func fileMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	switch s := arg.(type) {
-	case *streaming.Args:
-		st := s.Stream
-		req := new(im.FileMsg)
-		if err := st.RecvMsg(req); err != nil {
-			return err
-		}
-		resp, err := handler.(im.ImSrv).FileMessage(ctx, req)
-		if err != nil {
-			return err
-		}
-		return st.SendMsg(resp)
-	case *FileMessageArgs:
-		success, err := handler.(im.ImSrv).FileMessage(ctx, s.Req)
-		if err != nil {
-			return err
-		}
-		realResult := result.(*FileMessageResult)
-		realResult.Success = success
-		return nil
-	default:
-		return errInvalidMessageType
-	}
-}
-func newFileMessageArgs() interface{} {
-	return &FileMessageArgs{}
-}
-
-func newFileMessageResult() interface{} {
-	return &FileMessageResult{}
-}
-
-type FileMessageArgs struct {
-	Req *im.FileMsg
-}
-
-func (p *FileMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(im.FileMsg)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *FileMessageArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *FileMessageArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
-func (p *FileMessageArgs) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetReq() {
-		return out, nil
-	}
-	return proto.Marshal(p.Req)
-}
-
-func (p *FileMessageArgs) Unmarshal(in []byte) error {
-	msg := new(im.FileMsg)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Req = msg
-	return nil
-}
-
-var FileMessageArgs_Req_DEFAULT *im.FileMsg
-
-func (p *FileMessageArgs) GetReq() *im.FileMsg {
-	if !p.IsSetReq() {
-		return FileMessageArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-func (p *FileMessageArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *FileMessageArgs) GetFirstArgument() interface{} {
-	return p.Req
-}
-
-type FileMessageResult struct {
-	Success *im.MessageRes
-}
-
-var FileMessageResult_Success_DEFAULT *im.MessageRes
-
-func (p *FileMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(im.MessageRes)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *FileMessageResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *FileMessageResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
-
-func (p *FileMessageResult) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetSuccess() {
-		return out, nil
-	}
-	return proto.Marshal(p.Success)
-}
-
-func (p *FileMessageResult) Unmarshal(in []byte) error {
-	msg := new(im.MessageRes)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Success = msg
-	return nil
-}
-
-func (p *FileMessageResult) GetSuccess() *im.MessageRes {
-	if !p.IsSetSuccess() {
-		return FileMessageResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-func (p *FileMessageResult) SetSuccess(x interface{}) {
-	p.Success = x.(*im.MessageRes)
-}
-
-func (p *FileMessageResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *FileMessageResult) GetResult() interface{} {
-	return p.Success
-}
-
-func audioMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	switch s := arg.(type) {
-	case *streaming.Args:
-		st := s.Stream
-		req := new(im.AudioMsg)
-		if err := st.RecvMsg(req); err != nil {
-			return err
-		}
-		resp, err := handler.(im.ImSrv).AudioMessage(ctx, req)
-		if err != nil {
-			return err
-		}
-		return st.SendMsg(resp)
-	case *AudioMessageArgs:
-		success, err := handler.(im.ImSrv).AudioMessage(ctx, s.Req)
-		if err != nil {
-			return err
-		}
-		realResult := result.(*AudioMessageResult)
-		realResult.Success = success
-		return nil
-	default:
-		return errInvalidMessageType
-	}
-}
-func newAudioMessageArgs() interface{} {
-	return &AudioMessageArgs{}
-}
-
-func newAudioMessageResult() interface{} {
-	return &AudioMessageResult{}
-}
-
-type AudioMessageArgs struct {
-	Req *im.AudioMsg
-}
-
-func (p *AudioMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(im.AudioMsg)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *AudioMessageArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *AudioMessageArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
-func (p *AudioMessageArgs) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetReq() {
-		return out, nil
-	}
-	return proto.Marshal(p.Req)
-}
-
-func (p *AudioMessageArgs) Unmarshal(in []byte) error {
-	msg := new(im.AudioMsg)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Req = msg
-	return nil
-}
-
-var AudioMessageArgs_Req_DEFAULT *im.AudioMsg
-
-func (p *AudioMessageArgs) GetReq() *im.AudioMsg {
-	if !p.IsSetReq() {
-		return AudioMessageArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-func (p *AudioMessageArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *AudioMessageArgs) GetFirstArgument() interface{} {
-	return p.Req
-}
-
-type AudioMessageResult struct {
-	Success *im.MessageRes
-}
-
-var AudioMessageResult_Success_DEFAULT *im.MessageRes
-
-func (p *AudioMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(im.MessageRes)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *AudioMessageResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *AudioMessageResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
-
-func (p *AudioMessageResult) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetSuccess() {
-		return out, nil
-	}
-	return proto.Marshal(p.Success)
-}
-
-func (p *AudioMessageResult) Unmarshal(in []byte) error {
-	msg := new(im.MessageRes)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Success = msg
-	return nil
-}
-
-func (p *AudioMessageResult) GetSuccess() *im.MessageRes {
-	if !p.IsSetSuccess() {
-		return AudioMessageResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-func (p *AudioMessageResult) SetSuccess(x interface{}) {
-	p.Success = x.(*im.MessageRes)
-}
-
-func (p *AudioMessageResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *AudioMessageResult) GetResult() interface{} {
-	return p.Success
-}
-
-func videoMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	switch s := arg.(type) {
-	case *streaming.Args:
-		st := s.Stream
-		req := new(im.VideoMsg)
-		if err := st.RecvMsg(req); err != nil {
-			return err
-		}
-		resp, err := handler.(im.ImSrv).VideoMessage(ctx, req)
-		if err != nil {
-			return err
-		}
-		return st.SendMsg(resp)
-	case *VideoMessageArgs:
-		success, err := handler.(im.ImSrv).VideoMessage(ctx, s.Req)
-		if err != nil {
-			return err
-		}
-		realResult := result.(*VideoMessageResult)
-		realResult.Success = success
-		return nil
-	default:
-		return errInvalidMessageType
-	}
-}
-func newVideoMessageArgs() interface{} {
-	return &VideoMessageArgs{}
-}
-
-func newVideoMessageResult() interface{} {
-	return &VideoMessageResult{}
-}
-
-type VideoMessageArgs struct {
-	Req *im.VideoMsg
-}
-
-func (p *VideoMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetReq() {
-		p.Req = new(im.VideoMsg)
-	}
-	return p.Req.FastRead(buf, _type, number)
-}
-
-func (p *VideoMessageArgs) FastWrite(buf []byte) (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.FastWrite(buf)
-}
-
-func (p *VideoMessageArgs) Size() (n int) {
-	if !p.IsSetReq() {
-		return 0
-	}
-	return p.Req.Size()
-}
-
-func (p *VideoMessageArgs) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetReq() {
-		return out, nil
-	}
-	return proto.Marshal(p.Req)
-}
-
-func (p *VideoMessageArgs) Unmarshal(in []byte) error {
-	msg := new(im.VideoMsg)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Req = msg
-	return nil
-}
-
-var VideoMessageArgs_Req_DEFAULT *im.VideoMsg
-
-func (p *VideoMessageArgs) GetReq() *im.VideoMsg {
-	if !p.IsSetReq() {
-		return VideoMessageArgs_Req_DEFAULT
-	}
-	return p.Req
-}
-
-func (p *VideoMessageArgs) IsSetReq() bool {
-	return p.Req != nil
-}
-
-func (p *VideoMessageArgs) GetFirstArgument() interface{} {
-	return p.Req
-}
-
-type VideoMessageResult struct {
-	Success *im.MessageRes
-}
-
-var VideoMessageResult_Success_DEFAULT *im.MessageRes
-
-func (p *VideoMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
-	if !p.IsSetSuccess() {
-		p.Success = new(im.MessageRes)
-	}
-	return p.Success.FastRead(buf, _type, number)
-}
-
-func (p *VideoMessageResult) FastWrite(buf []byte) (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.FastWrite(buf)
-}
-
-func (p *VideoMessageResult) Size() (n int) {
-	if !p.IsSetSuccess() {
-		return 0
-	}
-	return p.Success.Size()
-}
-
-func (p *VideoMessageResult) Marshal(out []byte) ([]byte, error) {
-	if !p.IsSetSuccess() {
-		return out, nil
-	}
-	return proto.Marshal(p.Success)
-}
-
-func (p *VideoMessageResult) Unmarshal(in []byte) error {
-	msg := new(im.MessageRes)
-	if err := proto.Unmarshal(in, msg); err != nil {
-		return err
-	}
-	p.Success = msg
-	return nil
-}
-
-func (p *VideoMessageResult) GetSuccess() *im.MessageRes {
-	if !p.IsSetSuccess() {
-		return VideoMessageResult_Success_DEFAULT
-	}
-	return p.Success
-}
-
-func (p *VideoMessageResult) SetSuccess(x interface{}) {
-	p.Success = x.(*im.MessageRes)
-}
-
-func (p *VideoMessageResult) IsSetSuccess() bool {
-	return p.Success != nil
-}
-
-func (p *VideoMessageResult) GetResult() interface{} {
+func (p *PushMessageResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -1061,51 +421,11 @@ func (p *kClient) MetaMessage(ctx context.Context, Req *im.MetaMsg) (r *im.Messa
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) TextMessage(ctx context.Context, Req *im.TextMsg) (r *im.MessageRes, err error) {
-	var _args TextMessageArgs
+func (p *kClient) PushMessage(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
+	var _args PushMessageArgs
 	_args.Req = Req
-	var _result TextMessageResult
-	if err = p.c.Call(ctx, "TextMessage", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) ImageMessage(ctx context.Context, Req *im.ImgMsg) (r *im.MessageRes, err error) {
-	var _args ImageMessageArgs
-	_args.Req = Req
-	var _result ImageMessageResult
-	if err = p.c.Call(ctx, "ImageMessage", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) FileMessage(ctx context.Context, Req *im.FileMsg) (r *im.MessageRes, err error) {
-	var _args FileMessageArgs
-	_args.Req = Req
-	var _result FileMessageResult
-	if err = p.c.Call(ctx, "FileMessage", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) AudioMessage(ctx context.Context, Req *im.AudioMsg) (r *im.MessageRes, err error) {
-	var _args AudioMessageArgs
-	_args.Req = Req
-	var _result AudioMessageResult
-	if err = p.c.Call(ctx, "AudioMessage", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) VideoMessage(ctx context.Context, Req *im.VideoMsg) (r *im.MessageRes, err error) {
-	var _args VideoMessageArgs
-	_args.Req = Req
-	var _result VideoMessageResult
-	if err = p.c.Call(ctx, "VideoMessage", &_args, &_result); err != nil {
+	var _result PushMessageResult
+	if err = p.c.Call(ctx, "PushMessage", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
