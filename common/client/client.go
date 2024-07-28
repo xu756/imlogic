@@ -143,7 +143,13 @@ func (c *Client) setWs(ws *websocket.Conn) {
 
 func (c *Client) write(msg *types.Message) {
 	c.Lock()
-	msg.LinkId = c.LinkId
+	// newMsg := &types.Message{}
+	// newMsg = msg
+	// newMsg.LinkId = c.LinkId
+
+	if msg.MsgId != c.LinkId {
+		log.Print("msgId:", msg.MsgId, "linkId:", c.LinkId)
+	}
 	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()
