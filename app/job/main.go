@@ -18,11 +18,11 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	klog.SetLevel(klog.LevelFatal)
-	client := mq.NewClient("im/message", "imlogic")
-
+	client := mq.NewClient("im/message")
+	defer client.Close()
 	for {
 		err := client.Consume(func(delivery amqp.Delivery) {
-			log.Printf("Received 1: %s\n", delivery.Body)
+			log.Printf("Received: %s\n", delivery.Body)
 		})
 		if err != nil {
 			log.Print(err)
