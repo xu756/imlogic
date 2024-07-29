@@ -2,6 +2,7 @@ package mq
 
 import (
 	"imlogic/common/config"
+	"log"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -22,10 +23,12 @@ func NewClient(queueName string) *Client {
 	if err != nil {
 		panic(err) // 如果连接失败，程序崩溃
 	}
+	log.Print("mq connected")
 	channel, err := conn.Channel() // 打开一个新的通道
 	if err != nil {
 		panic(err) // 如果打开通道失败，程序崩溃
 	}
+	log.Print("mq channel opened")
 	return &Client{ // 返回新的客户端实例
 		conn:      conn,
 		channel:   channel,

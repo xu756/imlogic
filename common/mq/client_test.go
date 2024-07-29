@@ -1,36 +1,24 @@
 package mq
 
 import (
+	"fmt"
 	"imlogic/common/config"
 	"log"
 	"testing"
-	"time"
-
-	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 func TestNewClient(t *testing.T) {
 	config.Init("../../configs/dev.yaml")
 	log.Print(config.RunData.MqUrl)
-	client := NewClient("im/message")
-	go func() {
-		err := client.Consume(func(delivery amqp.Delivery) {
-			log.Printf("Received a message: %s\n", delivery.Body)
-		})
+
+	// 循环10次
+	for i := 0; i < 1000; i++ {
+		client := NewClient("im/message")
+		msg := fmt.Sprintf("helllo %d", i)
+		err := client.Publish(msg)
 		if err != nil {
 			log.Fatal(err)
 		}
-	}()
-	time.Sleep(5 * time.Second) // Wait for consumer to be ready.
-	err := client.Publish("Hello, World!")
-	if err != nil {
-		log.Fatal(err)
 	}
-	time.Sleep(5 * time.Second) // Wait for consumer to be ready.
-	err = client.Publish("Hello, World!")
-	if err != nil {
-		log.Fatal(err)
-	}
-	time.Sleep(15 * time.Second) // Wait for messages to be processed.
 
 }
