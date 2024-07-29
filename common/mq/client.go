@@ -18,7 +18,7 @@ type Client struct {
 }
 
 // 创建一个新的客户端实例
-func NewClient(queueName string) *Client {
+func NewClient(queueName, exchange string) *Client {
 	conn, err := amqp.Dial(config.RunData.MqUrl) // 建立到RabbitMQ服务器的连接
 	if err != nil {
 		panic(err) // 如果连接失败，程序崩溃
@@ -29,24 +29,41 @@ func NewClient(queueName string) *Client {
 		panic(err) // 如果打开通道失败，程序崩溃
 	}
 	log.Print("mq channel opened")
+
+	// err = channel.ExchangeDeclare( // 声明交换机
+	// 	"exchange", // 交换机名称
+	// 	"fanout",   // 交换机类型（扇形广播）
+	// 	true,       // 是否持久化
+	// 	false,      // 是否自动删除
+	// 	false,      // 是否内部使用
+	// 	false,      // 是否立即返回
+	// 	nil,        // 其他参数
+	// )
+	// if err != nil {
+	// 	panic(err) // 如果声明交换机失败，程序崩溃
+	// }
 	return &Client{ // 返回新的客户端实例
 		conn:      conn,
 		channel:   channel,
 		QueueName: queueName,
-		Exchange:  "imlogic", // 默认交换机名称
+		Exchange:  exchange, // 默认交换机名称
 	}
 }
 
 // 发布消息到交换机
-func (c *Client) Publish(message string) error {
-	err := c.channel.ExchangeDeclare( // 声明交换机
-		c.Exchange, // 交换机名称
-		"fanout",   // 交换机类型（扇形广播）
-		true,       // 是否持久化
-		false,      // 是否自动删除
-		false,      // 是否内部使用
-		false,      // 是否立即返回
-		nil,        // 其他参数
+func (c *Client) WorkPublish(message string) error {
+	_, err := c.channel.QueueDeclare( // 声明交换机
+		c.QueueName,
+		//是否持久化
+		true,
+		//是否自动删除
+		false,
+		//是否具有排他性
+		false,
+		//是否阻塞处理
+		false,
+		//额外的属性
+		nil,
 	)
 	if err != nil {
 		return err // 如果声明交换机失败，返回错误
@@ -54,9 +71,9 @@ func (c *Client) Publish(message string) error {
 
 	err = c.channel.Publish( // 发布消息
 		c.Exchange, // 交换机名称
-		"",         // 路由键（对于扇形广播交换机，此字段为空）
-		false,      // 是否启用mandatory标志
-		false,      // 是否启用immediate标志
+		c.QueueName,
+		false, //如果为true，根据自身exchange类型和routekey规则无法找到符合条件的队列会把消息返还给发送者
+		false, //如果为true，当exchange发送消息到队列后发现队列上没有消费者，则会把消息返还给发送者
 		amqp.Publishing{ // 消息属性
 			ContentType: "text/plain",    // 内容类型
 			Body:        []byte(message), // 消息正文
@@ -68,55 +85,43 @@ func (c *Client) Publish(message string) error {
 	return nil // 成功返回
 }
 
-// 订阅消息并处理
+// 消费者
 func (c *Client) Consume(callback func(delivery amqp.Delivery)) error {
-	err := c.channel.ExchangeDeclare( // 声明交换机
-		c.Exchange, // 交换机名称
-		"fanout",   // 交换机类型（扇形广播）
-		true,       // 是否持久化
-		false,      // 是否自动删除
-		false,      // 是否内部使用
-		false,      // 是否立即返回
-		nil,        // 其他参数
+	// 1.申请队列，如果队列不存在会自动创建，存在则跳过创建
+	q, err := c.channel.QueueDeclare(
+		c.QueueName,
+		//是否持久化
+		true,
+		//是否自动删除
+		false,
+		//是否具有排他性
+		false,
+		//是否阻塞处理
+		false,
+		//额外的属性
+		nil,
 	)
 	if err != nil {
-		return err // 如果声明交换机失败，返回错误
+		return err
 	}
 
-	_, err = c.channel.QueueDeclare( // 声明队列
-		c.QueueName, // 队列名称
-		true,        // 是否持久化
-		false,       // 是否自动删除
-		false,       // 是否排他性
-		false,       // 是否立即返回
-		nil,         // 其他参数
+	// 接收消息
+	msgs, err := c.channel.Consume(
+		q.Name, // queue
+		//用来区分多个消费者
+		"",
+		//是否自动应答
+		false, // auto-ack
+		//是否独有
+		false, // exclusive
+		//设置为true，表示 不能将同一个Conenction中生产者发送的消息传递给这个Connection中 的消费者
+		false, // no-local
+		//列是否阻塞
+		false, // no-wait
+		nil,   // args
 	)
 	if err != nil {
-		return err // 如果声明队列失败，返回错误
-	}
-
-	err = c.channel.QueueBind( // 绑定队列到交换机
-		c.QueueName, // 队列名称
-		"",          // 路由键（对于扇形广播交换机，此字段为空）
-		c.Exchange,  // 交换机名称
-		false,       // 是否立即返回
-		nil,         // 其他参数
-	)
-	if err != nil {
-		return err // 如果绑定队列失败，返回错误
-	}
-
-	msgs, err := c.channel.Consume( // 开始消费消息
-		c.QueueName, // 队列名称
-		"",          // 消费者标签
-		false,       // 是否自动确认
-		false,       // 是否排他性
-		false,       // 是否只从本地节点消费
-		false,       // 是否立即返回
-		nil,         // 其他参数
-	)
-	if err != nil {
-		return err // 如果开始消费失败，返回错误
+		return err
 	}
 
 	go func() { // 启动一个goroutine来处理消息

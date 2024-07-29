@@ -18,7 +18,7 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	klog.SetLevel(klog.LevelFatal)
-	client := mq.NewClient("im/message")
+	client := mq.NewClient("im/message", "imlogic")
 
 	for {
 		err := client.Consume(func(delivery amqp.Delivery) {
@@ -26,6 +26,7 @@ func main() {
 		})
 		if err != nil {
 			log.Print(err)
+			return
 		}
 	}
 }

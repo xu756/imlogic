@@ -10,12 +10,11 @@ import (
 func TestNewClient(t *testing.T) {
 	config.Init("../../configs/dev.yaml")
 	log.Print(config.RunData.MqUrl)
-
+	client := NewClient("im/message", "imlogic")
 	// 循环10次
-	for i := 0; i < 1000; i++ {
-		client := NewClient("im/message")
+	for i := 0; i < 10; i++ {
 		msg := fmt.Sprintf("helllo %d", i)
-		err := client.Publish(msg)
+		err := client.WorkPublish(msg)
 		if err != nil {
 			log.Fatal(err)
 		}
