@@ -13,7 +13,7 @@ func TestNewClient(t *testing.T) {
 	client := NewClient("im/message")
 	defer client.Close()
 	// 循环10次
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 10; i++ {
 		msg := fmt.Sprintf("hello %d", i)
 		err := client.WorkPublish(msg, "group")
 		if err != nil {
