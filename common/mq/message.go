@@ -85,7 +85,7 @@ func (r *RabbitMQ) ConsumePrivateMessage() (<-chan amqp.Delivery, error) {
 // 广播（全体）MQ
 func NewBroadcastMessageMQ() (rabbitmq *RabbitMQ, err error) {
 	// 创建RabbitMQ实例
-	rabbitmq = newRabbitMQ("broadcast", "broadcast", "")
+	rabbitmq = newRabbitMQ("", "broadcast", "")
 	// 获取connection
 	rabbitmq.conn, err = amqp.Dial(rabbitmq.Mqurl)
 	if err != nil {
