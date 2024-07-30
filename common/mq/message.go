@@ -85,7 +85,7 @@ func (r *RabbitMQ) ConsumePrivateMessage() (<-chan amqp.Delivery, error) {
 // 广播（全体）MQ
 func NewBroadcastMessageMQ() (rabbitmq *RabbitMQ, err error) {
 	// 创建RabbitMQ实例
-	rabbitmq = newRabbitMQ("", "broadcast", "")
+	rabbitmq = newRabbitMQ("broadcast", "broadcast", "")
 	// 获取connection
 	rabbitmq.conn, err = amqp.Dial(rabbitmq.Mqurl)
 	if err != nil {
@@ -115,7 +115,7 @@ func (r *RabbitMQ) PublishBroadcastMessage(message string) (err error) {
 	}
 	err = r.channel.Publish(
 		r.Exchange,
-		"",
+		"fanout",
 		false,
 		false,
 		amqp.Publishing{
@@ -143,8 +143,9 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = r.channel.QueueDeclare(
-		r.QueueName,
+	//2.试探性创建队列，这里注意队列名称不要写
+	q, err := r.channel.QueueDeclare(
+		"",
 		false,
 		false,
 		false,
@@ -155,7 +156,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 		return nil, err
 	}
 	err = r.channel.QueueBind(
-		r.QueueName,
+		q.Name,
 		"",
 		r.Exchange,
 		false,
@@ -165,7 +166,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 		return nil, err
 	}
 	msgs, err := r.channel.Consume(
-		r.QueueName,
+		q.Name,
 		"",
 		true,
 		false,

@@ -16,8 +16,9 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	klog.SetLevel(klog.LevelFatal)
-	go Pricate()
+	// Pricate()
 	Group()
+	// PubSub()
 }
 
 // 私聊消息
@@ -49,6 +50,16 @@ func Group() {
 	if err != nil {
 		log.Printf("ConsumePrivateChatMessage err:%v", err)
 	}
+	for msg := range m {
+		log.Printf("%s", msg.Body)
+	}
+}
+
+// 订阅模式
+func PubSub() {
+	rabbitmq := mq.NewRabbitMQPubSub("im")
+	defer rabbitmq.Destory()
+	m := rabbitmq.RecieveSub()
 	for msg := range m {
 		log.Printf("%s", msg.Body)
 	}
