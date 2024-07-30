@@ -3,21 +3,23 @@ package mq
 import (
 	"fmt"
 	"imlogic/common/config"
-	"log"
 	"testing"
 )
 
-func TestNewClient(t *testing.T) {
+func TestSimple(t *testing.T) {
 	config.Init("../../configs/dev.yaml")
-	log.Print(config.RunData.MqUrl)
-	client := NewClient("im/message")
-	defer client.Close()
-	// 循环10次
+	rabbitmq := NewRabbitMQSimple("im")
+	defer rabbitmq.Destory()
 	for i := 0; i < 10; i++ {
-		msg := fmt.Sprintf("hello %d", i)
-		err := client.WorkPublish(msg, "group")
-		if err != nil {
-			log.Fatal(err)
-		}
+		rabbitmq.PublishSimple(fmt.Sprintf("Hello World! %d", i))
+	}
+}
+
+func TestPubSub(t *testing.T) {
+	config.Init("../../configs/dev.yaml")
+	rabbitmq := NewRabbitMQPubSub("pubsub")
+	defer rabbitmq.Destory()
+	for i := 0; i < 10; i++ {
+		rabbitmq.PublishPub("Hello World! " + fmt.Sprintf("%d", i))
 	}
 }
