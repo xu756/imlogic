@@ -16,7 +16,7 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	klog.SetLevel(klog.LevelFatal)
-	// Pricate()
+	go Pricate()
 	Group()
 	// PubSub()
 }

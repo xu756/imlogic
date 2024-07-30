@@ -147,7 +147,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 	q, err := r.channel.QueueDeclare(
 		"",
 		false,
-		false,
+		true,
 		false,
 		false,
 		nil,
