@@ -14,8 +14,8 @@ type ImRpcImpl struct {
 
 // PushMessage implements im.ImSrv.
 func (i *ImRpcImpl) PushMessage(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
-	rpc := NewWsServerRpcClient("devLinux")
-	go rpc.SendMsgToAll(ctx, req)
+	// rpc := NewWsServerRpcClient("devLinux")
+	// go rpc.SendMsgToAll(ctx, req)
 	return
 }
 

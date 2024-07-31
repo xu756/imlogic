@@ -8,6 +8,11 @@ import (
 	"github.com/cloudwego/kitex/client"
 )
 
+func StartJob() {
+	go private()
+	go broadcast()
+}
+
 func NewWsServerRpcClient(hostName string) imserver.Client {
 	s, err := imserver.NewClient("im-server",
 		client.WithHostPorts(hostName+":7083"),
