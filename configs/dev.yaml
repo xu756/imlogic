@@ -3,12 +3,12 @@ Addr:
   UserAddr: 0.0.0.0:8081
   ImAddr: 0.0.0.0:7082 # ws 地址
   ImServerAddr: 0.0.0.0:7083 # 调用ws rpc 地址
-  ImRpcAddr: 0.0.0.0:7084 # 处理ws消息的rpc地址
+  ImHandlerAddr: 0.0.0.0:7084 # 处理ws消息的rpc地址
 
 Rpc:
   UserRpc: 0.0.0.0:8081
   ImServerAddr: 0.0.0.0:7083
-  ImRpcAddr: 0.0.0.0:7084
+  ImHandlerAddr: 0.0.0.0:7084
 
 DbConfig:
   DbType: postgres

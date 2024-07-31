@@ -15,17 +15,17 @@ type Config struct {
 }
 
 type Addr struct {
-	ApiAddr      string `yaml:"ApiAddr"`
-	UserAddr     string `yaml:"UserAddr"`
-	ImAddr       string `yaml:"ImAddr"`       // ws 地址
-	ImServerAddr string `yaml:"ImServerAddr"` // 调用ws rpc 地址
-	ImRpcAddr    string `yaml:"ImRpcAddr"`    //处理ws消息的rpc地址
+	ApiAddr       string `yaml:"ApiAddr"`
+	UserAddr      string `yaml:"UserAddr"`
+	ImAddr        string `yaml:"ImAddr"`        // ws 地址
+	ImServerAddr  string `yaml:"ImServerAddr"`  // 调用ws rpc 地址
+	ImHandlerAddr string `yaml:"ImHandlerAddr"` //处理ws消息的rpc地址
 }
 
 type Rpc struct {
-	UserRpc      string `yaml:"UserRpc"`
-	ImServerAddr string `yaml:"ImServerAddr"`
-	ImRpcAddr    string `yaml:"ImRpcAddr"`
+	UserRpc       string `yaml:"UserRpc"`
+	ImServerAddr  string `yaml:"ImServerAddr"`
+	ImHandlerAddr string `yaml:"ImHandlerAddr"`
 }
 
 type DbConfig struct {

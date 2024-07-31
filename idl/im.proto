@@ -88,7 +88,7 @@ message SendMsgToGroupRes {
 
 
 // 处理websocket消息
-service ImSrv {
+service ImHandler {
     // 元消息
     rpc MetaMessage(MetaMsg) returns (MessageRes) {}
     // 消息

@@ -21,7 +21,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Url: media.URL,
 		})
 	}
-	_, err := service.ImSrv.PushMessage(ctx, &im.Message{
+	_, err := service.ImHandler.PushMessage(ctx, &im.Message{
 		LinkId:    msg.LinkId,
 		MsgId:     msg.MsgId,
 		Timestamp: msg.Timestamp,
@@ -42,7 +42,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 // rpcMetaMsg
 func MetaMsg(c *client.Client, msg *im.MetaMsg) {
 	ctx := context.Background()
-	res, err := service.ImSrv.MetaMessage(ctx, msg)
+	res, err := service.ImHandler.MetaMessage(ctx, msg)
 	if err != nil {
 		log.Print("send meta message failed", err)
 		ctx.Done()

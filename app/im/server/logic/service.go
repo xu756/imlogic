@@ -5,7 +5,7 @@ import (
 	"imlogic/common/hub"
 	"imlogic/internal/middleware"
 	"imlogic/internal/xjwt"
-	"imlogic/kitex_gen/im/imsrv"
+	"imlogic/kitex_gen/im/imhandler"
 	"log"
 
 	"github.com/cloudwego/kitex/client"
@@ -14,14 +14,14 @@ import (
 var service *Service
 
 type Service struct {
-	ImSrv imsrv.Client
-	Jwt   *xjwt.Jwt
-	hub   *hub.Hub
+	ImHandler imhandler.Client
+	Jwt       *xjwt.Jwt
+	hub       *hub.Hub
 }
 
 func InitService() {
-	s, err := imsrv.NewClient("im-rpc",
-		client.WithHostPorts(config.RunData.Rpc.ImRpcAddr),
+	s, err := imhandler.NewClient("im-handler",
+		client.WithHostPorts(config.RunData.Rpc.ImHandlerAddr),
 		client.WithErrorHandler(middleware.ClientErrorHandler),
 	)
 	if err != nil {
@@ -29,8 +29,8 @@ func InitService() {
 		panic(err)
 	}
 	service = &Service{
-		ImSrv: s,
-		Jwt:   xjwt.NewJwt(),
-		hub:   hub.NewHub(),
+		ImHandler: s,
+		Jwt:       xjwt.NewJwt(),
+		hub:       hub.NewHub(),
 	}
 }
