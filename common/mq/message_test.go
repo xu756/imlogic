@@ -3,6 +3,7 @@ package mq
 import (
 	"fmt"
 	"imlogic/common/config"
+	"imlogic/kitex_gen/im"
 	"testing"
 )
 
@@ -13,8 +14,10 @@ func TestPrivateChatMessage(t *testing.T) {
 	if err != nil {
 		t.Errorf("NewRabbitMQMessage err:%v", err)
 	}
-	for i := 0; i < 100; i++ {
-		err = rabbitmq.PublishPrivateMessage(fmt.Sprintf("private msg: %d", i))
+	msg := new(im.Message)
+	for i := 0; i < 3; i++ {
+		msg.Content = fmt.Sprintf("private msg: %d", i)
+		err = rabbitmq.PublishPrivateMessage("user_001", "devLinux", msg)
 		if err != nil {
 			t.Errorf("PubPrivateChatMessage err:%v", err)
 		}
@@ -28,8 +31,10 @@ func TestBroadcastMessage(t *testing.T) {
 	if err != nil {
 		t.Errorf("NewRabbitMQMessage err:%v", err)
 	}
-	for i := 0; i < 100; i++ {
-		err = rabbitmq.PublishBroadcastMessage(fmt.Sprintf("broadcast msg: %d", i))
+	msg := new(im.Message)
+	for i := 0; i < 10; i++ {
+		msg.Content = fmt.Sprintf("broadcast msg: %d", i)
+		err = rabbitmq.PublishBroadcastMessage(msg)
 		if err != nil {
 			t.Errorf("PubBroadcastMessage err:%v", err)
 		}

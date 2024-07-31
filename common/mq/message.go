@@ -1,6 +1,10 @@
 package mq
 
 import (
+	"encoding/json"
+	"imlogic/common/types"
+	"imlogic/kitex_gen/im"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -22,7 +26,7 @@ func NewPrivateMessageMQ() (rabbitmq *RabbitMQ, err error) {
 }
 
 // 发布私聊消息
-func (r *RabbitMQ) PublishPrivateMessage(message string) error {
+func (r *RabbitMQ) PublishPrivateMessage(linkId, HostName string, msg *im.Message) error {
 	// 1. 申请队列，如果队列不存在会自动创建，存在则跳过创建
 	_, err := r.channel.QueueDeclare(
 		r.QueueName,
@@ -32,6 +36,15 @@ func (r *RabbitMQ) PublishPrivateMessage(message string) error {
 		false,
 		nil,
 	)
+	if err != nil {
+		return err
+	}
+	// 2. 序列化消息
+	data, err := json.Marshal(&types.MqPrivateMessage{
+		Msg:      msg,
+		HostName: HostName,
+		LinkId:   linkId,
+	})
 	if err != nil {
 		return err
 	}
@@ -43,7 +56,7 @@ func (r *RabbitMQ) PublishPrivateMessage(message string) error {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        []byte(message),
+			Body:        data,
 		},
 	)
 	if err != nil {
@@ -53,9 +66,9 @@ func (r *RabbitMQ) PublishPrivateMessage(message string) error {
 }
 
 // 消费私聊消息
-func (r *RabbitMQ) ConsumePrivateMessage() (<-chan amqp.Delivery, error) {
+func (r *RabbitMQ) ConsumePrivateMessage(f func(linkId, HostName string, msg *im.Message)) (err error) {
 	// 1. 申请队列，如果队列不存在会自动创建，存在则跳过创建
-	_, err := r.channel.QueueDeclare(
+	_, err = r.channel.QueueDeclare(
 		r.QueueName,
 		false,
 		false,
@@ -64,7 +77,7 @@ func (r *RabbitMQ) ConsumePrivateMessage() (<-chan amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	// 2. 消费消息
 	msgs, err := r.channel.Consume(
@@ -77,9 +90,21 @@ func (r *RabbitMQ) ConsumePrivateMessage() (<-chan amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return msgs, nil
+	// 3. 处理消息
+	go func() {
+		for msg := range msgs {
+			m := new(types.MqPrivateMessage)
+			err := json.Unmarshal(msg.Body, m)
+			if err != nil {
+				continue
+			}
+			f(m.LinkId, m.HostName, m.Msg)
+		}
+	}()
+	make(chan bool) <- true
+	return nil
 }
 
 // 广播（全体）MQ
@@ -100,7 +125,7 @@ func NewBroadcastMessageMQ() (rabbitmq *RabbitMQ, err error) {
 }
 
 // 发布广播消息
-func (r *RabbitMQ) PublishBroadcastMessage(message string) (err error) {
+func (r *RabbitMQ) PublishBroadcastMessage(msg *im.Message) (err error) {
 	err = r.channel.ExchangeDeclare(
 		r.Exchange,
 		"fanout",
@@ -113,6 +138,10 @@ func (r *RabbitMQ) PublishBroadcastMessage(message string) (err error) {
 	if err != nil {
 		return err
 	}
+	data, err := json.Marshal(msg)
+	if err != nil {
+		return err
+	}
 	err = r.channel.Publish(
 		r.Exchange,
 		"fanout",
@@ -120,7 +149,7 @@ func (r *RabbitMQ) PublishBroadcastMessage(message string) (err error) {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        []byte(message),
+			Body:        data,
 		},
 	)
 	if err != nil {
@@ -130,8 +159,8 @@ func (r *RabbitMQ) PublishBroadcastMessage(message string) (err error) {
 }
 
 // 消费广播消息
-func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
-	err := r.channel.ExchangeDeclare(
+func (r *RabbitMQ) ConsumeBroadcastMessage(f func(msg *im.Message)) (err error) {
+	err = r.channel.ExchangeDeclare(
 		r.Exchange,
 		"fanout",
 		true,
@@ -141,7 +170,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	//2.试探性创建队列，这里注意队列名称不要写
 	q, err := r.channel.QueueDeclare(
@@ -153,7 +182,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = r.channel.QueueBind(
 		q.Name,
@@ -163,7 +192,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	msgs, err := r.channel.Consume(
 		q.Name,
@@ -175,9 +204,20 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 		nil,
 	)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return msgs, nil
+	go func() {
+		for msg := range msgs {
+			m := new(im.Message)
+			err := json.Unmarshal(msg.Body, m)
+			if err != nil {
+				continue
+			}
+			f(m)
+		}
+	}()
+	make(chan bool) <- true
+	return nil
 }
 
 // 延迟任务 3分钟后执行

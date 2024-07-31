@@ -45,3 +45,11 @@ func RpcMsgToMsg(rpcMsg *im.Message) (msg *Message) {
 	return msg
 
 }
+
+type MqPrivateMessage struct {
+	Msg      *im.Message
+	HostName string
+	LinkId   string
+}
+
+type MqBroadcastMessage *im.Message
