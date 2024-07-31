@@ -179,3 +179,102 @@ func (r *RabbitMQ) ConsumeBroadcastMessage() (<-chan amqp.Delivery, error) {
 	}
 	return msgs, nil
 }
+
+// 延迟任务 3分钟后执行
+func NewDelayMessageMQ(name string) (rabbitmq *RabbitMQ, err error) {
+	// 创建RabbitMQ实例
+	rabbitmq = newRabbitMQ("", name, "delay")
+	// 获取connection
+	rabbitmq.conn, err = amqp.Dial(rabbitmq.Mqurl)
+	if err != nil {
+		return nil, err
+	}
+	// 获取channel
+	rabbitmq.channel, err = rabbitmq.conn.Channel()
+	if err != nil {
+		return nil, err
+	}
+	return rabbitmq, nil
+}
+
+// 发布延迟消息
+func (r *RabbitMQ) PublishDelayMessage(delaySecend int, message string) (err error) {
+	err = r.channel.ExchangeDeclare(
+		r.Exchange,
+		"x-delayed-message",
+		true,
+		false,
+		false,
+		false,
+		amqp.Table{"x-delayed-type": "direct"},
+	)
+	if err != nil {
+		return err
+	}
+	err = r.channel.Publish(
+		r.Exchange,
+		"",
+		false,
+		false,
+		amqp.Publishing{
+			Headers:     amqp.Table{"x-delay": delaySecend * 1000},
+			ContentType: "text/plain",
+			Body:        []byte(message),
+		},
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// 消费延迟消息
+func (r *RabbitMQ) ConsumeDelayMessage() (<-chan amqp.Delivery, error) {
+	err := r.channel.ExchangeDeclare(
+		r.Exchange,
+		"x-delayed-message",
+		true,
+		false,
+		false,
+		false,
+		amqp.Table{"x-delayed-type": "direct"},
+	)
+	if err != nil {
+		return nil, err
+	}
+	//2.试探性创建队列，这里注意队列名称不要写
+	q, err := r.channel.QueueDeclare(
+		"",
+		false,
+		true,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	err = r.channel.QueueBind(
+		q.Name,
+		"",
+		r.Exchange,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	msgs, err := r.channel.Consume(
+		q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return msgs, nil
+}

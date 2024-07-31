@@ -44,3 +44,17 @@ func TestNewRabbitMQPubSub(t *testing.T) {
 		rabbitmq.PublishPub(fmt.Sprintf("pubsub msg: %d", i))
 	}
 }
+
+func TestNewDelayMessageMQ(t *testing.T) {
+	config.Init("../../configs/dev.yaml")
+	rabbitmq, err := NewDelayMessageMQ("delay")
+	defer rabbitmq.Destory()
+	if err != nil {
+		t.Errorf("NewDelayMessageMQ err:%v", err)
+	}
+	err = rabbitmq.PublishDelayMessage(3, "delay msg")
+	if err != nil {
+		t.Errorf("PublishDelayMessage err:%v", err)
+	}
+
+}

@@ -16,9 +16,10 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	klog.SetLevel(klog.LevelFatal)
-	go Pricate()
-	Group()
+	// go Pricate()
+	// Group()
 	// PubSub()
+	Delay()
 }
 
 // 私聊消息
@@ -55,11 +56,17 @@ func Group() {
 	}
 }
 
-// 订阅模式
-func PubSub() {
-	rabbitmq := mq.NewRabbitMQPubSub("im")
+// 延迟队列
+func Delay() {
+	rabbitmq, err := mq.NewDelayMessageMQ("delay")
 	defer rabbitmq.Destory()
-	m := rabbitmq.RecieveSub()
+	if err != nil {
+		log.Printf("NewRabbitMQMessage err:%v", err)
+	}
+	m, err := rabbitmq.ConsumeDelayMessage()
+	if err != nil {
+		log.Printf("ConsumeDelayMessage err:%v", err)
+	}
 	for msg := range m {
 		log.Printf("%s", msg.Body)
 	}
