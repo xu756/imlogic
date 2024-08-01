@@ -10,7 +10,7 @@ import (
 
 func StartJob() {
 	go private()
-	go broadcast()
+	broadcast()
 }
 
 func NewWsServerRpcClient(hostName string) imserver.Client {
