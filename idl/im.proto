@@ -66,11 +66,12 @@ message Message {
     int64 timestamp = 3;
     ChatType chat_type = 4;
     int64 sender = 5;
-    int64 chat_id = 6;
-    int64 group_id = 7;
-    string content = 8;
-    MsgType msg_type = 9;
-    repeated MediaType media = 10;
+    int64 receiver = 6;
+    int64 chat_id = 7;
+    int64 group_id = 8;
+    string content = 9;
+    MsgType msg_type = 10;
+    repeated MediaType media = 11;
 }
 
 // 发送消息给单个用户

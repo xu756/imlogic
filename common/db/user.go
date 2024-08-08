@@ -8,9 +8,22 @@ import (
 )
 
 type dbUserModel interface {
+	// 通过用户名查找用户
 	GetOneUserByUsername(ctx context.Context, username string) (userInfo *ent.User, err error)
+	// 通过手机号查找用户
 	GetOneUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error)
-	FindUserByUUID(ctx context.Context, uuid string) (userInfo *ent.User, err error)
+	// 通过 Ids 查找用户
+	GetUsersByIds(ctx context.Context, ids []int64) (users []*ent.User, err error)
+}
+
+// GetUsersByIds 通过 Ids 查找用户
+func (m *customModel) GetUsersByIds(ctx context.Context, ids []int64) (users []*ent.User, err error) {
+	users, err = m.client.User.Query().
+		Where(user.IDIn(ids...), user.Deleted(false)).All(ctx)
+	if err != nil {
+		return nil, xerr.DbErr(err, "查询用户失败 用户ID:%v", ids)
+	}
+	return users, nil
 }
 
 // 根据用户名查找用户
@@ -54,19 +67,6 @@ func (m *customModel) CreateUser(ctx context.Context, username, password, mobile
 		return nil, xerr.WarnMsg("用户已存在 用户名:%s 手机号:%s", username, mobile)
 	case err != nil:
 		return nil, xerr.DbErr(err, "创建用户失败 用户名:%s 手机号:%s", username, mobile)
-	default:
-		return userInfo, nil
-	}
-}
-
-func (m *customModel) FindUserByUUID(ctx context.Context, uuid string) (userInfo *ent.User, err error) {
-	userInfo, err = m.client.User.Query().
-		Where(user.UUID(uuid), user.Deleted(false)).First(ctx)
-	switch {
-	case ent.IsNotFound(err):
-		return nil, xerr.WarnMsg("用户不存在 用户uuid:%s", uuid)
-	case err != nil:
-		return nil, xerr.DbErr(err, "查询用户失败 用户uuid:%s", uuid)
 	default:
 		return userInfo, nil
 	}
