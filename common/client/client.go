@@ -107,6 +107,7 @@ func (c *Client) readMessage() {
 // }
 
 func (c *Client) SendMsg(msg *types.Message) {
+	msg.LinkId = c.LinkId
 	c.write(msg)
 }
 

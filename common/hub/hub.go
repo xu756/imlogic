@@ -85,7 +85,6 @@ func (h *Hub) SendAll(msg *types.Message) {
 	h.lock.Lock()
 	h.clients.Range(func(key, value interface{}) bool {
 		c := value.(*client.Client)
-		msg.LinkId = key.(string)
 		c.SendMsg(msg)
 		return true
 	})

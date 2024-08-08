@@ -21,7 +21,7 @@ func private() {
 }
 
 func privateFunc(linkId, hostName string, msg *im.Message) {
-	rpc := NewWsServerRpcClient("hostName")
+	rpc := NewWsServerRpcClient(hostName)
 	res, err := rpc.SendMsgToOne(context.Background(), &im.SendMsgTooneReq{
 		LinkId:  linkId,
 		Message: msg,
@@ -29,9 +29,7 @@ func privateFunc(linkId, hostName string, msg *im.Message) {
 	if err != nil {
 		log.Printf("SendMsgToOne err:%v", err)
 	}
-	if res.Success {
-		log.Printf("SendMsgToOne success")
-	} else {
+	if !res.Success {
 		log.Printf("SendMsgToOne fail")
 	}
 }

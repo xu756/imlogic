@@ -31,6 +31,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Timestamp: msg.Timestamp,
 			ChatType:  im.ChatType(msg.ChatType),
 			Sender:    msg.Sender,
+			Receiver:  msg.Receiver,
 			ChatId:    msg.ChatId,
 			GroupId:   msg.GroupId,
 			Content:   msg.Content,
@@ -45,6 +46,7 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Timestamp: msg.Timestamp,
 			ChatType:  im.ChatType(msg.ChatType),
 			Sender:    msg.Sender,
+			Receiver:  msg.Receiver,
 			ChatId:    msg.ChatId,
 			GroupId:   msg.GroupId,
 			Content:   msg.Content,
@@ -53,11 +55,11 @@ func Msglogic(c *client.Client, msg *types.Message) {
 		})
 	}
 	if err != nil {
-		log.Print("send text message failed", err)
+		log.Print("message failed", err)
 		return
 	}
 	if !res.Success {
-		log.Print("send text message failed", res)
+		log.Print("message failed")
 		return
 	}
 }
