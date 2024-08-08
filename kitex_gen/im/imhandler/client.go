@@ -12,7 +12,8 @@ import (
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
 	MetaMessage(ctx context.Context, Req *im.MetaMsg, callOptions ...callopt.Option) (r *im.MessageRes, err error)
-	PushMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
+	HandlerPrivateMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
+	HandlerGroupMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -49,7 +50,12 @@ func (p *kImHandlerClient) MetaMessage(ctx context.Context, Req *im.MetaMsg, cal
 	return p.kClient.MetaMessage(ctx, Req)
 }
 
-func (p *kImHandlerClient) PushMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
+func (p *kImHandlerClient) HandlerPrivateMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.PushMessage(ctx, Req)
+	return p.kClient.HandlerPrivateMessage(ctx, Req)
+}
+
+func (p *kImHandlerClient) HandlerGroupMessage(ctx context.Context, Req *im.Message, callOptions ...callopt.Option) (r *im.MessageRes, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.HandlerGroupMessage(ctx, Req)
 }

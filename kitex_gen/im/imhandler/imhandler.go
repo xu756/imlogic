@@ -22,10 +22,17 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
-	"PushMessage": kitex.NewMethodInfo(
-		pushMessageHandler,
-		newPushMessageArgs,
-		newPushMessageResult,
+	"HandlerPrivateMessage": kitex.NewMethodInfo(
+		handlerPrivateMessageHandler,
+		newHandlerPrivateMessageArgs,
+		newHandlerPrivateMessageResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
+	"HandlerGroupMessage": kitex.NewMethodInfo(
+		handlerGroupMessageHandler,
+		newHandlerGroupMessageArgs,
+		newHandlerGroupMessageResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
@@ -248,7 +255,7 @@ func (p *MetaMessageResult) GetResult() interface{} {
 	return p.Success
 }
 
-func pushMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+func handlerPrivateMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
 		st := s.Stream
@@ -256,64 +263,64 @@ func pushMessageHandler(ctx context.Context, handler interface{}, arg, result in
 		if err := st.RecvMsg(req); err != nil {
 			return err
 		}
-		resp, err := handler.(im.ImHandler).PushMessage(ctx, req)
+		resp, err := handler.(im.ImHandler).HandlerPrivateMessage(ctx, req)
 		if err != nil {
 			return err
 		}
 		return st.SendMsg(resp)
-	case *PushMessageArgs:
-		success, err := handler.(im.ImHandler).PushMessage(ctx, s.Req)
+	case *HandlerPrivateMessageArgs:
+		success, err := handler.(im.ImHandler).HandlerPrivateMessage(ctx, s.Req)
 		if err != nil {
 			return err
 		}
-		realResult := result.(*PushMessageResult)
+		realResult := result.(*HandlerPrivateMessageResult)
 		realResult.Success = success
 		return nil
 	default:
 		return errInvalidMessageType
 	}
 }
-func newPushMessageArgs() interface{} {
-	return &PushMessageArgs{}
+func newHandlerPrivateMessageArgs() interface{} {
+	return &HandlerPrivateMessageArgs{}
 }
 
-func newPushMessageResult() interface{} {
-	return &PushMessageResult{}
+func newHandlerPrivateMessageResult() interface{} {
+	return &HandlerPrivateMessageResult{}
 }
 
-type PushMessageArgs struct {
+type HandlerPrivateMessageArgs struct {
 	Req *im.Message
 }
 
-func (p *PushMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *HandlerPrivateMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetReq() {
 		p.Req = new(im.Message)
 	}
 	return p.Req.FastRead(buf, _type, number)
 }
 
-func (p *PushMessageArgs) FastWrite(buf []byte) (n int) {
+func (p *HandlerPrivateMessageArgs) FastWrite(buf []byte) (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.FastWrite(buf)
 }
 
-func (p *PushMessageArgs) Size() (n int) {
+func (p *HandlerPrivateMessageArgs) Size() (n int) {
 	if !p.IsSetReq() {
 		return 0
 	}
 	return p.Req.Size()
 }
 
-func (p *PushMessageArgs) Marshal(out []byte) ([]byte, error) {
+func (p *HandlerPrivateMessageArgs) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetReq() {
 		return out, nil
 	}
 	return proto.Marshal(p.Req)
 }
 
-func (p *PushMessageArgs) Unmarshal(in []byte) error {
+func (p *HandlerPrivateMessageArgs) Unmarshal(in []byte) error {
 	msg := new(im.Message)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
@@ -322,58 +329,58 @@ func (p *PushMessageArgs) Unmarshal(in []byte) error {
 	return nil
 }
 
-var PushMessageArgs_Req_DEFAULT *im.Message
+var HandlerPrivateMessageArgs_Req_DEFAULT *im.Message
 
-func (p *PushMessageArgs) GetReq() *im.Message {
+func (p *HandlerPrivateMessageArgs) GetReq() *im.Message {
 	if !p.IsSetReq() {
-		return PushMessageArgs_Req_DEFAULT
+		return HandlerPrivateMessageArgs_Req_DEFAULT
 	}
 	return p.Req
 }
 
-func (p *PushMessageArgs) IsSetReq() bool {
+func (p *HandlerPrivateMessageArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *PushMessageArgs) GetFirstArgument() interface{} {
+func (p *HandlerPrivateMessageArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-type PushMessageResult struct {
+type HandlerPrivateMessageResult struct {
 	Success *im.MessageRes
 }
 
-var PushMessageResult_Success_DEFAULT *im.MessageRes
+var HandlerPrivateMessageResult_Success_DEFAULT *im.MessageRes
 
-func (p *PushMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+func (p *HandlerPrivateMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
 		p.Success = new(im.MessageRes)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
 
-func (p *PushMessageResult) FastWrite(buf []byte) (n int) {
+func (p *HandlerPrivateMessageResult) FastWrite(buf []byte) (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.FastWrite(buf)
 }
 
-func (p *PushMessageResult) Size() (n int) {
+func (p *HandlerPrivateMessageResult) Size() (n int) {
 	if !p.IsSetSuccess() {
 		return 0
 	}
 	return p.Success.Size()
 }
 
-func (p *PushMessageResult) Marshal(out []byte) ([]byte, error) {
+func (p *HandlerPrivateMessageResult) Marshal(out []byte) ([]byte, error) {
 	if !p.IsSetSuccess() {
 		return out, nil
 	}
 	return proto.Marshal(p.Success)
 }
 
-func (p *PushMessageResult) Unmarshal(in []byte) error {
+func (p *HandlerPrivateMessageResult) Unmarshal(in []byte) error {
 	msg := new(im.MessageRes)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
@@ -382,22 +389,175 @@ func (p *PushMessageResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *PushMessageResult) GetSuccess() *im.MessageRes {
+func (p *HandlerPrivateMessageResult) GetSuccess() *im.MessageRes {
 	if !p.IsSetSuccess() {
-		return PushMessageResult_Success_DEFAULT
+		return HandlerPrivateMessageResult_Success_DEFAULT
 	}
 	return p.Success
 }
 
-func (p *PushMessageResult) SetSuccess(x interface{}) {
+func (p *HandlerPrivateMessageResult) SetSuccess(x interface{}) {
 	p.Success = x.(*im.MessageRes)
 }
 
-func (p *PushMessageResult) IsSetSuccess() bool {
+func (p *HandlerPrivateMessageResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *PushMessageResult) GetResult() interface{} {
+func (p *HandlerPrivateMessageResult) GetResult() interface{} {
+	return p.Success
+}
+
+func handlerGroupMessageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(im.Message)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(im.ImHandler).HandlerGroupMessage(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *HandlerGroupMessageArgs:
+		success, err := handler.(im.ImHandler).HandlerGroupMessage(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*HandlerGroupMessageResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newHandlerGroupMessageArgs() interface{} {
+	return &HandlerGroupMessageArgs{}
+}
+
+func newHandlerGroupMessageResult() interface{} {
+	return &HandlerGroupMessageResult{}
+}
+
+type HandlerGroupMessageArgs struct {
+	Req *im.Message
+}
+
+func (p *HandlerGroupMessageArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(im.Message)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *HandlerGroupMessageArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *HandlerGroupMessageArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *HandlerGroupMessageArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *HandlerGroupMessageArgs) Unmarshal(in []byte) error {
+	msg := new(im.Message)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var HandlerGroupMessageArgs_Req_DEFAULT *im.Message
+
+func (p *HandlerGroupMessageArgs) GetReq() *im.Message {
+	if !p.IsSetReq() {
+		return HandlerGroupMessageArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *HandlerGroupMessageArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *HandlerGroupMessageArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type HandlerGroupMessageResult struct {
+	Success *im.MessageRes
+}
+
+var HandlerGroupMessageResult_Success_DEFAULT *im.MessageRes
+
+func (p *HandlerGroupMessageResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(im.MessageRes)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *HandlerGroupMessageResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *HandlerGroupMessageResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *HandlerGroupMessageResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *HandlerGroupMessageResult) Unmarshal(in []byte) error {
+	msg := new(im.MessageRes)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *HandlerGroupMessageResult) GetSuccess() *im.MessageRes {
+	if !p.IsSetSuccess() {
+		return HandlerGroupMessageResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *HandlerGroupMessageResult) SetSuccess(x interface{}) {
+	p.Success = x.(*im.MessageRes)
+}
+
+func (p *HandlerGroupMessageResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *HandlerGroupMessageResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -421,11 +581,21 @@ func (p *kClient) MetaMessage(ctx context.Context, Req *im.MetaMsg) (r *im.Messa
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) PushMessage(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
-	var _args PushMessageArgs
+func (p *kClient) HandlerPrivateMessage(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
+	var _args HandlerPrivateMessageArgs
 	_args.Req = Req
-	var _result PushMessageResult
-	if err = p.c.Call(ctx, "PushMessage", &_args, &_result); err != nil {
+	var _result HandlerPrivateMessageResult
+	if err = p.c.Call(ctx, "HandlerPrivateMessage", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) HandlerGroupMessage(ctx context.Context, Req *im.Message) (r *im.MessageRes, err error) {
+	var _args HandlerGroupMessageArgs
+	_args.Req = Req
+	var _result HandlerGroupMessageResult
+	if err = p.c.Call(ctx, "HandlerGroupMessage", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

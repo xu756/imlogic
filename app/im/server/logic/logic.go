@@ -21,20 +21,43 @@ func Msglogic(c *client.Client, msg *types.Message) {
 			Url: media.URL,
 		})
 	}
-	_, err := service.ImHandler.PushMessage(ctx, &im.Message{
-		LinkId:    msg.LinkId,
-		MsgId:     msg.MsgId,
-		Timestamp: msg.Timestamp,
-		ChatType:  im.ChatType(msg.ChatType),
-		Sender:    msg.Sender,
-		ChatId:    msg.ChatId,
-		GroupId:   msg.GroupId,
-		Content:   msg.Content,
-		MsgType:   im.MsgType(msg.MsgType),
-		Media:     medias,
-	})
+	var res = &im.MessageRes{}
+	var err error
+	switch msg.ChatType {
+	case types.PrivateChat:
+		res, err = service.ImHandler.HandlerPrivateMessage(ctx, &im.Message{
+			LinkId:    msg.LinkId,
+			MsgId:     msg.MsgId,
+			Timestamp: msg.Timestamp,
+			ChatType:  im.ChatType(msg.ChatType),
+			Sender:    msg.Sender,
+			ChatId:    msg.ChatId,
+			GroupId:   msg.GroupId,
+			Content:   msg.Content,
+			MsgType:   im.MsgType(msg.MsgType),
+			Media:     medias,
+		})
+
+	case types.GroupChat:
+		res, err = service.ImHandler.HandlerGroupMessage(ctx, &im.Message{
+			LinkId:    msg.LinkId,
+			MsgId:     msg.MsgId,
+			Timestamp: msg.Timestamp,
+			ChatType:  im.ChatType(msg.ChatType),
+			Sender:    msg.Sender,
+			ChatId:    msg.ChatId,
+			GroupId:   msg.GroupId,
+			Content:   msg.Content,
+			MsgType:   im.MsgType(msg.MsgType),
+			Media:     medias,
+		})
+	}
 	if err != nil {
 		log.Print("send text message failed", err)
+		return
+	}
+	if !res.Success {
+		log.Print("send text message failed", res)
 		return
 	}
 }

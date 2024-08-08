@@ -6,9 +6,13 @@ package im;
 
 // 聊天类型
 enum ChatType {
+    // 私聊 （处理私聊消息）
     PrivateChat = 0;
+    // 群聊 （处理群聊消息）
     GroupChat = 1;
+    // 系统消息 （接收）
     SystemMessage = 2;
+    // 系统通知 （接收）
     SystemNotice =3;
 }
 
@@ -91,8 +95,10 @@ message SendMsgToGroupRes {
 service ImHandler {
     // 元消息
     rpc MetaMessage(MetaMsg) returns (MessageRes) {}
-    // 消息
-    rpc PushMessage(Message) returns (MessageRes) {}
+    // 处理私聊消息
+    rpc HandlerPrivateMessage(Message) returns (MessageRes) {}
+    // 处理群聊消息
+    rpc HandlerGroupMessage(Message) returns (MessageRes) {}
 }
 
 // 发送消息
