@@ -12,14 +12,14 @@ Rpc:
 
 DbConfig:
   DbType: postgres
-  Addr: 0.0.0.0
-  Port: 5432
+  Addr: 10.0.4.17
+  Port: 15432
   Username: root
   Password: fyU0bj2KLndYN6CKYubb
   DbName: imlogic-dev
 
 RedisConfig:
-  Addr: 0.0.0.0:6379
+  Addr: 10.0.4.17:16379
   Password: Y5dg5tg8050oigInC30sf
   Db: 4
   Prefix: imlogic-dev
