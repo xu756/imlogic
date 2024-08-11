@@ -13,7 +13,7 @@ import (
 
 const (
 	// 心跳时间
-	HeartbeatTime = 30
+	HeartbeatTime = 30000
 )
 
 type Client struct {
