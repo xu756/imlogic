@@ -1,1 +1,1 @@
-kitex -module imlogic  idl/im.proto 
+kitex -module imlogic  idl/user.proto 

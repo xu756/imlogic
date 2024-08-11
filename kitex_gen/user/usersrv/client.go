@@ -14,6 +14,7 @@ type Client interface {
 	LoginByPassword(ctx context.Context, Req *user.LoginByPasswordReq, callOptions ...callopt.Option) (r *user.LoginRes, err error)
 	LoginByMobile(ctx context.Context, Req *user.LoginByMobileReq, callOptions ...callopt.Option) (r *user.LoginRes, err error)
 	SendCaptcha(ctx context.Context, Req *user.SendCaptchaReq, callOptions ...callopt.Option) (r *user.SendCaptchaRes, err error)
+	GetOneUserInfo(ctx context.Context, Req *user.GetOneUserReq, callOptions ...callopt.Option) (r *user.UserInfo, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -58,4 +59,9 @@ func (p *kUserSrvClient) LoginByMobile(ctx context.Context, Req *user.LoginByMob
 func (p *kUserSrvClient) SendCaptcha(ctx context.Context, Req *user.SendCaptchaReq, callOptions ...callopt.Option) (r *user.SendCaptchaRes, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SendCaptcha(ctx, Req)
+}
+
+func (p *kUserSrvClient) GetOneUserInfo(ctx context.Context, Req *user.GetOneUserReq, callOptions ...callopt.Option) (r *user.UserInfo, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetOneUserInfo(ctx, Req)
 }

@@ -19,5 +19,8 @@ func InitRouter() {
 	h.Use(middleware.HertzJwt())
 	router := h.Group("/api")
 	logic.LoginRoute(router.Group("/login"))
+	userRouter := router.Group("/user")
+	logic.UserRouter(userRouter)
+	userRouter.Use(middleware.HertzJwt())
 	HttpServer = h
 }

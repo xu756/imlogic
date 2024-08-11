@@ -14,6 +14,22 @@ type dbUserModel interface {
 	GetOneUserByMobile(ctx context.Context, mobile string) (userInfo *ent.User, err error)
 	// 通过 Ids 查找用户
 	GetUsersByIds(ctx context.Context, ids []int64) (users []*ent.User, err error)
+	// 通过id查找用户
+	GetOneUserById(ctx context.Context, id int64) (userInfo *ent.User, err error)
+}
+
+// GetOneUserById 通过id查找用户
+func (m *customModel) GetOneUserById(ctx context.Context, id int64) (userInfo *ent.User, err error) {
+	userInfo, err = m.client.User.Query().
+		Where(user.ID(id), user.Deleted(false)).First(ctx)
+	switch {
+	case ent.IsNotFound(err):
+		return nil, xerr.WarnMsg("用户不存在 用户ID:%d", id)
+	case err != nil:
+		return nil, xerr.DbErr(err, "查询用户失败 用户ID:%d", id)
+	default:
+		return userInfo, nil
+	}
 }
 
 // GetUsersByIds 通过 Ids 查找用户

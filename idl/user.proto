@@ -30,6 +30,11 @@ message SendCaptchaReq {
 message SendCaptchaRes {
   bool success = 1;
 }
+// 获取一个用户
+message GetOneUserReq {
+  int64 id = 1;
+}
+
 // 用户信息
 message UserInfo {
   int64 id = 1;
@@ -47,4 +52,6 @@ service UserSrv {
   rpc LoginByMobile (LoginByMobileReq) returns (LoginRes);
   // 发送手机验证码
   rpc SendCaptcha (SendCaptchaReq) returns (SendCaptchaRes);
+  // 获取一个用户
+  rpc GetOneUserInfo (GetOneUserReq) returns (UserInfo);
 }
