@@ -9,8 +9,14 @@ import (
 )
 
 func Msglogic(c *client.Client, msg *types.Message) {
-	if msg.ChatType != types.SystemMessage && msg.Content == "heartbeat" {
+	if msg.ChatType == types.SystemMessage && msg.Content == "ping" {
 		// todo 心跳
+		c.ResetHeartbeat()
+		MetaMsg(c, c.HeartbeatMsg())
+		c.SendMsg(&types.Message{
+			ChatType: types.SystemMessage,
+			Content:  "pong",
+		})
 		return
 	}
 	ctx := context.Background()

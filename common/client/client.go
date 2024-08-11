@@ -4,7 +4,6 @@ import (
 	"context"
 	"imlogic/common/types"
 	"imlogic/kitex_gen/im"
-	"log"
 	"os"
 	"sync"
 	"time"
@@ -12,19 +11,24 @@ import (
 	"github.com/hertz-contrib/websocket"
 )
 
+const (
+	// 心跳时间
+	HeartbeatTime = 30
+)
+
 type Client struct {
 	ctx        context.Context
 	cancelFunc context.CancelFunc
-	LinkId     string // websocket 连接 id
-	UserId     int64  // 用户id
+	linkId     string // websocket 连接 id
+	userId     int64  // 用户id
 	hostName   string
 	lock       sync.Mutex
 	ws         *websocket.Conn
 	send       chan *types.Message
 	heartbeat  *time.Ticker
-	MetaMsg    func(*Client, *im.MetaMsg)
-	Logic      func(*Client, *types.Message)
-	OnConnect  func(*Client)
+	metaMsg    func(*Client, *im.MetaMsg)
+	logic      func(*Client, *types.Message)
+	connect    func(*Client)
 	OnClose    func(*Client)
 }
 
@@ -43,24 +47,23 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 		ctx:        ctx,
 		cancelFunc: cancelFunc,
 		hostName:   hostname,
-		LinkId:     linkID,
-		UserId:     userId,
+		linkId:     linkID,
+		userId:     userId,
 		send:       make(chan *types.Message, 1024),
-		heartbeat:  time.NewTicker(60 * time.Second),
-		OnConnect:  OnConnect,
+		heartbeat:  time.NewTicker(HeartbeatTime * time.Second),
+		connect:    OnConnect,
 		OnClose:    OnClose,
-		Logic:      Msglogic,
-		MetaMsg:    MetaMsg,
+		logic:      Msglogic,
+		metaMsg:    MetaMsg,
 	}
 	go conn.setWs(ws)
-	conn.OnConnect(conn)
+	conn.connect(conn)
 	return conn
 }
 
 func (c *Client) Listen() {
-	// go c.listenAndWrite()
+	go c.listenAndWrite()
 	c.readMessage()
-
 }
 
 // listenAndRead 监听并读取消息
@@ -69,7 +72,6 @@ func (c *Client) readMessage() {
 	for {
 		select {
 		case <-c.ctx.Done():
-
 			return
 		default:
 			if c.ws == nil {
@@ -81,34 +83,39 @@ func (c *Client) readMessage() {
 			if err != nil {
 				return
 			}
-			go c.Logic(c, msg)
+			go c.logic(c, msg)
 		}
 	}
 
 }
 
 // listenAndWrite 监听并写入消息
-// func (c *Client) listenAndWrite() {
-// 	defer c.close()
-// 	for {
-// 		select {
-// 		case <-c.ctx.Done():
-// 			return
-// 		case msg, ok := <-c.send:
-// 			if !ok {
-// 				return
-// 			}
-// 			go c.write(msg)
-// 		case <-c.heartbeat.C:
-// 			// go c.MetaMsg(c.heartbeatMsg())
-// 		}
+func (c *Client) listenAndWrite() {
+	defer c.close()
+	for {
+		select {
+		case <-c.ctx.Done():
+			return
+		case msg, ok := <-c.send:
+			if !ok {
+				return
+			}
+			go c.write(msg)
+		case <-c.heartbeat.C:
+			c.close()
+			c.OnClose(c)
+		}
+	}
+}
 
-// 	}
-// }
+// 重新设置heartbeat
+func (c *Client) ResetHeartbeat() {
+	c.heartbeat.Reset(HeartbeatTime * time.Second)
+}
 
 func (c *Client) SendMsg(msg *types.Message) {
-	msg.LinkId = c.LinkId
-	c.write(msg)
+	msg.LinkId = c.linkId
+	c.send <- msg
 }
 
 // close 关闭连接
@@ -118,11 +125,8 @@ func (c *Client) close() {
 		c.OnClose(c)
 		c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 		c.cancelFunc()
-		if err := c.ws.Close(); err != nil {
-			log.Print("close:", err)
-		}
+		c.ws.Close()
 		c.setWs(nil)
-
 	}
 	c.lock.Unlock()
 }
@@ -156,8 +160,8 @@ func (c *Client) write(msg *types.Message) {
 // connectMsg 连接消息
 func (c *Client) ConnectMsg() *im.MetaMsg {
 	return &im.MetaMsg{
-		LinkId:   c.LinkId,
-		UserId:   c.UserId,
+		LinkId:   c.linkId,
+		UserId:   c.userId,
 		Status:   im.WsStatus_Connect,
 		HostName: c.hostName,
 	}
@@ -166,7 +170,7 @@ func (c *Client) ConnectMsg() *im.MetaMsg {
 // heartbeatMsg 心跳消息
 func (c *Client) HeartbeatMsg() *im.MetaMsg {
 	return &im.MetaMsg{
-		LinkId:   c.LinkId,
+		LinkId:   c.linkId,
 		Status:   im.WsStatus_Heartbeat,
 		HostName: c.hostName,
 	}
@@ -175,8 +179,18 @@ func (c *Client) HeartbeatMsg() *im.MetaMsg {
 // disconnectMsg 断开连接消息
 func (c *Client) DisconnectMsg() *im.MetaMsg {
 	return &im.MetaMsg{
-		LinkId:   c.LinkId,
+		LinkId:   c.linkId,
 		Status:   im.WsStatus_Disconnect,
 		HostName: c.hostName,
 	}
+}
+
+// GetLinkId 获取连接id
+func (c *Client) GetLinkId() string {
+	return c.linkId
+}
+
+// GetUserId 获取用户id
+func (c *Client) GetUserId() int64 {
+	return c.userId
 }

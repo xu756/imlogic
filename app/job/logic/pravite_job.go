@@ -30,6 +30,9 @@ func privateFunc(linkId, hostName string, msg *im.Message) {
 		log.Printf("SendMsgToOne err:%v", err)
 	}
 	if !res.Success {
-		log.Printf("SendMsgToOne fail")
+		err = service.Model.DeleteUserConn(context.Background(), msg.Receiver, hostName, linkId)
+		if err != nil {
+			log.Printf("DeleteUserConn err:%v", err)
+		}
 	}
 }

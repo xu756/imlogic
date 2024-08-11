@@ -16,7 +16,7 @@ type dbUserConnModel interface {
 	// 获取所有连接信息
 	GetAllUserConns(ctx context.Context) (userConns []*ent.UserConn, err error)
 	// 删除用户连接信息
-	DeleteUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
+	DeleteUserConn(ctx context.Context, userId int64, hostName, linkId string) (err error)
 	// 更新最后一次心跳时间
 	UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
 	// 删除最后一次心跳时间大于当前2分钟
@@ -65,12 +65,12 @@ func (m *customModel) GetAllUserConns(ctx context.Context) (userConns []*ent.Use
 }
 
 // 删除用户连接信息
-func (m *customModel) DeleteUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error) {
+func (m *customModel) DeleteUserConn(ctx context.Context, userId int64, hostName, linkId string) (err error) {
 	_, err = m.client.UserConn.Delete().
 		Where(userconn.LinkID(linkId)).
 		Exec(ctx)
 	if err != nil {
-		return xerr.DbErr(err, "删除用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostName, device, linkId)
+		return xerr.DbErr(err, "删除用户连接信息失败 用户ID:%d 主机名:%s 连接ID:%s", userId, hostName, linkId)
 	}
 	return nil
 }

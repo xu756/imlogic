@@ -15,5 +15,6 @@ func main() {
 	flag.Parse()
 	config.Init(*file)
 	klog.SetLevel(klog.LevelFatal)
+	logic.InitService()
 	logic.StartJob()
 }

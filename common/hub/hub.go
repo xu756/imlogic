@@ -42,9 +42,9 @@ func (h *Hub) run() {
 	for {
 		select {
 		case conn := <-h.register:
-			h.clients.Store(conn.LinkId, conn)
+			h.clients.Store(conn.GetLinkId(), conn)
 		case conn := <-h.unregister:
-			h.clients.Delete(conn.LinkId)
+			h.clients.Delete(conn.GetLinkId())
 		case message := <-h.broadcast:
 			h.clients.Range(func(key, value interface{}) bool {
 				conn := value.(*client.Client)
