@@ -16,11 +16,13 @@ func InitRouter() {
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
-	h.Use(middleware.HertzJwt())
 	router := h.Group("/api")
+	// 登录路由
 	logic.LoginRoute(router.Group("/login"))
+	// 用户路由
 	userRouter := router.Group("/user")
 	logic.UserRouter(userRouter)
 	userRouter.Use(middleware.HertzJwt())
+	// 会话路由
 	HttpServer = h
 }

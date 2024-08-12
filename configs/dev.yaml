@@ -14,13 +14,13 @@ DbConfig:
   DbType: postgres
   Addr: 0.0.0.0
   Port: 5432
-  Username: root
-  Password: fyU0bj2KLndYN6CKYubb
-  DbName: imlogic-dev
+  Username: imlogic
+  Password: imlogic
+  DbName: imlogic
 
 RedisConfig:
   Addr: 0.0.0.0:6379
-  Password: Y5dg5tg8050oigInC30sf
+  Password: redis123456
   Db: 4
   Prefix: imlogic-dev
 
@@ -32,7 +32,7 @@ JwtConfig:
   Expire: 3600000
 
 
-MqUrl: amqp://root:1mYa0PE6JLz8U5YJYMgj@10.0.4.17:5672/
+MqUrl: amqp://root:1mYa0PE6JLz8U5YJYMgj@0.0.0.0:5672/
 Version: v1
 Minio:
   Endpoint: cos.imlogic.cn
