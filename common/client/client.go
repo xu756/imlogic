@@ -103,7 +103,6 @@ func (c *Client) listenAndWrite() {
 			go c.write(msg)
 		case <-c.heartbeat.C:
 			c.close()
-			c.OnClose(c)
 		}
 	}
 }
