@@ -11,16 +11,30 @@ import (
 )
 
 func UserRouter(r *route.RouterGroup) {
-	// r.POST("/list", getUserList)
-	// r.POST("/add", addUser)
-	// r.POST("/edit", editUser)
-	// r.POST("/delete", deleteUser)
-	// r.POST("/reset", resetPassword)
+	r.POST("/oneInfo", getUserOneInfo)
 	r.POST("/info", getUserInfo)
 }
 
-// 获取单个用户信息
+// 获取当前用户信息
 func getUserInfo(ctx context.Context, c *app.RequestContext) {
+	userInfo, err := service.Jwt.GetUserInfoFromCookieToken(c)
+	if err != nil {
+		result.HttpError(c, err)
+		return
+	}
+
+	res, err := rpc.UserClient.GetOneUserInfo(ctx, &user.GetOneUserReq{
+		Id: userInfo.UserId,
+	})
+	if err != nil {
+		result.HttpError(c, err)
+		return
+	}
+	result.HttpSuccess(c, res)
+}
+
+// 获取单个用户信息
+func getUserOneInfo(ctx context.Context, c *app.RequestContext) {
 	var req GetOneUser
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)

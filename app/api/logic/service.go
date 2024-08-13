@@ -1,13 +1,15 @@
 package logic
 
-// var service *Service
+import "imlogic/internal/xjwt"
+
+var service *Service
 
 type Service struct {
-	// Cos *cos.Cos
+	Jwt *xjwt.Jwt
 }
 
 func Init() {
-	// service = &Service{
-	// 	// Cos: cos.NewCos(),
-	// }
+	service = &Service{
+		Jwt: xjwt.NewJwt(),
+	}
 }
