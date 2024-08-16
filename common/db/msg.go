@@ -6,14 +6,14 @@ import (
 	"imlogic/ent/groupmessage"
 	"imlogic/ent/privatemessage"
 	"imlogic/internal/xerr"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 )
 
 type dbMsgModel interface {
 	// 添加一个私聊消息
-	AddOnePrivateMsg(ctx context.Context, msgType int32, msgId string, chatId, senderId, timestamp int64, content *im.Message) (err error)
+	AddOnePrivateMsg(ctx context.Context, msgType int32, msgId string, chatId, senderId, timestamp int64, content *base.Message) (err error)
 	// 添加一个群聊消息
-	AddOneGroupMsg(ctx context.Context, msgType int32, msgId string, groupId, senderId, timestamp int64, content *im.Message) (err error)
+	AddOneGroupMsg(ctx context.Context, msgType int32, msgId string, groupId, senderId, timestamp int64, content *base.Message) (err error)
 	// 获取私聊最后一条消息
 	GetLastPrivateMsg(ctx context.Context, chatId int64) (msg *ent.PrivateMessage, err error)
 	// 获取群聊最后一条消息
@@ -54,7 +54,7 @@ func (m *customModel) GetLastPrivateMsg(ctx context.Context, chatId int64) (msg 
 }
 
 // 添加一个群聊消息
-func (m *customModel) AddOneGroupMsg(ctx context.Context, msgType int32, msgId string, groupId, senderId, timestamp int64, content *im.Message) (err error) {
+func (m *customModel) AddOneGroupMsg(ctx context.Context, msgType int32, msgId string, groupId, senderId, timestamp int64, content *base.Message) (err error) {
 	_, err = m.client.GroupMessage.Create().
 		SetMsgType(msgType).
 		SetMsgID(msgId).
@@ -69,7 +69,7 @@ func (m *customModel) AddOneGroupMsg(ctx context.Context, msgType int32, msgId s
 }
 
 // 添加一个私聊消息
-func (m *customModel) AddOnePrivateMsg(ctx context.Context, msgType int32, msgId string, chatId, senderId, timestamp int64, content *im.Message) (err error) {
+func (m *customModel) AddOnePrivateMsg(ctx context.Context, msgType int32, msgId string, chatId, senderId, timestamp int64, content *base.Message) (err error) {
 	_, err = m.client.PrivateMessage.Create().
 		SetMsgType(msgType).
 		SetMsgID(msgId).

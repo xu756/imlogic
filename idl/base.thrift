@@ -2,18 +2,27 @@ namespace go base
 
 // 聊天类型
 enum ChatType {
-  PrivateChat = 0,  // 私聊 （处理私聊消息）
-  GroupChat = 1,    // 群聊 （处理群聊消息）
-  SystemMessage = 2,// 系统消息 （接收）
-  SystemNotice = 3  // 系统通知 （接收）
+  // 私聊 （处理私聊消息）
+  PrivateChat = 0,
+  // 群聊 （处理群聊消息）
+  GroupChat = 1,
+  // 系统消息 （接收）
+  SystemMessage = 2,
+  // 系统通知 （接收）
+  SystemNotice = 3
 }
 
 // 消息类型
 enum MsgType {
+  /**文字*/
   Text = 0,
+  // 图片
   Image = 1,
+  // 文件
   File = 2,
+  // 语音
   Audio = 3,
+  // 视频
   Video = 4
 }
 
