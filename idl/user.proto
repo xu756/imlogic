@@ -45,8 +45,9 @@ message UserInfo {
 }
 //获取用户在线状态 
 message UserOnlineStatus {
-  bool status=1;
+  bool status = 1;
 }
+
 
 // 用户服务
 service UserSrv {

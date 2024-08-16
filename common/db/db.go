@@ -7,4 +7,5 @@ type Model interface {
 	dbMsgModel
 	dbUserConnModel
 	dbGroupModel
+	dbChatModel
 }
