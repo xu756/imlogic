@@ -2,9 +2,10 @@ package handler
 
 import (
 	"context"
+	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/user"
 )
 
-func (s *PublicSrvImpl) SendCaptcha(ctx context.Context, req *user.SendCaptchaReq) (res *user.SendCaptchaRes, err error) {
-	return &user.SendCaptchaRes{Success: true}, nil
+func (s *PublicSrvImpl) SendCaptcha(ctx context.Context, req *user.SendCaptchaReq) (res *base.BoolRes, err error) {
+	return &base.BoolRes{Success: true}, nil
 }

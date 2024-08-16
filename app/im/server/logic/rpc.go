@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"imlogic/common/types"
+	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 )
 
@@ -23,7 +24,7 @@ func (i *ImServerImpl) SendMsgToGroup(ctx context.Context, req *im.SendMsgToGrou
 }
 
 // SendMsgToOne implements im.ImServer.
-func (i *ImServerImpl) SendMsgToOne(ctx context.Context, req *im.SendMsgTooneReq) (res *im.MessageRes, err error) {
+func (i *ImServerImpl) SendMsgToOne(ctx context.Context, req *im.SendMsgToOneReq) (res *im.MessageRes, err error) {
 	res = &im.MessageRes{}
 	ok := service.hub.SendoneMsg(req.LinkId, types.RpcMsgToMsg(req.Message))
 	if !ok {
@@ -40,7 +41,7 @@ func NewImServerImpl() *ImServerImpl {
 }
 
 // SendMsgToAll implements im.ImServer.
-func (i *ImServerImpl) SendMsgToAll(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+func (i *ImServerImpl) SendMsgToAll(ctx context.Context, req *base.Message) (res *im.MessageRes, err error) {
 	service.hub.SendAll(types.RpcMsgToMsg(req))
 	return &im.MessageRes{Success: true}, nil
 }

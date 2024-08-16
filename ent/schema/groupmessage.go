@@ -1,11 +1,10 @@
 package schema
 
 import (
-	"imlogic/kitex_gen/im"
-
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
+	"imlogic/kitex_gen/base"
 )
 
 // GroupMessage holds the schema definition for the GroupMessage entity.
@@ -21,7 +20,7 @@ func (GroupMessage) Fields() []ent.Field {
 		field.Int64("group_id").Comment("群id"),
 		field.Int64("timestamp").Comment("消息时间戳"),
 		field.Int64("sender_id").Comment("发送者id"),
-		field.JSON("content", &im.Message{}).Comment("消息内容"),
+		field.JSON("content", &base.Message{}).Comment("消息内容"),
 	}
 }
 

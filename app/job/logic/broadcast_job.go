@@ -3,7 +3,7 @@ package logic
 import (
 	"context"
 	"imlogic/common/mq"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 	"log"
 )
 
@@ -21,7 +21,7 @@ func broadcast() {
 	}
 }
 
-func broadcastFunc(msg *im.Message) {
+func broadcastFunc(msg *base.Message) {
 	rpc := NewWsServerRpcClient("devLinux")
 	go rpc.SendMsgToAll(context.Background(), msg)
 }

@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"imlogic/ent/privatemessage"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -51,8 +51,8 @@ func (pmc *PrivateMessageCreate) SetTimestamp(i int64) *PrivateMessageCreate {
 }
 
 // SetContent sets the "content" field.
-func (pmc *PrivateMessageCreate) SetContent(i *im.Message) *PrivateMessageCreate {
-	pmc.mutation.SetContent(i)
+func (pmc *PrivateMessageCreate) SetContent(b *base.Message) *PrivateMessageCreate {
+	pmc.mutation.SetContent(b)
 	return pmc
 }
 

@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"imlogic/common/mq"
+	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 	"log"
 )
@@ -20,9 +21,9 @@ func private() {
 	}
 }
 
-func privateFunc(linkId, hostName string, msg *im.Message) {
+func privateFunc(linkId, hostName string, msg *base.Message) {
 	rpc := NewWsServerRpcClient(hostName)
-	res, err := rpc.SendMsgToOne(context.Background(), &im.SendMsgTooneReq{
+	res, err := rpc.SendMsgToOne(context.Background(), &im.SendMsgToOneReq{
 		LinkId:  linkId,
 		Message: msg,
 	})

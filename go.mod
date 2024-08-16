@@ -87,3 +87,5 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
+
+replace github.com/apache/thrift => github.com/apache/thrift v0.13.0

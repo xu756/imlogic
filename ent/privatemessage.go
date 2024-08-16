@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"imlogic/ent/privatemessage"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 	"strings"
 
 	"entgo.io/ent"
@@ -29,7 +29,7 @@ type PrivateMessage struct {
 	// 消息时间戳
 	Timestamp int64 `json:"timestamp,omitempty"`
 	// 消息内容
-	Content      *im.Message `json:"content,omitempty"`
+	Content      *base.Message `json:"content,omitempty"`
 	selectValues sql.SelectValues
 }
 

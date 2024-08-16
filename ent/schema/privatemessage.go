@@ -4,7 +4,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 )
 
 // PrivateMessage holds the schema definition for the PrivateMessage entity.
@@ -20,7 +20,7 @@ func (PrivateMessage) Fields() []ent.Field {
 		field.Int64("chat_id").Comment("聊天id"),
 		field.Int64("sender_id").Comment("发送者id"),
 		field.Int64("timestamp").Comment("消息时间戳"),
-		field.JSON("content", &im.Message{}).Comment("消息内容"),
+		field.JSON("content", &base.Message{}).Comment("消息内容"),
 	}
 }
 

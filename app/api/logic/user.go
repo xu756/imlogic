@@ -2,12 +2,11 @@ package logic
 
 import (
 	"context"
-	"imlogic/app/api/rpc"
-	"imlogic/internal/result"
-	"imlogic/kitex_gen/user"
-
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/route"
+	"imlogic/app/api/rpc"
+	"imlogic/internal/result"
+	"imlogic/kitex_gen/base"
 )
 
 func UserRouter(r *route.RouterGroup) {
@@ -23,7 +22,7 @@ func getUserStatus(ctx context.Context, c *app.RequestContext) {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.GetUserOnlineStatus(ctx, &user.GetOneUserReq{
+	res, err := rpc.UserClient.GetUserOnlineStatus(ctx, &base.GetOneReq{
 		Id: req.ID,
 	})
 	if err != nil {
@@ -41,7 +40,7 @@ func getUserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	res, err := rpc.UserClient.GetOneUserInfo(ctx, &user.GetOneUserReq{
+	res, err := rpc.UserClient.GetOneUserInfo(ctx, &base.GetOneReq{
 		Id: userInfo.UserId,
 	})
 	if err != nil {
@@ -58,7 +57,7 @@ func getUserOneInfo(ctx context.Context, c *app.RequestContext) {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.GetOneUserInfo(ctx, &user.GetOneUserReq{
+	res, err := rpc.UserClient.GetOneUserInfo(ctx, &base.GetOneReq{
 		Id: req.ID,
 	})
 	if err != nil {

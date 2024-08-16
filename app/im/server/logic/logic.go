@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func Msglogic(c *client.Client, msg *types.Message) {
+func MsgLogic(c *client.Client, msg *types.Message) {
 	if msg.ChatType == types.SystemMessage && msg.Content == "ping" {
 		// todo 心跳
 		c.ResetHeartbeat()

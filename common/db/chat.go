@@ -5,32 +5,16 @@ import (
 	"imlogic/ent"
 	"imlogic/ent/chat"
 	"imlogic/internal/xerr"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 )
 
 type dbChatModel interface {
-	GetUserChatList(ctx context.Context, userId int64) (chatList []*ChatList, err error)
-}
-
-// ChatList 聊天列表
-type ChatList struct {
-	Uuid     string      `json:"uuid"`
-	ChatType im.ChatType `json:"chat_type"`
-	GroupId  int64       `json:"group_id"`
-	ChatId   int64       `json:"chat_id"`
-	// 用户1 id
-	User1Id int64 `json:"user1_id"`
-	// 用户2 id
-	User2Id int64 `json:"user2_id"`
-	// 最后一条消息
-	LastMsg *im.Message `json:"last_msg"`
-	// 最后一条消息时间
-	Timestamp int64 `json:"timestamp"`
+	GetUserChatList(ctx context.Context, userId int64) (chatList []*base.ChatList, err error)
 }
 
 // 获取用户聊天列表
-func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatList []*ChatList, err error) {
-	chatList = make([]*ChatList, 0)
+func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatList []*base.ChatList, err error) {
+	chatList = make([]*base.ChatList, 0)
 	// 获取用户私聊聊天列表
 	chatsInfo, err := m.client.Chat.Query().
 		Where(
@@ -49,9 +33,9 @@ func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatLi
 		if err != nil {
 			continue
 		}
-		chatList = append(chatList, &ChatList{
+		chatList = append(chatList, &base.ChatList{
 			Uuid:      chatInfo.UUID,
-			ChatType:  im.ChatType_PrivateChat,
+			ChatType:  base.ChatType_PrivateChat,
 			ChatId:    chatInfo.ID,
 			User1Id:   chatInfo.User1ID,
 			User2Id:   chatInfo.User2ID,
@@ -73,9 +57,9 @@ func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatLi
 		if err != nil {
 			continue
 		}
-		chatList = append(chatList, &ChatList{
+		chatList = append(chatList, &base.ChatList{
 			Uuid:      group.UUID,
-			ChatType:  im.ChatType_GroupChat,
+			ChatType:  base.ChatType_GroupChat,
 			GroupId:   group.ID,
 			User1Id:   userId,
 			LastMsg:   msg.Content,

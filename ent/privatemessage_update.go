@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"imlogic/ent/predicate"
 	"imlogic/ent/privatemessage"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -127,8 +127,8 @@ func (pmu *PrivateMessageUpdate) AddTimestamp(i int64) *PrivateMessageUpdate {
 }
 
 // SetContent sets the "content" field.
-func (pmu *PrivateMessageUpdate) SetContent(i *im.Message) *PrivateMessageUpdate {
-	pmu.mutation.SetContent(i)
+func (pmu *PrivateMessageUpdate) SetContent(b *base.Message) *PrivateMessageUpdate {
+	pmu.mutation.SetContent(b)
 	return pmu
 }
 
@@ -322,8 +322,8 @@ func (pmuo *PrivateMessageUpdateOne) AddTimestamp(i int64) *PrivateMessageUpdate
 }
 
 // SetContent sets the "content" field.
-func (pmuo *PrivateMessageUpdateOne) SetContent(i *im.Message) *PrivateMessageUpdateOne {
-	pmuo.mutation.SetContent(i)
+func (pmuo *PrivateMessageUpdateOne) SetContent(b *base.Message) *PrivateMessageUpdateOne {
+	pmuo.mutation.SetContent(b)
 	return pmuo
 }
 

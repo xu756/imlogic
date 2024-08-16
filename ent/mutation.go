@@ -16,7 +16,7 @@ import (
 	"imlogic/ent/userconn"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 	"sync"
 	"time"
 
@@ -1170,7 +1170,7 @@ type GroupMessageMutation struct {
 	addtimestamp  *int64
 	sender_id     *int64
 	addsender_id  *int64
-	content       **im.Message
+	content       **base.Message
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*GroupMessage, error)
@@ -1536,12 +1536,12 @@ func (m *GroupMessageMutation) ResetSenderID() {
 }
 
 // SetContent sets the "content" field.
-func (m *GroupMessageMutation) SetContent(i *im.Message) {
-	m.content = &i
+func (m *GroupMessageMutation) SetContent(b *base.Message) {
+	m.content = &b
 }
 
 // Content returns the value of the "content" field in the mutation.
-func (m *GroupMessageMutation) Content() (r *im.Message, exists bool) {
+func (m *GroupMessageMutation) Content() (r *base.Message, exists bool) {
 	v := m.content
 	if v == nil {
 		return
@@ -1552,7 +1552,7 @@ func (m *GroupMessageMutation) Content() (r *im.Message, exists bool) {
 // OldContent returns the old "content" field's value of the GroupMessage entity.
 // If the GroupMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *GroupMessageMutation) OldContent(ctx context.Context) (v *im.Message, err error) {
+func (m *GroupMessageMutation) OldContent(ctx context.Context) (v *base.Message, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldContent is only allowed on UpdateOne operations")
 	}
@@ -1710,7 +1710,7 @@ func (m *GroupMessageMutation) SetField(name string, value ent.Value) error {
 		m.SetSenderID(v)
 		return nil
 	case groupmessage.FieldContent:
-		v, ok := value.(*im.Message)
+		v, ok := value.(*base.Message)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1901,7 +1901,7 @@ type PrivateMessageMutation struct {
 	addsender_id  *int64
 	timestamp     *int64
 	addtimestamp  *int64
-	content       **im.Message
+	content       **base.Message
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*PrivateMessage, error)
@@ -2267,12 +2267,12 @@ func (m *PrivateMessageMutation) ResetTimestamp() {
 }
 
 // SetContent sets the "content" field.
-func (m *PrivateMessageMutation) SetContent(i *im.Message) {
-	m.content = &i
+func (m *PrivateMessageMutation) SetContent(b *base.Message) {
+	m.content = &b
 }
 
 // Content returns the value of the "content" field in the mutation.
-func (m *PrivateMessageMutation) Content() (r *im.Message, exists bool) {
+func (m *PrivateMessageMutation) Content() (r *base.Message, exists bool) {
 	v := m.content
 	if v == nil {
 		return
@@ -2283,7 +2283,7 @@ func (m *PrivateMessageMutation) Content() (r *im.Message, exists bool) {
 // OldContent returns the old "content" field's value of the PrivateMessage entity.
 // If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PrivateMessageMutation) OldContent(ctx context.Context) (v *im.Message, err error) {
+func (m *PrivateMessageMutation) OldContent(ctx context.Context) (v *base.Message, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldContent is only allowed on UpdateOne operations")
 	}
@@ -2441,7 +2441,7 @@ func (m *PrivateMessageMutation) SetField(name string, value ent.Value) error {
 		m.SetTimestamp(v)
 		return nil
 	case privatemessage.FieldContent:
-		v, ok := value.(*im.Message)
+		v, ok := value.(*base.Message)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

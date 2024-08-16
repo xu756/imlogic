@@ -2,12 +2,13 @@ package logic
 
 import (
 	"context"
+	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 	"log"
 )
 
 // HandlerPrivateMessage implements im.ImHandler.
-func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *base.Message) (res *im.MessageRes, err error) {
 	// 保存消息
 	err = i.Model.AddOnePrivateMsg(ctx, int32(req.MsgType), req.MsgId, req.ChatId, req.Sender, req.Timestamp, req)
 	if err != nil {

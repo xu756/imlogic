@@ -31,7 +31,7 @@ func Connect(ctx context.Context, c *app.RequestContext) {
 			onConnect,
 			onClose,
 			MetaMsg,
-			Msglogic,
+			MsgLogic,
 		)
 		service.hub.AddOneClient(conn)
 		conn.Listen()

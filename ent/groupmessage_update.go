@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"imlogic/ent/groupmessage"
 	"imlogic/ent/predicate"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -127,8 +127,8 @@ func (gmu *GroupMessageUpdate) AddSenderID(i int64) *GroupMessageUpdate {
 }
 
 // SetContent sets the "content" field.
-func (gmu *GroupMessageUpdate) SetContent(i *im.Message) *GroupMessageUpdate {
-	gmu.mutation.SetContent(i)
+func (gmu *GroupMessageUpdate) SetContent(b *base.Message) *GroupMessageUpdate {
+	gmu.mutation.SetContent(b)
 	return gmu
 }
 
@@ -322,8 +322,8 @@ func (gmuo *GroupMessageUpdateOne) AddSenderID(i int64) *GroupMessageUpdateOne {
 }
 
 // SetContent sets the "content" field.
-func (gmuo *GroupMessageUpdateOne) SetContent(i *im.Message) *GroupMessageUpdateOne {
-	gmuo.mutation.SetContent(i)
+func (gmuo *GroupMessageUpdateOne) SetContent(b *base.Message) *GroupMessageUpdateOne {
+	gmuo.mutation.SetContent(b)
 	return gmuo
 }
 

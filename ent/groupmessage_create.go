@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"imlogic/ent/groupmessage"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -51,8 +51,8 @@ func (gmc *GroupMessageCreate) SetSenderID(i int64) *GroupMessageCreate {
 }
 
 // SetContent sets the "content" field.
-func (gmc *GroupMessageCreate) SetContent(i *im.Message) *GroupMessageCreate {
-	gmc.mutation.SetContent(i)
+func (gmc *GroupMessageCreate) SetContent(b *base.Message) *GroupMessageCreate {
+	gmc.mutation.SetContent(b)
 	return gmc
 }
 

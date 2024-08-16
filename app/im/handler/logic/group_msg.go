@@ -2,11 +2,12 @@ package logic
 
 import (
 	"context"
+	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 	"log"
 )
 
-func (i *ImRpcImpl) HandlerGroupMessage(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+func (i *ImRpcImpl) HandlerGroupMessage(ctx context.Context, req *base.Message) (res *im.MessageRes, err error) {
 	// 保存消息
 	err = i.Model.AddOneGroupMsg(ctx, int32(req.MsgType), req.MsgId, req.GroupId, req.Sender, req.Timestamp, req)
 	if err != nil {
