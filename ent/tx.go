@@ -18,8 +18,8 @@ type Tx struct {
 	Group *GroupClient
 	// GroupMessage is the client for interacting with the GroupMessage builders.
 	GroupMessage *GroupMessageClient
-	// Message is the client for interacting with the Message builders.
-	Message *MessageClient
+	// PrivateMessage is the client for interacting with the PrivateMessage builders.
+	PrivateMessage *PrivateMessageClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
 	// User is the client for interacting with the User builders.
@@ -164,7 +164,7 @@ func (tx *Tx) init() {
 	tx.Chat = NewChatClient(tx.config)
 	tx.Group = NewGroupClient(tx.config)
 	tx.GroupMessage = NewGroupMessageClient(tx.config)
-	tx.Message = NewMessageClient(tx.config)
+	tx.PrivateMessage = NewPrivateMessageClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 	tx.UserConn = NewUserConnClient(tx.config)

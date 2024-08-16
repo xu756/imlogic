@@ -6,17 +6,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"imlogic/common/types"
 	"imlogic/ent/chat"
 	"imlogic/ent/group"
 	"imlogic/ent/groupmessage"
-	"imlogic/ent/message"
 	"imlogic/ent/predicate"
+	"imlogic/ent/privatemessage"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
 	"imlogic/ent/userconn"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
+	"imlogic/kitex_gen/im"
 	"sync"
 	"time"
 
@@ -33,15 +33,15 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeChat         = "Chat"
-	TypeGroup        = "Group"
-	TypeGroupMessage = "GroupMessage"
-	TypeMessage      = "Message"
-	TypeRole         = "Role"
-	TypeUser         = "User"
-	TypeUserConn     = "UserConn"
-	TypeUserGroup    = "UserGroup"
-	TypeUserRole     = "UserRole"
+	TypeChat           = "Chat"
+	TypeGroup          = "Group"
+	TypeGroupMessage   = "GroupMessage"
+	TypePrivateMessage = "PrivateMessage"
+	TypeRole           = "Role"
+	TypeUser           = "User"
+	TypeUserConn       = "UserConn"
+	TypeUserGroup      = "UserGroup"
+	TypeUserRole       = "UserRole"
 )
 
 // ChatMutation represents an operation that mutates the Chat nodes in the graph.
@@ -1161,16 +1161,16 @@ type GroupMessageMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	group_id      *int64
-	addgroup_id   *int64
 	msg_type      *int32
 	addmsg_type   *int32
 	msg_id        *string
+	group_id      *int64
+	addgroup_id   *int64
 	timestamp     *int64
 	addtimestamp  *int64
 	sender_id     *int64
 	addsender_id  *int64
-	content       *types.Message
+	content       **im.Message
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*GroupMessage, error)
@@ -1275,62 +1275,6 @@ func (m *GroupMessageMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetGroupID sets the "group_id" field.
-func (m *GroupMessageMutation) SetGroupID(i int64) {
-	m.group_id = &i
-	m.addgroup_id = nil
-}
-
-// GroupID returns the value of the "group_id" field in the mutation.
-func (m *GroupMessageMutation) GroupID() (r int64, exists bool) {
-	v := m.group_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldGroupID returns the old "group_id" field's value of the GroupMessage entity.
-// If the GroupMessage object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *GroupMessageMutation) OldGroupID(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldGroupID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldGroupID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldGroupID: %w", err)
-	}
-	return oldValue.GroupID, nil
-}
-
-// AddGroupID adds i to the "group_id" field.
-func (m *GroupMessageMutation) AddGroupID(i int64) {
-	if m.addgroup_id != nil {
-		*m.addgroup_id += i
-	} else {
-		m.addgroup_id = &i
-	}
-}
-
-// AddedGroupID returns the value that was added to the "group_id" field in this mutation.
-func (m *GroupMessageMutation) AddedGroupID() (r int64, exists bool) {
-	v := m.addgroup_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetGroupID resets all changes to the "group_id" field.
-func (m *GroupMessageMutation) ResetGroupID() {
-	m.group_id = nil
-	m.addgroup_id = nil
-}
-
 // SetMsgType sets the "msg_type" field.
 func (m *GroupMessageMutation) SetMsgType(i int32) {
 	m.msg_type = &i
@@ -1421,6 +1365,62 @@ func (m *GroupMessageMutation) OldMsgID(ctx context.Context) (v string, err erro
 // ResetMsgID resets all changes to the "msg_id" field.
 func (m *GroupMessageMutation) ResetMsgID() {
 	m.msg_id = nil
+}
+
+// SetGroupID sets the "group_id" field.
+func (m *GroupMessageMutation) SetGroupID(i int64) {
+	m.group_id = &i
+	m.addgroup_id = nil
+}
+
+// GroupID returns the value of the "group_id" field in the mutation.
+func (m *GroupMessageMutation) GroupID() (r int64, exists bool) {
+	v := m.group_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGroupID returns the old "group_id" field's value of the GroupMessage entity.
+// If the GroupMessage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GroupMessageMutation) OldGroupID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGroupID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGroupID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGroupID: %w", err)
+	}
+	return oldValue.GroupID, nil
+}
+
+// AddGroupID adds i to the "group_id" field.
+func (m *GroupMessageMutation) AddGroupID(i int64) {
+	if m.addgroup_id != nil {
+		*m.addgroup_id += i
+	} else {
+		m.addgroup_id = &i
+	}
+}
+
+// AddedGroupID returns the value that was added to the "group_id" field in this mutation.
+func (m *GroupMessageMutation) AddedGroupID() (r int64, exists bool) {
+	v := m.addgroup_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetGroupID resets all changes to the "group_id" field.
+func (m *GroupMessageMutation) ResetGroupID() {
+	m.group_id = nil
+	m.addgroup_id = nil
 }
 
 // SetTimestamp sets the "timestamp" field.
@@ -1536,12 +1536,12 @@ func (m *GroupMessageMutation) ResetSenderID() {
 }
 
 // SetContent sets the "content" field.
-func (m *GroupMessageMutation) SetContent(t types.Message) {
-	m.content = &t
+func (m *GroupMessageMutation) SetContent(i *im.Message) {
+	m.content = &i
 }
 
 // Content returns the value of the "content" field in the mutation.
-func (m *GroupMessageMutation) Content() (r types.Message, exists bool) {
+func (m *GroupMessageMutation) Content() (r *im.Message, exists bool) {
 	v := m.content
 	if v == nil {
 		return
@@ -1552,7 +1552,7 @@ func (m *GroupMessageMutation) Content() (r types.Message, exists bool) {
 // OldContent returns the old "content" field's value of the GroupMessage entity.
 // If the GroupMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *GroupMessageMutation) OldContent(ctx context.Context) (v types.Message, err error) {
+func (m *GroupMessageMutation) OldContent(ctx context.Context) (v *im.Message, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldContent is only allowed on UpdateOne operations")
 	}
@@ -1606,14 +1606,14 @@ func (m *GroupMessageMutation) Type() string {
 // AddedFields().
 func (m *GroupMessageMutation) Fields() []string {
 	fields := make([]string, 0, 6)
-	if m.group_id != nil {
-		fields = append(fields, groupmessage.FieldGroupID)
-	}
 	if m.msg_type != nil {
 		fields = append(fields, groupmessage.FieldMsgType)
 	}
 	if m.msg_id != nil {
 		fields = append(fields, groupmessage.FieldMsgID)
+	}
+	if m.group_id != nil {
+		fields = append(fields, groupmessage.FieldGroupID)
 	}
 	if m.timestamp != nil {
 		fields = append(fields, groupmessage.FieldTimestamp)
@@ -1632,12 +1632,12 @@ func (m *GroupMessageMutation) Fields() []string {
 // schema.
 func (m *GroupMessageMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case groupmessage.FieldGroupID:
-		return m.GroupID()
 	case groupmessage.FieldMsgType:
 		return m.MsgType()
 	case groupmessage.FieldMsgID:
 		return m.MsgID()
+	case groupmessage.FieldGroupID:
+		return m.GroupID()
 	case groupmessage.FieldTimestamp:
 		return m.Timestamp()
 	case groupmessage.FieldSenderID:
@@ -1653,12 +1653,12 @@ func (m *GroupMessageMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *GroupMessageMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case groupmessage.FieldGroupID:
-		return m.OldGroupID(ctx)
 	case groupmessage.FieldMsgType:
 		return m.OldMsgType(ctx)
 	case groupmessage.FieldMsgID:
 		return m.OldMsgID(ctx)
+	case groupmessage.FieldGroupID:
+		return m.OldGroupID(ctx)
 	case groupmessage.FieldTimestamp:
 		return m.OldTimestamp(ctx)
 	case groupmessage.FieldSenderID:
@@ -1674,13 +1674,6 @@ func (m *GroupMessageMutation) OldField(ctx context.Context, name string) (ent.V
 // type.
 func (m *GroupMessageMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case groupmessage.FieldGroupID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetGroupID(v)
-		return nil
 	case groupmessage.FieldMsgType:
 		v, ok := value.(int32)
 		if !ok {
@@ -1694,6 +1687,13 @@ func (m *GroupMessageMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMsgID(v)
+		return nil
+	case groupmessage.FieldGroupID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGroupID(v)
 		return nil
 	case groupmessage.FieldTimestamp:
 		v, ok := value.(int64)
@@ -1710,7 +1710,7 @@ func (m *GroupMessageMutation) SetField(name string, value ent.Value) error {
 		m.SetSenderID(v)
 		return nil
 	case groupmessage.FieldContent:
-		v, ok := value.(types.Message)
+		v, ok := value.(*im.Message)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1724,11 +1724,11 @@ func (m *GroupMessageMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *GroupMessageMutation) AddedFields() []string {
 	var fields []string
-	if m.addgroup_id != nil {
-		fields = append(fields, groupmessage.FieldGroupID)
-	}
 	if m.addmsg_type != nil {
 		fields = append(fields, groupmessage.FieldMsgType)
+	}
+	if m.addgroup_id != nil {
+		fields = append(fields, groupmessage.FieldGroupID)
 	}
 	if m.addtimestamp != nil {
 		fields = append(fields, groupmessage.FieldTimestamp)
@@ -1744,10 +1744,10 @@ func (m *GroupMessageMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *GroupMessageMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case groupmessage.FieldGroupID:
-		return m.AddedGroupID()
 	case groupmessage.FieldMsgType:
 		return m.AddedMsgType()
+	case groupmessage.FieldGroupID:
+		return m.AddedGroupID()
 	case groupmessage.FieldTimestamp:
 		return m.AddedTimestamp()
 	case groupmessage.FieldSenderID:
@@ -1761,19 +1761,19 @@ func (m *GroupMessageMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *GroupMessageMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case groupmessage.FieldGroupID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddGroupID(v)
-		return nil
 	case groupmessage.FieldMsgType:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddMsgType(v)
+		return nil
+	case groupmessage.FieldGroupID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddGroupID(v)
 		return nil
 	case groupmessage.FieldTimestamp:
 		v, ok := value.(int64)
@@ -1816,14 +1816,14 @@ func (m *GroupMessageMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *GroupMessageMutation) ResetField(name string) error {
 	switch name {
-	case groupmessage.FieldGroupID:
-		m.ResetGroupID()
-		return nil
 	case groupmessage.FieldMsgType:
 		m.ResetMsgType()
 		return nil
 	case groupmessage.FieldMsgID:
 		m.ResetMsgID()
+		return nil
+	case groupmessage.FieldGroupID:
+		m.ResetGroupID()
 		return nil
 	case groupmessage.FieldTimestamp:
 		m.ResetTimestamp()
@@ -1886,39 +1886,39 @@ func (m *GroupMessageMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown GroupMessage edge %s", name)
 }
 
-// MessageMutation represents an operation that mutates the Message nodes in the graph.
-type MessageMutation struct {
+// PrivateMessageMutation represents an operation that mutates the PrivateMessage nodes in the graph.
+type PrivateMessageMutation struct {
 	config
 	op            Op
 	typ           string
 	id            *int
-	chat_id       *int64
-	addchat_id    *int64
 	msg_type      *int32
 	addmsg_type   *int32
 	msg_id        *string
-	timestamp     *int64
-	addtimestamp  *int64
+	chat_id       *int64
+	addchat_id    *int64
 	sender_id     *int64
 	addsender_id  *int64
-	content       *types.Message
+	timestamp     *int64
+	addtimestamp  *int64
+	content       **im.Message
 	clearedFields map[string]struct{}
 	done          bool
-	oldValue      func(context.Context) (*Message, error)
-	predicates    []predicate.Message
+	oldValue      func(context.Context) (*PrivateMessage, error)
+	predicates    []predicate.PrivateMessage
 }
 
-var _ ent.Mutation = (*MessageMutation)(nil)
+var _ ent.Mutation = (*PrivateMessageMutation)(nil)
 
-// messageOption allows management of the mutation configuration using functional options.
-type messageOption func(*MessageMutation)
+// privatemessageOption allows management of the mutation configuration using functional options.
+type privatemessageOption func(*PrivateMessageMutation)
 
-// newMessageMutation creates new mutation for the Message entity.
-func newMessageMutation(c config, op Op, opts ...messageOption) *MessageMutation {
-	m := &MessageMutation{
+// newPrivateMessageMutation creates new mutation for the PrivateMessage entity.
+func newPrivateMessageMutation(c config, op Op, opts ...privatemessageOption) *PrivateMessageMutation {
+	m := &PrivateMessageMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeMessage,
+		typ:           TypePrivateMessage,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -1927,20 +1927,20 @@ func newMessageMutation(c config, op Op, opts ...messageOption) *MessageMutation
 	return m
 }
 
-// withMessageID sets the ID field of the mutation.
-func withMessageID(id int) messageOption {
-	return func(m *MessageMutation) {
+// withPrivateMessageID sets the ID field of the mutation.
+func withPrivateMessageID(id int) privatemessageOption {
+	return func(m *PrivateMessageMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *Message
+			value *PrivateMessage
 		)
-		m.oldValue = func(ctx context.Context) (*Message, error) {
+		m.oldValue = func(ctx context.Context) (*PrivateMessage, error) {
 			once.Do(func() {
 				if m.done {
 					err = errors.New("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().Message.Get(ctx, id)
+					value, err = m.Client().PrivateMessage.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -1949,10 +1949,10 @@ func withMessageID(id int) messageOption {
 	}
 }
 
-// withMessage sets the old Message of the mutation.
-func withMessage(node *Message) messageOption {
-	return func(m *MessageMutation) {
-		m.oldValue = func(context.Context) (*Message, error) {
+// withPrivateMessage sets the old PrivateMessage of the mutation.
+func withPrivateMessage(node *PrivateMessage) privatemessageOption {
+	return func(m *PrivateMessageMutation) {
+		m.oldValue = func(context.Context) (*PrivateMessage, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -1961,7 +1961,7 @@ func withMessage(node *Message) messageOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m MessageMutation) Client() *Client {
+func (m PrivateMessageMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -1969,7 +1969,7 @@ func (m MessageMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m MessageMutation) Tx() (*Tx, error) {
+func (m PrivateMessageMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, errors.New("ent: mutation is not running in a transaction")
 	}
@@ -1980,7 +1980,7 @@ func (m MessageMutation) Tx() (*Tx, error) {
 
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *MessageMutation) ID() (id int, exists bool) {
+func (m *PrivateMessageMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -1991,7 +1991,7 @@ func (m *MessageMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *MessageMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *PrivateMessageMutation) IDs(ctx context.Context) ([]int, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
@@ -2000,76 +2000,20 @@ func (m *MessageMutation) IDs(ctx context.Context) ([]int, error) {
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Message.Query().Where(m.predicates...).IDs(ctx)
+		return m.Client().PrivateMessage.Query().Where(m.predicates...).IDs(ctx)
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
 }
 
-// SetChatID sets the "chat_id" field.
-func (m *MessageMutation) SetChatID(i int64) {
-	m.chat_id = &i
-	m.addchat_id = nil
-}
-
-// ChatID returns the value of the "chat_id" field in the mutation.
-func (m *MessageMutation) ChatID() (r int64, exists bool) {
-	v := m.chat_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldChatID returns the old "chat_id" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldChatID(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldChatID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldChatID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldChatID: %w", err)
-	}
-	return oldValue.ChatID, nil
-}
-
-// AddChatID adds i to the "chat_id" field.
-func (m *MessageMutation) AddChatID(i int64) {
-	if m.addchat_id != nil {
-		*m.addchat_id += i
-	} else {
-		m.addchat_id = &i
-	}
-}
-
-// AddedChatID returns the value that was added to the "chat_id" field in this mutation.
-func (m *MessageMutation) AddedChatID() (r int64, exists bool) {
-	v := m.addchat_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetChatID resets all changes to the "chat_id" field.
-func (m *MessageMutation) ResetChatID() {
-	m.chat_id = nil
-	m.addchat_id = nil
-}
-
 // SetMsgType sets the "msg_type" field.
-func (m *MessageMutation) SetMsgType(i int32) {
+func (m *PrivateMessageMutation) SetMsgType(i int32) {
 	m.msg_type = &i
 	m.addmsg_type = nil
 }
 
 // MsgType returns the value of the "msg_type" field in the mutation.
-func (m *MessageMutation) MsgType() (r int32, exists bool) {
+func (m *PrivateMessageMutation) MsgType() (r int32, exists bool) {
 	v := m.msg_type
 	if v == nil {
 		return
@@ -2077,10 +2021,10 @@ func (m *MessageMutation) MsgType() (r int32, exists bool) {
 	return *v, true
 }
 
-// OldMsgType returns the old "msg_type" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// OldMsgType returns the old "msg_type" field's value of the PrivateMessage entity.
+// If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldMsgType(ctx context.Context) (v int32, err error) {
+func (m *PrivateMessageMutation) OldMsgType(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldMsgType is only allowed on UpdateOne operations")
 	}
@@ -2095,7 +2039,7 @@ func (m *MessageMutation) OldMsgType(ctx context.Context) (v int32, err error) {
 }
 
 // AddMsgType adds i to the "msg_type" field.
-func (m *MessageMutation) AddMsgType(i int32) {
+func (m *PrivateMessageMutation) AddMsgType(i int32) {
 	if m.addmsg_type != nil {
 		*m.addmsg_type += i
 	} else {
@@ -2104,7 +2048,7 @@ func (m *MessageMutation) AddMsgType(i int32) {
 }
 
 // AddedMsgType returns the value that was added to the "msg_type" field in this mutation.
-func (m *MessageMutation) AddedMsgType() (r int32, exists bool) {
+func (m *PrivateMessageMutation) AddedMsgType() (r int32, exists bool) {
 	v := m.addmsg_type
 	if v == nil {
 		return
@@ -2113,18 +2057,18 @@ func (m *MessageMutation) AddedMsgType() (r int32, exists bool) {
 }
 
 // ResetMsgType resets all changes to the "msg_type" field.
-func (m *MessageMutation) ResetMsgType() {
+func (m *PrivateMessageMutation) ResetMsgType() {
 	m.msg_type = nil
 	m.addmsg_type = nil
 }
 
 // SetMsgID sets the "msg_id" field.
-func (m *MessageMutation) SetMsgID(s string) {
+func (m *PrivateMessageMutation) SetMsgID(s string) {
 	m.msg_id = &s
 }
 
 // MsgID returns the value of the "msg_id" field in the mutation.
-func (m *MessageMutation) MsgID() (r string, exists bool) {
+func (m *PrivateMessageMutation) MsgID() (r string, exists bool) {
 	v := m.msg_id
 	if v == nil {
 		return
@@ -2132,10 +2076,10 @@ func (m *MessageMutation) MsgID() (r string, exists bool) {
 	return *v, true
 }
 
-// OldMsgID returns the old "msg_id" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// OldMsgID returns the old "msg_id" field's value of the PrivateMessage entity.
+// If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldMsgID(ctx context.Context) (v string, err error) {
+func (m *PrivateMessageMutation) OldMsgID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldMsgID is only allowed on UpdateOne operations")
 	}
@@ -2150,74 +2094,74 @@ func (m *MessageMutation) OldMsgID(ctx context.Context) (v string, err error) {
 }
 
 // ResetMsgID resets all changes to the "msg_id" field.
-func (m *MessageMutation) ResetMsgID() {
+func (m *PrivateMessageMutation) ResetMsgID() {
 	m.msg_id = nil
 }
 
-// SetTimestamp sets the "timestamp" field.
-func (m *MessageMutation) SetTimestamp(i int64) {
-	m.timestamp = &i
-	m.addtimestamp = nil
+// SetChatID sets the "chat_id" field.
+func (m *PrivateMessageMutation) SetChatID(i int64) {
+	m.chat_id = &i
+	m.addchat_id = nil
 }
 
-// Timestamp returns the value of the "timestamp" field in the mutation.
-func (m *MessageMutation) Timestamp() (r int64, exists bool) {
-	v := m.timestamp
+// ChatID returns the value of the "chat_id" field in the mutation.
+func (m *PrivateMessageMutation) ChatID() (r int64, exists bool) {
+	v := m.chat_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTimestamp returns the old "timestamp" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// OldChatID returns the old "chat_id" field's value of the PrivateMessage entity.
+// If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldTimestamp(ctx context.Context) (v int64, err error) {
+func (m *PrivateMessageMutation) OldChatID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTimestamp is only allowed on UpdateOne operations")
+		return v, errors.New("OldChatID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTimestamp requires an ID field in the mutation")
+		return v, errors.New("OldChatID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTimestamp: %w", err)
+		return v, fmt.Errorf("querying old value for OldChatID: %w", err)
 	}
-	return oldValue.Timestamp, nil
+	return oldValue.ChatID, nil
 }
 
-// AddTimestamp adds i to the "timestamp" field.
-func (m *MessageMutation) AddTimestamp(i int64) {
-	if m.addtimestamp != nil {
-		*m.addtimestamp += i
+// AddChatID adds i to the "chat_id" field.
+func (m *PrivateMessageMutation) AddChatID(i int64) {
+	if m.addchat_id != nil {
+		*m.addchat_id += i
 	} else {
-		m.addtimestamp = &i
+		m.addchat_id = &i
 	}
 }
 
-// AddedTimestamp returns the value that was added to the "timestamp" field in this mutation.
-func (m *MessageMutation) AddedTimestamp() (r int64, exists bool) {
-	v := m.addtimestamp
+// AddedChatID returns the value that was added to the "chat_id" field in this mutation.
+func (m *PrivateMessageMutation) AddedChatID() (r int64, exists bool) {
+	v := m.addchat_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetTimestamp resets all changes to the "timestamp" field.
-func (m *MessageMutation) ResetTimestamp() {
-	m.timestamp = nil
-	m.addtimestamp = nil
+// ResetChatID resets all changes to the "chat_id" field.
+func (m *PrivateMessageMutation) ResetChatID() {
+	m.chat_id = nil
+	m.addchat_id = nil
 }
 
 // SetSenderID sets the "sender_id" field.
-func (m *MessageMutation) SetSenderID(i int64) {
+func (m *PrivateMessageMutation) SetSenderID(i int64) {
 	m.sender_id = &i
 	m.addsender_id = nil
 }
 
 // SenderID returns the value of the "sender_id" field in the mutation.
-func (m *MessageMutation) SenderID() (r int64, exists bool) {
+func (m *PrivateMessageMutation) SenderID() (r int64, exists bool) {
 	v := m.sender_id
 	if v == nil {
 		return
@@ -2225,10 +2169,10 @@ func (m *MessageMutation) SenderID() (r int64, exists bool) {
 	return *v, true
 }
 
-// OldSenderID returns the old "sender_id" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// OldSenderID returns the old "sender_id" field's value of the PrivateMessage entity.
+// If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldSenderID(ctx context.Context) (v int64, err error) {
+func (m *PrivateMessageMutation) OldSenderID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldSenderID is only allowed on UpdateOne operations")
 	}
@@ -2243,7 +2187,7 @@ func (m *MessageMutation) OldSenderID(ctx context.Context) (v int64, err error) 
 }
 
 // AddSenderID adds i to the "sender_id" field.
-func (m *MessageMutation) AddSenderID(i int64) {
+func (m *PrivateMessageMutation) AddSenderID(i int64) {
 	if m.addsender_id != nil {
 		*m.addsender_id += i
 	} else {
@@ -2252,7 +2196,7 @@ func (m *MessageMutation) AddSenderID(i int64) {
 }
 
 // AddedSenderID returns the value that was added to the "sender_id" field in this mutation.
-func (m *MessageMutation) AddedSenderID() (r int64, exists bool) {
+func (m *PrivateMessageMutation) AddedSenderID() (r int64, exists bool) {
 	v := m.addsender_id
 	if v == nil {
 		return
@@ -2261,18 +2205,74 @@ func (m *MessageMutation) AddedSenderID() (r int64, exists bool) {
 }
 
 // ResetSenderID resets all changes to the "sender_id" field.
-func (m *MessageMutation) ResetSenderID() {
+func (m *PrivateMessageMutation) ResetSenderID() {
 	m.sender_id = nil
 	m.addsender_id = nil
 }
 
+// SetTimestamp sets the "timestamp" field.
+func (m *PrivateMessageMutation) SetTimestamp(i int64) {
+	m.timestamp = &i
+	m.addtimestamp = nil
+}
+
+// Timestamp returns the value of the "timestamp" field in the mutation.
+func (m *PrivateMessageMutation) Timestamp() (r int64, exists bool) {
+	v := m.timestamp
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTimestamp returns the old "timestamp" field's value of the PrivateMessage entity.
+// If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PrivateMessageMutation) OldTimestamp(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTimestamp is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTimestamp requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTimestamp: %w", err)
+	}
+	return oldValue.Timestamp, nil
+}
+
+// AddTimestamp adds i to the "timestamp" field.
+func (m *PrivateMessageMutation) AddTimestamp(i int64) {
+	if m.addtimestamp != nil {
+		*m.addtimestamp += i
+	} else {
+		m.addtimestamp = &i
+	}
+}
+
+// AddedTimestamp returns the value that was added to the "timestamp" field in this mutation.
+func (m *PrivateMessageMutation) AddedTimestamp() (r int64, exists bool) {
+	v := m.addtimestamp
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetTimestamp resets all changes to the "timestamp" field.
+func (m *PrivateMessageMutation) ResetTimestamp() {
+	m.timestamp = nil
+	m.addtimestamp = nil
+}
+
 // SetContent sets the "content" field.
-func (m *MessageMutation) SetContent(t types.Message) {
-	m.content = &t
+func (m *PrivateMessageMutation) SetContent(i *im.Message) {
+	m.content = &i
 }
 
 // Content returns the value of the "content" field in the mutation.
-func (m *MessageMutation) Content() (r types.Message, exists bool) {
+func (m *PrivateMessageMutation) Content() (r *im.Message, exists bool) {
 	v := m.content
 	if v == nil {
 		return
@@ -2280,10 +2280,10 @@ func (m *MessageMutation) Content() (r types.Message, exists bool) {
 	return *v, true
 }
 
-// OldContent returns the old "content" field's value of the Message entity.
-// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// OldContent returns the old "content" field's value of the PrivateMessage entity.
+// If the PrivateMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldContent(ctx context.Context) (v types.Message, err error) {
+func (m *PrivateMessageMutation) OldContent(ctx context.Context) (v *im.Message, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldContent is only allowed on UpdateOne operations")
 	}
@@ -2298,19 +2298,19 @@ func (m *MessageMutation) OldContent(ctx context.Context) (v types.Message, err 
 }
 
 // ResetContent resets all changes to the "content" field.
-func (m *MessageMutation) ResetContent() {
+func (m *PrivateMessageMutation) ResetContent() {
 	m.content = nil
 }
 
-// Where appends a list predicates to the MessageMutation builder.
-func (m *MessageMutation) Where(ps ...predicate.Message) {
+// Where appends a list predicates to the PrivateMessageMutation builder.
+func (m *PrivateMessageMutation) Where(ps ...predicate.PrivateMessage) {
 	m.predicates = append(m.predicates, ps...)
 }
 
-// WhereP appends storage-level predicates to the MessageMutation builder. Using this method,
+// WhereP appends storage-level predicates to the PrivateMessageMutation builder. Using this method,
 // users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *MessageMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.Message, len(ps))
+func (m *PrivateMessageMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.PrivateMessage, len(ps))
 	for i := range ps {
 		p[i] = ps[i]
 	}
@@ -2318,42 +2318,42 @@ func (m *MessageMutation) WhereP(ps ...func(*sql.Selector)) {
 }
 
 // Op returns the operation name.
-func (m *MessageMutation) Op() Op {
+func (m *PrivateMessageMutation) Op() Op {
 	return m.op
 }
 
 // SetOp allows setting the mutation operation.
-func (m *MessageMutation) SetOp(op Op) {
+func (m *PrivateMessageMutation) SetOp(op Op) {
 	m.op = op
 }
 
-// Type returns the node type of this mutation (Message).
-func (m *MessageMutation) Type() string {
+// Type returns the node type of this mutation (PrivateMessage).
+func (m *PrivateMessageMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *MessageMutation) Fields() []string {
+func (m *PrivateMessageMutation) Fields() []string {
 	fields := make([]string, 0, 6)
-	if m.chat_id != nil {
-		fields = append(fields, message.FieldChatID)
-	}
 	if m.msg_type != nil {
-		fields = append(fields, message.FieldMsgType)
+		fields = append(fields, privatemessage.FieldMsgType)
 	}
 	if m.msg_id != nil {
-		fields = append(fields, message.FieldMsgID)
+		fields = append(fields, privatemessage.FieldMsgID)
 	}
-	if m.timestamp != nil {
-		fields = append(fields, message.FieldTimestamp)
+	if m.chat_id != nil {
+		fields = append(fields, privatemessage.FieldChatID)
 	}
 	if m.sender_id != nil {
-		fields = append(fields, message.FieldSenderID)
+		fields = append(fields, privatemessage.FieldSenderID)
+	}
+	if m.timestamp != nil {
+		fields = append(fields, privatemessage.FieldTimestamp)
 	}
 	if m.content != nil {
-		fields = append(fields, message.FieldContent)
+		fields = append(fields, privatemessage.FieldContent)
 	}
 	return fields
 }
@@ -2361,19 +2361,19 @@ func (m *MessageMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *MessageMutation) Field(name string) (ent.Value, bool) {
+func (m *PrivateMessageMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case message.FieldChatID:
-		return m.ChatID()
-	case message.FieldMsgType:
+	case privatemessage.FieldMsgType:
 		return m.MsgType()
-	case message.FieldMsgID:
+	case privatemessage.FieldMsgID:
 		return m.MsgID()
-	case message.FieldTimestamp:
-		return m.Timestamp()
-	case message.FieldSenderID:
+	case privatemessage.FieldChatID:
+		return m.ChatID()
+	case privatemessage.FieldSenderID:
 		return m.SenderID()
-	case message.FieldContent:
+	case privatemessage.FieldTimestamp:
+		return m.Timestamp()
+	case privatemessage.FieldContent:
 		return m.Content()
 	}
 	return nil, false
@@ -2382,90 +2382,90 @@ func (m *MessageMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *PrivateMessageMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case message.FieldChatID:
-		return m.OldChatID(ctx)
-	case message.FieldMsgType:
+	case privatemessage.FieldMsgType:
 		return m.OldMsgType(ctx)
-	case message.FieldMsgID:
+	case privatemessage.FieldMsgID:
 		return m.OldMsgID(ctx)
-	case message.FieldTimestamp:
-		return m.OldTimestamp(ctx)
-	case message.FieldSenderID:
+	case privatemessage.FieldChatID:
+		return m.OldChatID(ctx)
+	case privatemessage.FieldSenderID:
 		return m.OldSenderID(ctx)
-	case message.FieldContent:
+	case privatemessage.FieldTimestamp:
+		return m.OldTimestamp(ctx)
+	case privatemessage.FieldContent:
 		return m.OldContent(ctx)
 	}
-	return nil, fmt.Errorf("unknown Message field %s", name)
+	return nil, fmt.Errorf("unknown PrivateMessage field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *MessageMutation) SetField(name string, value ent.Value) error {
+func (m *PrivateMessageMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case message.FieldChatID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetChatID(v)
-		return nil
-	case message.FieldMsgType:
+	case privatemessage.FieldMsgType:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMsgType(v)
 		return nil
-	case message.FieldMsgID:
+	case privatemessage.FieldMsgID:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMsgID(v)
 		return nil
-	case message.FieldTimestamp:
+	case privatemessage.FieldChatID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTimestamp(v)
+		m.SetChatID(v)
 		return nil
-	case message.FieldSenderID:
+	case privatemessage.FieldSenderID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSenderID(v)
 		return nil
-	case message.FieldContent:
-		v, ok := value.(types.Message)
+	case privatemessage.FieldTimestamp:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTimestamp(v)
+		return nil
+	case privatemessage.FieldContent:
+		v, ok := value.(*im.Message)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetContent(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Message field %s", name)
+	return fmt.Errorf("unknown PrivateMessage field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *MessageMutation) AddedFields() []string {
+func (m *PrivateMessageMutation) AddedFields() []string {
 	var fields []string
-	if m.addchat_id != nil {
-		fields = append(fields, message.FieldChatID)
-	}
 	if m.addmsg_type != nil {
-		fields = append(fields, message.FieldMsgType)
+		fields = append(fields, privatemessage.FieldMsgType)
 	}
-	if m.addtimestamp != nil {
-		fields = append(fields, message.FieldTimestamp)
+	if m.addchat_id != nil {
+		fields = append(fields, privatemessage.FieldChatID)
 	}
 	if m.addsender_id != nil {
-		fields = append(fields, message.FieldSenderID)
+		fields = append(fields, privatemessage.FieldSenderID)
+	}
+	if m.addtimestamp != nil {
+		fields = append(fields, privatemessage.FieldTimestamp)
 	}
 	return fields
 }
@@ -2473,16 +2473,16 @@ func (m *MessageMutation) AddedFields() []string {
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *MessageMutation) AddedField(name string) (ent.Value, bool) {
+func (m *PrivateMessageMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case message.FieldChatID:
-		return m.AddedChatID()
-	case message.FieldMsgType:
+	case privatemessage.FieldMsgType:
 		return m.AddedMsgType()
-	case message.FieldTimestamp:
-		return m.AddedTimestamp()
-	case message.FieldSenderID:
+	case privatemessage.FieldChatID:
+		return m.AddedChatID()
+	case privatemessage.FieldSenderID:
 		return m.AddedSenderID()
+	case privatemessage.FieldTimestamp:
+		return m.AddedTimestamp()
 	}
 	return nil, false
 }
@@ -2490,131 +2490,131 @@ func (m *MessageMutation) AddedField(name string) (ent.Value, bool) {
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *MessageMutation) AddField(name string, value ent.Value) error {
+func (m *PrivateMessageMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case message.FieldChatID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddChatID(v)
-		return nil
-	case message.FieldMsgType:
+	case privatemessage.FieldMsgType:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddMsgType(v)
 		return nil
-	case message.FieldTimestamp:
+	case privatemessage.FieldChatID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddTimestamp(v)
+		m.AddChatID(v)
 		return nil
-	case message.FieldSenderID:
+	case privatemessage.FieldSenderID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddSenderID(v)
 		return nil
+	case privatemessage.FieldTimestamp:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTimestamp(v)
+		return nil
 	}
-	return fmt.Errorf("unknown Message numeric field %s", name)
+	return fmt.Errorf("unknown PrivateMessage numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *MessageMutation) ClearedFields() []string {
+func (m *PrivateMessageMutation) ClearedFields() []string {
 	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *MessageMutation) FieldCleared(name string) bool {
+func (m *PrivateMessageMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *MessageMutation) ClearField(name string) error {
-	return fmt.Errorf("unknown Message nullable field %s", name)
+func (m *PrivateMessageMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown PrivateMessage nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *MessageMutation) ResetField(name string) error {
+func (m *PrivateMessageMutation) ResetField(name string) error {
 	switch name {
-	case message.FieldChatID:
-		m.ResetChatID()
-		return nil
-	case message.FieldMsgType:
+	case privatemessage.FieldMsgType:
 		m.ResetMsgType()
 		return nil
-	case message.FieldMsgID:
+	case privatemessage.FieldMsgID:
 		m.ResetMsgID()
 		return nil
-	case message.FieldTimestamp:
-		m.ResetTimestamp()
+	case privatemessage.FieldChatID:
+		m.ResetChatID()
 		return nil
-	case message.FieldSenderID:
+	case privatemessage.FieldSenderID:
 		m.ResetSenderID()
 		return nil
-	case message.FieldContent:
+	case privatemessage.FieldTimestamp:
+		m.ResetTimestamp()
+		return nil
+	case privatemessage.FieldContent:
 		m.ResetContent()
 		return nil
 	}
-	return fmt.Errorf("unknown Message field %s", name)
+	return fmt.Errorf("unknown PrivateMessage field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *MessageMutation) AddedEdges() []string {
+func (m *PrivateMessageMutation) AddedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *MessageMutation) AddedIDs(name string) []ent.Value {
+func (m *PrivateMessageMutation) AddedIDs(name string) []ent.Value {
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *MessageMutation) RemovedEdges() []string {
+func (m *PrivateMessageMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *MessageMutation) RemovedIDs(name string) []ent.Value {
+func (m *PrivateMessageMutation) RemovedIDs(name string) []ent.Value {
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *MessageMutation) ClearedEdges() []string {
+func (m *PrivateMessageMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *MessageMutation) EdgeCleared(name string) bool {
+func (m *PrivateMessageMutation) EdgeCleared(name string) bool {
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *MessageMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown Message unique edge %s", name)
+func (m *PrivateMessageMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown PrivateMessage unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *MessageMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown Message edge %s", name)
+func (m *PrivateMessageMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown PrivateMessage edge %s", name)
 }
 
 // RoleMutation represents an operation that mutates the Role nodes in the graph.

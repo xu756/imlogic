@@ -9,7 +9,7 @@ import (
 	"imlogic/ent/chat"
 	"imlogic/ent/group"
 	"imlogic/ent/groupmessage"
-	"imlogic/ent/message"
+	"imlogic/ent/privatemessage"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
 	"imlogic/ent/userconn"
@@ -81,15 +81,15 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			chat.Table:         chat.ValidColumn,
-			group.Table:        group.ValidColumn,
-			groupmessage.Table: groupmessage.ValidColumn,
-			message.Table:      message.ValidColumn,
-			role.Table:         role.ValidColumn,
-			user.Table:         user.ValidColumn,
-			userconn.Table:     userconn.ValidColumn,
-			usergroup.Table:    usergroup.ValidColumn,
-			userrole.Table:     userrole.ValidColumn,
+			chat.Table:           chat.ValidColumn,
+			group.Table:          group.ValidColumn,
+			groupmessage.Table:   groupmessage.ValidColumn,
+			privatemessage.Table: privatemessage.ValidColumn,
+			role.Table:           role.ValidColumn,
+			user.Table:           user.ValidColumn,
+			userconn.Table:       userconn.ValidColumn,
+			usergroup.Table:      usergroup.ValidColumn,
+			userrole.Table:       userrole.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

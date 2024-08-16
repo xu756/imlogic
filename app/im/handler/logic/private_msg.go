@@ -8,6 +8,11 @@ import (
 
 // HandlerPrivateMessage implements im.ImHandler.
 func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *im.Message) (res *im.MessageRes, err error) {
+	// 保存消息
+	err = i.Model.AddOnePrivateMsg(ctx, int32(req.MsgType), req.MsgId, req.ChatId, req.Sender, req.Timestamp, req)
+	if err != nil {
+		return nil, err
+	}
 	conns, err := i.Model.GetUserConnsByUserId(ctx, req.Receiver)
 	if err != nil {
 		return nil, err

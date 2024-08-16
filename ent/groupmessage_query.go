@@ -261,12 +261,12 @@ func (gmq *GroupMessageQuery) Clone() *GroupMessageQuery {
 // Example:
 //
 //	var v []struct {
-//		GroupID int64 `json:"group_id,omitempty"`
+//		MsgType int32 `json:"msg_type,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.GroupMessage.Query().
-//		GroupBy(groupmessage.FieldGroupID).
+//		GroupBy(groupmessage.FieldMsgType).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (gmq *GroupMessageQuery) GroupBy(field string, fields ...string) *GroupMessageGroupBy {
@@ -284,11 +284,11 @@ func (gmq *GroupMessageQuery) GroupBy(field string, fields ...string) *GroupMess
 // Example:
 //
 //	var v []struct {
-//		GroupID int64 `json:"group_id,omitempty"`
+//		MsgType int32 `json:"msg_type,omitempty"`
 //	}
 //
 //	client.GroupMessage.Query().
-//		Select(groupmessage.FieldGroupID).
+//		Select(groupmessage.FieldMsgType).
 //		Scan(ctx, &v)
 func (gmq *GroupMessageQuery) Select(fields ...string) *GroupMessageSelect {
 	gmq.ctx.Fields = append(gmq.ctx.Fields, fields...)

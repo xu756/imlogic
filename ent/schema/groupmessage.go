@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"imlogic/common/types"
+	"imlogic/kitex_gen/im"
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
@@ -16,12 +16,12 @@ type GroupMessage struct {
 // Fields of the GroupMessage.
 func (GroupMessage) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int64("group_id").Comment("群id"),
 		field.Int32("msg_type").Comment("消息类型"),
 		field.String("msg_id").Comment("消息id"),
+		field.Int64("group_id").Comment("群id"),
 		field.Int64("timestamp").Comment("消息时间戳"),
 		field.Int64("sender_id").Comment("发送者id"),
-		field.JSON("content", types.Message{}).Comment("消息内容"),
+		field.JSON("content", &im.Message{}).Comment("消息内容"),
 	}
 }
 

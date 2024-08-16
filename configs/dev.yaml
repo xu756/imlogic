@@ -12,14 +12,14 @@ Rpc:
 
 DbConfig:
   DbType: postgres
-  Addr: 0.0.0.0
+  Addr: 192.168.0.105
   Port: 5432
   Username: imlogic
   Password: imlogic
   DbName: imlogic
 
 RedisConfig:
-  Addr: 0.0.0.0:6379
+  Addr: 192.168.0.105:6379
   Password: redis123456
   Db: 4
   Prefix: imlogic-dev
@@ -32,7 +32,7 @@ JwtConfig:
   Expire: 3600000
 
 
-MqUrl: amqp://root:1mYa0PE6JLz8U5YJYMgj@0.0.0.0:5672/
+MqUrl: amqp://root:1mYa0PE6JLz8U5YJYMgj@192.168.0.105:5672/
 Version: v1
 Minio:
   Endpoint: cos.imlogic.cn

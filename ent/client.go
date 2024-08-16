@@ -14,7 +14,7 @@ import (
 	"imlogic/ent/chat"
 	"imlogic/ent/group"
 	"imlogic/ent/groupmessage"
-	"imlogic/ent/message"
+	"imlogic/ent/privatemessage"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
 	"imlogic/ent/userconn"
@@ -37,8 +37,8 @@ type Client struct {
 	Group *GroupClient
 	// GroupMessage is the client for interacting with the GroupMessage builders.
 	GroupMessage *GroupMessageClient
-	// Message is the client for interacting with the Message builders.
-	Message *MessageClient
+	// PrivateMessage is the client for interacting with the PrivateMessage builders.
+	PrivateMessage *PrivateMessageClient
 	// Role is the client for interacting with the Role builders.
 	Role *RoleClient
 	// User is the client for interacting with the User builders.
@@ -63,7 +63,7 @@ func (c *Client) init() {
 	c.Chat = NewChatClient(c.config)
 	c.Group = NewGroupClient(c.config)
 	c.GroupMessage = NewGroupMessageClient(c.config)
-	c.Message = NewMessageClient(c.config)
+	c.PrivateMessage = NewPrivateMessageClient(c.config)
 	c.Role = NewRoleClient(c.config)
 	c.User = NewUserClient(c.config)
 	c.UserConn = NewUserConnClient(c.config)
@@ -159,17 +159,17 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:          ctx,
-		config:       cfg,
-		Chat:         NewChatClient(cfg),
-		Group:        NewGroupClient(cfg),
-		GroupMessage: NewGroupMessageClient(cfg),
-		Message:      NewMessageClient(cfg),
-		Role:         NewRoleClient(cfg),
-		User:         NewUserClient(cfg),
-		UserConn:     NewUserConnClient(cfg),
-		UserGroup:    NewUserGroupClient(cfg),
-		UserRole:     NewUserRoleClient(cfg),
+		ctx:            ctx,
+		config:         cfg,
+		Chat:           NewChatClient(cfg),
+		Group:          NewGroupClient(cfg),
+		GroupMessage:   NewGroupMessageClient(cfg),
+		PrivateMessage: NewPrivateMessageClient(cfg),
+		Role:           NewRoleClient(cfg),
+		User:           NewUserClient(cfg),
+		UserConn:       NewUserConnClient(cfg),
+		UserGroup:      NewUserGroupClient(cfg),
+		UserRole:       NewUserRoleClient(cfg),
 	}, nil
 }
 
@@ -187,17 +187,17 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:          ctx,
-		config:       cfg,
-		Chat:         NewChatClient(cfg),
-		Group:        NewGroupClient(cfg),
-		GroupMessage: NewGroupMessageClient(cfg),
-		Message:      NewMessageClient(cfg),
-		Role:         NewRoleClient(cfg),
-		User:         NewUserClient(cfg),
-		UserConn:     NewUserConnClient(cfg),
-		UserGroup:    NewUserGroupClient(cfg),
-		UserRole:     NewUserRoleClient(cfg),
+		ctx:            ctx,
+		config:         cfg,
+		Chat:           NewChatClient(cfg),
+		Group:          NewGroupClient(cfg),
+		GroupMessage:   NewGroupMessageClient(cfg),
+		PrivateMessage: NewPrivateMessageClient(cfg),
+		Role:           NewRoleClient(cfg),
+		User:           NewUserClient(cfg),
+		UserConn:       NewUserConnClient(cfg),
+		UserGroup:      NewUserGroupClient(cfg),
+		UserRole:       NewUserRoleClient(cfg),
 	}, nil
 }
 
@@ -227,7 +227,7 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Chat, c.Group, c.GroupMessage, c.Message, c.Role, c.User, c.UserConn,
+		c.Chat, c.Group, c.GroupMessage, c.PrivateMessage, c.Role, c.User, c.UserConn,
 		c.UserGroup, c.UserRole,
 	} {
 		n.Use(hooks...)
@@ -238,7 +238,7 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Chat, c.Group, c.GroupMessage, c.Message, c.Role, c.User, c.UserConn,
+		c.Chat, c.Group, c.GroupMessage, c.PrivateMessage, c.Role, c.User, c.UserConn,
 		c.UserGroup, c.UserRole,
 	} {
 		n.Intercept(interceptors...)
@@ -254,8 +254,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Group.mutate(ctx, m)
 	case *GroupMessageMutation:
 		return c.GroupMessage.mutate(ctx, m)
-	case *MessageMutation:
-		return c.Message.mutate(ctx, m)
+	case *PrivateMessageMutation:
+		return c.PrivateMessage.mutate(ctx, m)
 	case *RoleMutation:
 		return c.Role.mutate(ctx, m)
 	case *UserMutation:
@@ -670,107 +670,107 @@ func (c *GroupMessageClient) mutate(ctx context.Context, m *GroupMessageMutation
 	}
 }
 
-// MessageClient is a client for the Message schema.
-type MessageClient struct {
+// PrivateMessageClient is a client for the PrivateMessage schema.
+type PrivateMessageClient struct {
 	config
 }
 
-// NewMessageClient returns a client for the Message from the given config.
-func NewMessageClient(c config) *MessageClient {
-	return &MessageClient{config: c}
+// NewPrivateMessageClient returns a client for the PrivateMessage from the given config.
+func NewPrivateMessageClient(c config) *PrivateMessageClient {
+	return &PrivateMessageClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `message.Hooks(f(g(h())))`.
-func (c *MessageClient) Use(hooks ...Hook) {
-	c.hooks.Message = append(c.hooks.Message, hooks...)
+// A call to `Use(f, g, h)` equals to `privatemessage.Hooks(f(g(h())))`.
+func (c *PrivateMessageClient) Use(hooks ...Hook) {
+	c.hooks.PrivateMessage = append(c.hooks.PrivateMessage, hooks...)
 }
 
 // Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `message.Intercept(f(g(h())))`.
-func (c *MessageClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Message = append(c.inters.Message, interceptors...)
+// A call to `Intercept(f, g, h)` equals to `privatemessage.Intercept(f(g(h())))`.
+func (c *PrivateMessageClient) Intercept(interceptors ...Interceptor) {
+	c.inters.PrivateMessage = append(c.inters.PrivateMessage, interceptors...)
 }
 
-// Create returns a builder for creating a Message entity.
-func (c *MessageClient) Create() *MessageCreate {
-	mutation := newMessageMutation(c.config, OpCreate)
-	return &MessageCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a PrivateMessage entity.
+func (c *PrivateMessageClient) Create() *PrivateMessageCreate {
+	mutation := newPrivateMessageMutation(c.config, OpCreate)
+	return &PrivateMessageCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Message entities.
-func (c *MessageClient) CreateBulk(builders ...*MessageCreate) *MessageCreateBulk {
-	return &MessageCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of PrivateMessage entities.
+func (c *PrivateMessageClient) CreateBulk(builders ...*PrivateMessageCreate) *PrivateMessageCreateBulk {
+	return &PrivateMessageCreateBulk{config: c.config, builders: builders}
 }
 
 // MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
 // a builder and applies setFunc on it.
-func (c *MessageClient) MapCreateBulk(slice any, setFunc func(*MessageCreate, int)) *MessageCreateBulk {
+func (c *PrivateMessageClient) MapCreateBulk(slice any, setFunc func(*PrivateMessageCreate, int)) *PrivateMessageCreateBulk {
 	rv := reflect.ValueOf(slice)
 	if rv.Kind() != reflect.Slice {
-		return &MessageCreateBulk{err: fmt.Errorf("calling to MessageClient.MapCreateBulk with wrong type %T, need slice", slice)}
+		return &PrivateMessageCreateBulk{err: fmt.Errorf("calling to PrivateMessageClient.MapCreateBulk with wrong type %T, need slice", slice)}
 	}
-	builders := make([]*MessageCreate, rv.Len())
+	builders := make([]*PrivateMessageCreate, rv.Len())
 	for i := 0; i < rv.Len(); i++ {
 		builders[i] = c.Create()
 		setFunc(builders[i], i)
 	}
-	return &MessageCreateBulk{config: c.config, builders: builders}
+	return &PrivateMessageCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Message.
-func (c *MessageClient) Update() *MessageUpdate {
-	mutation := newMessageMutation(c.config, OpUpdate)
-	return &MessageUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for PrivateMessage.
+func (c *PrivateMessageClient) Update() *PrivateMessageUpdate {
+	mutation := newPrivateMessageMutation(c.config, OpUpdate)
+	return &PrivateMessageUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *MessageClient) UpdateOne(m *Message) *MessageUpdateOne {
-	mutation := newMessageMutation(c.config, OpUpdateOne, withMessage(m))
-	return &MessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *PrivateMessageClient) UpdateOne(pm *PrivateMessage) *PrivateMessageUpdateOne {
+	mutation := newPrivateMessageMutation(c.config, OpUpdateOne, withPrivateMessage(pm))
+	return &PrivateMessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *MessageClient) UpdateOneID(id int) *MessageUpdateOne {
-	mutation := newMessageMutation(c.config, OpUpdateOne, withMessageID(id))
-	return &MessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *PrivateMessageClient) UpdateOneID(id int) *PrivateMessageUpdateOne {
+	mutation := newPrivateMessageMutation(c.config, OpUpdateOne, withPrivateMessageID(id))
+	return &PrivateMessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Message.
-func (c *MessageClient) Delete() *MessageDelete {
-	mutation := newMessageMutation(c.config, OpDelete)
-	return &MessageDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for PrivateMessage.
+func (c *PrivateMessageClient) Delete() *PrivateMessageDelete {
+	mutation := newPrivateMessageMutation(c.config, OpDelete)
+	return &PrivateMessageDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *MessageClient) DeleteOne(m *Message) *MessageDeleteOne {
-	return c.DeleteOneID(m.ID)
+func (c *PrivateMessageClient) DeleteOne(pm *PrivateMessage) *PrivateMessageDeleteOne {
+	return c.DeleteOneID(pm.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *MessageClient) DeleteOneID(id int) *MessageDeleteOne {
-	builder := c.Delete().Where(message.ID(id))
+func (c *PrivateMessageClient) DeleteOneID(id int) *PrivateMessageDeleteOne {
+	builder := c.Delete().Where(privatemessage.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &MessageDeleteOne{builder}
+	return &PrivateMessageDeleteOne{builder}
 }
 
-// Query returns a query builder for Message.
-func (c *MessageClient) Query() *MessageQuery {
-	return &MessageQuery{
+// Query returns a query builder for PrivateMessage.
+func (c *PrivateMessageClient) Query() *PrivateMessageQuery {
+	return &PrivateMessageQuery{
 		config: c.config,
-		ctx:    &QueryContext{Type: TypeMessage},
+		ctx:    &QueryContext{Type: TypePrivateMessage},
 		inters: c.Interceptors(),
 	}
 }
 
-// Get returns a Message entity by its id.
-func (c *MessageClient) Get(ctx context.Context, id int) (*Message, error) {
-	return c.Query().Where(message.ID(id)).Only(ctx)
+// Get returns a PrivateMessage entity by its id.
+func (c *PrivateMessageClient) Get(ctx context.Context, id int) (*PrivateMessage, error) {
+	return c.Query().Where(privatemessage.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *MessageClient) GetX(ctx context.Context, id int) *Message {
+func (c *PrivateMessageClient) GetX(ctx context.Context, id int) *PrivateMessage {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -779,27 +779,27 @@ func (c *MessageClient) GetX(ctx context.Context, id int) *Message {
 }
 
 // Hooks returns the client hooks.
-func (c *MessageClient) Hooks() []Hook {
-	return c.hooks.Message
+func (c *PrivateMessageClient) Hooks() []Hook {
+	return c.hooks.PrivateMessage
 }
 
 // Interceptors returns the client interceptors.
-func (c *MessageClient) Interceptors() []Interceptor {
-	return c.inters.Message
+func (c *PrivateMessageClient) Interceptors() []Interceptor {
+	return c.inters.PrivateMessage
 }
 
-func (c *MessageClient) mutate(ctx context.Context, m *MessageMutation) (Value, error) {
+func (c *PrivateMessageClient) mutate(ctx context.Context, m *PrivateMessageMutation) (Value, error) {
 	switch m.Op() {
 	case OpCreate:
-		return (&MessageCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&PrivateMessageCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdate:
-		return (&MessageUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&PrivateMessageUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdateOne:
-		return (&MessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&PrivateMessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpDelete, OpDeleteOne:
-		return (&MessageDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+		return (&PrivateMessageDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("ent: unknown Message mutation op: %q", m.Op())
+		return nil, fmt.Errorf("ent: unknown PrivateMessage mutation op: %q", m.Op())
 	}
 }
 
@@ -1471,11 +1471,11 @@ func (c *UserRoleClient) mutate(ctx context.Context, m *UserRoleMutation) (Value
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Chat, Group, GroupMessage, Message, Role, User, UserConn, UserGroup,
+		Chat, Group, GroupMessage, PrivateMessage, Role, User, UserConn, UserGroup,
 		UserRole []ent.Hook
 	}
 	inters struct {
-		Chat, Group, GroupMessage, Message, Role, User, UserConn, UserGroup,
+		Chat, Group, GroupMessage, PrivateMessage, Role, User, UserConn, UserGroup,
 		UserRole []ent.Interceptor
 	}
 )

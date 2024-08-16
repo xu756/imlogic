@@ -32,7 +32,7 @@ type ChatList struct {
 	// 用户2 id
 	User2Id int64 `json:"user2_id"`
 	// 最后一条消息
-	LastMsgId string `json:"last_msg_id"`
+	LastMsg *types.Message `json:"last_msg"`
 	// 最后一条消息时间
 	Timestamp int64 `json:"timestamp"`
 }
@@ -41,7 +41,7 @@ type ChatList struct {
 func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatList []*ChatList, err error) {
 	chatList = make([]*ChatList, 0)
 	// 获取用户私聊聊天列表
-	chatListEnts, err := m.client.Chat.Query().
+	chatsInfo, err := m.client.Chat.Query().
 		Where(
 			chat.Or(
 				chat.User1ID(userId),
@@ -53,12 +53,18 @@ func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatLi
 	if err != nil {
 		return nil, xerr.DbErr(err, "获取用户私聊聊天列表失败 用户ID:%d", userId)
 	}
-	for _, chatEnt := range chatListEnts {
+	for _, chatInfo := range chatsInfo {
+		msg, err := m.GetLastPrivateMsg(ctx, chatInfo.ID)
+		if err != nil {
+			continue
+		}
 		chatList = append(chatList, &ChatList{
-			Uuid:     chatEnt.UUID,
-			ChatType: types.PrivateChat,
-			User1Id:  chatEnt.User1ID,
-			User2Id:  chatEnt.User2ID,
+			Uuid:      chatInfo.UUID,
+			ChatType:  types.PrivateChat,
+			User1Id:   chatInfo.User1ID,
+			User2Id:   chatInfo.User2ID,
+			LastMsg:   types.RpcMsgToMsg(msg.Content),
+			Timestamp: msg.Timestamp,
 		})
 	}
 	// 获取用户群聊聊天列表
@@ -71,13 +77,20 @@ func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatLi
 		return nil, xerr.DbErr(err, "获取用户群聊聊天列表失败 用户ID:%d", userId)
 	}
 	for _, group := range groups {
+		msg, err := m.GetLastGroupMsg(ctx, group.ID)
+		if err != nil {
+			continue
+		}
 		chatList = append(chatList, &ChatList{
-			Uuid:     group.UUID,
-			ChatType: types.GroupChat,
-			GroupId:  group.ID,
-			User1Id:  userId,
+			Uuid:      group.UUID,
+			ChatType:  types.GroupChat,
+			GroupId:   group.ID,
+			User1Id:   userId,
+			LastMsg:   types.RpcMsgToMsg(msg.Content),
+			Timestamp: msg.Timestamp,
 		})
 	}
+	return chatList, nil
 
 }
 

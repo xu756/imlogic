@@ -53,11 +53,6 @@ func IDLTE(id int) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldLTE(FieldID, id))
 }
 
-// GroupID applies equality check predicate on the "group_id" field. It's identical to GroupIDEQ.
-func GroupID(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldEQ(FieldGroupID, v))
-}
-
 // MsgType applies equality check predicate on the "msg_type" field. It's identical to MsgTypeEQ.
 func MsgType(v int32) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldEQ(FieldMsgType, v))
@@ -68,6 +63,11 @@ func MsgID(v string) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldEQ(FieldMsgID, v))
 }
 
+// GroupID applies equality check predicate on the "group_id" field. It's identical to GroupIDEQ.
+func GroupID(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldEQ(FieldGroupID, v))
+}
+
 // Timestamp applies equality check predicate on the "timestamp" field. It's identical to TimestampEQ.
 func Timestamp(v int64) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldEQ(FieldTimestamp, v))
@@ -76,46 +76,6 @@ func Timestamp(v int64) predicate.GroupMessage {
 // SenderID applies equality check predicate on the "sender_id" field. It's identical to SenderIDEQ.
 func SenderID(v int64) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldEQ(FieldSenderID, v))
-}
-
-// GroupIDEQ applies the EQ predicate on the "group_id" field.
-func GroupIDEQ(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldEQ(FieldGroupID, v))
-}
-
-// GroupIDNEQ applies the NEQ predicate on the "group_id" field.
-func GroupIDNEQ(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldNEQ(FieldGroupID, v))
-}
-
-// GroupIDIn applies the In predicate on the "group_id" field.
-func GroupIDIn(vs ...int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldIn(FieldGroupID, vs...))
-}
-
-// GroupIDNotIn applies the NotIn predicate on the "group_id" field.
-func GroupIDNotIn(vs ...int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldNotIn(FieldGroupID, vs...))
-}
-
-// GroupIDGT applies the GT predicate on the "group_id" field.
-func GroupIDGT(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldGT(FieldGroupID, v))
-}
-
-// GroupIDGTE applies the GTE predicate on the "group_id" field.
-func GroupIDGTE(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldGTE(FieldGroupID, v))
-}
-
-// GroupIDLT applies the LT predicate on the "group_id" field.
-func GroupIDLT(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldLT(FieldGroupID, v))
-}
-
-// GroupIDLTE applies the LTE predicate on the "group_id" field.
-func GroupIDLTE(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldLTE(FieldGroupID, v))
 }
 
 // MsgTypeEQ applies the EQ predicate on the "msg_type" field.
@@ -221,6 +181,46 @@ func MsgIDEqualFold(v string) predicate.GroupMessage {
 // MsgIDContainsFold applies the ContainsFold predicate on the "msg_id" field.
 func MsgIDContainsFold(v string) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldContainsFold(FieldMsgID, v))
+}
+
+// GroupIDEQ applies the EQ predicate on the "group_id" field.
+func GroupIDEQ(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldEQ(FieldGroupID, v))
+}
+
+// GroupIDNEQ applies the NEQ predicate on the "group_id" field.
+func GroupIDNEQ(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldNEQ(FieldGroupID, v))
+}
+
+// GroupIDIn applies the In predicate on the "group_id" field.
+func GroupIDIn(vs ...int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldIn(FieldGroupID, vs...))
+}
+
+// GroupIDNotIn applies the NotIn predicate on the "group_id" field.
+func GroupIDNotIn(vs ...int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldNotIn(FieldGroupID, vs...))
+}
+
+// GroupIDGT applies the GT predicate on the "group_id" field.
+func GroupIDGT(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldGT(FieldGroupID, v))
+}
+
+// GroupIDGTE applies the GTE predicate on the "group_id" field.
+func GroupIDGTE(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldGTE(FieldGroupID, v))
+}
+
+// GroupIDLT applies the LT predicate on the "group_id" field.
+func GroupIDLT(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldLT(FieldGroupID, v))
+}
+
+// GroupIDLTE applies the LTE predicate on the "group_id" field.
+func GroupIDLTE(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldLTE(FieldGroupID, v))
 }
 
 // TimestampEQ applies the EQ predicate on the "timestamp" field.

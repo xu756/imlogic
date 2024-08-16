@@ -47,9 +47,9 @@ var (
 	// GroupMessagesColumns holds the columns for the "group_messages" table.
 	GroupMessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "group_id", Type: field.TypeInt64},
 		{Name: "msg_type", Type: field.TypeInt32},
 		{Name: "msg_id", Type: field.TypeString},
+		{Name: "group_id", Type: field.TypeInt64},
 		{Name: "timestamp", Type: field.TypeInt64},
 		{Name: "sender_id", Type: field.TypeInt64},
 		{Name: "content", Type: field.TypeJSON},
@@ -63,30 +63,30 @@ var (
 			{
 				Name:    "groupmessage_msg_id_sender_id_group_id",
 				Unique:  false,
-				Columns: []*schema.Column{GroupMessagesColumns[3], GroupMessagesColumns[5], GroupMessagesColumns[1]},
+				Columns: []*schema.Column{GroupMessagesColumns[2], GroupMessagesColumns[5], GroupMessagesColumns[3]},
 			},
 		},
 	}
-	// MessagesColumns holds the columns for the "messages" table.
-	MessagesColumns = []*schema.Column{
+	// PrivateMessagesColumns holds the columns for the "private_messages" table.
+	PrivateMessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "chat_id", Type: field.TypeInt64},
 		{Name: "msg_type", Type: field.TypeInt32},
 		{Name: "msg_id", Type: field.TypeString},
-		{Name: "timestamp", Type: field.TypeInt64},
+		{Name: "chat_id", Type: field.TypeInt64},
 		{Name: "sender_id", Type: field.TypeInt64},
+		{Name: "timestamp", Type: field.TypeInt64},
 		{Name: "content", Type: field.TypeJSON},
 	}
-	// MessagesTable holds the schema information for the "messages" table.
-	MessagesTable = &schema.Table{
-		Name:       "messages",
-		Columns:    MessagesColumns,
-		PrimaryKey: []*schema.Column{MessagesColumns[0]},
+	// PrivateMessagesTable holds the schema information for the "private_messages" table.
+	PrivateMessagesTable = &schema.Table{
+		Name:       "private_messages",
+		Columns:    PrivateMessagesColumns,
+		PrimaryKey: []*schema.Column{PrivateMessagesColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "message_msg_id_sender_id_chat_id",
+				Name:    "privatemessage_msg_id_sender_id_chat_id",
 				Unique:  false,
-				Columns: []*schema.Column{MessagesColumns[3], MessagesColumns[5], MessagesColumns[1]},
+				Columns: []*schema.Column{PrivateMessagesColumns[2], PrivateMessagesColumns[4], PrivateMessagesColumns[3]},
 			},
 		},
 	}
@@ -201,7 +201,7 @@ var (
 		ChatsTable,
 		GroupsTable,
 		GroupMessagesTable,
-		MessagesTable,
+		PrivateMessagesTable,
 		RolesTable,
 		UsersTable,
 		UserConnsTable,

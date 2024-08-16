@@ -6,8 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"imlogic/common/types"
 	"imlogic/ent/groupmessage"
+	"imlogic/kitex_gen/im"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -20,12 +20,6 @@ type GroupMessageCreate struct {
 	hooks    []Hook
 }
 
-// SetGroupID sets the "group_id" field.
-func (gmc *GroupMessageCreate) SetGroupID(i int64) *GroupMessageCreate {
-	gmc.mutation.SetGroupID(i)
-	return gmc
-}
-
 // SetMsgType sets the "msg_type" field.
 func (gmc *GroupMessageCreate) SetMsgType(i int32) *GroupMessageCreate {
 	gmc.mutation.SetMsgType(i)
@@ -35,6 +29,12 @@ func (gmc *GroupMessageCreate) SetMsgType(i int32) *GroupMessageCreate {
 // SetMsgID sets the "msg_id" field.
 func (gmc *GroupMessageCreate) SetMsgID(s string) *GroupMessageCreate {
 	gmc.mutation.SetMsgID(s)
+	return gmc
+}
+
+// SetGroupID sets the "group_id" field.
+func (gmc *GroupMessageCreate) SetGroupID(i int64) *GroupMessageCreate {
+	gmc.mutation.SetGroupID(i)
 	return gmc
 }
 
@@ -51,8 +51,8 @@ func (gmc *GroupMessageCreate) SetSenderID(i int64) *GroupMessageCreate {
 }
 
 // SetContent sets the "content" field.
-func (gmc *GroupMessageCreate) SetContent(t types.Message) *GroupMessageCreate {
-	gmc.mutation.SetContent(t)
+func (gmc *GroupMessageCreate) SetContent(i *im.Message) *GroupMessageCreate {
+	gmc.mutation.SetContent(i)
 	return gmc
 }
 
@@ -90,14 +90,14 @@ func (gmc *GroupMessageCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (gmc *GroupMessageCreate) check() error {
-	if _, ok := gmc.mutation.GroupID(); !ok {
-		return &ValidationError{Name: "group_id", err: errors.New(`ent: missing required field "GroupMessage.group_id"`)}
-	}
 	if _, ok := gmc.mutation.MsgType(); !ok {
 		return &ValidationError{Name: "msg_type", err: errors.New(`ent: missing required field "GroupMessage.msg_type"`)}
 	}
 	if _, ok := gmc.mutation.MsgID(); !ok {
 		return &ValidationError{Name: "msg_id", err: errors.New(`ent: missing required field "GroupMessage.msg_id"`)}
+	}
+	if _, ok := gmc.mutation.GroupID(); !ok {
+		return &ValidationError{Name: "group_id", err: errors.New(`ent: missing required field "GroupMessage.group_id"`)}
 	}
 	if _, ok := gmc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "GroupMessage.timestamp"`)}
@@ -134,10 +134,6 @@ func (gmc *GroupMessageCreate) createSpec() (*GroupMessage, *sqlgraph.CreateSpec
 		_node = &GroupMessage{config: gmc.config}
 		_spec = sqlgraph.NewCreateSpec(groupmessage.Table, sqlgraph.NewFieldSpec(groupmessage.FieldID, field.TypeInt))
 	)
-	if value, ok := gmc.mutation.GroupID(); ok {
-		_spec.SetField(groupmessage.FieldGroupID, field.TypeInt64, value)
-		_node.GroupID = value
-	}
 	if value, ok := gmc.mutation.MsgType(); ok {
 		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt32, value)
 		_node.MsgType = value
@@ -145,6 +141,10 @@ func (gmc *GroupMessageCreate) createSpec() (*GroupMessage, *sqlgraph.CreateSpec
 	if value, ok := gmc.mutation.MsgID(); ok {
 		_spec.SetField(groupmessage.FieldMsgID, field.TypeString, value)
 		_node.MsgID = value
+	}
+	if value, ok := gmc.mutation.GroupID(); ok {
+		_spec.SetField(groupmessage.FieldGroupID, field.TypeInt64, value)
+		_node.GroupID = value
 	}
 	if value, ok := gmc.mutation.Timestamp(); ok {
 		_spec.SetField(groupmessage.FieldTimestamp, field.TypeInt64, value)
