@@ -13,6 +13,24 @@ import (
 func UserRouter(r *route.RouterGroup) {
 	r.POST("/oneInfo", getUserOneInfo)
 	r.POST("/info", getUserInfo)
+	r.POST("/status", getUserStatus)
+}
+
+// 获取用户在线状态
+func getUserStatus(ctx context.Context, c *app.RequestContext) {
+	var req GetOneUser
+	if err := c.BindAndValidate(&req); err != nil {
+		result.HttpParamErr(c)
+		return
+	}
+	res, err := rpc.UserClient.GetUserOnlineStatus(ctx, &user.GetOneUserReq{
+		Id: req.ID,
+	})
+	if err != nil {
+		result.HttpError(c, err)
+		return
+	}
+	result.HttpSuccess(c, res.Status)
 }
 
 // 获取当前用户信息

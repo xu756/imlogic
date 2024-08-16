@@ -277,6 +277,31 @@ func (x *UserInfo) fastReadField5(buf []byte, _type int8) (offset int, err error
 	return offset, err
 }
 
+func (x *UserOnlineStatus) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_UserOnlineStatus[number], err)
+}
+
+func (x *UserOnlineStatus) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Status, offset, err = fastpb.ReadBool(buf, _type)
+	return offset, err
+}
+
 func (x *LoginByPasswordReq) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -467,6 +492,22 @@ func (x *UserInfo) fastWriteField5(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 5, x.GetDesc())
+	return offset
+}
+
+func (x *UserOnlineStatus) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *UserOnlineStatus) fastWriteField1(buf []byte) (offset int) {
+	if !x.Status {
+		return offset
+	}
+	offset += fastpb.WriteBool(buf[offset:], 1, x.GetStatus())
 	return offset
 }
 
@@ -663,6 +704,22 @@ func (x *UserInfo) sizeField5() (n int) {
 	return n
 }
 
+func (x *UserOnlineStatus) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *UserOnlineStatus) sizeField1() (n int) {
+	if !x.Status {
+		return n
+	}
+	n += fastpb.SizeBool(1, x.GetStatus())
+	return n
+}
+
 var fieldIDToName_LoginByPasswordReq = map[int32]string{
 	1: "Username",
 	2: "Password",
@@ -698,4 +755,8 @@ var fieldIDToName_UserInfo = map[int32]string{
 	3: "Mobile",
 	4: "Avatar",
 	5: "Desc",
+}
+
+var fieldIDToName_UserOnlineStatus = map[int32]string{
+	1: "Status",
 }

@@ -19,3 +19,14 @@ func (s *PublicSrvImpl) GetOneUserInfo(ctx context.Context, req *user.GetOneUser
 		Desc:     userInfo.Desc,
 	}, nil
 }
+
+// GetUserOnlineStatus implements user.UserSrv.
+func (s *PublicSrvImpl) GetUserOnlineStatus(ctx context.Context, req *user.GetOneUserReq) (res *user.UserOnlineStatus, err error) {
+	status, err := s.Model.GetOneUserStatus(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &user.UserOnlineStatus{
+		Status: status,
+	}, nil
+}

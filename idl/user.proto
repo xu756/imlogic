@@ -30,7 +30,7 @@ message SendCaptchaReq {
 message SendCaptchaRes {
   bool success = 1;
 }
-// 获取一个用户
+// 获取一个用户请求
 message GetOneUserReq {
   int64 id = 1;
 }
@@ -43,6 +43,10 @@ message UserInfo {
   string avatar = 4;
   string desc = 5;
 }
+//获取用户在线状态 
+message UserOnlineStatus {
+  bool status=1;
+}
 
 // 用户服务
 service UserSrv {
@@ -54,4 +58,6 @@ service UserSrv {
   rpc SendCaptcha (SendCaptchaReq) returns (SendCaptchaRes);
   // 获取一个用户
   rpc GetOneUserInfo (GetOneUserReq) returns (UserInfo);
+  // 获取用户在线状态
+  rpc GetUserOnlineStatus(GetOneUserReq) returns (UserOnlineStatus);
 }
