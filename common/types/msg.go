@@ -1,7 +1,7 @@
 package types
 
 import (
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 )
 
 // MsgMeta 消息元数据
@@ -24,7 +24,7 @@ type Message struct {
 	Media     []MediaType `json:"media"`     // 媒体类型
 }
 
-func RpcMsgToMsg(rpcMsg *im.Message) (msg *Message) {
+func RpcMsgToMsg(rpcMsg *base.Message) (msg *Message) {
 	msg = &Message{}
 	msg.LinkId = rpcMsg.LinkId
 	msg.MsgId = rpcMsg.MsgId
@@ -48,9 +48,9 @@ func RpcMsgToMsg(rpcMsg *im.Message) (msg *Message) {
 }
 
 type MqPrivateMessage struct {
-	Msg      *im.Message
+	Msg      *base.Message
 	HostName string
 	LinkId   string
 }
 
-type MqBroadcastMessage *im.Message
+type MqBroadcastMessage *base.Message
