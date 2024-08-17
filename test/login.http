@@ -1,0 +1,12 @@
+### 通过账户密码登录
+POST {{baseUrl}}/api/login/account
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "123456",
+  "code": "",
+  "mobile": "",
+  "captcha": "",
+  "session_id": ""
+}

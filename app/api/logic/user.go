@@ -34,7 +34,7 @@ func getUserStatus(ctx context.Context, c *app.RequestContext) {
 
 // 获取当前用户信息
 func getUserInfo(ctx context.Context, c *app.RequestContext) {
-	userInfo, err := service.Jwt.GetUserInfoFromCookieToken(c)
+	userInfo, err := service.Jwt.GetUserInfoFromHeardToken(c)
 	if err != nil {
 		result.HttpError(c, err)
 		return

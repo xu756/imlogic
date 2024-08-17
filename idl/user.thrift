@@ -27,13 +27,15 @@ struct SendCaptchaReq {
 }
 
 
-
-
-
-
 // 用户在线状态
 struct UserOnlineStatus {
   1: bool status  // 是否在线
+}
+
+// 添加好友请求
+struct AddFriendReq {
+  1: i64 owner,  // 本人id
+  2: i64 with   // 聊天 
 }
 
 // 用户服务
@@ -47,7 +49,9 @@ service UserSrv {
   // 获取单个用户信息
   base.UserInfo GetOneUserInfo(1: base.GetOneReq getOneReq),
   // 获取用户在线状态
-  UserOnlineStatus GetUserOnlineStatus(1: base.GetOneReq getOneReq),
+  base.BoolRes GetUserOnlineStatus(1: base.GetOneReq getOneReq),
   // 获取用户聊天列表
   list<base.ChatList> GetUserChatList(1: base.GetOneReq getOneReq)
+  // 添加好友
+  base.BoolRes AddFriend(1: AddFriendReq addFriendReq),
 }

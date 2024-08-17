@@ -2,10 +2,9 @@ package middleware
 
 import (
 	"context"
+	"github.com/cloudwego/hertz/pkg/app"
 	"imlogic/internal/result"
 	"imlogic/internal/xerr"
-
-	"github.com/cloudwego/hertz/pkg/app"
 )
 
 func HertzJwt() app.HandlerFunc {
