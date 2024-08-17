@@ -1,0 +1,21 @@
+### 获取单个用户信息
+POST {{baseUrl}}/api/user/oneInfo
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "id": 21474836482
+}
+
+### 获取当前用户信息
+POST {{baseUrl}}/api/user/info
+Authorization: {{token}}
+
+
+### 获取用户在线状态
+POST {{baseUrl}}/api/user/status
+Authorization: {{token}}
+
+{
+  "id": 21474836482
+}
