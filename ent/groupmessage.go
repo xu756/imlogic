@@ -18,16 +18,16 @@ type GroupMessage struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// 消息类型
-	MsgType int32 `json:"msg_type,omitempty"`
 	// 消息id
 	MsgID string `json:"msg_id,omitempty"`
+	// 消息类型
+	MsgType int64 `json:"msg_type,omitempty"`
+	// 发送者id
+	SenderID int64 `json:"sender_id,omitempty"`
 	// 群id
 	GroupID int64 `json:"group_id,omitempty"`
 	// 消息时间戳
 	Timestamp int64 `json:"timestamp,omitempty"`
-	// 发送者id
-	SenderID int64 `json:"sender_id,omitempty"`
 	// 消息内容
 	Content      *base.Message `json:"content,omitempty"`
 	selectValues sql.SelectValues
@@ -40,7 +40,7 @@ func (*GroupMessage) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case groupmessage.FieldContent:
 			values[i] = new([]byte)
-		case groupmessage.FieldID, groupmessage.FieldMsgType, groupmessage.FieldGroupID, groupmessage.FieldTimestamp, groupmessage.FieldSenderID:
+		case groupmessage.FieldID, groupmessage.FieldMsgType, groupmessage.FieldSenderID, groupmessage.FieldGroupID, groupmessage.FieldTimestamp:
 			values[i] = new(sql.NullInt64)
 		case groupmessage.FieldMsgID:
 			values[i] = new(sql.NullString)
@@ -65,17 +65,23 @@ func (gm *GroupMessage) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			gm.ID = int(value.Int64)
-		case groupmessage.FieldMsgType:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field msg_type", values[i])
-			} else if value.Valid {
-				gm.MsgType = int32(value.Int64)
-			}
 		case groupmessage.FieldMsgID:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field msg_id", values[i])
 			} else if value.Valid {
 				gm.MsgID = value.String
+			}
+		case groupmessage.FieldMsgType:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field msg_type", values[i])
+			} else if value.Valid {
+				gm.MsgType = value.Int64
+			}
+		case groupmessage.FieldSenderID:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field sender_id", values[i])
+			} else if value.Valid {
+				gm.SenderID = value.Int64
 			}
 		case groupmessage.FieldGroupID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -88,12 +94,6 @@ func (gm *GroupMessage) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field timestamp", values[i])
 			} else if value.Valid {
 				gm.Timestamp = value.Int64
-			}
-		case groupmessage.FieldSenderID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field sender_id", values[i])
-			} else if value.Valid {
-				gm.SenderID = value.Int64
 			}
 		case groupmessage.FieldContent:
 			if value, ok := values[i].(*[]byte); !ok {
@@ -139,20 +139,20 @@ func (gm *GroupMessage) String() string {
 	var builder strings.Builder
 	builder.WriteString("GroupMessage(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", gm.ID))
+	builder.WriteString("msg_id=")
+	builder.WriteString(gm.MsgID)
+	builder.WriteString(", ")
 	builder.WriteString("msg_type=")
 	builder.WriteString(fmt.Sprintf("%v", gm.MsgType))
 	builder.WriteString(", ")
-	builder.WriteString("msg_id=")
-	builder.WriteString(gm.MsgID)
+	builder.WriteString("sender_id=")
+	builder.WriteString(fmt.Sprintf("%v", gm.SenderID))
 	builder.WriteString(", ")
 	builder.WriteString("group_id=")
 	builder.WriteString(fmt.Sprintf("%v", gm.GroupID))
 	builder.WriteString(", ")
 	builder.WriteString("timestamp=")
 	builder.WriteString(fmt.Sprintf("%v", gm.Timestamp))
-	builder.WriteString(", ")
-	builder.WriteString("sender_id=")
-	builder.WriteString(fmt.Sprintf("%v", gm.SenderID))
 	builder.WriteString(", ")
 	builder.WriteString("content=")
 	builder.WriteString(fmt.Sprintf("%v", gm.Content))

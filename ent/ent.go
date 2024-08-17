@@ -6,13 +6,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"imlogic/ent/chat"
 	"imlogic/ent/group"
 	"imlogic/ent/groupmessage"
 	"imlogic/ent/privatemessage"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
 	"imlogic/ent/userconn"
+	"imlogic/ent/userfriend"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
 	"reflect"
@@ -81,13 +81,13 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			chat.Table:           chat.ValidColumn,
 			group.Table:          group.ValidColumn,
 			groupmessage.Table:   groupmessage.ValidColumn,
 			privatemessage.Table: privatemessage.ValidColumn,
 			role.Table:           role.ValidColumn,
 			user.Table:           user.ValidColumn,
 			userconn.Table:       userconn.ValidColumn,
+			userfriend.Table:     userfriend.ValidColumn,
 			usergroup.Table:      usergroup.ValidColumn,
 			userrole.Table:       userrole.ValidColumn,
 		})

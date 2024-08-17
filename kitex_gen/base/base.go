@@ -65,15 +65,18 @@ func (p *ChatType) Value() (driver.Value, error) {
 type MsgType int64
 
 const (
-	MsgType_Text  MsgType = 0
-	MsgType_Image MsgType = 1
-	MsgType_File  MsgType = 2
-	MsgType_Audio MsgType = 3
-	MsgType_Video MsgType = 4
+	MsgType_Event MsgType = 0
+	MsgType_Text  MsgType = 1
+	MsgType_Image MsgType = 2
+	MsgType_File  MsgType = 3
+	MsgType_Audio MsgType = 4
+	MsgType_Video MsgType = 5
 )
 
 func (p MsgType) String() string {
 	switch p {
+	case MsgType_Event:
+		return "Event"
 	case MsgType_Text:
 		return "Text"
 	case MsgType_Image:
@@ -90,6 +93,8 @@ func (p MsgType) String() string {
 
 func MsgTypeFromString(s string) (MsgType, error) {
 	switch s {
+	case "Event":
+		return MsgType_Event, nil
 	case "Text":
 		return MsgType_Text, nil
 	case "Image":
@@ -392,11 +397,9 @@ type Message struct {
 	ChatType  ChatType     `thrift:"chat_type,4" frugal:"4,default,ChatType" json:"chat_type"`
 	Sender    int64        `thrift:"sender,5" frugal:"5,default,i64" json:"sender"`
 	Receiver  int64        `thrift:"receiver,6" frugal:"6,default,i64" json:"receiver"`
-	ChatId    int64        `thrift:"chat_id,7" frugal:"7,default,i64" json:"chat_id"`
-	GroupId   int64        `thrift:"group_id,8" frugal:"8,default,i64" json:"group_id"`
-	Content   string       `thrift:"content,9" frugal:"9,default,string" json:"content"`
-	MsgType   MsgType      `thrift:"msg_type,10" frugal:"10,default,MsgType" json:"msg_type"`
-	Media     []*MediaType `thrift:"media,11" frugal:"11,default,list<MediaType>" json:"media"`
+	Content   string       `thrift:"content,7" frugal:"7,default,string" json:"content"`
+	MsgType   MsgType      `thrift:"msg_type,8" frugal:"8,default,MsgType" json:"msg_type"`
+	Media     []*MediaType `thrift:"media,9" frugal:"9,default,list<MediaType>" json:"media"`
 }
 
 func NewMessage() *Message {
@@ -431,14 +434,6 @@ func (p *Message) GetReceiver() (v int64) {
 	return p.Receiver
 }
 
-func (p *Message) GetChatId() (v int64) {
-	return p.ChatId
-}
-
-func (p *Message) GetGroupId() (v int64) {
-	return p.GroupId
-}
-
 func (p *Message) GetContent() (v string) {
 	return p.Content
 }
@@ -468,12 +463,6 @@ func (p *Message) SetSender(val int64) {
 func (p *Message) SetReceiver(val int64) {
 	p.Receiver = val
 }
-func (p *Message) SetChatId(val int64) {
-	p.ChatId = val
-}
-func (p *Message) SetGroupId(val int64) {
-	p.GroupId = val
-}
 func (p *Message) SetContent(val string) {
 	p.Content = val
 }
@@ -485,17 +474,15 @@ func (p *Message) SetMedia(val []*MediaType) {
 }
 
 var fieldIDToName_Message = map[int16]string{
-	1:  "link_id",
-	2:  "msg_id",
-	3:  "timestamp",
-	4:  "chat_type",
-	5:  "sender",
-	6:  "receiver",
-	7:  "chat_id",
-	8:  "group_id",
-	9:  "content",
-	10: "msg_type",
-	11: "media",
+	1: "link_id",
+	2: "msg_id",
+	3: "timestamp",
+	4: "chat_type",
+	5: "sender",
+	6: "receiver",
+	7: "content",
+	8: "msg_type",
+	9: "media",
 }
 
 func (p *Message) Read(iprot thrift.TProtocol) (err error) {
@@ -566,7 +553,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -574,7 +561,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 8:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -582,24 +569,8 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 9:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField9(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 10:
-			if fieldTypeId == thrift.I32 {
-				if err = p.ReadField10(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 11:
 			if fieldTypeId == thrift.LIST {
-				if err = p.ReadField11(iprot); err != nil {
+				if err = p.ReadField9(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -690,24 +661,6 @@ func (p *Message) ReadField6(iprot thrift.TProtocol) error {
 }
 func (p *Message) ReadField7(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		p.ChatId = v
-	}
-	return nil
-}
-func (p *Message) ReadField8(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		p.GroupId = v
-	}
-	return nil
-}
-func (p *Message) ReadField9(iprot thrift.TProtocol) error {
-
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -715,7 +668,7 @@ func (p *Message) ReadField9(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField10(iprot thrift.TProtocol) error {
+func (p *Message) ReadField8(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
@@ -724,7 +677,7 @@ func (p *Message) ReadField10(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField11(iprot thrift.TProtocol) error {
+func (p *Message) ReadField9(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -784,14 +737,6 @@ func (p *Message) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField9(oprot); err != nil {
 			fieldId = 9
-			goto WriteFieldError
-		}
-		if err = p.writeField10(oprot); err != nil {
-			fieldId = 10
-			goto WriteFieldError
-		}
-		if err = p.writeField11(oprot); err != nil {
-			fieldId = 11
 			goto WriteFieldError
 		}
 	}
@@ -915,10 +860,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("chat_id", thrift.I64, 7); err != nil {
+	if err = oprot.WriteFieldBegin("content", thrift.STRING, 7); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.ChatId); err != nil {
+	if err := oprot.WriteString(p.Content); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -932,10 +877,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField8(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("group_id", thrift.I64, 8); err != nil {
+	if err = oprot.WriteFieldBegin("msg_type", thrift.I32, 8); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.GroupId); err != nil {
+	if err := oprot.WriteI32(int32(p.MsgType)); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -949,41 +894,7 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField9(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("content", thrift.STRING, 9); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.Content); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
-}
-
-func (p *Message) writeField10(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("msg_type", thrift.I32, 10); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI32(int32(p.MsgType)); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
-}
-
-func (p *Message) writeField11(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("media", thrift.LIST, 11); err != nil {
+	if err = oprot.WriteFieldBegin("media", thrift.LIST, 9); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Media)); err != nil {
@@ -1002,9 +913,9 @@ func (p *Message) writeField11(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 11 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 11 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
 }
 
 func (p *Message) String() string {
@@ -1039,19 +950,13 @@ func (p *Message) DeepEqual(ano *Message) bool {
 	if !p.Field6DeepEqual(ano.Receiver) {
 		return false
 	}
-	if !p.Field7DeepEqual(ano.ChatId) {
+	if !p.Field7DeepEqual(ano.Content) {
 		return false
 	}
-	if !p.Field8DeepEqual(ano.GroupId) {
+	if !p.Field8DeepEqual(ano.MsgType) {
 		return false
 	}
-	if !p.Field9DeepEqual(ano.Content) {
-		return false
-	}
-	if !p.Field10DeepEqual(ano.MsgType) {
-		return false
-	}
-	if !p.Field11DeepEqual(ano.Media) {
+	if !p.Field9DeepEqual(ano.Media) {
 		return false
 	}
 	return true
@@ -1099,35 +1004,21 @@ func (p *Message) Field6DeepEqual(src int64) bool {
 	}
 	return true
 }
-func (p *Message) Field7DeepEqual(src int64) bool {
-
-	if p.ChatId != src {
-		return false
-	}
-	return true
-}
-func (p *Message) Field8DeepEqual(src int64) bool {
-
-	if p.GroupId != src {
-		return false
-	}
-	return true
-}
-func (p *Message) Field9DeepEqual(src string) bool {
+func (p *Message) Field7DeepEqual(src string) bool {
 
 	if strings.Compare(p.Content, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *Message) Field10DeepEqual(src MsgType) bool {
+func (p *Message) Field8DeepEqual(src MsgType) bool {
 
 	if p.MsgType != src {
 		return false
 	}
 	return true
 }
-func (p *Message) Field11DeepEqual(src []*MediaType) bool {
+func (p *Message) Field9DeepEqual(src []*MediaType) bool {
 
 	if len(p.Media) != len(src) {
 		return false
@@ -1532,14 +1423,11 @@ func (p *MetaMsg) Field5DeepEqual(src string) bool {
 }
 
 type ChatList struct {
-	Uuid      string   `thrift:"uuid,1" frugal:"1,default,string" json:"uuid"`
+	ChatId    string   `thrift:"chat_id,1" frugal:"1,default,string" json:"chat_id"`
 	ChatType  ChatType `thrift:"chat_type,2" frugal:"2,default,ChatType" json:"chat_type"`
-	GroupId   int64    `thrift:"group_id,3" frugal:"3,default,i64" json:"group_id"`
-	ChatId    int64    `thrift:"chat_id,4" frugal:"4,default,i64" json:"chat_id"`
-	User1Id   int64    `thrift:"user1_id,5" frugal:"5,default,i64" json:"user1_id"`
-	User2Id   int64    `thrift:"user2_id,6" frugal:"6,default,i64" json:"user2_id"`
-	LastMsg   *Message `thrift:"last_msg,7" frugal:"7,default,Message" json:"last_msg"`
-	Timestamp int64    `thrift:"timestamp,8" frugal:"8,default,i64" json:"timestamp"`
+	With      int64    `thrift:"with,4" frugal:"4,default,i64" json:"with"`
+	LastMsg   *Message `thrift:"last_msg,5" frugal:"5,default,Message" json:"last_msg"`
+	Timestamp int64    `thrift:"timestamp,6" frugal:"6,default,i64" json:"timestamp"`
 }
 
 func NewChatList() *ChatList {
@@ -1550,28 +1438,16 @@ func (p *ChatList) InitDefault() {
 	*p = ChatList{}
 }
 
-func (p *ChatList) GetUuid() (v string) {
-	return p.Uuid
+func (p *ChatList) GetChatId() (v string) {
+	return p.ChatId
 }
 
 func (p *ChatList) GetChatType() (v ChatType) {
 	return p.ChatType
 }
 
-func (p *ChatList) GetGroupId() (v int64) {
-	return p.GroupId
-}
-
-func (p *ChatList) GetChatId() (v int64) {
-	return p.ChatId
-}
-
-func (p *ChatList) GetUser1Id() (v int64) {
-	return p.User1Id
-}
-
-func (p *ChatList) GetUser2Id() (v int64) {
-	return p.User2Id
+func (p *ChatList) GetWith() (v int64) {
+	return p.With
 }
 
 var ChatList_LastMsg_DEFAULT *Message
@@ -1586,23 +1462,14 @@ func (p *ChatList) GetLastMsg() (v *Message) {
 func (p *ChatList) GetTimestamp() (v int64) {
 	return p.Timestamp
 }
-func (p *ChatList) SetUuid(val string) {
-	p.Uuid = val
+func (p *ChatList) SetChatId(val string) {
+	p.ChatId = val
 }
 func (p *ChatList) SetChatType(val ChatType) {
 	p.ChatType = val
 }
-func (p *ChatList) SetGroupId(val int64) {
-	p.GroupId = val
-}
-func (p *ChatList) SetChatId(val int64) {
-	p.ChatId = val
-}
-func (p *ChatList) SetUser1Id(val int64) {
-	p.User1Id = val
-}
-func (p *ChatList) SetUser2Id(val int64) {
-	p.User2Id = val
+func (p *ChatList) SetWith(val int64) {
+	p.With = val
 }
 func (p *ChatList) SetLastMsg(val *Message) {
 	p.LastMsg = val
@@ -1612,14 +1479,11 @@ func (p *ChatList) SetTimestamp(val int64) {
 }
 
 var fieldIDToName_ChatList = map[int16]string{
-	1: "uuid",
+	1: "chat_id",
 	2: "chat_type",
-	3: "group_id",
-	4: "chat_id",
-	5: "user1_id",
-	6: "user2_id",
-	7: "last_msg",
-	8: "timestamp",
+	4: "with",
+	5: "last_msg",
+	6: "timestamp",
 }
 
 func (p *ChatList) IsSetLastMsg() bool {
@@ -1661,14 +1525,6 @@ func (p *ChatList) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
-		case 3:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField3(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
 		case 4:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField4(iprot); err != nil {
@@ -1678,7 +1534,7 @@ func (p *ChatList) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 5:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1688,22 +1544,6 @@ func (p *ChatList) Read(iprot thrift.TProtocol) (err error) {
 		case 6:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField6(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 7:
-			if fieldTypeId == thrift.STRUCT {
-				if err = p.ReadField7(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 8:
-			if fieldTypeId == thrift.I64 {
-				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1743,7 +1583,7 @@ func (p *ChatList) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Uuid = v
+		p.ChatId = v
 	}
 	return nil
 }
@@ -1756,50 +1596,23 @@ func (p *ChatList) ReadField2(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *ChatList) ReadField3(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		p.GroupId = v
-	}
-	return nil
-}
 func (p *ChatList) ReadField4(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.ChatId = v
+		p.With = v
 	}
 	return nil
 }
 func (p *ChatList) ReadField5(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		p.User1Id = v
-	}
-	return nil
-}
-func (p *ChatList) ReadField6(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadI64(); err != nil {
-		return err
-	} else {
-		p.User2Id = v
-	}
-	return nil
-}
-func (p *ChatList) ReadField7(iprot thrift.TProtocol) error {
 	p.LastMsg = NewMessage()
 	if err := p.LastMsg.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
-func (p *ChatList) ReadField8(iprot thrift.TProtocol) error {
+func (p *ChatList) ReadField6(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
@@ -1823,10 +1636,6 @@ func (p *ChatList) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 2
 			goto WriteFieldError
 		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
-			goto WriteFieldError
-		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
 			goto WriteFieldError
@@ -1837,14 +1646,6 @@ func (p *ChatList) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField6(oprot); err != nil {
 			fieldId = 6
-			goto WriteFieldError
-		}
-		if err = p.writeField7(oprot); err != nil {
-			fieldId = 7
-			goto WriteFieldError
-		}
-		if err = p.writeField8(oprot); err != nil {
-			fieldId = 8
 			goto WriteFieldError
 		}
 	}
@@ -1866,10 +1667,10 @@ WriteStructEndError:
 }
 
 func (p *ChatList) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("uuid", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("chat_id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Uuid); err != nil {
+	if err := oprot.WriteString(p.ChatId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1899,28 +1700,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *ChatList) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("group_id", thrift.I64, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.GroupId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-
 func (p *ChatList) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("chat_id", thrift.I64, 4); err != nil {
+	if err = oprot.WriteFieldBegin("with", thrift.I64, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.ChatId); err != nil {
+	if err := oprot.WriteI64(p.With); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1934,10 +1718,10 @@ WriteFieldEndError:
 }
 
 func (p *ChatList) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("user1_id", thrift.I64, 5); err != nil {
+	if err = oprot.WriteFieldBegin("last_msg", thrift.STRUCT, 5); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.User1Id); err != nil {
+	if err := p.LastMsg.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1951,41 +1735,7 @@ WriteFieldEndError:
 }
 
 func (p *ChatList) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("user2_id", thrift.I64, 6); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.User2Id); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
-}
-
-func (p *ChatList) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("last_msg", thrift.STRUCT, 7); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := p.LastMsg.Write(oprot); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
-}
-
-func (p *ChatList) writeField8(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("timestamp", thrift.I64, 8); err != nil {
+	if err = oprot.WriteFieldBegin("timestamp", thrift.I64, 6); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteI64(p.Timestamp); err != nil {
@@ -1996,9 +1746,9 @@ func (p *ChatList) writeField8(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *ChatList) String() string {
@@ -2015,28 +1765,19 @@ func (p *ChatList) DeepEqual(ano *ChatList) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Uuid) {
+	if !p.Field1DeepEqual(ano.ChatId) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.ChatType) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.GroupId) {
+	if !p.Field4DeepEqual(ano.With) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.ChatId) {
+	if !p.Field5DeepEqual(ano.LastMsg) {
 		return false
 	}
-	if !p.Field5DeepEqual(ano.User1Id) {
-		return false
-	}
-	if !p.Field6DeepEqual(ano.User2Id) {
-		return false
-	}
-	if !p.Field7DeepEqual(ano.LastMsg) {
-		return false
-	}
-	if !p.Field8DeepEqual(ano.Timestamp) {
+	if !p.Field6DeepEqual(ano.Timestamp) {
 		return false
 	}
 	return true
@@ -2044,7 +1785,7 @@ func (p *ChatList) DeepEqual(ano *ChatList) bool {
 
 func (p *ChatList) Field1DeepEqual(src string) bool {
 
-	if strings.Compare(p.Uuid, src) != 0 {
+	if strings.Compare(p.ChatId, src) != 0 {
 		return false
 	}
 	return true
@@ -2056,42 +1797,21 @@ func (p *ChatList) Field2DeepEqual(src ChatType) bool {
 	}
 	return true
 }
-func (p *ChatList) Field3DeepEqual(src int64) bool {
-
-	if p.GroupId != src {
-		return false
-	}
-	return true
-}
 func (p *ChatList) Field4DeepEqual(src int64) bool {
 
-	if p.ChatId != src {
+	if p.With != src {
 		return false
 	}
 	return true
 }
-func (p *ChatList) Field5DeepEqual(src int64) bool {
-
-	if p.User1Id != src {
-		return false
-	}
-	return true
-}
-func (p *ChatList) Field6DeepEqual(src int64) bool {
-
-	if p.User2Id != src {
-		return false
-	}
-	return true
-}
-func (p *ChatList) Field7DeepEqual(src *Message) bool {
+func (p *ChatList) Field5DeepEqual(src *Message) bool {
 
 	if !p.LastMsg.DeepEqual(src) {
 		return false
 	}
 	return true
 }
-func (p *ChatList) Field8DeepEqual(src int64) bool {
+func (p *ChatList) Field6DeepEqual(src int64) bool {
 
 	if p.Timestamp != src {
 		return false

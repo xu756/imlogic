@@ -261,12 +261,12 @@ func (pmq *PrivateMessageQuery) Clone() *PrivateMessageQuery {
 // Example:
 //
 //	var v []struct {
-//		MsgType int32 `json:"msg_type,omitempty"`
+//		MsgID string `json:"msg_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.PrivateMessage.Query().
-//		GroupBy(privatemessage.FieldMsgType).
+//		GroupBy(privatemessage.FieldMsgID).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (pmq *PrivateMessageQuery) GroupBy(field string, fields ...string) *PrivateMessageGroupBy {
@@ -284,11 +284,11 @@ func (pmq *PrivateMessageQuery) GroupBy(field string, fields ...string) *Private
 // Example:
 //
 //	var v []struct {
-//		MsgType int32 `json:"msg_type,omitempty"`
+//		MsgID string `json:"msg_id,omitempty"`
 //	}
 //
 //	client.PrivateMessage.Query().
-//		Select(privatemessage.FieldMsgType).
+//		Select(privatemessage.FieldMsgID).
 //		Scan(ctx, &v)
 func (pmq *PrivateMessageQuery) Select(fields ...string) *PrivateMessageSelect {
 	pmq.ctx.Fields = append(pmq.ctx.Fields, fields...)

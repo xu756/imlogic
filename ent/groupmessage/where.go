@@ -53,14 +53,19 @@ func IDLTE(id int) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldLTE(FieldID, id))
 }
 
-// MsgType applies equality check predicate on the "msg_type" field. It's identical to MsgTypeEQ.
-func MsgType(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldEQ(FieldMsgType, v))
-}
-
 // MsgID applies equality check predicate on the "msg_id" field. It's identical to MsgIDEQ.
 func MsgID(v string) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldEQ(FieldMsgID, v))
+}
+
+// MsgType applies equality check predicate on the "msg_type" field. It's identical to MsgTypeEQ.
+func MsgType(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldEQ(FieldMsgType, v))
+}
+
+// SenderID applies equality check predicate on the "sender_id" field. It's identical to SenderIDEQ.
+func SenderID(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldEQ(FieldSenderID, v))
 }
 
 // GroupID applies equality check predicate on the "group_id" field. It's identical to GroupIDEQ.
@@ -71,51 +76,6 @@ func GroupID(v int64) predicate.GroupMessage {
 // Timestamp applies equality check predicate on the "timestamp" field. It's identical to TimestampEQ.
 func Timestamp(v int64) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldEQ(FieldTimestamp, v))
-}
-
-// SenderID applies equality check predicate on the "sender_id" field. It's identical to SenderIDEQ.
-func SenderID(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldEQ(FieldSenderID, v))
-}
-
-// MsgTypeEQ applies the EQ predicate on the "msg_type" field.
-func MsgTypeEQ(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldEQ(FieldMsgType, v))
-}
-
-// MsgTypeNEQ applies the NEQ predicate on the "msg_type" field.
-func MsgTypeNEQ(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldNEQ(FieldMsgType, v))
-}
-
-// MsgTypeIn applies the In predicate on the "msg_type" field.
-func MsgTypeIn(vs ...int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldIn(FieldMsgType, vs...))
-}
-
-// MsgTypeNotIn applies the NotIn predicate on the "msg_type" field.
-func MsgTypeNotIn(vs ...int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldNotIn(FieldMsgType, vs...))
-}
-
-// MsgTypeGT applies the GT predicate on the "msg_type" field.
-func MsgTypeGT(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldGT(FieldMsgType, v))
-}
-
-// MsgTypeGTE applies the GTE predicate on the "msg_type" field.
-func MsgTypeGTE(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldGTE(FieldMsgType, v))
-}
-
-// MsgTypeLT applies the LT predicate on the "msg_type" field.
-func MsgTypeLT(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldLT(FieldMsgType, v))
-}
-
-// MsgTypeLTE applies the LTE predicate on the "msg_type" field.
-func MsgTypeLTE(v int32) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldLTE(FieldMsgType, v))
 }
 
 // MsgIDEQ applies the EQ predicate on the "msg_id" field.
@@ -181,6 +141,86 @@ func MsgIDEqualFold(v string) predicate.GroupMessage {
 // MsgIDContainsFold applies the ContainsFold predicate on the "msg_id" field.
 func MsgIDContainsFold(v string) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldContainsFold(FieldMsgID, v))
+}
+
+// MsgTypeEQ applies the EQ predicate on the "msg_type" field.
+func MsgTypeEQ(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldEQ(FieldMsgType, v))
+}
+
+// MsgTypeNEQ applies the NEQ predicate on the "msg_type" field.
+func MsgTypeNEQ(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldNEQ(FieldMsgType, v))
+}
+
+// MsgTypeIn applies the In predicate on the "msg_type" field.
+func MsgTypeIn(vs ...int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldIn(FieldMsgType, vs...))
+}
+
+// MsgTypeNotIn applies the NotIn predicate on the "msg_type" field.
+func MsgTypeNotIn(vs ...int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldNotIn(FieldMsgType, vs...))
+}
+
+// MsgTypeGT applies the GT predicate on the "msg_type" field.
+func MsgTypeGT(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldGT(FieldMsgType, v))
+}
+
+// MsgTypeGTE applies the GTE predicate on the "msg_type" field.
+func MsgTypeGTE(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldGTE(FieldMsgType, v))
+}
+
+// MsgTypeLT applies the LT predicate on the "msg_type" field.
+func MsgTypeLT(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldLT(FieldMsgType, v))
+}
+
+// MsgTypeLTE applies the LTE predicate on the "msg_type" field.
+func MsgTypeLTE(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldLTE(FieldMsgType, v))
+}
+
+// SenderIDEQ applies the EQ predicate on the "sender_id" field.
+func SenderIDEQ(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldEQ(FieldSenderID, v))
+}
+
+// SenderIDNEQ applies the NEQ predicate on the "sender_id" field.
+func SenderIDNEQ(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldNEQ(FieldSenderID, v))
+}
+
+// SenderIDIn applies the In predicate on the "sender_id" field.
+func SenderIDIn(vs ...int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldIn(FieldSenderID, vs...))
+}
+
+// SenderIDNotIn applies the NotIn predicate on the "sender_id" field.
+func SenderIDNotIn(vs ...int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldNotIn(FieldSenderID, vs...))
+}
+
+// SenderIDGT applies the GT predicate on the "sender_id" field.
+func SenderIDGT(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldGT(FieldSenderID, v))
+}
+
+// SenderIDGTE applies the GTE predicate on the "sender_id" field.
+func SenderIDGTE(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldGTE(FieldSenderID, v))
+}
+
+// SenderIDLT applies the LT predicate on the "sender_id" field.
+func SenderIDLT(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldLT(FieldSenderID, v))
+}
+
+// SenderIDLTE applies the LTE predicate on the "sender_id" field.
+func SenderIDLTE(v int64) predicate.GroupMessage {
+	return predicate.GroupMessage(sql.FieldLTE(FieldSenderID, v))
 }
 
 // GroupIDEQ applies the EQ predicate on the "group_id" field.
@@ -261,46 +301,6 @@ func TimestampLT(v int64) predicate.GroupMessage {
 // TimestampLTE applies the LTE predicate on the "timestamp" field.
 func TimestampLTE(v int64) predicate.GroupMessage {
 	return predicate.GroupMessage(sql.FieldLTE(FieldTimestamp, v))
-}
-
-// SenderIDEQ applies the EQ predicate on the "sender_id" field.
-func SenderIDEQ(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldEQ(FieldSenderID, v))
-}
-
-// SenderIDNEQ applies the NEQ predicate on the "sender_id" field.
-func SenderIDNEQ(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldNEQ(FieldSenderID, v))
-}
-
-// SenderIDIn applies the In predicate on the "sender_id" field.
-func SenderIDIn(vs ...int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldIn(FieldSenderID, vs...))
-}
-
-// SenderIDNotIn applies the NotIn predicate on the "sender_id" field.
-func SenderIDNotIn(vs ...int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldNotIn(FieldSenderID, vs...))
-}
-
-// SenderIDGT applies the GT predicate on the "sender_id" field.
-func SenderIDGT(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldGT(FieldSenderID, v))
-}
-
-// SenderIDGTE applies the GTE predicate on the "sender_id" field.
-func SenderIDGTE(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldGTE(FieldSenderID, v))
-}
-
-// SenderIDLT applies the LT predicate on the "sender_id" field.
-func SenderIDLT(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldLT(FieldSenderID, v))
-}
-
-// SenderIDLTE applies the LTE predicate on the "sender_id" field.
-func SenderIDLTE(v int64) predicate.GroupMessage {
-	return predicate.GroupMessage(sql.FieldLTE(FieldSenderID, v))
 }
 
 // And groups predicates with the AND operator between them.

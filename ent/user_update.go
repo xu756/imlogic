@@ -48,20 +48,6 @@ func (uu *UserUpdate) SetNillableDeleted(b *bool) *UserUpdate {
 	return uu
 }
 
-// SetUUID sets the "uuid" field.
-func (uu *UserUpdate) SetUUID(s string) *UserUpdate {
-	uu.mutation.SetUUID(s)
-	return uu
-}
-
-// SetNillableUUID sets the "uuid" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableUUID(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetUUID(*s)
-	}
-	return uu
-}
-
 // SetEditor sets the "editor" field.
 func (uu *UserUpdate) SetEditor(i int64) *UserUpdate {
 	uu.mutation.ResetEditor()
@@ -209,9 +195,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Deleted(); ok {
 		_spec.SetField(user.FieldDeleted, field.TypeBool, value)
 	}
-	if value, ok := uu.mutation.UUID(); ok {
-		_spec.SetField(user.FieldUUID, field.TypeString, value)
-	}
 	if value, ok := uu.mutation.Editor(); ok {
 		_spec.SetField(user.FieldEditor, field.TypeInt64, value)
 	}
@@ -269,20 +252,6 @@ func (uuo *UserUpdateOne) SetDeleted(b bool) *UserUpdateOne {
 func (uuo *UserUpdateOne) SetNillableDeleted(b *bool) *UserUpdateOne {
 	if b != nil {
 		uuo.SetDeleted(*b)
-	}
-	return uuo
-}
-
-// SetUUID sets the "uuid" field.
-func (uuo *UserUpdateOne) SetUUID(s string) *UserUpdateOne {
-	uuo.mutation.SetUUID(s)
-	return uuo
-}
-
-// SetNillableUUID sets the "uuid" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableUUID(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetUUID(*s)
 	}
 	return uuo
 }
@@ -463,9 +432,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Deleted(); ok {
 		_spec.SetField(user.FieldDeleted, field.TypeBool, value)
-	}
-	if value, ok := uuo.mutation.UUID(); ok {
-		_spec.SetField(user.FieldUUID, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.Editor(); ok {
 		_spec.SetField(user.FieldEditor, field.TypeInt64, value)

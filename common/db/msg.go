@@ -11,11 +11,11 @@ import (
 
 type dbMsgModel interface {
 	// 添加一个私聊消息
-	AddOnePrivateMsg(ctx context.Context, msgType int32, msgId string, chatId, senderId, timestamp int64, content *base.Message) (err error)
+	AddOnePrivateMsg(ctx context.Context, msgType base.MsgType, msgId string, senderId, receiverId, timestamp int64, content *base.Message) (err error)
 	// 添加一个群聊消息
-	AddOneGroupMsg(ctx context.Context, msgType int32, msgId string, groupId, senderId, timestamp int64, content *base.Message) (err error)
+	AddOneGroupMsg(ctx context.Context, msgType base.MsgType, msgId string, senderId, groupId, timestamp int64, content *base.Message) (err error)
 	// 获取私聊最后一条消息
-	GetLastPrivateMsg(ctx context.Context, chatId int64) (msg *ent.PrivateMessage, err error)
+	GetLastPrivateMsg(ctx context.Context, userId int64) (msg *ent.PrivateMessage, err error)
 	// 获取群聊最后一条消息
 	GetLastGroupMsg(ctx context.Context, groupId int64) (msg *ent.GroupMessage, err error)
 }
@@ -37,10 +37,13 @@ func (m *customModel) GetLastGroupMsg(ctx context.Context, groupId int64) (msg *
 }
 
 // 获取私聊最后一条消息
-func (m *customModel) GetLastPrivateMsg(ctx context.Context, chatId int64) (msg *ent.PrivateMessage, err error) {
+func (m *customModel) GetLastPrivateMsg(ctx context.Context, userId int64) (msg *ent.PrivateMessage, err error) {
 	msg = &ent.PrivateMessage{}
 	msg, err = m.client.PrivateMessage.Query().
-		Where(privatemessage.ChatIDEQ(chatId)).
+		Where(privatemessage.Or(
+			privatemessage.SenderIDEQ(userId),
+			privatemessage.ReceiverID(userId),
+		)).
 		Order(ent.Desc(privatemessage.FieldTimestamp)).
 		First(ctx)
 	switch {
@@ -54,12 +57,12 @@ func (m *customModel) GetLastPrivateMsg(ctx context.Context, chatId int64) (msg 
 }
 
 // 添加一个群聊消息
-func (m *customModel) AddOneGroupMsg(ctx context.Context, msgType int32, msgId string, groupId, senderId, timestamp int64, content *base.Message) (err error) {
+func (m *customModel) AddOneGroupMsg(ctx context.Context, msgType base.MsgType, msgId string, senderId, groupId, timestamp int64, content *base.Message) (err error) {
 	_, err = m.client.GroupMessage.Create().
-		SetMsgType(msgType).
 		SetMsgID(msgId).
-		SetGroupID(groupId).
+		SetMsgType(int64(msgType)).
 		SetSenderID(senderId).
+		SetGroupID(groupId).
 		SetTimestamp(timestamp).
 		SetContent(content).Save(ctx)
 	if err != nil {
@@ -69,12 +72,12 @@ func (m *customModel) AddOneGroupMsg(ctx context.Context, msgType int32, msgId s
 }
 
 // 添加一个私聊消息
-func (m *customModel) AddOnePrivateMsg(ctx context.Context, msgType int32, msgId string, chatId, senderId, timestamp int64, content *base.Message) (err error) {
+func (m *customModel) AddOnePrivateMsg(ctx context.Context, msgType base.MsgType, msgId string, senderId, receiverId, timestamp int64, content *base.Message) (err error) {
 	_, err = m.client.PrivateMessage.Create().
-		SetMsgType(msgType).
 		SetMsgID(msgId).
-		SetChatID(chatId).
+		SetMsgType(int64(msgType)).
 		SetSenderID(senderId).
+		SetReceiverID(receiverId).
 		SetTimestamp(timestamp).
 		SetContent(content).Save(ctx)
 	if err != nil {

@@ -28,27 +28,6 @@ func (gmu *GroupMessageUpdate) Where(ps ...predicate.GroupMessage) *GroupMessage
 	return gmu
 }
 
-// SetMsgType sets the "msg_type" field.
-func (gmu *GroupMessageUpdate) SetMsgType(i int32) *GroupMessageUpdate {
-	gmu.mutation.ResetMsgType()
-	gmu.mutation.SetMsgType(i)
-	return gmu
-}
-
-// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
-func (gmu *GroupMessageUpdate) SetNillableMsgType(i *int32) *GroupMessageUpdate {
-	if i != nil {
-		gmu.SetMsgType(*i)
-	}
-	return gmu
-}
-
-// AddMsgType adds i to the "msg_type" field.
-func (gmu *GroupMessageUpdate) AddMsgType(i int32) *GroupMessageUpdate {
-	gmu.mutation.AddMsgType(i)
-	return gmu
-}
-
 // SetMsgID sets the "msg_id" field.
 func (gmu *GroupMessageUpdate) SetMsgID(s string) *GroupMessageUpdate {
 	gmu.mutation.SetMsgID(s)
@@ -60,6 +39,48 @@ func (gmu *GroupMessageUpdate) SetNillableMsgID(s *string) *GroupMessageUpdate {
 	if s != nil {
 		gmu.SetMsgID(*s)
 	}
+	return gmu
+}
+
+// SetMsgType sets the "msg_type" field.
+func (gmu *GroupMessageUpdate) SetMsgType(i int64) *GroupMessageUpdate {
+	gmu.mutation.ResetMsgType()
+	gmu.mutation.SetMsgType(i)
+	return gmu
+}
+
+// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
+func (gmu *GroupMessageUpdate) SetNillableMsgType(i *int64) *GroupMessageUpdate {
+	if i != nil {
+		gmu.SetMsgType(*i)
+	}
+	return gmu
+}
+
+// AddMsgType adds i to the "msg_type" field.
+func (gmu *GroupMessageUpdate) AddMsgType(i int64) *GroupMessageUpdate {
+	gmu.mutation.AddMsgType(i)
+	return gmu
+}
+
+// SetSenderID sets the "sender_id" field.
+func (gmu *GroupMessageUpdate) SetSenderID(i int64) *GroupMessageUpdate {
+	gmu.mutation.ResetSenderID()
+	gmu.mutation.SetSenderID(i)
+	return gmu
+}
+
+// SetNillableSenderID sets the "sender_id" field if the given value is not nil.
+func (gmu *GroupMessageUpdate) SetNillableSenderID(i *int64) *GroupMessageUpdate {
+	if i != nil {
+		gmu.SetSenderID(*i)
+	}
+	return gmu
+}
+
+// AddSenderID adds i to the "sender_id" field.
+func (gmu *GroupMessageUpdate) AddSenderID(i int64) *GroupMessageUpdate {
+	gmu.mutation.AddSenderID(i)
 	return gmu
 }
 
@@ -102,27 +123,6 @@ func (gmu *GroupMessageUpdate) SetNillableTimestamp(i *int64) *GroupMessageUpdat
 // AddTimestamp adds i to the "timestamp" field.
 func (gmu *GroupMessageUpdate) AddTimestamp(i int64) *GroupMessageUpdate {
 	gmu.mutation.AddTimestamp(i)
-	return gmu
-}
-
-// SetSenderID sets the "sender_id" field.
-func (gmu *GroupMessageUpdate) SetSenderID(i int64) *GroupMessageUpdate {
-	gmu.mutation.ResetSenderID()
-	gmu.mutation.SetSenderID(i)
-	return gmu
-}
-
-// SetNillableSenderID sets the "sender_id" field if the given value is not nil.
-func (gmu *GroupMessageUpdate) SetNillableSenderID(i *int64) *GroupMessageUpdate {
-	if i != nil {
-		gmu.SetSenderID(*i)
-	}
-	return gmu
-}
-
-// AddSenderID adds i to the "sender_id" field.
-func (gmu *GroupMessageUpdate) AddSenderID(i int64) *GroupMessageUpdate {
-	gmu.mutation.AddSenderID(i)
 	return gmu
 }
 
@@ -173,14 +173,20 @@ func (gmu *GroupMessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := gmu.mutation.MsgType(); ok {
-		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt32, value)
-	}
-	if value, ok := gmu.mutation.AddedMsgType(); ok {
-		_spec.AddField(groupmessage.FieldMsgType, field.TypeInt32, value)
-	}
 	if value, ok := gmu.mutation.MsgID(); ok {
 		_spec.SetField(groupmessage.FieldMsgID, field.TypeString, value)
+	}
+	if value, ok := gmu.mutation.MsgType(); ok {
+		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt64, value)
+	}
+	if value, ok := gmu.mutation.AddedMsgType(); ok {
+		_spec.AddField(groupmessage.FieldMsgType, field.TypeInt64, value)
+	}
+	if value, ok := gmu.mutation.SenderID(); ok {
+		_spec.SetField(groupmessage.FieldSenderID, field.TypeInt64, value)
+	}
+	if value, ok := gmu.mutation.AddedSenderID(); ok {
+		_spec.AddField(groupmessage.FieldSenderID, field.TypeInt64, value)
 	}
 	if value, ok := gmu.mutation.GroupID(); ok {
 		_spec.SetField(groupmessage.FieldGroupID, field.TypeInt64, value)
@@ -193,12 +199,6 @@ func (gmu *GroupMessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := gmu.mutation.AddedTimestamp(); ok {
 		_spec.AddField(groupmessage.FieldTimestamp, field.TypeInt64, value)
-	}
-	if value, ok := gmu.mutation.SenderID(); ok {
-		_spec.SetField(groupmessage.FieldSenderID, field.TypeInt64, value)
-	}
-	if value, ok := gmu.mutation.AddedSenderID(); ok {
-		_spec.AddField(groupmessage.FieldSenderID, field.TypeInt64, value)
 	}
 	if value, ok := gmu.mutation.Content(); ok {
 		_spec.SetField(groupmessage.FieldContent, field.TypeJSON, value)
@@ -223,27 +223,6 @@ type GroupMessageUpdateOne struct {
 	mutation *GroupMessageMutation
 }
 
-// SetMsgType sets the "msg_type" field.
-func (gmuo *GroupMessageUpdateOne) SetMsgType(i int32) *GroupMessageUpdateOne {
-	gmuo.mutation.ResetMsgType()
-	gmuo.mutation.SetMsgType(i)
-	return gmuo
-}
-
-// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
-func (gmuo *GroupMessageUpdateOne) SetNillableMsgType(i *int32) *GroupMessageUpdateOne {
-	if i != nil {
-		gmuo.SetMsgType(*i)
-	}
-	return gmuo
-}
-
-// AddMsgType adds i to the "msg_type" field.
-func (gmuo *GroupMessageUpdateOne) AddMsgType(i int32) *GroupMessageUpdateOne {
-	gmuo.mutation.AddMsgType(i)
-	return gmuo
-}
-
 // SetMsgID sets the "msg_id" field.
 func (gmuo *GroupMessageUpdateOne) SetMsgID(s string) *GroupMessageUpdateOne {
 	gmuo.mutation.SetMsgID(s)
@@ -255,6 +234,48 @@ func (gmuo *GroupMessageUpdateOne) SetNillableMsgID(s *string) *GroupMessageUpda
 	if s != nil {
 		gmuo.SetMsgID(*s)
 	}
+	return gmuo
+}
+
+// SetMsgType sets the "msg_type" field.
+func (gmuo *GroupMessageUpdateOne) SetMsgType(i int64) *GroupMessageUpdateOne {
+	gmuo.mutation.ResetMsgType()
+	gmuo.mutation.SetMsgType(i)
+	return gmuo
+}
+
+// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
+func (gmuo *GroupMessageUpdateOne) SetNillableMsgType(i *int64) *GroupMessageUpdateOne {
+	if i != nil {
+		gmuo.SetMsgType(*i)
+	}
+	return gmuo
+}
+
+// AddMsgType adds i to the "msg_type" field.
+func (gmuo *GroupMessageUpdateOne) AddMsgType(i int64) *GroupMessageUpdateOne {
+	gmuo.mutation.AddMsgType(i)
+	return gmuo
+}
+
+// SetSenderID sets the "sender_id" field.
+func (gmuo *GroupMessageUpdateOne) SetSenderID(i int64) *GroupMessageUpdateOne {
+	gmuo.mutation.ResetSenderID()
+	gmuo.mutation.SetSenderID(i)
+	return gmuo
+}
+
+// SetNillableSenderID sets the "sender_id" field if the given value is not nil.
+func (gmuo *GroupMessageUpdateOne) SetNillableSenderID(i *int64) *GroupMessageUpdateOne {
+	if i != nil {
+		gmuo.SetSenderID(*i)
+	}
+	return gmuo
+}
+
+// AddSenderID adds i to the "sender_id" field.
+func (gmuo *GroupMessageUpdateOne) AddSenderID(i int64) *GroupMessageUpdateOne {
+	gmuo.mutation.AddSenderID(i)
 	return gmuo
 }
 
@@ -297,27 +318,6 @@ func (gmuo *GroupMessageUpdateOne) SetNillableTimestamp(i *int64) *GroupMessageU
 // AddTimestamp adds i to the "timestamp" field.
 func (gmuo *GroupMessageUpdateOne) AddTimestamp(i int64) *GroupMessageUpdateOne {
 	gmuo.mutation.AddTimestamp(i)
-	return gmuo
-}
-
-// SetSenderID sets the "sender_id" field.
-func (gmuo *GroupMessageUpdateOne) SetSenderID(i int64) *GroupMessageUpdateOne {
-	gmuo.mutation.ResetSenderID()
-	gmuo.mutation.SetSenderID(i)
-	return gmuo
-}
-
-// SetNillableSenderID sets the "sender_id" field if the given value is not nil.
-func (gmuo *GroupMessageUpdateOne) SetNillableSenderID(i *int64) *GroupMessageUpdateOne {
-	if i != nil {
-		gmuo.SetSenderID(*i)
-	}
-	return gmuo
-}
-
-// AddSenderID adds i to the "sender_id" field.
-func (gmuo *GroupMessageUpdateOne) AddSenderID(i int64) *GroupMessageUpdateOne {
-	gmuo.mutation.AddSenderID(i)
 	return gmuo
 }
 
@@ -398,14 +398,20 @@ func (gmuo *GroupMessageUpdateOne) sqlSave(ctx context.Context) (_node *GroupMes
 			}
 		}
 	}
-	if value, ok := gmuo.mutation.MsgType(); ok {
-		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt32, value)
-	}
-	if value, ok := gmuo.mutation.AddedMsgType(); ok {
-		_spec.AddField(groupmessage.FieldMsgType, field.TypeInt32, value)
-	}
 	if value, ok := gmuo.mutation.MsgID(); ok {
 		_spec.SetField(groupmessage.FieldMsgID, field.TypeString, value)
+	}
+	if value, ok := gmuo.mutation.MsgType(); ok {
+		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt64, value)
+	}
+	if value, ok := gmuo.mutation.AddedMsgType(); ok {
+		_spec.AddField(groupmessage.FieldMsgType, field.TypeInt64, value)
+	}
+	if value, ok := gmuo.mutation.SenderID(); ok {
+		_spec.SetField(groupmessage.FieldSenderID, field.TypeInt64, value)
+	}
+	if value, ok := gmuo.mutation.AddedSenderID(); ok {
+		_spec.AddField(groupmessage.FieldSenderID, field.TypeInt64, value)
 	}
 	if value, ok := gmuo.mutation.GroupID(); ok {
 		_spec.SetField(groupmessage.FieldGroupID, field.TypeInt64, value)
@@ -418,12 +424,6 @@ func (gmuo *GroupMessageUpdateOne) sqlSave(ctx context.Context) (_node *GroupMes
 	}
 	if value, ok := gmuo.mutation.AddedTimestamp(); ok {
 		_spec.AddField(groupmessage.FieldTimestamp, field.TypeInt64, value)
-	}
-	if value, ok := gmuo.mutation.SenderID(); ok {
-		_spec.SetField(groupmessage.FieldSenderID, field.TypeInt64, value)
-	}
-	if value, ok := gmuo.mutation.AddedSenderID(); ok {
-		_spec.AddField(groupmessage.FieldSenderID, field.TypeInt64, value)
 	}
 	if value, ok := gmuo.mutation.Content(); ok {
 		_spec.SetField(groupmessage.FieldContent, field.TypeJSON, value)

@@ -3,12 +3,12 @@
 package ent
 
 import (
-	"imlogic/ent/chat"
 	"imlogic/ent/group"
 	"imlogic/ent/role"
 	"imlogic/ent/schema"
 	"imlogic/ent/user"
 	"imlogic/ent/userconn"
+	"imlogic/ent/userfriend"
 	"imlogic/ent/usergroup"
 	"time"
 )
@@ -17,16 +17,6 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	chatFields := schema.Chat{}.Fields()
-	_ = chatFields
-	// chatDescUUID is the schema descriptor for uuid field.
-	chatDescUUID := chatFields[1].Descriptor()
-	// chat.DefaultUUID holds the default value on creation for the uuid field.
-	chat.DefaultUUID = chatDescUUID.Default.(func() string)
-	// chatDescCreatedAt is the schema descriptor for created_at field.
-	chatDescCreatedAt := chatFields[2].Descriptor()
-	// chat.DefaultCreatedAt holds the default value on creation for the created_at field.
-	chat.DefaultCreatedAt = chatDescCreatedAt.Default.(func() time.Time)
 	groupFields := schema.Group{}.Fields()
 	_ = groupFields
 	// groupDescUUID is the schema descriptor for uuid field.
@@ -127,6 +117,12 @@ func init() {
 	userconnDescLastHeartbeatTime := userconnFields[5].Descriptor()
 	// userconn.DefaultLastHeartbeatTime holds the default value on creation for the last_heartbeat_time field.
 	userconn.DefaultLastHeartbeatTime = userconnDescLastHeartbeatTime.Default.(func() time.Time)
+	userfriendFields := schema.UserFriend{}.Fields()
+	_ = userfriendFields
+	// userfriendDescCreatedAt is the schema descriptor for created_at field.
+	userfriendDescCreatedAt := userfriendFields[1].Descriptor()
+	// userfriend.DefaultCreatedAt holds the default value on creation for the created_at field.
+	userfriend.DefaultCreatedAt = userfriendDescCreatedAt.Default.(func() time.Time)
 	usergroupFields := schema.UserGroup{}.Fields()
 	_ = usergroupFields
 	// usergroupDescJoinAt is the schema descriptor for join_at field.

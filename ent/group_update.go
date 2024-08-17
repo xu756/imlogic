@@ -28,20 +28,6 @@ func (gu *GroupUpdate) Where(ps ...predicate.Group) *GroupUpdate {
 	return gu
 }
 
-// SetUUID sets the "uuid" field.
-func (gu *GroupUpdate) SetUUID(s string) *GroupUpdate {
-	gu.mutation.SetUUID(s)
-	return gu
-}
-
-// SetNillableUUID sets the "uuid" field if the given value is not nil.
-func (gu *GroupUpdate) SetNillableUUID(s *string) *GroupUpdate {
-	if s != nil {
-		gu.SetUUID(*s)
-	}
-	return gu
-}
-
 // SetUpdatedAt sets the "updated_at" field.
 func (gu *GroupUpdate) SetUpdatedAt(t time.Time) *GroupUpdate {
 	gu.mutation.SetUpdatedAt(t)
@@ -139,9 +125,6 @@ func (gu *GroupUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := gu.mutation.UUID(); ok {
-		_spec.SetField(group.FieldUUID, field.TypeString, value)
-	}
 	if value, ok := gu.mutation.UpdatedAt(); ok {
 		_spec.SetField(group.FieldUpdatedAt, field.TypeTime, value)
 	}
@@ -169,20 +152,6 @@ type GroupUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *GroupMutation
-}
-
-// SetUUID sets the "uuid" field.
-func (guo *GroupUpdateOne) SetUUID(s string) *GroupUpdateOne {
-	guo.mutation.SetUUID(s)
-	return guo
-}
-
-// SetNillableUUID sets the "uuid" field if the given value is not nil.
-func (guo *GroupUpdateOne) SetNillableUUID(s *string) *GroupUpdateOne {
-	if s != nil {
-		guo.SetUUID(*s)
-	}
-	return guo
 }
 
 // SetUpdatedAt sets the "updated_at" field.
@@ -311,9 +280,6 @@ func (guo *GroupUpdateOne) sqlSave(ctx context.Context) (_node *Group, err error
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := guo.mutation.UUID(); ok {
-		_spec.SetField(group.FieldUUID, field.TypeString, value)
 	}
 	if value, ok := guo.mutation.UpdatedAt(); ok {
 		_spec.SetField(group.FieldUpdatedAt, field.TypeTime, value)

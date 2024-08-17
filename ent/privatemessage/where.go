@@ -53,19 +53,14 @@ func IDLTE(id int) predicate.PrivateMessage {
 	return predicate.PrivateMessage(sql.FieldLTE(FieldID, id))
 }
 
-// MsgType applies equality check predicate on the "msg_type" field. It's identical to MsgTypeEQ.
-func MsgType(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldEQ(FieldMsgType, v))
-}
-
 // MsgID applies equality check predicate on the "msg_id" field. It's identical to MsgIDEQ.
 func MsgID(v string) predicate.PrivateMessage {
 	return predicate.PrivateMessage(sql.FieldEQ(FieldMsgID, v))
 }
 
-// ChatID applies equality check predicate on the "chat_id" field. It's identical to ChatIDEQ.
-func ChatID(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldEQ(FieldChatID, v))
+// MsgType applies equality check predicate on the "msg_type" field. It's identical to MsgTypeEQ.
+func MsgType(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldEQ(FieldMsgType, v))
 }
 
 // SenderID applies equality check predicate on the "sender_id" field. It's identical to SenderIDEQ.
@@ -73,49 +68,14 @@ func SenderID(v int64) predicate.PrivateMessage {
 	return predicate.PrivateMessage(sql.FieldEQ(FieldSenderID, v))
 }
 
+// ReceiverID applies equality check predicate on the "receiver_id" field. It's identical to ReceiverIDEQ.
+func ReceiverID(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldEQ(FieldReceiverID, v))
+}
+
 // Timestamp applies equality check predicate on the "timestamp" field. It's identical to TimestampEQ.
 func Timestamp(v int64) predicate.PrivateMessage {
 	return predicate.PrivateMessage(sql.FieldEQ(FieldTimestamp, v))
-}
-
-// MsgTypeEQ applies the EQ predicate on the "msg_type" field.
-func MsgTypeEQ(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldEQ(FieldMsgType, v))
-}
-
-// MsgTypeNEQ applies the NEQ predicate on the "msg_type" field.
-func MsgTypeNEQ(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldNEQ(FieldMsgType, v))
-}
-
-// MsgTypeIn applies the In predicate on the "msg_type" field.
-func MsgTypeIn(vs ...int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldIn(FieldMsgType, vs...))
-}
-
-// MsgTypeNotIn applies the NotIn predicate on the "msg_type" field.
-func MsgTypeNotIn(vs ...int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldNotIn(FieldMsgType, vs...))
-}
-
-// MsgTypeGT applies the GT predicate on the "msg_type" field.
-func MsgTypeGT(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldGT(FieldMsgType, v))
-}
-
-// MsgTypeGTE applies the GTE predicate on the "msg_type" field.
-func MsgTypeGTE(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldGTE(FieldMsgType, v))
-}
-
-// MsgTypeLT applies the LT predicate on the "msg_type" field.
-func MsgTypeLT(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldLT(FieldMsgType, v))
-}
-
-// MsgTypeLTE applies the LTE predicate on the "msg_type" field.
-func MsgTypeLTE(v int32) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldLTE(FieldMsgType, v))
 }
 
 // MsgIDEQ applies the EQ predicate on the "msg_id" field.
@@ -183,44 +143,44 @@ func MsgIDContainsFold(v string) predicate.PrivateMessage {
 	return predicate.PrivateMessage(sql.FieldContainsFold(FieldMsgID, v))
 }
 
-// ChatIDEQ applies the EQ predicate on the "chat_id" field.
-func ChatIDEQ(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldEQ(FieldChatID, v))
+// MsgTypeEQ applies the EQ predicate on the "msg_type" field.
+func MsgTypeEQ(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldEQ(FieldMsgType, v))
 }
 
-// ChatIDNEQ applies the NEQ predicate on the "chat_id" field.
-func ChatIDNEQ(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldNEQ(FieldChatID, v))
+// MsgTypeNEQ applies the NEQ predicate on the "msg_type" field.
+func MsgTypeNEQ(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldNEQ(FieldMsgType, v))
 }
 
-// ChatIDIn applies the In predicate on the "chat_id" field.
-func ChatIDIn(vs ...int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldIn(FieldChatID, vs...))
+// MsgTypeIn applies the In predicate on the "msg_type" field.
+func MsgTypeIn(vs ...int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldIn(FieldMsgType, vs...))
 }
 
-// ChatIDNotIn applies the NotIn predicate on the "chat_id" field.
-func ChatIDNotIn(vs ...int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldNotIn(FieldChatID, vs...))
+// MsgTypeNotIn applies the NotIn predicate on the "msg_type" field.
+func MsgTypeNotIn(vs ...int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldNotIn(FieldMsgType, vs...))
 }
 
-// ChatIDGT applies the GT predicate on the "chat_id" field.
-func ChatIDGT(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldGT(FieldChatID, v))
+// MsgTypeGT applies the GT predicate on the "msg_type" field.
+func MsgTypeGT(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldGT(FieldMsgType, v))
 }
 
-// ChatIDGTE applies the GTE predicate on the "chat_id" field.
-func ChatIDGTE(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldGTE(FieldChatID, v))
+// MsgTypeGTE applies the GTE predicate on the "msg_type" field.
+func MsgTypeGTE(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldGTE(FieldMsgType, v))
 }
 
-// ChatIDLT applies the LT predicate on the "chat_id" field.
-func ChatIDLT(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldLT(FieldChatID, v))
+// MsgTypeLT applies the LT predicate on the "msg_type" field.
+func MsgTypeLT(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldLT(FieldMsgType, v))
 }
 
-// ChatIDLTE applies the LTE predicate on the "chat_id" field.
-func ChatIDLTE(v int64) predicate.PrivateMessage {
-	return predicate.PrivateMessage(sql.FieldLTE(FieldChatID, v))
+// MsgTypeLTE applies the LTE predicate on the "msg_type" field.
+func MsgTypeLTE(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldLTE(FieldMsgType, v))
 }
 
 // SenderIDEQ applies the EQ predicate on the "sender_id" field.
@@ -261,6 +221,46 @@ func SenderIDLT(v int64) predicate.PrivateMessage {
 // SenderIDLTE applies the LTE predicate on the "sender_id" field.
 func SenderIDLTE(v int64) predicate.PrivateMessage {
 	return predicate.PrivateMessage(sql.FieldLTE(FieldSenderID, v))
+}
+
+// ReceiverIDEQ applies the EQ predicate on the "receiver_id" field.
+func ReceiverIDEQ(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldEQ(FieldReceiverID, v))
+}
+
+// ReceiverIDNEQ applies the NEQ predicate on the "receiver_id" field.
+func ReceiverIDNEQ(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldNEQ(FieldReceiverID, v))
+}
+
+// ReceiverIDIn applies the In predicate on the "receiver_id" field.
+func ReceiverIDIn(vs ...int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldIn(FieldReceiverID, vs...))
+}
+
+// ReceiverIDNotIn applies the NotIn predicate on the "receiver_id" field.
+func ReceiverIDNotIn(vs ...int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldNotIn(FieldReceiverID, vs...))
+}
+
+// ReceiverIDGT applies the GT predicate on the "receiver_id" field.
+func ReceiverIDGT(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldGT(FieldReceiverID, v))
+}
+
+// ReceiverIDGTE applies the GTE predicate on the "receiver_id" field.
+func ReceiverIDGTE(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldGTE(FieldReceiverID, v))
+}
+
+// ReceiverIDLT applies the LT predicate on the "receiver_id" field.
+func ReceiverIDLT(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldLT(FieldReceiverID, v))
+}
+
+// ReceiverIDLTE applies the LTE predicate on the "receiver_id" field.
+func ReceiverIDLTE(v int64) predicate.PrivateMessage {
+	return predicate.PrivateMessage(sql.FieldLTE(FieldReceiverID, v))
 }
 
 // TimestampEQ applies the EQ predicate on the "timestamp" field.

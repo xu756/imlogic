@@ -8,31 +8,10 @@ import (
 )
 
 var (
-	// ChatsColumns holds the columns for the "chats" table.
-	ChatsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "uuid", Type: field.TypeString},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "user1_id", Type: field.TypeInt64},
-		{Name: "user2_id", Type: field.TypeInt64},
-	}
-	// ChatsTable holds the schema information for the "chats" table.
-	ChatsTable = &schema.Table{
-		Name:       "chats",
-		Columns:    ChatsColumns,
-		PrimaryKey: []*schema.Column{ChatsColumns[0]},
-		Indexes: []*schema.Index{
-			{
-				Name:    "chat_uuid",
-				Unique:  true,
-				Columns: []*schema.Column{ChatsColumns[1]},
-			},
-		},
-	}
 	// GroupsColumns holds the columns for the "groups" table.
 	GroupsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Increment: true},
-		{Name: "uuid", Type: field.TypeString},
+		{Name: "uuid", Type: field.TypeString, Unique: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
@@ -47,11 +26,11 @@ var (
 	// GroupMessagesColumns holds the columns for the "group_messages" table.
 	GroupMessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "msg_type", Type: field.TypeInt32},
 		{Name: "msg_id", Type: field.TypeString},
+		{Name: "msg_type", Type: field.TypeInt64},
+		{Name: "sender_id", Type: field.TypeInt64},
 		{Name: "group_id", Type: field.TypeInt64},
 		{Name: "timestamp", Type: field.TypeInt64},
-		{Name: "sender_id", Type: field.TypeInt64},
 		{Name: "content", Type: field.TypeJSON},
 	}
 	// GroupMessagesTable holds the schema information for the "group_messages" table.
@@ -63,17 +42,17 @@ var (
 			{
 				Name:    "groupmessage_msg_id_sender_id_group_id",
 				Unique:  false,
-				Columns: []*schema.Column{GroupMessagesColumns[2], GroupMessagesColumns[5], GroupMessagesColumns[3]},
+				Columns: []*schema.Column{GroupMessagesColumns[1], GroupMessagesColumns[3], GroupMessagesColumns[4]},
 			},
 		},
 	}
 	// PrivateMessagesColumns holds the columns for the "private_messages" table.
 	PrivateMessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "msg_type", Type: field.TypeInt32},
 		{Name: "msg_id", Type: field.TypeString},
-		{Name: "chat_id", Type: field.TypeInt64},
+		{Name: "msg_type", Type: field.TypeInt64},
 		{Name: "sender_id", Type: field.TypeInt64},
+		{Name: "receiver_id", Type: field.TypeInt64},
 		{Name: "timestamp", Type: field.TypeInt64},
 		{Name: "content", Type: field.TypeJSON},
 	}
@@ -84,9 +63,9 @@ var (
 		PrimaryKey: []*schema.Column{PrivateMessagesColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "privatemessage_msg_id_sender_id_chat_id",
+				Name:    "privatemessage_msg_id_sender_id_receiver_id",
 				Unique:  false,
-				Columns: []*schema.Column{PrivateMessagesColumns[2], PrivateMessagesColumns[4], PrivateMessagesColumns[3]},
+				Columns: []*schema.Column{PrivateMessagesColumns[1], PrivateMessagesColumns[3], PrivateMessagesColumns[4]},
 			},
 		},
 	}
@@ -110,7 +89,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted", Type: field.TypeBool, Default: false},
-		{Name: "uuid", Type: field.TypeString},
+		{Name: "uuid", Type: field.TypeString, Unique: true},
 		{Name: "editor", Type: field.TypeInt64, Default: 0},
 		{Name: "username", Type: field.TypeString, Default: ""},
 		{Name: "password", Type: field.TypeString, Default: ""},
@@ -164,6 +143,21 @@ var (
 			},
 		},
 	}
+	// UserFriendsColumns holds the columns for the "user_friends" table.
+	UserFriendsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "owner", Type: field.TypeInt64},
+		{Name: "with", Type: field.TypeInt64},
+		{Name: "alias", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString},
+	}
+	// UserFriendsTable holds the schema information for the "user_friends" table.
+	UserFriendsTable = &schema.Table{
+		Name:       "user_friends",
+		Columns:    UserFriendsColumns,
+		PrimaryKey: []*schema.Column{UserFriendsColumns[0]},
+	}
 	// UserGroupsColumns holds the columns for the "user_groups" table.
 	UserGroupsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
@@ -198,13 +192,13 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		ChatsTable,
 		GroupsTable,
 		GroupMessagesTable,
 		PrivateMessagesTable,
 		RolesTable,
 		UsersTable,
 		UserConnsTable,
+		UserFriendsTable,
 		UserGroupsTable,
 		UserRolesTable,
 	}

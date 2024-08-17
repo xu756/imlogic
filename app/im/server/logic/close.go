@@ -18,7 +18,7 @@ func onClose(c *client.Client) {
 func onConnect(conn *client.Client) {
 	conn.SendMsg(&base.Message{
 		LinkId:    conn.GetLinkId(),
-		Sender:    conn.GetUserId(),
+		Receiver:  conn.GetUserId(),
 		MsgId:     uuid.NewString(),
 		Timestamp: tool.TimeNowUnixMilli(),
 		ChatType:  base.ChatType_SystemMessage,

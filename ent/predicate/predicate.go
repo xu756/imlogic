@@ -6,9 +6,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Chat is the predicate function for chat builders.
-type Chat func(*sql.Selector)
-
 // Group is the predicate function for group builders.
 type Group func(*sql.Selector)
 
@@ -26,6 +23,9 @@ type User func(*sql.Selector)
 
 // UserConn is the predicate function for userconn builders.
 type UserConn func(*sql.Selector)
+
+// UserFriend is the predicate function for userfriend builders.
+type UserFriend func(*sql.Selector)
 
 // UserGroup is the predicate function for usergroup builders.
 type UserGroup func(*sql.Selector)

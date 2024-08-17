@@ -8,18 +8,6 @@ import (
 	"imlogic/ent"
 )
 
-// The ChatFunc type is an adapter to allow the use of ordinary
-// function as Chat mutator.
-type ChatFunc func(context.Context, *ent.ChatMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f ChatFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.ChatMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ChatMutation", m)
-}
-
 // The GroupFunc type is an adapter to allow the use of ordinary
 // function as Group mutator.
 type GroupFunc func(context.Context, *ent.GroupMutation) (ent.Value, error)
@@ -90,6 +78,18 @@ func (f UserConnFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.UserConnMutation", m)
+}
+
+// The UserFriendFunc type is an adapter to allow the use of ordinary
+// function as UserFriend mutator.
+type UserFriendFunc func(context.Context, *ent.UserFriendMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f UserFriendFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.UserFriendMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.UserFriendMutation", m)
 }
 
 // The UserGroupFunc type is an adapter to allow the use of ordinary

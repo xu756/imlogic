@@ -9,11 +9,11 @@ import (
 
 func (i *ImRpcImpl) HandlerGroupMessage(ctx context.Context, req *base.Message) (res *im.MessageRes, err error) {
 	// 保存消息
-	err = i.Model.AddOneGroupMsg(ctx, int32(req.MsgType), req.MsgId, req.GroupId, req.Sender, req.Timestamp, req)
+	err = i.Model.AddOneGroupMsg(ctx, req.MsgType, req.MsgId, req.Receiver, req.Sender, req.Timestamp, req)
 	if err != nil {
 		return nil, err
 	}
-	userIds, err := i.Model.GetGroupUserIdsByGroupId(ctx, req.GroupId)
+	userIds, err := i.Model.GetGroupUserIdsByGroupId(ctx, req.Receiver)
 	if err != nil {
 		return nil, err
 	}

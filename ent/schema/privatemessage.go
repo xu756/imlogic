@@ -15,10 +15,10 @@ type PrivateMessage struct {
 // Fields of the PrivateMessage.
 func (PrivateMessage) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int32("msg_type").Comment("消息类型"),
 		field.String("msg_id").Comment("消息id"),
-		field.Int64("chat_id").Comment("聊天id"),
+		field.Int64("msg_type").Comment("消息类型"),
 		field.Int64("sender_id").Comment("发送者id"),
+		field.Int64("receiver_id").Comment("接收者id"),
 		field.Int64("timestamp").Comment("消息时间戳"),
 		field.JSON("content", &base.Message{}).Comment("消息内容"),
 	}
@@ -32,6 +32,6 @@ func (PrivateMessage) Edges() []ent.Edge {
 // Indexes of the PrivateMessage.
 func (PrivateMessage) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("msg_id", "sender_id", "chat_id"),
+		index.Fields("msg_id", "sender_id", "receiver_id"),
 	}
 }

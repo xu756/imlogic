@@ -20,27 +20,27 @@ type PrivateMessageCreate struct {
 	hooks    []Hook
 }
 
-// SetMsgType sets the "msg_type" field.
-func (pmc *PrivateMessageCreate) SetMsgType(i int32) *PrivateMessageCreate {
-	pmc.mutation.SetMsgType(i)
-	return pmc
-}
-
 // SetMsgID sets the "msg_id" field.
 func (pmc *PrivateMessageCreate) SetMsgID(s string) *PrivateMessageCreate {
 	pmc.mutation.SetMsgID(s)
 	return pmc
 }
 
-// SetChatID sets the "chat_id" field.
-func (pmc *PrivateMessageCreate) SetChatID(i int64) *PrivateMessageCreate {
-	pmc.mutation.SetChatID(i)
+// SetMsgType sets the "msg_type" field.
+func (pmc *PrivateMessageCreate) SetMsgType(i int64) *PrivateMessageCreate {
+	pmc.mutation.SetMsgType(i)
 	return pmc
 }
 
 // SetSenderID sets the "sender_id" field.
 func (pmc *PrivateMessageCreate) SetSenderID(i int64) *PrivateMessageCreate {
 	pmc.mutation.SetSenderID(i)
+	return pmc
+}
+
+// SetReceiverID sets the "receiver_id" field.
+func (pmc *PrivateMessageCreate) SetReceiverID(i int64) *PrivateMessageCreate {
+	pmc.mutation.SetReceiverID(i)
 	return pmc
 }
 
@@ -90,17 +90,17 @@ func (pmc *PrivateMessageCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (pmc *PrivateMessageCreate) check() error {
-	if _, ok := pmc.mutation.MsgType(); !ok {
-		return &ValidationError{Name: "msg_type", err: errors.New(`ent: missing required field "PrivateMessage.msg_type"`)}
-	}
 	if _, ok := pmc.mutation.MsgID(); !ok {
 		return &ValidationError{Name: "msg_id", err: errors.New(`ent: missing required field "PrivateMessage.msg_id"`)}
 	}
-	if _, ok := pmc.mutation.ChatID(); !ok {
-		return &ValidationError{Name: "chat_id", err: errors.New(`ent: missing required field "PrivateMessage.chat_id"`)}
+	if _, ok := pmc.mutation.MsgType(); !ok {
+		return &ValidationError{Name: "msg_type", err: errors.New(`ent: missing required field "PrivateMessage.msg_type"`)}
 	}
 	if _, ok := pmc.mutation.SenderID(); !ok {
 		return &ValidationError{Name: "sender_id", err: errors.New(`ent: missing required field "PrivateMessage.sender_id"`)}
+	}
+	if _, ok := pmc.mutation.ReceiverID(); !ok {
+		return &ValidationError{Name: "receiver_id", err: errors.New(`ent: missing required field "PrivateMessage.receiver_id"`)}
 	}
 	if _, ok := pmc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "PrivateMessage.timestamp"`)}
@@ -134,21 +134,21 @@ func (pmc *PrivateMessageCreate) createSpec() (*PrivateMessage, *sqlgraph.Create
 		_node = &PrivateMessage{config: pmc.config}
 		_spec = sqlgraph.NewCreateSpec(privatemessage.Table, sqlgraph.NewFieldSpec(privatemessage.FieldID, field.TypeInt))
 	)
-	if value, ok := pmc.mutation.MsgType(); ok {
-		_spec.SetField(privatemessage.FieldMsgType, field.TypeInt32, value)
-		_node.MsgType = value
-	}
 	if value, ok := pmc.mutation.MsgID(); ok {
 		_spec.SetField(privatemessage.FieldMsgID, field.TypeString, value)
 		_node.MsgID = value
 	}
-	if value, ok := pmc.mutation.ChatID(); ok {
-		_spec.SetField(privatemessage.FieldChatID, field.TypeInt64, value)
-		_node.ChatID = value
+	if value, ok := pmc.mutation.MsgType(); ok {
+		_spec.SetField(privatemessage.FieldMsgType, field.TypeInt64, value)
+		_node.MsgType = value
 	}
 	if value, ok := pmc.mutation.SenderID(); ok {
 		_spec.SetField(privatemessage.FieldSenderID, field.TypeInt64, value)
 		_node.SenderID = value
+	}
+	if value, ok := pmc.mutation.ReceiverID(); ok {
+		_spec.SetField(privatemessage.FieldReceiverID, field.TypeInt64, value)
+		_node.ReceiverID = value
 	}
 	if value, ok := pmc.mutation.Timestamp(); ok {
 		_spec.SetField(privatemessage.FieldTimestamp, field.TypeInt64, value)

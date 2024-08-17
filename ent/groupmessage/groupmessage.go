@@ -11,16 +11,16 @@ const (
 	Label = "group_message"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldMsgType holds the string denoting the msg_type field in the database.
-	FieldMsgType = "msg_type"
 	// FieldMsgID holds the string denoting the msg_id field in the database.
 	FieldMsgID = "msg_id"
+	// FieldMsgType holds the string denoting the msg_type field in the database.
+	FieldMsgType = "msg_type"
+	// FieldSenderID holds the string denoting the sender_id field in the database.
+	FieldSenderID = "sender_id"
 	// FieldGroupID holds the string denoting the group_id field in the database.
 	FieldGroupID = "group_id"
 	// FieldTimestamp holds the string denoting the timestamp field in the database.
 	FieldTimestamp = "timestamp"
-	// FieldSenderID holds the string denoting the sender_id field in the database.
-	FieldSenderID = "sender_id"
 	// FieldContent holds the string denoting the content field in the database.
 	FieldContent = "content"
 	// Table holds the table name of the groupmessage in the database.
@@ -30,11 +30,11 @@ const (
 // Columns holds all SQL columns for groupmessage fields.
 var Columns = []string{
 	FieldID,
-	FieldMsgType,
 	FieldMsgID,
+	FieldMsgType,
+	FieldSenderID,
 	FieldGroupID,
 	FieldTimestamp,
-	FieldSenderID,
 	FieldContent,
 }
 
@@ -56,14 +56,19 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
+// ByMsgID orders the results by the msg_id field.
+func ByMsgID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldMsgID, opts...).ToFunc()
+}
+
 // ByMsgType orders the results by the msg_type field.
 func ByMsgType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMsgType, opts...).ToFunc()
 }
 
-// ByMsgID orders the results by the msg_id field.
-func ByMsgID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldMsgID, opts...).ToFunc()
+// BySenderID orders the results by the sender_id field.
+func BySenderID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSenderID, opts...).ToFunc()
 }
 
 // ByGroupID orders the results by the group_id field.
@@ -74,9 +79,4 @@ func ByGroupID(opts ...sql.OrderTermOption) OrderOption {
 // ByTimestamp orders the results by the timestamp field.
 func ByTimestamp(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTimestamp, opts...).ToFunc()
-}
-
-// BySenderID orders the results by the sender_id field.
-func BySenderID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSenderID, opts...).ToFunc()
 }

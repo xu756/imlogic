@@ -28,27 +28,6 @@ func (pmu *PrivateMessageUpdate) Where(ps ...predicate.PrivateMessage) *PrivateM
 	return pmu
 }
 
-// SetMsgType sets the "msg_type" field.
-func (pmu *PrivateMessageUpdate) SetMsgType(i int32) *PrivateMessageUpdate {
-	pmu.mutation.ResetMsgType()
-	pmu.mutation.SetMsgType(i)
-	return pmu
-}
-
-// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
-func (pmu *PrivateMessageUpdate) SetNillableMsgType(i *int32) *PrivateMessageUpdate {
-	if i != nil {
-		pmu.SetMsgType(*i)
-	}
-	return pmu
-}
-
-// AddMsgType adds i to the "msg_type" field.
-func (pmu *PrivateMessageUpdate) AddMsgType(i int32) *PrivateMessageUpdate {
-	pmu.mutation.AddMsgType(i)
-	return pmu
-}
-
 // SetMsgID sets the "msg_id" field.
 func (pmu *PrivateMessageUpdate) SetMsgID(s string) *PrivateMessageUpdate {
 	pmu.mutation.SetMsgID(s)
@@ -63,24 +42,24 @@ func (pmu *PrivateMessageUpdate) SetNillableMsgID(s *string) *PrivateMessageUpda
 	return pmu
 }
 
-// SetChatID sets the "chat_id" field.
-func (pmu *PrivateMessageUpdate) SetChatID(i int64) *PrivateMessageUpdate {
-	pmu.mutation.ResetChatID()
-	pmu.mutation.SetChatID(i)
+// SetMsgType sets the "msg_type" field.
+func (pmu *PrivateMessageUpdate) SetMsgType(i int64) *PrivateMessageUpdate {
+	pmu.mutation.ResetMsgType()
+	pmu.mutation.SetMsgType(i)
 	return pmu
 }
 
-// SetNillableChatID sets the "chat_id" field if the given value is not nil.
-func (pmu *PrivateMessageUpdate) SetNillableChatID(i *int64) *PrivateMessageUpdate {
+// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
+func (pmu *PrivateMessageUpdate) SetNillableMsgType(i *int64) *PrivateMessageUpdate {
 	if i != nil {
-		pmu.SetChatID(*i)
+		pmu.SetMsgType(*i)
 	}
 	return pmu
 }
 
-// AddChatID adds i to the "chat_id" field.
-func (pmu *PrivateMessageUpdate) AddChatID(i int64) *PrivateMessageUpdate {
-	pmu.mutation.AddChatID(i)
+// AddMsgType adds i to the "msg_type" field.
+func (pmu *PrivateMessageUpdate) AddMsgType(i int64) *PrivateMessageUpdate {
+	pmu.mutation.AddMsgType(i)
 	return pmu
 }
 
@@ -102,6 +81,27 @@ func (pmu *PrivateMessageUpdate) SetNillableSenderID(i *int64) *PrivateMessageUp
 // AddSenderID adds i to the "sender_id" field.
 func (pmu *PrivateMessageUpdate) AddSenderID(i int64) *PrivateMessageUpdate {
 	pmu.mutation.AddSenderID(i)
+	return pmu
+}
+
+// SetReceiverID sets the "receiver_id" field.
+func (pmu *PrivateMessageUpdate) SetReceiverID(i int64) *PrivateMessageUpdate {
+	pmu.mutation.ResetReceiverID()
+	pmu.mutation.SetReceiverID(i)
+	return pmu
+}
+
+// SetNillableReceiverID sets the "receiver_id" field if the given value is not nil.
+func (pmu *PrivateMessageUpdate) SetNillableReceiverID(i *int64) *PrivateMessageUpdate {
+	if i != nil {
+		pmu.SetReceiverID(*i)
+	}
+	return pmu
+}
+
+// AddReceiverID adds i to the "receiver_id" field.
+func (pmu *PrivateMessageUpdate) AddReceiverID(i int64) *PrivateMessageUpdate {
+	pmu.mutation.AddReceiverID(i)
 	return pmu
 }
 
@@ -173,26 +173,26 @@ func (pmu *PrivateMessageUpdate) sqlSave(ctx context.Context) (n int, err error)
 			}
 		}
 	}
-	if value, ok := pmu.mutation.MsgType(); ok {
-		_spec.SetField(privatemessage.FieldMsgType, field.TypeInt32, value)
-	}
-	if value, ok := pmu.mutation.AddedMsgType(); ok {
-		_spec.AddField(privatemessage.FieldMsgType, field.TypeInt32, value)
-	}
 	if value, ok := pmu.mutation.MsgID(); ok {
 		_spec.SetField(privatemessage.FieldMsgID, field.TypeString, value)
 	}
-	if value, ok := pmu.mutation.ChatID(); ok {
-		_spec.SetField(privatemessage.FieldChatID, field.TypeInt64, value)
+	if value, ok := pmu.mutation.MsgType(); ok {
+		_spec.SetField(privatemessage.FieldMsgType, field.TypeInt64, value)
 	}
-	if value, ok := pmu.mutation.AddedChatID(); ok {
-		_spec.AddField(privatemessage.FieldChatID, field.TypeInt64, value)
+	if value, ok := pmu.mutation.AddedMsgType(); ok {
+		_spec.AddField(privatemessage.FieldMsgType, field.TypeInt64, value)
 	}
 	if value, ok := pmu.mutation.SenderID(); ok {
 		_spec.SetField(privatemessage.FieldSenderID, field.TypeInt64, value)
 	}
 	if value, ok := pmu.mutation.AddedSenderID(); ok {
 		_spec.AddField(privatemessage.FieldSenderID, field.TypeInt64, value)
+	}
+	if value, ok := pmu.mutation.ReceiverID(); ok {
+		_spec.SetField(privatemessage.FieldReceiverID, field.TypeInt64, value)
+	}
+	if value, ok := pmu.mutation.AddedReceiverID(); ok {
+		_spec.AddField(privatemessage.FieldReceiverID, field.TypeInt64, value)
 	}
 	if value, ok := pmu.mutation.Timestamp(); ok {
 		_spec.SetField(privatemessage.FieldTimestamp, field.TypeInt64, value)
@@ -223,27 +223,6 @@ type PrivateMessageUpdateOne struct {
 	mutation *PrivateMessageMutation
 }
 
-// SetMsgType sets the "msg_type" field.
-func (pmuo *PrivateMessageUpdateOne) SetMsgType(i int32) *PrivateMessageUpdateOne {
-	pmuo.mutation.ResetMsgType()
-	pmuo.mutation.SetMsgType(i)
-	return pmuo
-}
-
-// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
-func (pmuo *PrivateMessageUpdateOne) SetNillableMsgType(i *int32) *PrivateMessageUpdateOne {
-	if i != nil {
-		pmuo.SetMsgType(*i)
-	}
-	return pmuo
-}
-
-// AddMsgType adds i to the "msg_type" field.
-func (pmuo *PrivateMessageUpdateOne) AddMsgType(i int32) *PrivateMessageUpdateOne {
-	pmuo.mutation.AddMsgType(i)
-	return pmuo
-}
-
 // SetMsgID sets the "msg_id" field.
 func (pmuo *PrivateMessageUpdateOne) SetMsgID(s string) *PrivateMessageUpdateOne {
 	pmuo.mutation.SetMsgID(s)
@@ -258,24 +237,24 @@ func (pmuo *PrivateMessageUpdateOne) SetNillableMsgID(s *string) *PrivateMessage
 	return pmuo
 }
 
-// SetChatID sets the "chat_id" field.
-func (pmuo *PrivateMessageUpdateOne) SetChatID(i int64) *PrivateMessageUpdateOne {
-	pmuo.mutation.ResetChatID()
-	pmuo.mutation.SetChatID(i)
+// SetMsgType sets the "msg_type" field.
+func (pmuo *PrivateMessageUpdateOne) SetMsgType(i int64) *PrivateMessageUpdateOne {
+	pmuo.mutation.ResetMsgType()
+	pmuo.mutation.SetMsgType(i)
 	return pmuo
 }
 
-// SetNillableChatID sets the "chat_id" field if the given value is not nil.
-func (pmuo *PrivateMessageUpdateOne) SetNillableChatID(i *int64) *PrivateMessageUpdateOne {
+// SetNillableMsgType sets the "msg_type" field if the given value is not nil.
+func (pmuo *PrivateMessageUpdateOne) SetNillableMsgType(i *int64) *PrivateMessageUpdateOne {
 	if i != nil {
-		pmuo.SetChatID(*i)
+		pmuo.SetMsgType(*i)
 	}
 	return pmuo
 }
 
-// AddChatID adds i to the "chat_id" field.
-func (pmuo *PrivateMessageUpdateOne) AddChatID(i int64) *PrivateMessageUpdateOne {
-	pmuo.mutation.AddChatID(i)
+// AddMsgType adds i to the "msg_type" field.
+func (pmuo *PrivateMessageUpdateOne) AddMsgType(i int64) *PrivateMessageUpdateOne {
+	pmuo.mutation.AddMsgType(i)
 	return pmuo
 }
 
@@ -297,6 +276,27 @@ func (pmuo *PrivateMessageUpdateOne) SetNillableSenderID(i *int64) *PrivateMessa
 // AddSenderID adds i to the "sender_id" field.
 func (pmuo *PrivateMessageUpdateOne) AddSenderID(i int64) *PrivateMessageUpdateOne {
 	pmuo.mutation.AddSenderID(i)
+	return pmuo
+}
+
+// SetReceiverID sets the "receiver_id" field.
+func (pmuo *PrivateMessageUpdateOne) SetReceiverID(i int64) *PrivateMessageUpdateOne {
+	pmuo.mutation.ResetReceiverID()
+	pmuo.mutation.SetReceiverID(i)
+	return pmuo
+}
+
+// SetNillableReceiverID sets the "receiver_id" field if the given value is not nil.
+func (pmuo *PrivateMessageUpdateOne) SetNillableReceiverID(i *int64) *PrivateMessageUpdateOne {
+	if i != nil {
+		pmuo.SetReceiverID(*i)
+	}
+	return pmuo
+}
+
+// AddReceiverID adds i to the "receiver_id" field.
+func (pmuo *PrivateMessageUpdateOne) AddReceiverID(i int64) *PrivateMessageUpdateOne {
+	pmuo.mutation.AddReceiverID(i)
 	return pmuo
 }
 
@@ -398,26 +398,26 @@ func (pmuo *PrivateMessageUpdateOne) sqlSave(ctx context.Context) (_node *Privat
 			}
 		}
 	}
-	if value, ok := pmuo.mutation.MsgType(); ok {
-		_spec.SetField(privatemessage.FieldMsgType, field.TypeInt32, value)
-	}
-	if value, ok := pmuo.mutation.AddedMsgType(); ok {
-		_spec.AddField(privatemessage.FieldMsgType, field.TypeInt32, value)
-	}
 	if value, ok := pmuo.mutation.MsgID(); ok {
 		_spec.SetField(privatemessage.FieldMsgID, field.TypeString, value)
 	}
-	if value, ok := pmuo.mutation.ChatID(); ok {
-		_spec.SetField(privatemessage.FieldChatID, field.TypeInt64, value)
+	if value, ok := pmuo.mutation.MsgType(); ok {
+		_spec.SetField(privatemessage.FieldMsgType, field.TypeInt64, value)
 	}
-	if value, ok := pmuo.mutation.AddedChatID(); ok {
-		_spec.AddField(privatemessage.FieldChatID, field.TypeInt64, value)
+	if value, ok := pmuo.mutation.AddedMsgType(); ok {
+		_spec.AddField(privatemessage.FieldMsgType, field.TypeInt64, value)
 	}
 	if value, ok := pmuo.mutation.SenderID(); ok {
 		_spec.SetField(privatemessage.FieldSenderID, field.TypeInt64, value)
 	}
 	if value, ok := pmuo.mutation.AddedSenderID(); ok {
 		_spec.AddField(privatemessage.FieldSenderID, field.TypeInt64, value)
+	}
+	if value, ok := pmuo.mutation.ReceiverID(); ok {
+		_spec.SetField(privatemessage.FieldReceiverID, field.TypeInt64, value)
+	}
+	if value, ok := pmuo.mutation.AddedReceiverID(); ok {
+		_spec.AddField(privatemessage.FieldReceiverID, field.TypeInt64, value)
 	}
 	if value, ok := pmuo.mutation.Timestamp(); ok {
 		_spec.SetField(privatemessage.FieldTimestamp, field.TypeInt64, value)

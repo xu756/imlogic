@@ -12,8 +12,6 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
-	// Chat is the client for interacting with the Chat builders.
-	Chat *ChatClient
 	// Group is the client for interacting with the Group builders.
 	Group *GroupClient
 	// GroupMessage is the client for interacting with the GroupMessage builders.
@@ -26,6 +24,8 @@ type Tx struct {
 	User *UserClient
 	// UserConn is the client for interacting with the UserConn builders.
 	UserConn *UserConnClient
+	// UserFriend is the client for interacting with the UserFriend builders.
+	UserFriend *UserFriendClient
 	// UserGroup is the client for interacting with the UserGroup builders.
 	UserGroup *UserGroupClient
 	// UserRole is the client for interacting with the UserRole builders.
@@ -161,13 +161,13 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
-	tx.Chat = NewChatClient(tx.config)
 	tx.Group = NewGroupClient(tx.config)
 	tx.GroupMessage = NewGroupMessageClient(tx.config)
 	tx.PrivateMessage = NewPrivateMessageClient(tx.config)
 	tx.Role = NewRoleClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 	tx.UserConn = NewUserConnClient(tx.config)
+	tx.UserFriend = NewUserFriendClient(tx.config)
 	tx.UserGroup = NewUserGroupClient(tx.config)
 	tx.UserRole = NewUserRoleClient(tx.config)
 }
@@ -179,7 +179,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Chat.QueryXXX(), the query will be executed
+// applies a query, for example: Group.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

@@ -20,15 +20,21 @@ type GroupMessageCreate struct {
 	hooks    []Hook
 }
 
+// SetMsgID sets the "msg_id" field.
+func (gmc *GroupMessageCreate) SetMsgID(s string) *GroupMessageCreate {
+	gmc.mutation.SetMsgID(s)
+	return gmc
+}
+
 // SetMsgType sets the "msg_type" field.
-func (gmc *GroupMessageCreate) SetMsgType(i int32) *GroupMessageCreate {
+func (gmc *GroupMessageCreate) SetMsgType(i int64) *GroupMessageCreate {
 	gmc.mutation.SetMsgType(i)
 	return gmc
 }
 
-// SetMsgID sets the "msg_id" field.
-func (gmc *GroupMessageCreate) SetMsgID(s string) *GroupMessageCreate {
-	gmc.mutation.SetMsgID(s)
+// SetSenderID sets the "sender_id" field.
+func (gmc *GroupMessageCreate) SetSenderID(i int64) *GroupMessageCreate {
+	gmc.mutation.SetSenderID(i)
 	return gmc
 }
 
@@ -41,12 +47,6 @@ func (gmc *GroupMessageCreate) SetGroupID(i int64) *GroupMessageCreate {
 // SetTimestamp sets the "timestamp" field.
 func (gmc *GroupMessageCreate) SetTimestamp(i int64) *GroupMessageCreate {
 	gmc.mutation.SetTimestamp(i)
-	return gmc
-}
-
-// SetSenderID sets the "sender_id" field.
-func (gmc *GroupMessageCreate) SetSenderID(i int64) *GroupMessageCreate {
-	gmc.mutation.SetSenderID(i)
 	return gmc
 }
 
@@ -90,20 +90,20 @@ func (gmc *GroupMessageCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (gmc *GroupMessageCreate) check() error {
+	if _, ok := gmc.mutation.MsgID(); !ok {
+		return &ValidationError{Name: "msg_id", err: errors.New(`ent: missing required field "GroupMessage.msg_id"`)}
+	}
 	if _, ok := gmc.mutation.MsgType(); !ok {
 		return &ValidationError{Name: "msg_type", err: errors.New(`ent: missing required field "GroupMessage.msg_type"`)}
 	}
-	if _, ok := gmc.mutation.MsgID(); !ok {
-		return &ValidationError{Name: "msg_id", err: errors.New(`ent: missing required field "GroupMessage.msg_id"`)}
+	if _, ok := gmc.mutation.SenderID(); !ok {
+		return &ValidationError{Name: "sender_id", err: errors.New(`ent: missing required field "GroupMessage.sender_id"`)}
 	}
 	if _, ok := gmc.mutation.GroupID(); !ok {
 		return &ValidationError{Name: "group_id", err: errors.New(`ent: missing required field "GroupMessage.group_id"`)}
 	}
 	if _, ok := gmc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "GroupMessage.timestamp"`)}
-	}
-	if _, ok := gmc.mutation.SenderID(); !ok {
-		return &ValidationError{Name: "sender_id", err: errors.New(`ent: missing required field "GroupMessage.sender_id"`)}
 	}
 	if _, ok := gmc.mutation.Content(); !ok {
 		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "GroupMessage.content"`)}
@@ -134,13 +134,17 @@ func (gmc *GroupMessageCreate) createSpec() (*GroupMessage, *sqlgraph.CreateSpec
 		_node = &GroupMessage{config: gmc.config}
 		_spec = sqlgraph.NewCreateSpec(groupmessage.Table, sqlgraph.NewFieldSpec(groupmessage.FieldID, field.TypeInt))
 	)
-	if value, ok := gmc.mutation.MsgType(); ok {
-		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt32, value)
-		_node.MsgType = value
-	}
 	if value, ok := gmc.mutation.MsgID(); ok {
 		_spec.SetField(groupmessage.FieldMsgID, field.TypeString, value)
 		_node.MsgID = value
+	}
+	if value, ok := gmc.mutation.MsgType(); ok {
+		_spec.SetField(groupmessage.FieldMsgType, field.TypeInt64, value)
+		_node.MsgType = value
+	}
+	if value, ok := gmc.mutation.SenderID(); ok {
+		_spec.SetField(groupmessage.FieldSenderID, field.TypeInt64, value)
+		_node.SenderID = value
 	}
 	if value, ok := gmc.mutation.GroupID(); ok {
 		_spec.SetField(groupmessage.FieldGroupID, field.TypeInt64, value)
@@ -149,10 +153,6 @@ func (gmc *GroupMessageCreate) createSpec() (*GroupMessage, *sqlgraph.CreateSpec
 	if value, ok := gmc.mutation.Timestamp(); ok {
 		_spec.SetField(groupmessage.FieldTimestamp, field.TypeInt64, value)
 		_node.Timestamp = value
-	}
-	if value, ok := gmc.mutation.SenderID(); ok {
-		_spec.SetField(groupmessage.FieldSenderID, field.TypeInt64, value)
-		_node.SenderID = value
 	}
 	if value, ok := gmc.mutation.Content(); ok {
 		_spec.SetField(groupmessage.FieldContent, field.TypeJSON, value)

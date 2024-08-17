@@ -11,13 +11,13 @@ import (
 
 	"imlogic/ent/migrate"
 
-	"imlogic/ent/chat"
 	"imlogic/ent/group"
 	"imlogic/ent/groupmessage"
 	"imlogic/ent/privatemessage"
 	"imlogic/ent/role"
 	"imlogic/ent/user"
 	"imlogic/ent/userconn"
+	"imlogic/ent/userfriend"
 	"imlogic/ent/usergroup"
 	"imlogic/ent/userrole"
 
@@ -31,8 +31,6 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// Chat is the client for interacting with the Chat builders.
-	Chat *ChatClient
 	// Group is the client for interacting with the Group builders.
 	Group *GroupClient
 	// GroupMessage is the client for interacting with the GroupMessage builders.
@@ -45,6 +43,8 @@ type Client struct {
 	User *UserClient
 	// UserConn is the client for interacting with the UserConn builders.
 	UserConn *UserConnClient
+	// UserFriend is the client for interacting with the UserFriend builders.
+	UserFriend *UserFriendClient
 	// UserGroup is the client for interacting with the UserGroup builders.
 	UserGroup *UserGroupClient
 	// UserRole is the client for interacting with the UserRole builders.
@@ -60,13 +60,13 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.Chat = NewChatClient(c.config)
 	c.Group = NewGroupClient(c.config)
 	c.GroupMessage = NewGroupMessageClient(c.config)
 	c.PrivateMessage = NewPrivateMessageClient(c.config)
 	c.Role = NewRoleClient(c.config)
 	c.User = NewUserClient(c.config)
 	c.UserConn = NewUserConnClient(c.config)
+	c.UserFriend = NewUserFriendClient(c.config)
 	c.UserGroup = NewUserGroupClient(c.config)
 	c.UserRole = NewUserRoleClient(c.config)
 }
@@ -161,13 +161,13 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:            ctx,
 		config:         cfg,
-		Chat:           NewChatClient(cfg),
 		Group:          NewGroupClient(cfg),
 		GroupMessage:   NewGroupMessageClient(cfg),
 		PrivateMessage: NewPrivateMessageClient(cfg),
 		Role:           NewRoleClient(cfg),
 		User:           NewUserClient(cfg),
 		UserConn:       NewUserConnClient(cfg),
+		UserFriend:     NewUserFriendClient(cfg),
 		UserGroup:      NewUserGroupClient(cfg),
 		UserRole:       NewUserRoleClient(cfg),
 	}, nil
@@ -189,13 +189,13 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:            ctx,
 		config:         cfg,
-		Chat:           NewChatClient(cfg),
 		Group:          NewGroupClient(cfg),
 		GroupMessage:   NewGroupMessageClient(cfg),
 		PrivateMessage: NewPrivateMessageClient(cfg),
 		Role:           NewRoleClient(cfg),
 		User:           NewUserClient(cfg),
 		UserConn:       NewUserConnClient(cfg),
+		UserFriend:     NewUserFriendClient(cfg),
 		UserGroup:      NewUserGroupClient(cfg),
 		UserRole:       NewUserRoleClient(cfg),
 	}, nil
@@ -204,7 +204,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Chat.
+//		Group.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -227,8 +227,8 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
-		c.Chat, c.Group, c.GroupMessage, c.PrivateMessage, c.Role, c.User, c.UserConn,
-		c.UserGroup, c.UserRole,
+		c.Group, c.GroupMessage, c.PrivateMessage, c.Role, c.User, c.UserConn,
+		c.UserFriend, c.UserGroup, c.UserRole,
 	} {
 		n.Use(hooks...)
 	}
@@ -238,8 +238,8 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
-		c.Chat, c.Group, c.GroupMessage, c.PrivateMessage, c.Role, c.User, c.UserConn,
-		c.UserGroup, c.UserRole,
+		c.Group, c.GroupMessage, c.PrivateMessage, c.Role, c.User, c.UserConn,
+		c.UserFriend, c.UserGroup, c.UserRole,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -248,8 +248,6 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
-	case *ChatMutation:
-		return c.Chat.mutate(ctx, m)
 	case *GroupMutation:
 		return c.Group.mutate(ctx, m)
 	case *GroupMessageMutation:
@@ -262,145 +260,14 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.User.mutate(ctx, m)
 	case *UserConnMutation:
 		return c.UserConn.mutate(ctx, m)
+	case *UserFriendMutation:
+		return c.UserFriend.mutate(ctx, m)
 	case *UserGroupMutation:
 		return c.UserGroup.mutate(ctx, m)
 	case *UserRoleMutation:
 		return c.UserRole.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
-	}
-}
-
-// ChatClient is a client for the Chat schema.
-type ChatClient struct {
-	config
-}
-
-// NewChatClient returns a client for the Chat from the given config.
-func NewChatClient(c config) *ChatClient {
-	return &ChatClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `chat.Hooks(f(g(h())))`.
-func (c *ChatClient) Use(hooks ...Hook) {
-	c.hooks.Chat = append(c.hooks.Chat, hooks...)
-}
-
-// Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `chat.Intercept(f(g(h())))`.
-func (c *ChatClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Chat = append(c.inters.Chat, interceptors...)
-}
-
-// Create returns a builder for creating a Chat entity.
-func (c *ChatClient) Create() *ChatCreate {
-	mutation := newChatMutation(c.config, OpCreate)
-	return &ChatCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of Chat entities.
-func (c *ChatClient) CreateBulk(builders ...*ChatCreate) *ChatCreateBulk {
-	return &ChatCreateBulk{config: c.config, builders: builders}
-}
-
-// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
-// a builder and applies setFunc on it.
-func (c *ChatClient) MapCreateBulk(slice any, setFunc func(*ChatCreate, int)) *ChatCreateBulk {
-	rv := reflect.ValueOf(slice)
-	if rv.Kind() != reflect.Slice {
-		return &ChatCreateBulk{err: fmt.Errorf("calling to ChatClient.MapCreateBulk with wrong type %T, need slice", slice)}
-	}
-	builders := make([]*ChatCreate, rv.Len())
-	for i := 0; i < rv.Len(); i++ {
-		builders[i] = c.Create()
-		setFunc(builders[i], i)
-	}
-	return &ChatCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for Chat.
-func (c *ChatClient) Update() *ChatUpdate {
-	mutation := newChatMutation(c.config, OpUpdate)
-	return &ChatUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *ChatClient) UpdateOne(ch *Chat) *ChatUpdateOne {
-	mutation := newChatMutation(c.config, OpUpdateOne, withChat(ch))
-	return &ChatUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *ChatClient) UpdateOneID(id int64) *ChatUpdateOne {
-	mutation := newChatMutation(c.config, OpUpdateOne, withChatID(id))
-	return &ChatUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for Chat.
-func (c *ChatClient) Delete() *ChatDelete {
-	mutation := newChatMutation(c.config, OpDelete)
-	return &ChatDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *ChatClient) DeleteOne(ch *Chat) *ChatDeleteOne {
-	return c.DeleteOneID(ch.ID)
-}
-
-// DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *ChatClient) DeleteOneID(id int64) *ChatDeleteOne {
-	builder := c.Delete().Where(chat.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &ChatDeleteOne{builder}
-}
-
-// Query returns a query builder for Chat.
-func (c *ChatClient) Query() *ChatQuery {
-	return &ChatQuery{
-		config: c.config,
-		ctx:    &QueryContext{Type: TypeChat},
-		inters: c.Interceptors(),
-	}
-}
-
-// Get returns a Chat entity by its id.
-func (c *ChatClient) Get(ctx context.Context, id int64) (*Chat, error) {
-	return c.Query().Where(chat.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *ChatClient) GetX(ctx context.Context, id int64) *Chat {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *ChatClient) Hooks() []Hook {
-	return c.hooks.Chat
-}
-
-// Interceptors returns the client interceptors.
-func (c *ChatClient) Interceptors() []Interceptor {
-	return c.inters.Chat
-}
-
-func (c *ChatClient) mutate(ctx context.Context, m *ChatMutation) (Value, error) {
-	switch m.Op() {
-	case OpCreate:
-		return (&ChatCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdate:
-		return (&ChatUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpUpdateOne:
-		return (&ChatUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
-	case OpDelete, OpDeleteOne:
-		return (&ChatDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
-	default:
-		return nil, fmt.Errorf("ent: unknown Chat mutation op: %q", m.Op())
 	}
 }
 
@@ -1202,6 +1069,139 @@ func (c *UserConnClient) mutate(ctx context.Context, m *UserConnMutation) (Value
 	}
 }
 
+// UserFriendClient is a client for the UserFriend schema.
+type UserFriendClient struct {
+	config
+}
+
+// NewUserFriendClient returns a client for the UserFriend from the given config.
+func NewUserFriendClient(c config) *UserFriendClient {
+	return &UserFriendClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `userfriend.Hooks(f(g(h())))`.
+func (c *UserFriendClient) Use(hooks ...Hook) {
+	c.hooks.UserFriend = append(c.hooks.UserFriend, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `userfriend.Intercept(f(g(h())))`.
+func (c *UserFriendClient) Intercept(interceptors ...Interceptor) {
+	c.inters.UserFriend = append(c.inters.UserFriend, interceptors...)
+}
+
+// Create returns a builder for creating a UserFriend entity.
+func (c *UserFriendClient) Create() *UserFriendCreate {
+	mutation := newUserFriendMutation(c.config, OpCreate)
+	return &UserFriendCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of UserFriend entities.
+func (c *UserFriendClient) CreateBulk(builders ...*UserFriendCreate) *UserFriendCreateBulk {
+	return &UserFriendCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *UserFriendClient) MapCreateBulk(slice any, setFunc func(*UserFriendCreate, int)) *UserFriendCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &UserFriendCreateBulk{err: fmt.Errorf("calling to UserFriendClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*UserFriendCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &UserFriendCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for UserFriend.
+func (c *UserFriendClient) Update() *UserFriendUpdate {
+	mutation := newUserFriendMutation(c.config, OpUpdate)
+	return &UserFriendUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *UserFriendClient) UpdateOne(uf *UserFriend) *UserFriendUpdateOne {
+	mutation := newUserFriendMutation(c.config, OpUpdateOne, withUserFriend(uf))
+	return &UserFriendUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *UserFriendClient) UpdateOneID(id int64) *UserFriendUpdateOne {
+	mutation := newUserFriendMutation(c.config, OpUpdateOne, withUserFriendID(id))
+	return &UserFriendUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for UserFriend.
+func (c *UserFriendClient) Delete() *UserFriendDelete {
+	mutation := newUserFriendMutation(c.config, OpDelete)
+	return &UserFriendDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *UserFriendClient) DeleteOne(uf *UserFriend) *UserFriendDeleteOne {
+	return c.DeleteOneID(uf.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *UserFriendClient) DeleteOneID(id int64) *UserFriendDeleteOne {
+	builder := c.Delete().Where(userfriend.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &UserFriendDeleteOne{builder}
+}
+
+// Query returns a query builder for UserFriend.
+func (c *UserFriendClient) Query() *UserFriendQuery {
+	return &UserFriendQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeUserFriend},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a UserFriend entity by its id.
+func (c *UserFriendClient) Get(ctx context.Context, id int64) (*UserFriend, error) {
+	return c.Query().Where(userfriend.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *UserFriendClient) GetX(ctx context.Context, id int64) *UserFriend {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *UserFriendClient) Hooks() []Hook {
+	return c.hooks.UserFriend
+}
+
+// Interceptors returns the client interceptors.
+func (c *UserFriendClient) Interceptors() []Interceptor {
+	return c.inters.UserFriend
+}
+
+func (c *UserFriendClient) mutate(ctx context.Context, m *UserFriendMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&UserFriendCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&UserFriendUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&UserFriendUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&UserFriendDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown UserFriend mutation op: %q", m.Op())
+	}
+}
+
 // UserGroupClient is a client for the UserGroup schema.
 type UserGroupClient struct {
 	config
@@ -1471,11 +1471,11 @@ func (c *UserRoleClient) mutate(ctx context.Context, m *UserRoleMutation) (Value
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Chat, Group, GroupMessage, PrivateMessage, Role, User, UserConn, UserGroup,
-		UserRole []ent.Hook
+		Group, GroupMessage, PrivateMessage, Role, User, UserConn, UserFriend,
+		UserGroup, UserRole []ent.Hook
 	}
 	inters struct {
-		Chat, Group, GroupMessage, PrivateMessage, Role, User, UserConn, UserGroup,
-		UserRole []ent.Interceptor
+		Group, GroupMessage, PrivateMessage, Role, User, UserConn, UserFriend,
+		UserGroup, UserRole []ent.Interceptor
 	}
 )
