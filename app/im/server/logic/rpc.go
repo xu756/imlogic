@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"imlogic/common/types"
 	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 )
@@ -15,7 +14,7 @@ type ImServerImpl struct {
 func (i *ImServerImpl) SendMsgToGroup(ctx context.Context, req *im.SendMsgToGroupReq) (res *im.SendMsgToGroupRes, err error) {
 	res = &im.SendMsgToGroupRes{}
 	for _, linkId := range req.LinkIds {
-		ok := service.hub.SendoneMsg(linkId, types.RpcMsgToMsg(req.Message))
+		ok := service.hub.SendOneMsg(linkId, req.Message)
 		if !ok {
 			res.LinkIds = append(res.LinkIds, linkId)
 		}
@@ -26,7 +25,7 @@ func (i *ImServerImpl) SendMsgToGroup(ctx context.Context, req *im.SendMsgToGrou
 // SendMsgToOne implements im.ImServer.
 func (i *ImServerImpl) SendMsgToOne(ctx context.Context, req *im.SendMsgToOneReq) (res *im.MessageRes, err error) {
 	res = &im.MessageRes{}
-	ok := service.hub.SendoneMsg(req.LinkId, types.RpcMsgToMsg(req.Message))
+	ok := service.hub.SendOneMsg(req.LinkId, req.Message)
 	if !ok {
 		res.Success = false
 		return
@@ -42,6 +41,6 @@ func NewImServerImpl() *ImServerImpl {
 
 // SendMsgToAll implements im.ImServer.
 func (i *ImServerImpl) SendMsgToAll(ctx context.Context, req *base.Message) (res *im.MessageRes, err error) {
-	service.hub.SendAll(types.RpcMsgToMsg(req))
+	service.hub.SendAll(req)
 	return &im.MessageRes{Success: true}, nil
 }

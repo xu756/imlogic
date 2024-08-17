@@ -3,60 +3,60 @@ package logic
 import (
 	"context"
 	"imlogic/common/client"
-	"imlogic/common/types"
+	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 	"log"
 )
 
-func MsgLogic(c *client.Client, msg *types.Message) {
-	if msg.ChatType == types.SystemMessage && msg.Content == "ping" {
+func MsgLogic(c *client.Client, msg *base.Message) {
+	if msg.ChatType == base.ChatType_SystemMessage && msg.Content == "ping" {
 		// todo 心跳
 		c.ResetHeartbeat()
 		MetaMsg(c, c.HeartbeatMsg())
-		c.SendMsg(&types.Message{
-			ChatType: types.SystemMessage,
+		c.SendMsg(&base.Message{
+			ChatType: base.ChatType_SystemMessage,
 			Content:  "pong",
 		})
 		return
 	}
 	ctx := context.Background()
-	medias := make([]*im.MediaType, 0)
+	medias := make([]*base.MediaType, 0)
 	for _, media := range msg.Media {
-		medias = append(medias, &im.MediaType{
-			Uid: media.UID,
-			Url: media.URL,
+		medias = append(medias, &base.MediaType{
+			Uid: media.Uid,
+			Url: media.Url,
 		})
 	}
 	var res = &im.MessageRes{}
 	var err error
 	switch msg.ChatType {
-	case types.PrivateChat:
-		res, err = service.ImHandler.HandlerPrivateMessage(ctx, &im.Message{
+	case base.ChatType_PrivateChat:
+		res, err = service.ImHandler.HandlerPrivateMessage(ctx, &base.Message{
 			LinkId:    msg.LinkId,
 			MsgId:     msg.MsgId,
 			Timestamp: msg.Timestamp,
-			ChatType:  im.ChatType(msg.ChatType),
+			ChatType:  msg.ChatType,
 			Sender:    msg.Sender,
 			Receiver:  msg.Receiver,
 			ChatId:    msg.ChatId,
 			GroupId:   msg.GroupId,
 			Content:   msg.Content,
-			MsgType:   im.MsgType(msg.MsgType),
+			MsgType:   msg.MsgType,
 			Media:     medias,
 		})
 
-	case types.GroupChat:
-		res, err = service.ImHandler.HandlerGroupMessage(ctx, &im.Message{
+	case base.ChatType_GroupChat:
+		res, err = service.ImHandler.HandlerGroupMessage(ctx, &base.Message{
 			LinkId:    msg.LinkId,
 			MsgId:     msg.MsgId,
 			Timestamp: msg.Timestamp,
-			ChatType:  im.ChatType(msg.ChatType),
+			ChatType:  msg.ChatType,
 			Sender:    msg.Sender,
 			Receiver:  msg.Receiver,
 			ChatId:    msg.ChatId,
 			GroupId:   msg.GroupId,
 			Content:   msg.Content,
-			MsgType:   im.MsgType(msg.MsgType),
+			MsgType:   msg.MsgType,
 			Media:     medias,
 		})
 	}
@@ -71,7 +71,7 @@ func MsgLogic(c *client.Client, msg *types.Message) {
 }
 
 // rpcMetaMsg
-func MetaMsg(c *client.Client, msg *im.MetaMsg) {
+func MetaMsg(c *client.Client, msg *base.MetaMsg) {
 	ctx := context.Background()
 	res, err := service.ImHandler.MetaMessage(ctx, msg)
 	if err != nil {

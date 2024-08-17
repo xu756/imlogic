@@ -1,10 +1,11 @@
 package types
 
-// 媒体类型
-type MediaType struct {
-	UID string `json:"uid"`
-	URL string `json:"url"`
-}
+//
+//// 媒体类型
+//type MediaType struct {
+//	UID string `json:"uid"`
+//	URL string `json:"url"`
+//}
 
 // // 视频类型
 // type VideoType struct {

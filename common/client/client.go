@@ -2,8 +2,7 @@ package client
 
 import (
 	"context"
-	"imlogic/common/types"
-	"imlogic/kitex_gen/im"
+	"imlogic/kitex_gen/base"
 	"os"
 	"sync"
 	"time"
@@ -24,20 +23,19 @@ type Client struct {
 	hostName   string
 	lock       sync.Mutex
 	ws         *websocket.Conn
-	send       chan *types.Message
+	send       chan *base.Message
 	heartbeat  *time.Ticker
-	metaMsg    func(*Client, *im.MetaMsg)
-	logic      func(*Client, *types.Message)
+	metaMsg    func(*Client, *base.MetaMsg)
+	logic      func(*Client, *base.Message)
 	connect    func(*Client)
 	OnClose    func(*Client)
 }
 
 func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId int64,
-	heartbeat time.Duration,
-	OnConnect func(*Client),
-	OnClose func(*Client),
-	MetaMsg func(*Client, *im.MetaMsg),
-	Msglogic func(*Client, *types.Message),
+	connect func(*Client),
+	close func(*Client),
+	metaMsg func(*Client, *base.MetaMsg),
+	msgLogic func(*Client, *base.Message),
 
 ) *Client {
 	ctx, cancelFunc := context.WithCancel(ctx)
@@ -49,12 +47,12 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 		hostName:   hostname,
 		linkId:     linkID,
 		userId:     userId,
-		send:       make(chan *types.Message, 1024),
+		send:       make(chan *base.Message, 1024),
 		heartbeat:  time.NewTicker(HeartbeatTime * time.Second),
-		connect:    OnConnect,
-		OnClose:    OnClose,
-		logic:      Msglogic,
-		metaMsg:    MetaMsg,
+		connect:    connect,
+		OnClose:    close,
+		logic:      msgLogic,
+		metaMsg:    metaMsg,
 	}
 	go conn.setWs(ws)
 	conn.connect(conn)
@@ -78,7 +76,7 @@ func (c *Client) readMessage() {
 				c.cancelFunc()
 				return
 			}
-			msg := &types.Message{}
+			msg := &base.Message{}
 			err := c.ws.ReadJSON(msg)
 			if err != nil {
 				return
@@ -112,7 +110,7 @@ func (c *Client) ResetHeartbeat() {
 	c.heartbeat.Reset(HeartbeatTime * time.Second)
 }
 
-func (c *Client) SendMsg(msg *types.Message) {
+func (c *Client) SendMsg(msg *base.Message) {
 	msg.LinkId = c.linkId
 	c.send <- msg
 }
@@ -139,9 +137,9 @@ func (c *Client) setWs(ws *websocket.Conn) {
 	}
 }
 
-func (c *Client) write(msg *types.Message) {
+func (c *Client) write(msg *base.Message) {
 	c.lock.Lock()
-	newMsg := &types.Message{}
+	newMsg := &base.Message{}
 	newMsg = msg
 	if c.ws == nil {
 		c.lock.Unlock()
@@ -157,29 +155,31 @@ func (c *Client) write(msg *types.Message) {
 }
 
 // connectMsg 连接消息
-func (c *Client) ConnectMsg() *im.MetaMsg {
-	return &im.MetaMsg{
-		LinkId:   c.linkId,
-		UserId:   c.userId,
-		Status:   im.WsStatus_Connect,
+func (c *Client) ConnectMsg() *base.MetaMsg {
+	return &base.MetaMsg{
+		LinkId:   c.GetLinkId(),
+		UserId:   c.GetUserId(),
+		Status:   base.WsStatus_Connect,
 		HostName: c.hostName,
 	}
 }
 
 // heartbeatMsg 心跳消息
-func (c *Client) HeartbeatMsg() *im.MetaMsg {
-	return &im.MetaMsg{
-		LinkId:   c.linkId,
-		Status:   im.WsStatus_Heartbeat,
+func (c *Client) HeartbeatMsg() *base.MetaMsg {
+	return &base.MetaMsg{
+		LinkId:   c.GetLinkId(),
+		UserId:   c.GetUserId(),
+		Status:   base.WsStatus_Heartbeat,
 		HostName: c.hostName,
 	}
 }
 
 // disconnectMsg 断开连接消息
-func (c *Client) DisconnectMsg() *im.MetaMsg {
-	return &im.MetaMsg{
-		LinkId:   c.linkId,
-		Status:   im.WsStatus_Disconnect,
+func (c *Client) DisconnectMsg() *base.MetaMsg {
+	return &base.MetaMsg{
+		LinkId:   c.GetLinkId(),
+		UserId:   c.GetUserId(),
+		Status:   base.WsStatus_Disconnect,
 		HostName: c.hostName,
 	}
 }

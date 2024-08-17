@@ -2,19 +2,15 @@ package logic
 
 import (
 	"context"
-	"imlogic/common/client"
-	"imlogic/internal/result"
-	"log"
-	"time"
-
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/google/uuid"
 	"github.com/hertz-contrib/websocket"
+	"imlogic/common/client"
+	"imlogic/internal/result"
+	"log"
 )
 
-var (
-	pongWait = 60 * time.Second // 测试 暂时设置为 4s
-)
+var ()
 
 func Connect(ctx context.Context, c *app.RequestContext) {
 	userInfo, err := service.Jwt.GetUserInfoFromCookieToken(c)
@@ -27,7 +23,6 @@ func Connect(ctx context.Context, c *app.RequestContext) {
 			ctx, ws,
 			uuid.NewString(),
 			userInfo.UserId,
-			pongWait,
 			onConnect,
 			onClose,
 			MetaMsg,

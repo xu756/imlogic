@@ -2,7 +2,7 @@ package hub
 
 import (
 	"imlogic/common/client"
-	"imlogic/common/types"
+	"imlogic/kitex_gen/base"
 	"os"
 	"sync"
 
@@ -16,7 +16,7 @@ type Hub struct {
 	lock       sync.Mutex
 	hostName   string
 	upgrader   websocket.HertzUpgrader
-	broadcast  chan *types.Message
+	broadcast  chan *base.Message
 	register   chan *client.Client
 	unregister chan *client.Client
 }
@@ -25,7 +25,7 @@ func NewHub() *Hub {
 	hostname, _ := os.Hostname()
 	hub := &Hub{
 		hostName:   hostname,
-		broadcast:  make(chan *types.Message, 1024),
+		broadcast:  make(chan *base.Message, 1024),
 		register:   make(chan *client.Client),
 		unregister: make(chan *client.Client),
 		upgrader: websocket.HertzUpgrader{
@@ -72,7 +72,7 @@ func (h *Hub) DelOneClient(conn *client.Client) {
 	h.unregister <- conn
 }
 
-func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
+func (h *Hub) SendOneMsg(LinkId string, msg *base.Message) bool {
 	conn, ok := h.clients.Load(LinkId)
 	if ok {
 		conn.(*client.Client).SendMsg(msg)
@@ -81,7 +81,7 @@ func (h *Hub) SendoneMsg(LinkId string, msg *types.Message) bool {
 	return false
 }
 
-func (h *Hub) SendAll(msg *types.Message) {
+func (h *Hub) SendAll(msg *base.Message) {
 	h.lock.Lock()
 	h.clients.Range(func(key, value interface{}) bool {
 		c := value.(*client.Client)

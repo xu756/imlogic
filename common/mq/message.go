@@ -2,10 +2,9 @@ package mq
 
 import (
 	"encoding/json"
-	"imlogic/common/types"
-	"imlogic/kitex_gen/im"
-
 	amqp "github.com/rabbitmq/amqp091-go"
+	"imlogic/common/types"
+	"imlogic/kitex_gen/base"
 )
 
 // 私聊MQ
@@ -26,7 +25,7 @@ func NewPrivateMessageMQ() (rabbitmq *RabbitMQ, err error) {
 }
 
 // 发布私聊消息
-func (r *RabbitMQ) PublishPrivateMessage(linkId, HostName string, msg *im.Message) error {
+func (r *RabbitMQ) PublishPrivateMessage(linkId, HostName string, msg *base.Message) error {
 	// 1. 申请队列，如果队列不存在会自动创建，存在则跳过创建
 	_, err := r.channel.QueueDeclare(
 		r.QueueName,
@@ -66,7 +65,7 @@ func (r *RabbitMQ) PublishPrivateMessage(linkId, HostName string, msg *im.Messag
 }
 
 // 消费私聊消息
-func (r *RabbitMQ) ConsumePrivateMessage(f func(linkId, HostName string, msg *im.Message)) (err error) {
+func (r *RabbitMQ) ConsumePrivateMessage(f func(linkId, HostName string, msg *base.Message)) (err error) {
 	// 1. 申请队列，如果队列不存在会自动创建，存在则跳过创建
 	_, err = r.channel.QueueDeclare(
 		r.QueueName,
@@ -125,7 +124,7 @@ func NewBroadcastMessageMQ() (rabbitmq *RabbitMQ, err error) {
 }
 
 // 发布广播消息
-func (r *RabbitMQ) PublishBroadcastMessage(msg *im.Message) (err error) {
+func (r *RabbitMQ) PublishBroadcastMessage(msg *base.Message) (err error) {
 	err = r.channel.ExchangeDeclare(
 		r.Exchange,
 		"fanout",
@@ -159,7 +158,7 @@ func (r *RabbitMQ) PublishBroadcastMessage(msg *im.Message) (err error) {
 }
 
 // 消费广播消息
-func (r *RabbitMQ) ConsumeBroadcastMessage(f func(msg *im.Message)) (err error) {
+func (r *RabbitMQ) ConsumeBroadcastMessage(f func(msg *base.Message)) (err error) {
 	err = r.channel.ExchangeDeclare(
 		r.Exchange,
 		"fanout",
@@ -208,7 +207,7 @@ func (r *RabbitMQ) ConsumeBroadcastMessage(f func(msg *im.Message)) (err error) 
 	}
 	go func() {
 		for msg := range msgs {
-			m := new(im.Message)
+			m := new(base.Message)
 			err := json.Unmarshal(msg.Body, m)
 			if err != nil {
 				continue
