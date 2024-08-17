@@ -9,6 +9,11 @@ import (
 
 // HandlerPrivateMessage implements im.ImHandler.
 func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *base.Message) (res *im.MessageRes, err error) {
+	// 判断是不是好友
+	err = i.Model.CheckIsFriend(ctx, req.ChatId, req.Sender, req.Receiver)
+	if err != nil {
+		return nil, err
+	}
 	// 保存消息
 	err = i.Model.AddOnePrivateMsg(ctx, int32(req.MsgType), req.MsgId, req.ChatId, req.Sender, req.Timestamp, req)
 	if err != nil {

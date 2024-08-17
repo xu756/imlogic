@@ -10,7 +10,8 @@ import (
 )
 
 func ClientErrorHandler(ctx context.Context, err error) error {
-	if e, ok := err.(*remote.TransError); ok {
+	var e *remote.TransError
+	if errors.As(err, &e) {
 		return xerr.CodeError{
 			Code: e.TypeID(),
 			Msg:  e.Error(),

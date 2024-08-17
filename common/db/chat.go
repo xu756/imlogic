@@ -10,6 +10,24 @@ import (
 
 type dbChatModel interface {
 	GetUserChatList(ctx context.Context, userId int64) (chatList []*base.ChatList, err error)
+	CheckIsFriend(ctx context.Context, chatId, sender, to int64) (err error)
+}
+
+// 判断是不是好友
+func (m *customModel) CheckIsFriend(ctx context.Context, chatId, sender, to int64) (err error) {
+	chatInfo, err := m.client.Chat.Query().Where(chat.ID(chatId)).Only(ctx)
+	switch {
+	case ent.IsNotFound(err):
+		return xerr.DbErr(err, "不存在的聊天ID:%d", chatId)
+	case err != nil:
+		return xerr.DbErr(err, "查询聊天信息失败 聊天ID:%d", chatId)
+	case chatInfo.User1ID == sender && chatInfo.User2ID == to:
+		return nil
+	case chatInfo.User1ID == to && chatInfo.User2ID == sender:
+		return nil
+	default:
+		return xerr.WarnMsg("不是好友 sender:%d to:%d", sender, to)
+	}
 }
 
 // 获取用户聊天列表
