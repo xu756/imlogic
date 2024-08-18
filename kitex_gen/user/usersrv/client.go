@@ -16,8 +16,9 @@ type Client interface {
 	LoginByMobile(ctx context.Context, loginByMobileReq *user.LoginByMobileReq, callOptions ...callopt.Option) (r *user.LoginRes, err error)
 	SendCaptcha(ctx context.Context, sendCaptchaReq *user.SendCaptchaReq, callOptions ...callopt.Option) (r *base.BoolRes, err error)
 	GetOneUserInfo(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *base.UserInfo, err error)
-	GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *user.UserOnlineStatus, err error)
+	GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *base.BoolRes, err error)
 	GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r []*base.ChatList, err error)
+	AddFriend(ctx context.Context, addFriendReq *user.AddFriendReq, callOptions ...callopt.Option) (r *base.BoolRes, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -69,7 +70,7 @@ func (p *kUserSrvClient) GetOneUserInfo(ctx context.Context, getOneReq *base.Get
 	return p.kClient.GetOneUserInfo(ctx, getOneReq)
 }
 
-func (p *kUserSrvClient) GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *user.UserOnlineStatus, err error) {
+func (p *kUserSrvClient) GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *base.BoolRes, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserOnlineStatus(ctx, getOneReq)
 }
@@ -77,4 +78,9 @@ func (p *kUserSrvClient) GetUserOnlineStatus(ctx context.Context, getOneReq *bas
 func (p *kUserSrvClient) GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r []*base.ChatList, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetUserChatList(ctx, getOneReq)
+}
+
+func (p *kUserSrvClient) AddFriend(ctx context.Context, addFriendReq *user.AddFriendReq, callOptions ...callopt.Option) (r *base.BoolRes, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.AddFriend(ctx, addFriendReq)
 }

@@ -148,7 +148,7 @@ var (
 		{Name: "id", Type: field.TypeInt64, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "owner", Type: field.TypeInt64},
-		{Name: "with", Type: field.TypeInt64},
+		{Name: "with_id", Type: field.TypeInt64},
 		{Name: "alias", Type: field.TypeString},
 		{Name: "description", Type: field.TypeString},
 	}

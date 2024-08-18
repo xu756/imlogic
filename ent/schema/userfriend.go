@@ -17,7 +17,7 @@ func (UserFriend) Fields() []ent.Field {
 		field.Int64("id").Unique().Immutable().StorageKey("id").Comment("id"),
 		field.Time("created_at").Immutable().Default(time.Now).Comment("创建时间"),
 		field.Int64("owner").Comment("用户id"),
-		field.Int64("with").Comment("聊天对象"),
+		field.Int64("with_id").Comment("聊天对象"),
 		field.String("alias").Comment("备注"),
 		field.String("description").Comment("描述"),
 	}

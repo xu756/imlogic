@@ -48,24 +48,24 @@ func (ufu *UserFriendUpdate) AddOwner(i int64) *UserFriendUpdate {
 	return ufu
 }
 
-// SetWith sets the "with" field.
-func (ufu *UserFriendUpdate) SetWith(i int64) *UserFriendUpdate {
-	ufu.mutation.ResetWith()
-	ufu.mutation.SetWith(i)
+// SetWithID sets the "with_id" field.
+func (ufu *UserFriendUpdate) SetWithID(i int64) *UserFriendUpdate {
+	ufu.mutation.ResetWithID()
+	ufu.mutation.SetWithID(i)
 	return ufu
 }
 
-// SetNillableWith sets the "with" field if the given value is not nil.
-func (ufu *UserFriendUpdate) SetNillableWith(i *int64) *UserFriendUpdate {
+// SetNillableWithID sets the "with_id" field if the given value is not nil.
+func (ufu *UserFriendUpdate) SetNillableWithID(i *int64) *UserFriendUpdate {
 	if i != nil {
-		ufu.SetWith(*i)
+		ufu.SetWithID(*i)
 	}
 	return ufu
 }
 
-// AddWith adds i to the "with" field.
-func (ufu *UserFriendUpdate) AddWith(i int64) *UserFriendUpdate {
-	ufu.mutation.AddWith(i)
+// AddWithID adds i to the "with_id" field.
+func (ufu *UserFriendUpdate) AddWithID(i int64) *UserFriendUpdate {
+	ufu.mutation.AddWithID(i)
 	return ufu
 }
 
@@ -144,11 +144,11 @@ func (ufu *UserFriendUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ufu.mutation.AddedOwner(); ok {
 		_spec.AddField(userfriend.FieldOwner, field.TypeInt64, value)
 	}
-	if value, ok := ufu.mutation.With(); ok {
-		_spec.SetField(userfriend.FieldWith, field.TypeInt64, value)
+	if value, ok := ufu.mutation.WithID(); ok {
+		_spec.SetField(userfriend.FieldWithID, field.TypeInt64, value)
 	}
-	if value, ok := ufu.mutation.AddedWith(); ok {
-		_spec.AddField(userfriend.FieldWith, field.TypeInt64, value)
+	if value, ok := ufu.mutation.AddedWithID(); ok {
+		_spec.AddField(userfriend.FieldWithID, field.TypeInt64, value)
 	}
 	if value, ok := ufu.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)
@@ -197,24 +197,24 @@ func (ufuo *UserFriendUpdateOne) AddOwner(i int64) *UserFriendUpdateOne {
 	return ufuo
 }
 
-// SetWith sets the "with" field.
-func (ufuo *UserFriendUpdateOne) SetWith(i int64) *UserFriendUpdateOne {
-	ufuo.mutation.ResetWith()
-	ufuo.mutation.SetWith(i)
+// SetWithID sets the "with_id" field.
+func (ufuo *UserFriendUpdateOne) SetWithID(i int64) *UserFriendUpdateOne {
+	ufuo.mutation.ResetWithID()
+	ufuo.mutation.SetWithID(i)
 	return ufuo
 }
 
-// SetNillableWith sets the "with" field if the given value is not nil.
-func (ufuo *UserFriendUpdateOne) SetNillableWith(i *int64) *UserFriendUpdateOne {
+// SetNillableWithID sets the "with_id" field if the given value is not nil.
+func (ufuo *UserFriendUpdateOne) SetNillableWithID(i *int64) *UserFriendUpdateOne {
 	if i != nil {
-		ufuo.SetWith(*i)
+		ufuo.SetWithID(*i)
 	}
 	return ufuo
 }
 
-// AddWith adds i to the "with" field.
-func (ufuo *UserFriendUpdateOne) AddWith(i int64) *UserFriendUpdateOne {
-	ufuo.mutation.AddWith(i)
+// AddWithID adds i to the "with_id" field.
+func (ufuo *UserFriendUpdateOne) AddWithID(i int64) *UserFriendUpdateOne {
+	ufuo.mutation.AddWithID(i)
 	return ufuo
 }
 
@@ -323,11 +323,11 @@ func (ufuo *UserFriendUpdateOne) sqlSave(ctx context.Context) (_node *UserFriend
 	if value, ok := ufuo.mutation.AddedOwner(); ok {
 		_spec.AddField(userfriend.FieldOwner, field.TypeInt64, value)
 	}
-	if value, ok := ufuo.mutation.With(); ok {
-		_spec.SetField(userfriend.FieldWith, field.TypeInt64, value)
+	if value, ok := ufuo.mutation.WithID(); ok {
+		_spec.SetField(userfriend.FieldWithID, field.TypeInt64, value)
 	}
-	if value, ok := ufuo.mutation.AddedWith(); ok {
-		_spec.AddField(userfriend.FieldWith, field.TypeInt64, value)
+	if value, ok := ufuo.mutation.AddedWithID(); ok {
+		_spec.AddField(userfriend.FieldWithID, field.TypeInt64, value)
 	}
 	if value, ok := ufuo.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)

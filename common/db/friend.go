@@ -10,16 +10,19 @@ import (
 )
 
 type dbFriendModel interface {
+	// 获取用户聊天列表
 	GetUserChatList(ctx context.Context, userId int64) (chatList []*base.ChatList, err error)
+	// 判断是不是好友
 	CheckIsFriend(ctx context.Context, sender, receiver int64) (err error)
-	AddOneFriend(ctx context.Context, owner, with int64) (err error)
+	// 添加好友
+	AddOneFriend(ctx context.Context, owner, withId int64) (err error)
 }
 
 // 添加好友
-func (m *customModel) AddOneFriend(ctx context.Context, owner, with int64) (err error) {
+func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (err error) {
 	_, err = m.client.UserFriend.Create().
 		SetOwner(owner).
-		SetWith(with).
+		SetWithID(withId).
 		Save(ctx)
 	switch {
 	case ent.IsConstraintError(err):
@@ -30,7 +33,7 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, with int64) (err 
 
 // 判断是不是好友
 func (m *customModel) CheckIsFriend(ctx context.Context, sender, receiver int64) (err error) {
-	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(receiver), userfriend.With(sender)).Only(ctx)
+	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(receiver), userfriend.WithID(sender)).Only(ctx)
 	switch {
 	case ent.IsNotFound(err):
 		return xerr.WarnMsg("不是好友")
@@ -60,7 +63,7 @@ func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatLi
 		chatList = append(chatList, &base.ChatList{
 			ChatId:    fmt.Sprintf("private-%d", friendInfo.ID),
 			ChatType:  base.ChatType_PrivateChat,
-			With:      friendInfo.With,
+			WithId:    friendInfo.WithID,
 			LastMsg:   msg.Content,
 			Timestamp: msg.Timestamp,
 		})
@@ -82,7 +85,7 @@ func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatLi
 		chatList = append(chatList, &base.ChatList{
 			ChatId:    fmt.Sprintf("group-%d", group.ID),
 			ChatType:  base.ChatType_GroupChat,
-			With:      group.ID,
+			WithId:    group.ID,
 			LastMsg:   msg.Content,
 			Timestamp: msg.Timestamp,
 		})

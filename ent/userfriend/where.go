@@ -64,9 +64,9 @@ func Owner(v int64) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldEQ(FieldOwner, v))
 }
 
-// With applies equality check predicate on the "with" field. It's identical to WithEQ.
-func With(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldEQ(FieldWith, v))
+// WithID applies equality check predicate on the "with_id" field. It's identical to WithIDEQ.
+func WithID(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEQ(FieldWithID, v))
 }
 
 // Alias applies equality check predicate on the "alias" field. It's identical to AliasEQ.
@@ -159,44 +159,44 @@ func OwnerLTE(v int64) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldLTE(FieldOwner, v))
 }
 
-// WithEQ applies the EQ predicate on the "with" field.
-func WithEQ(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldEQ(FieldWith, v))
+// WithIDEQ applies the EQ predicate on the "with_id" field.
+func WithIDEQ(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEQ(FieldWithID, v))
 }
 
-// WithNEQ applies the NEQ predicate on the "with" field.
-func WithNEQ(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldNEQ(FieldWith, v))
+// WithIDNEQ applies the NEQ predicate on the "with_id" field.
+func WithIDNEQ(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldNEQ(FieldWithID, v))
 }
 
-// WithIn applies the In predicate on the "with" field.
-func WithIn(vs ...int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldIn(FieldWith, vs...))
+// WithIDIn applies the In predicate on the "with_id" field.
+func WithIDIn(vs ...int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldIn(FieldWithID, vs...))
 }
 
-// WithNotIn applies the NotIn predicate on the "with" field.
-func WithNotIn(vs ...int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldNotIn(FieldWith, vs...))
+// WithIDNotIn applies the NotIn predicate on the "with_id" field.
+func WithIDNotIn(vs ...int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldNotIn(FieldWithID, vs...))
 }
 
-// WithGT applies the GT predicate on the "with" field.
-func WithGT(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldGT(FieldWith, v))
+// WithIDGT applies the GT predicate on the "with_id" field.
+func WithIDGT(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldGT(FieldWithID, v))
 }
 
-// WithGTE applies the GTE predicate on the "with" field.
-func WithGTE(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldGTE(FieldWith, v))
+// WithIDGTE applies the GTE predicate on the "with_id" field.
+func WithIDGTE(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldGTE(FieldWithID, v))
 }
 
-// WithLT applies the LT predicate on the "with" field.
-func WithLT(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldLT(FieldWith, v))
+// WithIDLT applies the LT predicate on the "with_id" field.
+func WithIDLT(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldLT(FieldWithID, v))
 }
 
-// WithLTE applies the LTE predicate on the "with" field.
-func WithLTE(v int64) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldLTE(FieldWith, v))
+// WithIDLTE applies the LTE predicate on the "with_id" field.
+func WithIDLTE(v int64) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldLTE(FieldWithID, v))
 }
 
 // AliasEQ applies the EQ predicate on the "alias" field.

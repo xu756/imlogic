@@ -4079,8 +4079,8 @@ type UserFriendMutation struct {
 	created_at    *time.Time
 	owner         *int64
 	addowner      *int64
-	with          *int64
-	addwith       *int64
+	with_id       *int64
+	addwith_id    *int64
 	alias         *string
 	description   *string
 	clearedFields map[string]struct{}
@@ -4285,60 +4285,60 @@ func (m *UserFriendMutation) ResetOwner() {
 	m.addowner = nil
 }
 
-// SetWith sets the "with" field.
-func (m *UserFriendMutation) SetWith(i int64) {
-	m.with = &i
-	m.addwith = nil
+// SetWithID sets the "with_id" field.
+func (m *UserFriendMutation) SetWithID(i int64) {
+	m.with_id = &i
+	m.addwith_id = nil
 }
 
-// With returns the value of the "with" field in the mutation.
-func (m *UserFriendMutation) With() (r int64, exists bool) {
-	v := m.with
+// WithID returns the value of the "with_id" field in the mutation.
+func (m *UserFriendMutation) WithID() (r int64, exists bool) {
+	v := m.with_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldWith returns the old "with" field's value of the UserFriend entity.
+// OldWithID returns the old "with_id" field's value of the UserFriend entity.
 // If the UserFriend object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFriendMutation) OldWith(ctx context.Context) (v int64, err error) {
+func (m *UserFriendMutation) OldWithID(ctx context.Context) (v int64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldWith is only allowed on UpdateOne operations")
+		return v, errors.New("OldWithID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldWith requires an ID field in the mutation")
+		return v, errors.New("OldWithID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldWith: %w", err)
+		return v, fmt.Errorf("querying old value for OldWithID: %w", err)
 	}
-	return oldValue.With, nil
+	return oldValue.WithID, nil
 }
 
-// AddWith adds i to the "with" field.
-func (m *UserFriendMutation) AddWith(i int64) {
-	if m.addwith != nil {
-		*m.addwith += i
+// AddWithID adds i to the "with_id" field.
+func (m *UserFriendMutation) AddWithID(i int64) {
+	if m.addwith_id != nil {
+		*m.addwith_id += i
 	} else {
-		m.addwith = &i
+		m.addwith_id = &i
 	}
 }
 
-// AddedWith returns the value that was added to the "with" field in this mutation.
-func (m *UserFriendMutation) AddedWith() (r int64, exists bool) {
-	v := m.addwith
+// AddedWithID returns the value that was added to the "with_id" field in this mutation.
+func (m *UserFriendMutation) AddedWithID() (r int64, exists bool) {
+	v := m.addwith_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetWith resets all changes to the "with" field.
-func (m *UserFriendMutation) ResetWith() {
-	m.with = nil
-	m.addwith = nil
+// ResetWithID resets all changes to the "with_id" field.
+func (m *UserFriendMutation) ResetWithID() {
+	m.with_id = nil
+	m.addwith_id = nil
 }
 
 // SetAlias sets the "alias" field.
@@ -4454,8 +4454,8 @@ func (m *UserFriendMutation) Fields() []string {
 	if m.owner != nil {
 		fields = append(fields, userfriend.FieldOwner)
 	}
-	if m.with != nil {
-		fields = append(fields, userfriend.FieldWith)
+	if m.with_id != nil {
+		fields = append(fields, userfriend.FieldWithID)
 	}
 	if m.alias != nil {
 		fields = append(fields, userfriend.FieldAlias)
@@ -4475,8 +4475,8 @@ func (m *UserFriendMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedAt()
 	case userfriend.FieldOwner:
 		return m.Owner()
-	case userfriend.FieldWith:
-		return m.With()
+	case userfriend.FieldWithID:
+		return m.WithID()
 	case userfriend.FieldAlias:
 		return m.Alias()
 	case userfriend.FieldDescription:
@@ -4494,8 +4494,8 @@ func (m *UserFriendMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldCreatedAt(ctx)
 	case userfriend.FieldOwner:
 		return m.OldOwner(ctx)
-	case userfriend.FieldWith:
-		return m.OldWith(ctx)
+	case userfriend.FieldWithID:
+		return m.OldWithID(ctx)
 	case userfriend.FieldAlias:
 		return m.OldAlias(ctx)
 	case userfriend.FieldDescription:
@@ -4523,12 +4523,12 @@ func (m *UserFriendMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetOwner(v)
 		return nil
-	case userfriend.FieldWith:
+	case userfriend.FieldWithID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetWith(v)
+		m.SetWithID(v)
 		return nil
 	case userfriend.FieldAlias:
 		v, ok := value.(string)
@@ -4555,8 +4555,8 @@ func (m *UserFriendMutation) AddedFields() []string {
 	if m.addowner != nil {
 		fields = append(fields, userfriend.FieldOwner)
 	}
-	if m.addwith != nil {
-		fields = append(fields, userfriend.FieldWith)
+	if m.addwith_id != nil {
+		fields = append(fields, userfriend.FieldWithID)
 	}
 	return fields
 }
@@ -4568,8 +4568,8 @@ func (m *UserFriendMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
 	case userfriend.FieldOwner:
 		return m.AddedOwner()
-	case userfriend.FieldWith:
-		return m.AddedWith()
+	case userfriend.FieldWithID:
+		return m.AddedWithID()
 	}
 	return nil, false
 }
@@ -4586,12 +4586,12 @@ func (m *UserFriendMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddOwner(v)
 		return nil
-	case userfriend.FieldWith:
+	case userfriend.FieldWithID:
 		v, ok := value.(int64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddWith(v)
+		m.AddWithID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown UserFriend numeric field %s", name)
@@ -4626,8 +4626,8 @@ func (m *UserFriendMutation) ResetField(name string) error {
 	case userfriend.FieldOwner:
 		m.ResetOwner()
 		return nil
-	case userfriend.FieldWith:
-		m.ResetWith()
+	case userfriend.FieldWithID:
+		m.ResetWithID()
 		return nil
 	case userfriend.FieldAlias:
 		m.ResetAlias()

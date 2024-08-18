@@ -17,8 +17,8 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldOwner holds the string denoting the owner field in the database.
 	FieldOwner = "owner"
-	// FieldWith holds the string denoting the with field in the database.
-	FieldWith = "with"
+	// FieldWithID holds the string denoting the with_id field in the database.
+	FieldWithID = "with_id"
 	// FieldAlias holds the string denoting the alias field in the database.
 	FieldAlias = "alias"
 	// FieldDescription holds the string denoting the description field in the database.
@@ -32,7 +32,7 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldOwner,
-	FieldWith,
+	FieldWithID,
 	FieldAlias,
 	FieldDescription,
 }
@@ -70,9 +70,9 @@ func ByOwner(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOwner, opts...).ToFunc()
 }
 
-// ByWith orders the results by the with field.
-func ByWith(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWith, opts...).ToFunc()
+// ByWithID orders the results by the with_id field.
+func ByWithID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldWithID, opts...).ToFunc()
 }
 
 // ByAlias orders the results by the alias field.

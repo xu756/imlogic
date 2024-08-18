@@ -1425,7 +1425,7 @@ func (p *MetaMsg) Field5DeepEqual(src string) bool {
 type ChatList struct {
 	ChatId    string   `thrift:"chat_id,1" frugal:"1,default,string" json:"chat_id"`
 	ChatType  ChatType `thrift:"chat_type,2" frugal:"2,default,ChatType" json:"chat_type"`
-	With      int64    `thrift:"with,4" frugal:"4,default,i64" json:"with"`
+	WithId    int64    `thrift:"with_id,4" frugal:"4,default,i64" json:"with_id"`
 	LastMsg   *Message `thrift:"last_msg,5" frugal:"5,default,Message" json:"last_msg"`
 	Timestamp int64    `thrift:"timestamp,6" frugal:"6,default,i64" json:"timestamp"`
 }
@@ -1446,8 +1446,8 @@ func (p *ChatList) GetChatType() (v ChatType) {
 	return p.ChatType
 }
 
-func (p *ChatList) GetWith() (v int64) {
-	return p.With
+func (p *ChatList) GetWithId() (v int64) {
+	return p.WithId
 }
 
 var ChatList_LastMsg_DEFAULT *Message
@@ -1468,8 +1468,8 @@ func (p *ChatList) SetChatId(val string) {
 func (p *ChatList) SetChatType(val ChatType) {
 	p.ChatType = val
 }
-func (p *ChatList) SetWith(val int64) {
-	p.With = val
+func (p *ChatList) SetWithId(val int64) {
+	p.WithId = val
 }
 func (p *ChatList) SetLastMsg(val *Message) {
 	p.LastMsg = val
@@ -1481,7 +1481,7 @@ func (p *ChatList) SetTimestamp(val int64) {
 var fieldIDToName_ChatList = map[int16]string{
 	1: "chat_id",
 	2: "chat_type",
-	4: "with",
+	4: "with_id",
 	5: "last_msg",
 	6: "timestamp",
 }
@@ -1601,7 +1601,7 @@ func (p *ChatList) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.With = v
+		p.WithId = v
 	}
 	return nil
 }
@@ -1701,10 +1701,10 @@ WriteFieldEndError:
 }
 
 func (p *ChatList) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("with", thrift.I64, 4); err != nil {
+	if err = oprot.WriteFieldBegin("with_id", thrift.I64, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.With); err != nil {
+	if err := oprot.WriteI64(p.WithId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1771,7 +1771,7 @@ func (p *ChatList) DeepEqual(ano *ChatList) bool {
 	if !p.Field2DeepEqual(ano.ChatType) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.With) {
+	if !p.Field4DeepEqual(ano.WithId) {
 		return false
 	}
 	if !p.Field5DeepEqual(ano.LastMsg) {
@@ -1799,7 +1799,7 @@ func (p *ChatList) Field2DeepEqual(src ChatType) bool {
 }
 func (p *ChatList) Field4DeepEqual(src int64) bool {
 
-	if p.With != src {
+	if p.WithId != src {
 		return false
 	}
 	return true
@@ -2372,7 +2372,7 @@ func (p *GetOneReq) Field1DeepEqual(src int64) bool {
 }
 
 type BoolRes struct {
-	Success bool `thrift:"success,1" frugal:"1,default,bool" json:"success"`
+	Ok bool `thrift:"ok,1" frugal:"1,default,bool" json:"ok"`
 }
 
 func NewBoolRes() *BoolRes {
@@ -2383,15 +2383,15 @@ func (p *BoolRes) InitDefault() {
 	*p = BoolRes{}
 }
 
-func (p *BoolRes) GetSuccess() (v bool) {
-	return p.Success
+func (p *BoolRes) GetOk() (v bool) {
+	return p.Ok
 }
-func (p *BoolRes) SetSuccess(val bool) {
-	p.Success = val
+func (p *BoolRes) SetOk(val bool) {
+	p.Ok = val
 }
 
 var fieldIDToName_BoolRes = map[int16]string{
-	1: "success",
+	1: "ok",
 }
 
 func (p *BoolRes) Read(iprot thrift.TProtocol) (err error) {
@@ -2455,7 +2455,7 @@ func (p *BoolRes) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadBool(); err != nil {
 		return err
 	} else {
-		p.Success = v
+		p.Ok = v
 	}
 	return nil
 }
@@ -2489,10 +2489,10 @@ WriteStructEndError:
 }
 
 func (p *BoolRes) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("success", thrift.BOOL, 1); err != nil {
+	if err = oprot.WriteFieldBegin("ok", thrift.BOOL, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteBool(p.Success); err != nil {
+	if err := oprot.WriteBool(p.Ok); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2519,7 +2519,7 @@ func (p *BoolRes) DeepEqual(ano *BoolRes) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Success) {
+	if !p.Field1DeepEqual(ano.Ok) {
 		return false
 	}
 	return true
@@ -2527,7 +2527,7 @@ func (p *BoolRes) DeepEqual(ano *BoolRes) bool {
 
 func (p *BoolRes) Field1DeepEqual(src bool) bool {
 
-	if p.Success != src {
+	if p.Ok != src {
 		return false
 	}
 	return true

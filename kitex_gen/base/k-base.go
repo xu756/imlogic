@@ -1223,7 +1223,7 @@ func (p *ChatList) FastReadField4(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.With = v
+		p.WithId = v
 
 	}
 	return offset, nil
@@ -1311,8 +1311,8 @@ func (p *ChatList) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter
 
 func (p *ChatList) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "with", thrift.I64, 4)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.With)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "with_id", thrift.I64, 4)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.WithId)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1355,8 +1355,8 @@ func (p *ChatList) field2Length() int {
 
 func (p *ChatList) field4Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("with", thrift.I64, 4)
-	l += bthrift.Binary.I64Length(p.With)
+	l += bthrift.Binary.FieldBeginLength("with_id", thrift.I64, 4)
+	l += bthrift.Binary.I64Length(p.WithId)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -1910,7 +1910,7 @@ func (p *BoolRes) FastReadField1(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.Success = v
+		p.Ok = v
 
 	}
 	return offset, nil
@@ -1945,8 +1945,8 @@ func (p *BoolRes) BLength() int {
 
 func (p *BoolRes) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "success", thrift.BOOL, 1)
-	offset += bthrift.Binary.WriteBool(buf[offset:], p.Success)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "ok", thrift.BOOL, 1)
+	offset += bthrift.Binary.WriteBool(buf[offset:], p.Ok)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1954,8 +1954,8 @@ func (p *BoolRes) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter)
 
 func (p *BoolRes) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("success", thrift.BOOL, 1)
-	l += bthrift.Binary.BoolLength(p.Success)
+	l += bthrift.Binary.FieldBeginLength("ok", thrift.BOOL, 1)
+	l += bthrift.Binary.BoolLength(p.Ok)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

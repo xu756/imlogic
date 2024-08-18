@@ -75,5 +75,5 @@ func sendCaptcha(ctx context.Context, c *app.RequestContext) {
 		result.HttpParamErr(c)
 		return
 	}
-	result.HttpSuccess(c, res.Success)
+	result.HttpSuccess(c, res.Ok)
 }

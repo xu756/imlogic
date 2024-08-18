@@ -7,5 +7,5 @@ import (
 )
 
 func (s *PublicSrvImpl) SendCaptcha(ctx context.Context, req *user.SendCaptchaReq) (res *base.BoolRes, err error) {
-	return &base.BoolRes{Success: true}, nil
+	return &base.BoolRes{Ok: true}, nil
 }

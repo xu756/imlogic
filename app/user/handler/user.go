@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"imlogic/kitex_gen/base"
-	"imlogic/kitex_gen/user"
 )
 
 // GetOneUserInfo implements user.UserSrv.
@@ -22,12 +21,12 @@ func (s *PublicSrvImpl) GetOneUserInfo(ctx context.Context, req *base.GetOneReq)
 }
 
 // GetUserOnlineStatus implements user.UserSrv.
-func (s *PublicSrvImpl) GetUserOnlineStatus(ctx context.Context, req *base.GetOneReq) (res *user.UserOnlineStatus, err error) {
-	status, err := s.Model.GetOneUserStatus(ctx, req.Id)
+func (s *PublicSrvImpl) GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq) (res *base.BoolRes, err error) {
+	status, err := s.Model.GetOneUserStatus(ctx, getOneReq.Id)
 	if err != nil {
 		return nil, err
 	}
-	return &user.UserOnlineStatus{
-		Status: status,
+	return &base.BoolRes{
+		Ok: status,
 	}, nil
 }

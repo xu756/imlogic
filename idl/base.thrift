@@ -68,7 +68,7 @@ struct MetaMsg {
 struct ChatList{
     1:string chat_id,
     2:ChatType chat_type,
-    4:i64 with,
+    4:i64 with_id,
     5:Message last_msg,
     6:i64 timestamp
 }
@@ -98,5 +98,5 @@ struct GetOneReq {
 
 // BoolRes
 struct BoolRes {
-  1: bool success
+  1: bool ok
 }

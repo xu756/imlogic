@@ -943,30 +943,39 @@ func (p *SendCaptchaReq) Field2DeepEqual(src string) bool {
 	return true
 }
 
-type UserOnlineStatus struct {
-	Status bool `thrift:"status,1" frugal:"1,default,bool" json:"status"`
+type AddFriendReq struct {
+	Owner  int64 `thrift:"owner,1" frugal:"1,default,i64" json:"owner"`
+	WithId int64 `thrift:"with_id,2" frugal:"2,default,i64" json:"with_id"`
 }
 
-func NewUserOnlineStatus() *UserOnlineStatus {
-	return &UserOnlineStatus{}
+func NewAddFriendReq() *AddFriendReq {
+	return &AddFriendReq{}
 }
 
-func (p *UserOnlineStatus) InitDefault() {
-	*p = UserOnlineStatus{}
+func (p *AddFriendReq) InitDefault() {
+	*p = AddFriendReq{}
 }
 
-func (p *UserOnlineStatus) GetStatus() (v bool) {
-	return p.Status
-}
-func (p *UserOnlineStatus) SetStatus(val bool) {
-	p.Status = val
+func (p *AddFriendReq) GetOwner() (v int64) {
+	return p.Owner
 }
 
-var fieldIDToName_UserOnlineStatus = map[int16]string{
-	1: "status",
+func (p *AddFriendReq) GetWithId() (v int64) {
+	return p.WithId
+}
+func (p *AddFriendReq) SetOwner(val int64) {
+	p.Owner = val
+}
+func (p *AddFriendReq) SetWithId(val int64) {
+	p.WithId = val
 }
 
-func (p *UserOnlineStatus) Read(iprot thrift.TProtocol) (err error) {
+var fieldIDToName_AddFriendReq = map[int16]string{
+	1: "owner",
+	2: "with_id",
+}
+
+func (p *AddFriendReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -986,8 +995,16 @@ func (p *UserOnlineStatus) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.BOOL {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1012,7 +1029,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserOnlineStatus[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_AddFriendReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1022,24 +1039,37 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *UserOnlineStatus) ReadField1(iprot thrift.TProtocol) error {
+func (p *AddFriendReq) ReadField1(iprot thrift.TProtocol) error {
 
-	if v, err := iprot.ReadBool(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.Status = v
+		p.Owner = v
+	}
+	return nil
+}
+func (p *AddFriendReq) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.WithId = v
 	}
 	return nil
 }
 
-func (p *UserOnlineStatus) Write(oprot thrift.TProtocol) (err error) {
+func (p *AddFriendReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("UserOnlineStatus"); err != nil {
+	if err = oprot.WriteStructBegin("AddFriendReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
 			goto WriteFieldError
 		}
 	}
@@ -1060,11 +1090,11 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *UserOnlineStatus) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("status", thrift.BOOL, 1); err != nil {
+func (p *AddFriendReq) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("owner", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteBool(p.Status); err != nil {
+	if err := oprot.WriteI64(p.Owner); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1077,29 +1107,56 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *UserOnlineStatus) String() string {
+func (p *AddFriendReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("with_id", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.WithId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *AddFriendReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("UserOnlineStatus(%+v)", *p)
+	return fmt.Sprintf("AddFriendReq(%+v)", *p)
 
 }
 
-func (p *UserOnlineStatus) DeepEqual(ano *UserOnlineStatus) bool {
+func (p *AddFriendReq) DeepEqual(ano *AddFriendReq) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Status) {
+	if !p.Field1DeepEqual(ano.Owner) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.WithId) {
 		return false
 	}
 	return true
 }
 
-func (p *UserOnlineStatus) Field1DeepEqual(src bool) bool {
+func (p *AddFriendReq) Field1DeepEqual(src int64) bool {
 
-	if p.Status != src {
+	if p.Owner != src {
+		return false
+	}
+	return true
+}
+func (p *AddFriendReq) Field2DeepEqual(src int64) bool {
+
+	if p.WithId != src {
 		return false
 	}
 	return true
@@ -1114,9 +1171,11 @@ type UserSrv interface {
 
 	GetOneUserInfo(ctx context.Context, getOneReq *base.GetOneReq) (r *base.UserInfo, err error)
 
-	GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq) (r *UserOnlineStatus, err error)
+	GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq) (r *base.BoolRes, err error)
 
 	GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq) (r []*base.ChatList, err error)
+
+	AddFriend(ctx context.Context, addFriendReq *AddFriendReq) (r *base.BoolRes, err error)
 }
 
 type UserSrvClient struct {
@@ -1181,7 +1240,7 @@ func (p *UserSrvClient) GetOneUserInfo(ctx context.Context, getOneReq *base.GetO
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserSrvClient) GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq) (r *UserOnlineStatus, err error) {
+func (p *UserSrvClient) GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq) (r *base.BoolRes, err error) {
 	var _args UserSrvGetUserOnlineStatusArgs
 	_args.GetOneReq = getOneReq
 	var _result UserSrvGetUserOnlineStatusResult
@@ -1195,6 +1254,15 @@ func (p *UserSrvClient) GetUserChatList(ctx context.Context, getOneReq *base.Get
 	_args.GetOneReq = getOneReq
 	var _result UserSrvGetUserChatListResult
 	if err = p.Client_().Call(ctx, "GetUserChatList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *UserSrvClient) AddFriend(ctx context.Context, addFriendReq *AddFriendReq) (r *base.BoolRes, err error) {
+	var _args UserSrvAddFriendArgs
+	_args.AddFriendReq = addFriendReq
+	var _result UserSrvAddFriendResult
+	if err = p.Client_().Call(ctx, "AddFriend", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -1226,6 +1294,7 @@ func NewUserSrvProcessor(handler UserSrv) *UserSrvProcessor {
 	self.AddToProcessorMap("GetOneUserInfo", &userSrvProcessorGetOneUserInfo{handler: handler})
 	self.AddToProcessorMap("GetUserOnlineStatus", &userSrvProcessorGetUserOnlineStatus{handler: handler})
 	self.AddToProcessorMap("GetUserChatList", &userSrvProcessorGetUserChatList{handler: handler})
+	self.AddToProcessorMap("AddFriend", &userSrvProcessorAddFriend{handler: handler})
 	return self
 }
 func (p *UserSrvProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1457,7 +1526,7 @@ func (p *userSrvProcessorGetUserOnlineStatus) Process(ctx context.Context, seqId
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := UserSrvGetUserOnlineStatusResult{}
-	var retval *UserOnlineStatus
+	var retval *base.BoolRes
 	if retval, err2 = p.handler.GetUserOnlineStatus(ctx, args.GetOneReq); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetUserOnlineStatus: "+err2.Error())
 		oprot.WriteMessageBegin("GetUserOnlineStatus", thrift.EXCEPTION, seqId)
@@ -1517,6 +1586,54 @@ func (p *userSrvProcessorGetUserChatList) Process(ctx context.Context, seqId int
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("GetUserChatList", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type userSrvProcessorAddFriend struct {
+	handler UserSrv
+}
+
+func (p *userSrvProcessorAddFriend) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := UserSrvAddFriendArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("AddFriend", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := UserSrvAddFriendResult{}
+	var retval *base.BoolRes
+	if retval, err2 = p.handler.AddFriend(ctx, args.AddFriendReq); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing AddFriend: "+err2.Error())
+		oprot.WriteMessageBegin("AddFriend", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("AddFriend", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -3064,7 +3181,7 @@ func (p *UserSrvGetUserOnlineStatusArgs) Field1DeepEqual(src *base.GetOneReq) bo
 }
 
 type UserSrvGetUserOnlineStatusResult struct {
-	Success *UserOnlineStatus `thrift:"success,0,optional" frugal:"0,optional,UserOnlineStatus" json:"success,omitempty"`
+	Success *base.BoolRes `thrift:"success,0,optional" frugal:"0,optional,base.BoolRes" json:"success,omitempty"`
 }
 
 func NewUserSrvGetUserOnlineStatusResult() *UserSrvGetUserOnlineStatusResult {
@@ -3075,16 +3192,16 @@ func (p *UserSrvGetUserOnlineStatusResult) InitDefault() {
 	*p = UserSrvGetUserOnlineStatusResult{}
 }
 
-var UserSrvGetUserOnlineStatusResult_Success_DEFAULT *UserOnlineStatus
+var UserSrvGetUserOnlineStatusResult_Success_DEFAULT *base.BoolRes
 
-func (p *UserSrvGetUserOnlineStatusResult) GetSuccess() (v *UserOnlineStatus) {
+func (p *UserSrvGetUserOnlineStatusResult) GetSuccess() (v *base.BoolRes) {
 	if !p.IsSetSuccess() {
 		return UserSrvGetUserOnlineStatusResult_Success_DEFAULT
 	}
 	return p.Success
 }
 func (p *UserSrvGetUserOnlineStatusResult) SetSuccess(x interface{}) {
-	p.Success = x.(*UserOnlineStatus)
+	p.Success = x.(*base.BoolRes)
 }
 
 var fieldIDToName_UserSrvGetUserOnlineStatusResult = map[int16]string{
@@ -3152,7 +3269,7 @@ ReadStructEndError:
 }
 
 func (p *UserSrvGetUserOnlineStatusResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewUserOnlineStatus()
+	p.Success = base.NewBoolRes()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}
@@ -3226,7 +3343,7 @@ func (p *UserSrvGetUserOnlineStatusResult) DeepEqual(ano *UserSrvGetUserOnlineSt
 	return true
 }
 
-func (p *UserSrvGetUserOnlineStatusResult) Field0DeepEqual(src *UserOnlineStatus) bool {
+func (p *UserSrvGetUserOnlineStatusResult) Field0DeepEqual(src *base.BoolRes) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -3596,6 +3713,346 @@ func (p *UserSrvGetUserChatListResult) Field0DeepEqual(src []*base.ChatList) boo
 		if !v.DeepEqual(_src) {
 			return false
 		}
+	}
+	return true
+}
+
+type UserSrvAddFriendArgs struct {
+	AddFriendReq *AddFriendReq `thrift:"addFriendReq,1" frugal:"1,default,AddFriendReq" json:"addFriendReq"`
+}
+
+func NewUserSrvAddFriendArgs() *UserSrvAddFriendArgs {
+	return &UserSrvAddFriendArgs{}
+}
+
+func (p *UserSrvAddFriendArgs) InitDefault() {
+	*p = UserSrvAddFriendArgs{}
+}
+
+var UserSrvAddFriendArgs_AddFriendReq_DEFAULT *AddFriendReq
+
+func (p *UserSrvAddFriendArgs) GetAddFriendReq() (v *AddFriendReq) {
+	if !p.IsSetAddFriendReq() {
+		return UserSrvAddFriendArgs_AddFriendReq_DEFAULT
+	}
+	return p.AddFriendReq
+}
+func (p *UserSrvAddFriendArgs) SetAddFriendReq(val *AddFriendReq) {
+	p.AddFriendReq = val
+}
+
+var fieldIDToName_UserSrvAddFriendArgs = map[int16]string{
+	1: "addFriendReq",
+}
+
+func (p *UserSrvAddFriendArgs) IsSetAddFriendReq() bool {
+	return p.AddFriendReq != nil
+}
+
+func (p *UserSrvAddFriendArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserSrvAddFriendArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UserSrvAddFriendArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.AddFriendReq = NewAddFriendReq()
+	if err := p.AddFriendReq.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UserSrvAddFriendArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("AddFriend_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UserSrvAddFriendArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("addFriendReq", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.AddFriendReq.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *UserSrvAddFriendArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserSrvAddFriendArgs(%+v)", *p)
+
+}
+
+func (p *UserSrvAddFriendArgs) DeepEqual(ano *UserSrvAddFriendArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.AddFriendReq) {
+		return false
+	}
+	return true
+}
+
+func (p *UserSrvAddFriendArgs) Field1DeepEqual(src *AddFriendReq) bool {
+
+	if !p.AddFriendReq.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type UserSrvAddFriendResult struct {
+	Success *base.BoolRes `thrift:"success,0,optional" frugal:"0,optional,base.BoolRes" json:"success,omitempty"`
+}
+
+func NewUserSrvAddFriendResult() *UserSrvAddFriendResult {
+	return &UserSrvAddFriendResult{}
+}
+
+func (p *UserSrvAddFriendResult) InitDefault() {
+	*p = UserSrvAddFriendResult{}
+}
+
+var UserSrvAddFriendResult_Success_DEFAULT *base.BoolRes
+
+func (p *UserSrvAddFriendResult) GetSuccess() (v *base.BoolRes) {
+	if !p.IsSetSuccess() {
+		return UserSrvAddFriendResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *UserSrvAddFriendResult) SetSuccess(x interface{}) {
+	p.Success = x.(*base.BoolRes)
+}
+
+var fieldIDToName_UserSrvAddFriendResult = map[int16]string{
+	0: "success",
+}
+
+func (p *UserSrvAddFriendResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UserSrvAddFriendResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserSrvAddFriendResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UserSrvAddFriendResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = base.NewBoolRes()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UserSrvAddFriendResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("AddFriend_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UserSrvAddFriendResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *UserSrvAddFriendResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserSrvAddFriendResult(%+v)", *p)
+
+}
+
+func (p *UserSrvAddFriendResult) DeepEqual(ano *UserSrvAddFriendResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserSrvAddFriendResult) Field0DeepEqual(src *base.BoolRes) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
 	}
 	return true
 }

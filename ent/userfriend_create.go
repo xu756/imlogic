@@ -40,9 +40,9 @@ func (ufc *UserFriendCreate) SetOwner(i int64) *UserFriendCreate {
 	return ufc
 }
 
-// SetWith sets the "with" field.
-func (ufc *UserFriendCreate) SetWith(i int64) *UserFriendCreate {
-	ufc.mutation.SetWith(i)
+// SetWithID sets the "with_id" field.
+func (ufc *UserFriendCreate) SetWithID(i int64) *UserFriendCreate {
+	ufc.mutation.SetWithID(i)
 	return ufc
 }
 
@@ -113,8 +113,8 @@ func (ufc *UserFriendCreate) check() error {
 	if _, ok := ufc.mutation.Owner(); !ok {
 		return &ValidationError{Name: "owner", err: errors.New(`ent: missing required field "UserFriend.owner"`)}
 	}
-	if _, ok := ufc.mutation.With(); !ok {
-		return &ValidationError{Name: "with", err: errors.New(`ent: missing required field "UserFriend.with"`)}
+	if _, ok := ufc.mutation.WithID(); !ok {
+		return &ValidationError{Name: "with_id", err: errors.New(`ent: missing required field "UserFriend.with_id"`)}
 	}
 	if _, ok := ufc.mutation.Alias(); !ok {
 		return &ValidationError{Name: "alias", err: errors.New(`ent: missing required field "UserFriend.alias"`)}
@@ -162,9 +162,9 @@ func (ufc *UserFriendCreate) createSpec() (*UserFriend, *sqlgraph.CreateSpec) {
 		_spec.SetField(userfriend.FieldOwner, field.TypeInt64, value)
 		_node.Owner = value
 	}
-	if value, ok := ufc.mutation.With(); ok {
-		_spec.SetField(userfriend.FieldWith, field.TypeInt64, value)
-		_node.With = value
+	if value, ok := ufc.mutation.WithID(); ok {
+		_spec.SetField(userfriend.FieldWithID, field.TypeInt64, value)
+		_node.WithID = value
 	}
 	if value, ok := ufc.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)

@@ -27,15 +27,12 @@ struct SendCaptchaReq {
 }
 
 
-// 用户在线状态
-struct UserOnlineStatus {
-  1: bool status  // 是否在线
-}
+
 
 // 添加好友请求
 struct AddFriendReq {
   1: i64 owner,  // 本人id
-  2: i64 with   // 聊天 
+  2: i64 with_id   // 和谁添加好友
 }
 
 // 用户服务

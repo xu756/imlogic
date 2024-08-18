@@ -29,7 +29,7 @@ func getUserStatus(ctx context.Context, c *app.RequestContext) {
 		result.HttpError(c, err)
 		return
 	}
-	result.HttpSuccess(c, res.Status)
+	result.HttpSuccess(c, res.Ok)
 }
 
 // 获取当前用户信息
