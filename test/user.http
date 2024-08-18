@@ -15,7 +15,23 @@ Authorization: {{token}}
 ### 获取用户在线状态
 POST {{baseUrl}}/api/user/status
 Authorization: {{token}}
+Content-Type: application/json
+
 
 {
-  "id": 21474836482
+  "id":21474836482
 }
+> {%
+ console.log(response.body)
+ %}
+
+
+### IM连接
+WEBSOCKET {{wsUrl}}//api/im/connect
+Authorization: {{token}}
+
+> {%
+ response.body.onEachMessage((message, unsubscribe, output)=>{
+console.log(message)
+ })
+ %}

@@ -1,5 +1,5 @@
 ### 通过账户密码登录
-POST {{baseUrl}}/api/login/account
+POST {{baseUrl}}/api/login/account/
 Content-Type: application/json
 
 {
@@ -10,3 +10,7 @@ Content-Type: application/json
   "captcha": "",
   "session_id": ""
 }
+
+> {%
+    client.global.set("token", response.body.data.token)
+%}
