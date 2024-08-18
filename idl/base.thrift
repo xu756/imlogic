@@ -36,15 +36,15 @@ struct MediaType {
 
 // 消息
 struct Message {
-  1: string link_id,
-  2: string msg_id,
-  3: i64 timestamp,
-  4: ChatType chat_type,
-  5: i64 sender,
-  6: i64 receiver,
-  7: string content,
-  8: MsgType msg_type,
-  9: list<MediaType> media
+  1: string link_id (go.tag = "json:\"link_id,omitempty\""),
+  2: string msg_id (go.tag = "json:\"msg_id,omitempty\""),
+  3: i64 timestamp (go.tag = "json:\"timestamp,omitempty\""),
+  4: ChatType chat_type (go.tag = "json:\"chat_type,omitempty\""),
+  5: i64 sender (go.tag = "json:\"sender,omitempty\""),
+  6: i64 receiver (go.tag = "json:\"receiver,omitempty\""),
+  7: string content (go.tag = "json:\"content,omitempty\""),
+  8: MsgType msg_type (go.tag = "json:\"msg_type,omitempty\""),
+  9: list<MediaType> media (go.tag = "json:\"media,omitempty\""),
 }
 
 

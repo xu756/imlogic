@@ -391,15 +391,15 @@ func (p *MediaType) Field2DeepEqual(src string) bool {
 }
 
 type Message struct {
-	LinkId    string       `thrift:"link_id,1" frugal:"1,default,string" json:"link_id"`
-	MsgId     string       `thrift:"msg_id,2" frugal:"2,default,string" json:"msg_id"`
-	Timestamp int64        `thrift:"timestamp,3" frugal:"3,default,i64" json:"timestamp"`
-	ChatType  ChatType     `thrift:"chat_type,4" frugal:"4,default,ChatType" json:"chat_type"`
-	Sender    int64        `thrift:"sender,5" frugal:"5,default,i64" json:"sender"`
-	Receiver  int64        `thrift:"receiver,6" frugal:"6,default,i64" json:"receiver"`
-	Content   string       `thrift:"content,7" frugal:"7,default,string" json:"content"`
-	MsgType   MsgType      `thrift:"msg_type,8" frugal:"8,default,MsgType" json:"msg_type"`
-	Media     []*MediaType `thrift:"media,9" frugal:"9,default,list<MediaType>" json:"media"`
+	LinkId    string       `thrift:"link_id,1" frugal:"1,default,string" json:"link_id,omitempty"`
+	MsgId     string       `thrift:"msg_id,2" frugal:"2,default,string" json:"msg_id,omitempty"`
+	Timestamp int64        `thrift:"timestamp,3" frugal:"3,default,i64" json:"timestamp,omitempty"`
+	ChatType  ChatType     `thrift:"chat_type,4" frugal:"4,default,ChatType" json:"chat_type,omitempty"`
+	Sender    int64        `thrift:"sender,5" frugal:"5,default,i64" json:"sender,omitempty"`
+	Receiver  int64        `thrift:"receiver,6" frugal:"6,default,i64" json:"receiver,omitempty"`
+	Content   string       `thrift:"content,7" frugal:"7,default,string" json:"content,omitempty"`
+	MsgType   MsgType      `thrift:"msg_type,8" frugal:"8,default,MsgType" json:"msg_type,omitempty"`
+	Media     []*MediaType `thrift:"media,9" frugal:"9,default,list<MediaType>" json:"media,omitempty"`
 }
 
 func NewMessage() *Message {
