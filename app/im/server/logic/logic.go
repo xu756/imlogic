@@ -32,7 +32,6 @@ func MsgLogic(c *client.Client, msg *base.Message) {
 	switch msg.ChatType {
 	case base.ChatType_PrivateChat:
 		res, err = service.ImHandler.HandlerPrivateMessage(ctx, &base.Message{
-			LinkId:    msg.LinkId,
 			MsgId:     msg.MsgId,
 			Timestamp: msg.Timestamp,
 			ChatType:  msg.ChatType,
@@ -45,7 +44,6 @@ func MsgLogic(c *client.Client, msg *base.Message) {
 
 	case base.ChatType_GroupChat:
 		res, err = service.ImHandler.HandlerGroupMessage(ctx, &base.Message{
-			LinkId:    msg.LinkId,
 			MsgId:     msg.MsgId,
 			Timestamp: msg.Timestamp,
 			ChatType:  msg.ChatType,

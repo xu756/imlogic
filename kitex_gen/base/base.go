@@ -391,15 +391,14 @@ func (p *MediaType) Field2DeepEqual(src string) bool {
 }
 
 type Message struct {
-	LinkId    string       `thrift:"link_id,1" frugal:"1,default,string" json:"link_id,omitempty"`
-	MsgId     string       `thrift:"msg_id,2" frugal:"2,default,string" json:"msg_id,omitempty"`
-	Timestamp int64        `thrift:"timestamp,3" frugal:"3,default,i64" json:"timestamp,omitempty"`
-	ChatType  ChatType     `thrift:"chat_type,4" frugal:"4,default,ChatType" json:"chat_type,omitempty"`
-	Sender    int64        `thrift:"sender,5" frugal:"5,default,i64" json:"sender,omitempty"`
-	Receiver  int64        `thrift:"receiver,6" frugal:"6,default,i64" json:"receiver,omitempty"`
-	Content   string       `thrift:"content,7" frugal:"7,default,string" json:"content,omitempty"`
-	MsgType   MsgType      `thrift:"msg_type,8" frugal:"8,default,MsgType" json:"msg_type,omitempty"`
-	Media     []*MediaType `thrift:"media,9" frugal:"9,default,list<MediaType>" json:"media,omitempty"`
+	MsgId     string       `thrift:"msg_id,1" frugal:"1,default,string" json:"msg_id,omitempty"`
+	Timestamp int64        `thrift:"timestamp,2" frugal:"2,default,i64" json:"timestamp,omitempty"`
+	ChatType  ChatType     `thrift:"chat_type,3" frugal:"3,default,ChatType" json:"chat_type,omitempty"`
+	Sender    int64        `thrift:"sender,4" frugal:"4,default,i64" json:"sender,omitempty"`
+	Receiver  int64        `thrift:"receiver,5" frugal:"5,default,i64" json:"receiver,omitempty"`
+	Content   string       `thrift:"content,6" frugal:"6,default,string" json:"content,omitempty"`
+	MsgType   MsgType      `thrift:"msg_type,7" frugal:"7,default,MsgType" json:"msg_type,omitempty"`
+	Media     []*MediaType `thrift:"media,8" frugal:"8,default,list<MediaType>" json:"media,omitempty"`
 }
 
 func NewMessage() *Message {
@@ -408,10 +407,6 @@ func NewMessage() *Message {
 
 func (p *Message) InitDefault() {
 	*p = Message{}
-}
-
-func (p *Message) GetLinkId() (v string) {
-	return p.LinkId
 }
 
 func (p *Message) GetMsgId() (v string) {
@@ -445,9 +440,6 @@ func (p *Message) GetMsgType() (v MsgType) {
 func (p *Message) GetMedia() (v []*MediaType) {
 	return p.Media
 }
-func (p *Message) SetLinkId(val string) {
-	p.LinkId = val
-}
 func (p *Message) SetMsgId(val string) {
 	p.MsgId = val
 }
@@ -474,15 +466,14 @@ func (p *Message) SetMedia(val []*MediaType) {
 }
 
 var fieldIDToName_Message = map[int16]string{
-	1: "link_id",
-	2: "msg_id",
-	3: "timestamp",
-	4: "chat_type",
-	5: "sender",
-	6: "receiver",
-	7: "content",
-	8: "msg_type",
-	9: "media",
+	1: "msg_id",
+	2: "timestamp",
+	3: "chat_type",
+	4: "sender",
+	5: "receiver",
+	6: "content",
+	7: "msg_type",
+	8: "media",
 }
 
 func (p *Message) Read(iprot thrift.TProtocol) (err error) {
@@ -513,7 +504,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 2:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -521,7 +512,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 3:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -529,7 +520,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 4:
-			if fieldTypeId == thrift.I32 {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -545,7 +536,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -553,7 +544,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I32 {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -561,16 +552,8 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 8:
-			if fieldTypeId == thrift.I32 {
-				if err = p.ReadField8(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 9:
 			if fieldTypeId == thrift.LIST {
-				if err = p.ReadField9(iprot); err != nil {
+				if err = p.ReadField8(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -610,20 +593,11 @@ func (p *Message) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.LinkId = v
-	}
-	return nil
-}
-func (p *Message) ReadField2(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
 		p.MsgId = v
 	}
 	return nil
 }
-func (p *Message) ReadField3(iprot thrift.TProtocol) error {
+func (p *Message) ReadField2(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
@@ -632,7 +606,7 @@ func (p *Message) ReadField3(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField4(iprot thrift.TProtocol) error {
+func (p *Message) ReadField3(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
@@ -641,7 +615,7 @@ func (p *Message) ReadField4(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField5(iprot thrift.TProtocol) error {
+func (p *Message) ReadField4(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
@@ -650,7 +624,7 @@ func (p *Message) ReadField5(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField6(iprot thrift.TProtocol) error {
+func (p *Message) ReadField5(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
@@ -659,7 +633,7 @@ func (p *Message) ReadField6(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField7(iprot thrift.TProtocol) error {
+func (p *Message) ReadField6(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
@@ -668,7 +642,7 @@ func (p *Message) ReadField7(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField8(iprot thrift.TProtocol) error {
+func (p *Message) ReadField7(iprot thrift.TProtocol) error {
 
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
@@ -677,7 +651,7 @@ func (p *Message) ReadField8(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *Message) ReadField9(iprot thrift.TProtocol) error {
+func (p *Message) ReadField8(iprot thrift.TProtocol) error {
 	_, size, err := iprot.ReadListBegin()
 	if err != nil {
 		return err
@@ -735,10 +709,6 @@ func (p *Message) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 8
 			goto WriteFieldError
 		}
-		if err = p.writeField9(oprot); err != nil {
-			fieldId = 9
-			goto WriteFieldError
-		}
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
 		goto WriteFieldStopError
@@ -758,10 +728,10 @@ WriteStructEndError:
 }
 
 func (p *Message) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("link_id", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("msg_id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.LinkId); err != nil {
+	if err := oprot.WriteString(p.MsgId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -775,10 +745,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("msg_id", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("timestamp", thrift.I64, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.MsgId); err != nil {
+	if err := oprot.WriteI64(p.Timestamp); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -792,10 +762,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("timestamp", thrift.I64, 3); err != nil {
+	if err = oprot.WriteFieldBegin("chat_type", thrift.I32, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.Timestamp); err != nil {
+	if err := oprot.WriteI32(int32(p.ChatType)); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -809,10 +779,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("chat_type", thrift.I32, 4); err != nil {
+	if err = oprot.WriteFieldBegin("sender", thrift.I64, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI32(int32(p.ChatType)); err != nil {
+	if err := oprot.WriteI64(p.Sender); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -826,10 +796,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("sender", thrift.I64, 5); err != nil {
+	if err = oprot.WriteFieldBegin("receiver", thrift.I64, 5); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.Sender); err != nil {
+	if err := oprot.WriteI64(p.Receiver); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -843,10 +813,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField6(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("receiver", thrift.I64, 6); err != nil {
+	if err = oprot.WriteFieldBegin("content", thrift.STRING, 6); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.Receiver); err != nil {
+	if err := oprot.WriteString(p.Content); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -860,10 +830,10 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField7(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("content", thrift.STRING, 7); err != nil {
+	if err = oprot.WriteFieldBegin("msg_type", thrift.I32, 7); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Content); err != nil {
+	if err := oprot.WriteI32(int32(p.MsgType)); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -877,24 +847,7 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField8(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("msg_type", thrift.I32, 8); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI32(int32(p.MsgType)); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
-}
-
-func (p *Message) writeField9(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("media", thrift.LIST, 9); err != nil {
+	if err = oprot.WriteFieldBegin("media", thrift.LIST, 8); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Media)); err != nil {
@@ -913,9 +866,9 @@ func (p *Message) writeField9(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
 func (p *Message) String() string {
@@ -932,31 +885,28 @@ func (p *Message) DeepEqual(ano *Message) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.LinkId) {
+	if !p.Field1DeepEqual(ano.MsgId) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.MsgId) {
+	if !p.Field2DeepEqual(ano.Timestamp) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.Timestamp) {
+	if !p.Field3DeepEqual(ano.ChatType) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.ChatType) {
+	if !p.Field4DeepEqual(ano.Sender) {
 		return false
 	}
-	if !p.Field5DeepEqual(ano.Sender) {
+	if !p.Field5DeepEqual(ano.Receiver) {
 		return false
 	}
-	if !p.Field6DeepEqual(ano.Receiver) {
+	if !p.Field6DeepEqual(ano.Content) {
 		return false
 	}
-	if !p.Field7DeepEqual(ano.Content) {
+	if !p.Field7DeepEqual(ano.MsgType) {
 		return false
 	}
-	if !p.Field8DeepEqual(ano.MsgType) {
-		return false
-	}
-	if !p.Field9DeepEqual(ano.Media) {
+	if !p.Field8DeepEqual(ano.Media) {
 		return false
 	}
 	return true
@@ -964,61 +914,54 @@ func (p *Message) DeepEqual(ano *Message) bool {
 
 func (p *Message) Field1DeepEqual(src string) bool {
 
-	if strings.Compare(p.LinkId, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *Message) Field2DeepEqual(src string) bool {
-
 	if strings.Compare(p.MsgId, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *Message) Field3DeepEqual(src int64) bool {
+func (p *Message) Field2DeepEqual(src int64) bool {
 
 	if p.Timestamp != src {
 		return false
 	}
 	return true
 }
-func (p *Message) Field4DeepEqual(src ChatType) bool {
+func (p *Message) Field3DeepEqual(src ChatType) bool {
 
 	if p.ChatType != src {
 		return false
 	}
 	return true
 }
-func (p *Message) Field5DeepEqual(src int64) bool {
+func (p *Message) Field4DeepEqual(src int64) bool {
 
 	if p.Sender != src {
 		return false
 	}
 	return true
 }
-func (p *Message) Field6DeepEqual(src int64) bool {
+func (p *Message) Field5DeepEqual(src int64) bool {
 
 	if p.Receiver != src {
 		return false
 	}
 	return true
 }
-func (p *Message) Field7DeepEqual(src string) bool {
+func (p *Message) Field6DeepEqual(src string) bool {
 
 	if strings.Compare(p.Content, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *Message) Field8DeepEqual(src MsgType) bool {
+func (p *Message) Field7DeepEqual(src MsgType) bool {
 
 	if p.MsgType != src {
 		return false
 	}
 	return true
 }
-func (p *Message) Field9DeepEqual(src []*MediaType) bool {
+func (p *Message) Field8DeepEqual(src []*MediaType) bool {
 
 	if len(p.Media) != len(src) {
 		return false

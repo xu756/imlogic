@@ -111,7 +111,6 @@ func (c *Client) ResetHeartbeat() {
 }
 
 func (c *Client) SendMsg(msg *base.Message) {
-	msg.LinkId = c.linkId
 	c.send <- msg
 }
 

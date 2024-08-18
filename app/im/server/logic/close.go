@@ -17,7 +17,6 @@ func onClose(c *client.Client) {
 // 连接时
 func onConnect(conn *client.Client) {
 	conn.SendMsg(&base.Message{
-		LinkId:    conn.GetLinkId(),
 		Receiver:  conn.GetUserId(),
 		MsgId:     uuid.NewString(),
 		Timestamp: tool.TimeNowUnixMilli(),
