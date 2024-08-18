@@ -678,12 +678,12 @@ func (p *Event) Field2DeepEqual(src int64) bool {
 
 type Message struct {
 	MsgId     string       `thrift:"msg_id,1" frugal:"1,default,string" json:"msg_id,omitempty"`
-	Timestamp int64        `thrift:"timestamp,2" frugal:"2,default,i64" json:"timestamp,omitempty"`
-	ChatType  ChatType     `thrift:"chat_type,3" frugal:"3,default,ChatType" json:"chat_type,omitempty"`
+	Timestamp int64        `thrift:"timestamp,2" frugal:"2,default,i64" json:"timestamp"`
+	ChatType  ChatType     `thrift:"chat_type,3" frugal:"3,default,ChatType" json:"chat_type"`
 	Sender    int64        `thrift:"sender,4" frugal:"4,default,i64" json:"sender,omitempty"`
 	Receiver  int64        `thrift:"receiver,5" frugal:"5,default,i64" json:"receiver,omitempty"`
 	Content   string       `thrift:"content,6" frugal:"6,default,string" json:"content,omitempty"`
-	MsgType   MsgType      `thrift:"msg_type,7" frugal:"7,default,MsgType" json:"msg_type,omitempty"`
+	MsgType   MsgType      `thrift:"msg_type,7" frugal:"7,default,MsgType" json:"msg_type"`
 	Media     []*MediaType `thrift:"media,8" frugal:"8,default,list<MediaType>" json:"media,omitempty"`
 	Event     *Event       `thrift:"event,9" frugal:"9,default,Event" json:"event,omitempty"`
 }

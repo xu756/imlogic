@@ -75,6 +75,7 @@ func MetaMsg(c *client.Client, msg *base.MetaMsg) {
 	}
 	if !res.Success {
 		log.Print("send meta message failed", res)
+		c.SendMsg(res.Message)
 		ctx.Done()
 		return
 	}

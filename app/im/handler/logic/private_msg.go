@@ -19,7 +19,7 @@ func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *base.Message
 			Message: &base.Message{
 				MsgId:     uuid.NewString(),
 				Timestamp: time.Now().Unix(),
-				ChatType:  req.ChatType,
+				ChatType:  base.ChatType_PrivateChat,
 				MsgType:   base.MsgType_Event,
 				Receiver:  req.Sender,
 				Event: &base.Event{

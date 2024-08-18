@@ -139,13 +139,11 @@ func (c *Client) setWs(ws *websocket.Conn) {
 
 func (c *Client) write(msg *base.Message) {
 	c.lock.Lock()
-	newMsg := &base.Message{}
-	newMsg = msg
 	if c.ws == nil {
 		c.lock.Unlock()
 		return
 	}
-	err := c.ws.WriteJSON(newMsg)
+	err := c.ws.WriteJSON(msg)
 	if err != nil {
 		c.close()
 		c.lock.Unlock()

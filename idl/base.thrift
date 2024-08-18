@@ -74,12 +74,12 @@ struct Event{
 // 消息
 struct Message {
   1: string msg_id (go.tag = "json:\"msg_id,omitempty\""),
-  2: i64 timestamp (go.tag = "json:\"timestamp,omitempty\""),
-  3: ChatType chat_type (go.tag = "json:\"chat_type,omitempty\""),
+  2: i64 timestamp ,
+  3: ChatType chat_type,
   4: i64 sender (go.tag = "json:\"sender,omitempty\""),
   5: i64 receiver (go.tag = "json:\"receiver,omitempty\""),
   6: string content (go.tag = "json:\"content,omitempty\""),
-  7: MsgType msg_type (go.tag = "json:\"msg_type,omitempty\""),
+  7: MsgType msg_type,
   8: list<MediaType> media (go.tag = "json:\"media,omitempty\""),
   9: Event event (go.tag = "json:\"event,omitempty\""),
 }
