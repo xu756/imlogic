@@ -23,7 +23,7 @@ struct SendMsgToGroupRes {
 // 返回消息
 struct MessageRes {
   1: bool success,
-  2: string msg_id
+  2: base.Message message
 }
 
 // 处理websocket消息

@@ -124,6 +124,73 @@ func (p *MsgType) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
+type EventType int64
+
+const (
+	EventType_Read       EventType = 0
+	EventType_Recall     EventType = 1
+	EventType_SendFail   EventType = 2
+	EventType_NotFriend  EventType = 3
+	EventType_NotInGroup EventType = 4
+	EventType_GroupJoin  EventType = 5
+	EventType_GroupQuit  EventType = 6
+)
+
+func (p EventType) String() string {
+	switch p {
+	case EventType_Read:
+		return "Read"
+	case EventType_Recall:
+		return "Recall"
+	case EventType_SendFail:
+		return "SendFail"
+	case EventType_NotFriend:
+		return "NotFriend"
+	case EventType_NotInGroup:
+		return "NotInGroup"
+	case EventType_GroupJoin:
+		return "GroupJoin"
+	case EventType_GroupQuit:
+		return "GroupQuit"
+	}
+	return "<UNSET>"
+}
+
+func EventTypeFromString(s string) (EventType, error) {
+	switch s {
+	case "Read":
+		return EventType_Read, nil
+	case "Recall":
+		return EventType_Recall, nil
+	case "SendFail":
+		return EventType_SendFail, nil
+	case "NotFriend":
+		return EventType_NotFriend, nil
+	case "NotInGroup":
+		return EventType_NotInGroup, nil
+	case "GroupJoin":
+		return EventType_GroupJoin, nil
+	case "GroupQuit":
+		return EventType_GroupQuit, nil
+	}
+	return EventType(0), fmt.Errorf("not a valid EventType string")
+}
+
+func EventTypePtr(v EventType) *EventType { return &v }
+func (p *EventType) Scan(value interface{}) (err error) {
+	var result sql.NullInt64
+	err = result.Scan(value)
+	*p = EventType(result.Int64)
+	return
+}
+
+func (p *EventType) Value() (driver.Value, error) {
+	if p == nil {
+		return nil, nil
+	}
+	return int64(*p), nil
+}
+
 type WsStatus int64
 
 const (
@@ -390,6 +457,225 @@ func (p *MediaType) Field2DeepEqual(src string) bool {
 	return true
 }
 
+type Event struct {
+	EventType EventType `thrift:"event_type,1" frugal:"1,default,EventType" json:"event_type,omitempty"`
+	UserId    int64     `thrift:"user_id,2" frugal:"2,default,i64" json:"user_id,omitempty"`
+}
+
+func NewEvent() *Event {
+	return &Event{}
+}
+
+func (p *Event) InitDefault() {
+	*p = Event{}
+}
+
+func (p *Event) GetEventType() (v EventType) {
+	return p.EventType
+}
+
+func (p *Event) GetUserId() (v int64) {
+	return p.UserId
+}
+func (p *Event) SetEventType(val EventType) {
+	p.EventType = val
+}
+func (p *Event) SetUserId(val int64) {
+	p.UserId = val
+}
+
+var fieldIDToName_Event = map[int16]string{
+	1: "event_type",
+	2: "user_id",
+}
+
+func (p *Event) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I32 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_Event[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *Event) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI32(); err != nil {
+		return err
+	} else {
+		p.EventType = EventType(v)
+	}
+	return nil
+}
+func (p *Event) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = v
+	}
+	return nil
+}
+
+func (p *Event) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("Event"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *Event) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("event_type", thrift.I32, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI32(int32(p.EventType)); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *Event) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("user_id", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.UserId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *Event) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("Event(%+v)", *p)
+
+}
+
+func (p *Event) DeepEqual(ano *Event) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.EventType) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.UserId) {
+		return false
+	}
+	return true
+}
+
+func (p *Event) Field1DeepEqual(src EventType) bool {
+
+	if p.EventType != src {
+		return false
+	}
+	return true
+}
+func (p *Event) Field2DeepEqual(src int64) bool {
+
+	if p.UserId != src {
+		return false
+	}
+	return true
+}
+
 type Message struct {
 	MsgId     string       `thrift:"msg_id,1" frugal:"1,default,string" json:"msg_id,omitempty"`
 	Timestamp int64        `thrift:"timestamp,2" frugal:"2,default,i64" json:"timestamp,omitempty"`
@@ -399,6 +685,7 @@ type Message struct {
 	Content   string       `thrift:"content,6" frugal:"6,default,string" json:"content,omitempty"`
 	MsgType   MsgType      `thrift:"msg_type,7" frugal:"7,default,MsgType" json:"msg_type,omitempty"`
 	Media     []*MediaType `thrift:"media,8" frugal:"8,default,list<MediaType>" json:"media,omitempty"`
+	Event     *Event       `thrift:"event,9" frugal:"9,default,Event" json:"event,omitempty"`
 }
 
 func NewMessage() *Message {
@@ -440,6 +727,15 @@ func (p *Message) GetMsgType() (v MsgType) {
 func (p *Message) GetMedia() (v []*MediaType) {
 	return p.Media
 }
+
+var Message_Event_DEFAULT *Event
+
+func (p *Message) GetEvent() (v *Event) {
+	if !p.IsSetEvent() {
+		return Message_Event_DEFAULT
+	}
+	return p.Event
+}
 func (p *Message) SetMsgId(val string) {
 	p.MsgId = val
 }
@@ -464,6 +760,9 @@ func (p *Message) SetMsgType(val MsgType) {
 func (p *Message) SetMedia(val []*MediaType) {
 	p.Media = val
 }
+func (p *Message) SetEvent(val *Event) {
+	p.Event = val
+}
 
 var fieldIDToName_Message = map[int16]string{
 	1: "msg_id",
@@ -474,6 +773,11 @@ var fieldIDToName_Message = map[int16]string{
 	6: "content",
 	7: "msg_type",
 	8: "media",
+	9: "event",
+}
+
+func (p *Message) IsSetEvent() bool {
+	return p.Event != nil
 }
 
 func (p *Message) Read(iprot thrift.TProtocol) (err error) {
@@ -554,6 +858,14 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 		case 8:
 			if fieldTypeId == thrift.LIST {
 				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField9(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -670,6 +982,13 @@ func (p *Message) ReadField8(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
+func (p *Message) ReadField9(iprot thrift.TProtocol) error {
+	p.Event = NewEvent()
+	if err := p.Event.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
 
 func (p *Message) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -707,6 +1026,10 @@ func (p *Message) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField8(oprot); err != nil {
 			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
 			goto WriteFieldError
 		}
 	}
@@ -871,6 +1194,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
+func (p *Message) writeField9(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("event", thrift.STRUCT, 9); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Event.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
 func (p *Message) String() string {
 	if p == nil {
 		return "<nil>"
@@ -907,6 +1247,9 @@ func (p *Message) DeepEqual(ano *Message) bool {
 		return false
 	}
 	if !p.Field8DeepEqual(ano.Media) {
+		return false
+	}
+	if !p.Field9DeepEqual(ano.Event) {
 		return false
 	}
 	return true
@@ -971,6 +1314,13 @@ func (p *Message) Field8DeepEqual(src []*MediaType) bool {
 		if !v.DeepEqual(_src) {
 			return false
 		}
+	}
+	return true
+}
+func (p *Message) Field9DeepEqual(src *Event) bool {
+
+	if !p.Event.DeepEqual(src) {
+		return false
 	}
 	return true
 }

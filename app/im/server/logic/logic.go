@@ -59,7 +59,7 @@ func MsgLogic(c *client.Client, msg *base.Message) {
 		return
 	}
 	if !res.Success {
-		log.Print("message failed")
+		c.SendMsg(res.Message)
 		return
 	}
 }

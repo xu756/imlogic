@@ -29,8 +29,6 @@ func (i ImRpcImpl) MetaMessage(ctx context.Context, req *base.MetaMsg) (res *im.
 			return nil, err
 		}
 	}
-
 	res.Success = true
-	res.MsgId = ""
 	return
 }

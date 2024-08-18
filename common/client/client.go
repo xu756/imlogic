@@ -81,6 +81,7 @@ func (c *Client) readMessage() {
 			if err != nil {
 				return
 			}
+			msg.Sender = c.GetUserId()
 			go c.logic(c, msg)
 		}
 	}

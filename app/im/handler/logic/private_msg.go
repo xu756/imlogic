@@ -2,9 +2,11 @@ package logic
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/im"
 	"log"
+	"time"
 )
 
 // HandlerPrivateMessage implements im.ImHandler.
@@ -12,7 +14,20 @@ func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *base.Message
 	// 判断是不是好友
 	err = i.Model.CheckIsFriend(ctx, req.Sender, req.Receiver)
 	if err != nil {
-		return nil, err
+		return &im.MessageRes{
+			Success: false,
+			Message: &base.Message{
+				MsgId:     uuid.NewString(),
+				Timestamp: time.Now().Unix(),
+				ChatType:  req.ChatType,
+				MsgType:   base.MsgType_Event,
+				Receiver:  req.Sender,
+				Event: &base.Event{
+					EventType: base.EventType_NotFriend,
+					UserId:    req.Receiver,
+				},
+			},
+		}, nil
 	}
 	// 保存消息
 	err = i.Model.AddOnePrivateMsg(ctx, req.MsgType, req.MsgId, req.Sender, req.Receiver, req.Timestamp, req)

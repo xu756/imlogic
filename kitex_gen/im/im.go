@@ -679,8 +679,8 @@ func (p *SendMsgToGroupRes) Field1DeepEqual(src []string) bool {
 }
 
 type MessageRes struct {
-	Success bool   `thrift:"success,1" frugal:"1,default,bool" json:"success"`
-	MsgId   string `thrift:"msg_id,2" frugal:"2,default,string" json:"msg_id"`
+	Success bool          `thrift:"success,1" frugal:"1,default,bool" json:"success"`
+	Message *base.Message `thrift:"message,2" frugal:"2,default,base.Message" json:"message"`
 }
 
 func NewMessageRes() *MessageRes {
@@ -695,19 +695,28 @@ func (p *MessageRes) GetSuccess() (v bool) {
 	return p.Success
 }
 
-func (p *MessageRes) GetMsgId() (v string) {
-	return p.MsgId
+var MessageRes_Message_DEFAULT *base.Message
+
+func (p *MessageRes) GetMessage() (v *base.Message) {
+	if !p.IsSetMessage() {
+		return MessageRes_Message_DEFAULT
+	}
+	return p.Message
 }
 func (p *MessageRes) SetSuccess(val bool) {
 	p.Success = val
 }
-func (p *MessageRes) SetMsgId(val string) {
-	p.MsgId = val
+func (p *MessageRes) SetMessage(val *base.Message) {
+	p.Message = val
 }
 
 var fieldIDToName_MessageRes = map[int16]string{
 	1: "success",
-	2: "msg_id",
+	2: "message",
+}
+
+func (p *MessageRes) IsSetMessage() bool {
+	return p.Message != nil
 }
 
 func (p *MessageRes) Read(iprot thrift.TProtocol) (err error) {
@@ -738,7 +747,7 @@ func (p *MessageRes) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 2:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -784,11 +793,9 @@ func (p *MessageRes) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 func (p *MessageRes) ReadField2(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
+	p.Message = base.NewMessage()
+	if err := p.Message.Read(iprot); err != nil {
 		return err
-	} else {
-		p.MsgId = v
 	}
 	return nil
 }
@@ -843,10 +850,10 @@ WriteFieldEndError:
 }
 
 func (p *MessageRes) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("msg_id", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("message", thrift.STRUCT, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.MsgId); err != nil {
+	if err := p.Message.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -876,7 +883,7 @@ func (p *MessageRes) DeepEqual(ano *MessageRes) bool {
 	if !p.Field1DeepEqual(ano.Success) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.MsgId) {
+	if !p.Field2DeepEqual(ano.Message) {
 		return false
 	}
 	return true
@@ -889,9 +896,9 @@ func (p *MessageRes) Field1DeepEqual(src bool) bool {
 	}
 	return true
 }
-func (p *MessageRes) Field2DeepEqual(src string) bool {
+func (p *MessageRes) Field2DeepEqual(src *base.Message) bool {
 
-	if strings.Compare(p.MsgId, src) != 0 {
+	if !p.Message.DeepEqual(src) {
 		return false
 	}
 	return true
