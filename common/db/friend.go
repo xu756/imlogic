@@ -7,7 +7,6 @@ import (
 	"imlogic/ent/userfriend"
 	"imlogic/internal/xerr"
 	"imlogic/kitex_gen/base"
-	"time"
 )
 
 type dbFriendModel interface {
@@ -43,7 +42,6 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 	_, err = m.client.UserFriend.Create().
 		SetOwner(owner).
 		SetWithID(withId).
-		SetCreatedAt(time.Now().Unix()).
 		Save(ctx)
 	switch {
 	case ent.IsConstraintError(err):
