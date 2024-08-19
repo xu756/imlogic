@@ -60,7 +60,7 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 		_, err = m.client.UserFriend.Create().
 			SetOwner(withId).
 			SetWithID(owner).
-			SetAlias(userInfo.Username).
+			SetAlias("").
 			SetOwnerDesc("").
 			SetAgree(false).
 			Save(ctx)
