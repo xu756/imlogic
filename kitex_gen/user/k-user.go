@@ -690,6 +690,184 @@ func (p *SendCaptchaReq) field1Length() int {
 	return l
 }
 
+func (p *GetFriendListReq) FastRead(buf []byte) (int, error) {
+	var err error
+	var offset int
+	var l int
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	_, l, err = bthrift.Binary.ReadStructBegin(buf)
+	offset += l
+	if err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, l, err = bthrift.Binary.ReadFieldBegin(buf[offset:])
+		offset += l
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField1(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.BOOL {
+				l, err = p.FastReadField2(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+			offset += l
+			if err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		l, err = bthrift.Binary.ReadFieldEnd(buf[offset:])
+		offset += l
+		if err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	l, err = bthrift.Binary.ReadStructEnd(buf[offset:])
+	offset += l
+	if err != nil {
+		goto ReadStructEndError
+	}
+
+	return offset, nil
+ReadStructBeginError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetFriendListReq[fieldId]), err)
+SkipFieldError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+ReadFieldEndError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return offset, thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *GetFriendListReq) FastReadField1(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Id = v
+
+	}
+	return offset, nil
+}
+
+func (p *GetFriendListReq) FastReadField2(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadBool(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Agree = v
+
+	}
+	return offset, nil
+}
+
+// for compatibility
+func (p *GetFriendListReq) FastWrite(buf []byte) int {
+	return 0
+}
+
+func (p *GetFriendListReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "GetFriendListReq")
+	if p != nil {
+		offset += p.fastWriteField1(buf[offset:], binaryWriter)
+		offset += p.fastWriteField2(buf[offset:], binaryWriter)
+	}
+	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
+	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
+	return offset
+}
+
+func (p *GetFriendListReq) BLength() int {
+	l := 0
+	l += bthrift.Binary.StructBeginLength("GetFriendListReq")
+	if p != nil {
+		l += p.field1Length()
+		l += p.field2Length()
+	}
+	l += bthrift.Binary.FieldStopLength()
+	l += bthrift.Binary.StructEndLength()
+	return l
+}
+
+func (p *GetFriendListReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "id", thrift.I64, 1)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.Id)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *GetFriendListReq) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "agree", thrift.BOOL, 2)
+	offset += bthrift.Binary.WriteBool(buf[offset:], p.Agree)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *GetFriendListReq) field1Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("id", thrift.I64, 1)
+	l += bthrift.Binary.I64Length(p.Id)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *GetFriendListReq) field2Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("agree", thrift.BOOL, 2)
+	l += bthrift.Binary.BoolLength(p.Agree)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
 func (p *Friend) FastRead(buf []byte) (int, error) {
 	var err error
 	var offset int
@@ -1014,20 +1192,6 @@ func (p *AddFriendReq) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
-		case 3:
-			if fieldTypeId == thrift.BOOL {
-				l, err = p.FastReadField3(buf[offset:])
-				offset += l
-				if err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-				offset += l
-				if err != nil {
-					goto SkipFieldError
-				}
-			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -1091,20 +1255,6 @@ func (p *AddFriendReq) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *AddFriendReq) FastReadField3(buf []byte) (int, error) {
-	offset := 0
-
-	if v, l, err := bthrift.Binary.ReadBool(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-
-		p.Agree = v
-
-	}
-	return offset, nil
-}
-
 // for compatibility
 func (p *AddFriendReq) FastWrite(buf []byte) int {
 	return 0
@@ -1116,7 +1266,6 @@ func (p *AddFriendReq) FastWriteNocopy(buf []byte, binaryWriter bthrift.BinaryWr
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 		offset += p.fastWriteField2(buf[offset:], binaryWriter)
-		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -1129,7 +1278,6 @@ func (p *AddFriendReq) BLength() int {
 	if p != nil {
 		l += p.field1Length()
 		l += p.field2Length()
-		l += p.field3Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -1154,15 +1302,6 @@ func (p *AddFriendReq) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWr
 	return offset
 }
 
-func (p *AddFriendReq) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "agree", thrift.BOOL, 3)
-	offset += bthrift.Binary.WriteBool(buf[offset:], p.Agree)
-
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
-	return offset
-}
-
 func (p *AddFriendReq) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("owner", thrift.I64, 1)
@@ -1176,15 +1315,6 @@ func (p *AddFriendReq) field2Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("with_id", thrift.I64, 2)
 	l += bthrift.Binary.I64Length(p.WithId)
-
-	l += bthrift.Binary.FieldEndLength()
-	return l
-}
-
-func (p *AddFriendReq) field3Length() int {
-	l := 0
-	l += bthrift.Binary.FieldBeginLength("agree", thrift.BOOL, 3)
-	l += bthrift.Binary.BoolLength(p.Agree)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -2838,13 +2968,13 @@ ReadStructEndError:
 func (p *UserSrvGetUserFriendListArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := base.NewGetOneReq()
+	tmp := NewGetFriendListReq()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 	}
-	p.GetOneReq = tmp
+	p.GetFriendListReq = tmp
 	return offset, nil
 }
 
@@ -2877,16 +3007,16 @@ func (p *UserSrvGetUserFriendListArgs) BLength() int {
 
 func (p *UserSrvGetUserFriendListArgs) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "getOneReq", thrift.STRUCT, 1)
-	offset += p.GetOneReq.FastWriteNocopy(buf[offset:], binaryWriter)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "getFriendListReq", thrift.STRUCT, 1)
+	offset += p.GetFriendListReq.FastWriteNocopy(buf[offset:], binaryWriter)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
 
 func (p *UserSrvGetUserFriendListArgs) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("getOneReq", thrift.STRUCT, 1)
-	l += p.GetOneReq.BLength()
+	l += bthrift.Binary.FieldBeginLength("getFriendListReq", thrift.STRUCT, 1)
+	l += p.GetFriendListReq.BLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
@@ -3355,7 +3485,7 @@ func (p *UserSrvGetUserChatListResult) GetResult() interface{} {
 }
 
 func (p *UserSrvGetUserFriendListArgs) GetFirstArgument() interface{} {
-	return p.GetOneReq
+	return p.GetFriendListReq
 }
 
 func (p *UserSrvGetUserFriendListResult) GetResult() interface{} {

@@ -23,6 +23,12 @@ struct LoginRes {
 struct SendCaptchaReq {
   1: string mobile (go.tag = "json:\"mobile,required\"")  // 手机号码
 }
+// 获取好友列表
+struct GetFriendListReq {
+  1: i64 id,
+  2: bool agree (go.tag = "json:\"agree,required\"")  // 是否同意
+
+}
 
 // 好友
 struct Friend {
@@ -38,7 +44,6 @@ struct Friend {
 struct AddFriendReq {
   1: i64 owner (go.tag = "json:\"owner,required\""),  // 用户ID
   2: i64 with_id (go.tag = "json:\"with_id,required\"")  // 好友ID
-  3: bool agree (go.tag = "json:\"agree,required\"")  // 是否同意
 }
 
 // 用户服务
@@ -56,7 +61,7 @@ service UserSrv {
   // 获取用户聊天列表
   list<base.ChatList> GetUserChatList(1: base.GetOneReq getOneReq)
   // 获取用户的所有好友
-  list<Friend> GetUserFriendList(1: base.GetOneReq getOneReq),
+  list<Friend> GetUserFriendList(1: GetFriendListReq getFriendListReq),
   // 添加好友
   base.BoolRes AddFriend(1: AddFriendReq addFriendReq),
 }

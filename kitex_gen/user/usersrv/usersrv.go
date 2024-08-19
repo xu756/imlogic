@@ -155,7 +155,7 @@ func newUserSrvGetUserChatListResult() interface{} {
 func getUserFriendListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*user.UserSrvGetUserFriendListArgs)
 	realResult := result.(*user.UserSrvGetUserFriendListResult)
-	success, err := handler.(user.UserSrv).GetUserFriendList(ctx, realArg.GetOneReq)
+	success, err := handler.(user.UserSrv).GetUserFriendList(ctx, realArg.GetFriendListReq)
 	if err != nil {
 		return err
 	}
@@ -258,9 +258,9 @@ func (p *kClient) GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq) (r []*user.Friend, err error) {
+func (p *kClient) GetUserFriendList(ctx context.Context, getFriendListReq *user.GetFriendListReq) (r []*user.Friend, err error) {
 	var _args user.UserSrvGetUserFriendListArgs
-	_args.GetOneReq = getOneReq
+	_args.GetFriendListReq = getFriendListReq
 	var _result user.UserSrvGetUserFriendListResult
 	if err = p.c.Call(ctx, "GetUserFriendList", &_args, &_result); err != nil {
 		return

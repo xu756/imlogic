@@ -18,9 +18,9 @@ func (s *PublicSrvImpl) AddFriend(ctx context.Context, addFriendReq *user.AddFri
 	return &base.BoolRes{Ok: true}, nil
 }
 
-func (s *PublicSrvImpl) GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq) (r []*user.Friend, err error) {
+func (s *PublicSrvImpl) GetUserFriendList(ctx context.Context, getFriendListReq *user.GetFriendListReq) (r []*user.Friend, err error) {
 	r = make([]*user.Friend, 0)
-	friends, err := s.Model.GetFriendList(ctx, getOneReq.Id)
+	friends, err := s.Model.GetFriendList(ctx, getFriendListReq.Id, getFriendListReq.Agree)
 	if err != nil {
 		return nil, err
 	}

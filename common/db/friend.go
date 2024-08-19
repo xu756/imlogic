@@ -17,13 +17,13 @@ type dbFriendModel interface {
 	// 添加好友
 	AddOneFriend(ctx context.Context, owner, withId int64) (err error)
 	// 获取用户的所有好友
-	GetFriendList(ctx context.Context, userId int64) (friends []*ent.UserFriend, err error)
+	GetFriendList(ctx context.Context, userId int64, agree bool) (friends []*ent.UserFriend, err error)
 }
 
 // 获取用户的所有好友
-func (m *customModel) GetFriendList(ctx context.Context, userId int64) (friends []*ent.UserFriend, err error) {
+func (m *customModel) GetFriendList(ctx context.Context, userId int64, agree bool) (friends []*ent.UserFriend, err error) {
 	friends, err = m.client.UserFriend.Query().
-		Where(userfriend.Owner(userId)).
+		Where(userfriend.Owner(userId), userfriend.Agree(agree)).
 		Order(ent.Desc(userfriend.FieldCreatedAt)).
 		All(ctx)
 	switch {
@@ -39,7 +39,7 @@ func (m *customModel) GetFriendList(ctx context.Context, userId int64) (friends 
 // 添加好友
 func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (err error) {
 	// 验证是否是好友
-	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(owner), userfriend.WithID(withId)).First(ctx)
+	ownerFriend, err := m.client.UserFriend.Query().Where(userfriend.Owner(owner), userfriend.WithID(withId)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
 		_, err = m.client.UserFriend.Create().
@@ -67,6 +67,13 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 	case err != nil:
 		return xerr.DbErr(err, "判断是不是好友失败")
 	default:
+		if !ownerFriend.Agree {
+			ownerFriend.Agree = true
+			err := m.client.UserFriend.UpdateOne(ownerFriend).SetAgree(true).Exec(ctx)
+			if err != nil {
+				return xerr.DbErr(err, "添加好友失败")
+			}
+		}
 		var i = 0
 	checkWithHadOwner:
 		userFriend, err := m.client.UserFriend.Query().Where(userfriend.Owner(withId), userfriend.WithID(owner)).First(ctx)
@@ -119,7 +126,7 @@ func (m *customModel) CheckIsFriend(ctx context.Context, sender, receiver int64)
 func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatList []*base.ChatList, err error) {
 	chatList = make([]*base.ChatList, 0)
 	// 获取用户私聊聊天列表
-	userFriends, err := m.GetFriendList(ctx, userId)
+	userFriends, err := m.GetFriendList(ctx, userId, true)
 	if err != nil {
 		return nil, err
 	}

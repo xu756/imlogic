@@ -23,7 +23,13 @@ func getFriendList(ctx context.Context, c *app.RequestContext) {
 		result.HttpError(c, err)
 		return
 	}
-	res, err := rpc.UserClient.GetUserFriendList(ctx, &base.GetOneReq{Id: userInfo.UserId})
+	var req user.GetFriendListReq
+	if err := c.BindAndValidate(&req); err != nil {
+		result.HttpParamErr(c)
+		return
+	}
+	req.Id = userInfo.UserId
+	res, err := rpc.UserClient.GetUserFriendList(ctx, &req)
 	if err != nil {
 		result.HttpError(c, err)
 		return

@@ -18,7 +18,7 @@ type Client interface {
 	GetOneUserInfo(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *base.UserInfo, err error)
 	GetUserOnlineStatus(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r *base.BoolRes, err error)
 	GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r []*base.ChatList, err error)
-	GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r []*user.Friend, err error)
+	GetUserFriendList(ctx context.Context, getFriendListReq *user.GetFriendListReq, callOptions ...callopt.Option) (r []*user.Friend, err error)
 	AddFriend(ctx context.Context, addFriendReq *user.AddFriendReq, callOptions ...callopt.Option) (r *base.BoolRes, err error)
 }
 
@@ -81,9 +81,9 @@ func (p *kUserSrvClient) GetUserChatList(ctx context.Context, getOneReq *base.Ge
 	return p.kClient.GetUserChatList(ctx, getOneReq)
 }
 
-func (p *kUserSrvClient) GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq, callOptions ...callopt.Option) (r []*user.Friend, err error) {
+func (p *kUserSrvClient) GetUserFriendList(ctx context.Context, getFriendListReq *user.GetFriendListReq, callOptions ...callopt.Option) (r []*user.Friend, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetUserFriendList(ctx, getOneReq)
+	return p.kClient.GetUserFriendList(ctx, getFriendListReq)
 }
 
 func (p *kUserSrvClient) AddFriend(ctx context.Context, addFriendReq *user.AddFriendReq, callOptions ...callopt.Option) (r *base.BoolRes, err error) {
