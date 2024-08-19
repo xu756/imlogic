@@ -17,13 +17,10 @@ func LoginRoute(r *route.RouterGroup) {
 	r.POST("/captcha", sendCaptcha)
 }
 
+// 账户密码登录
 func loginByPassword(ctx context.Context, c *app.RequestContext) {
 	var req user.LoginByPasswordReq
 	if err := c.BindAndValidate(&req); err != nil {
-		result.HttpParamErr(c)
-		return
-	}
-	if req.Username == "" || req.Password == "" {
 		result.HttpParamErr(c)
 		return
 	}
@@ -35,13 +32,10 @@ func loginByPassword(ctx context.Context, c *app.RequestContext) {
 	result.HttpSuccess(c, res)
 }
 
+// 手机验证码登录
 func loginByMobile(ctx context.Context, c *app.RequestContext) {
 	var req user.LoginByMobileReq
 	if err := c.BindAndValidate(&req); err != nil {
-		result.HttpParamErr(c)
-		return
-	}
-	if req.Mobile == "" || req.Captcha == "" {
 		result.HttpParamErr(c)
 		return
 	}
@@ -54,6 +48,7 @@ func loginByMobile(ctx context.Context, c *app.RequestContext) {
 
 }
 
+// 发送验证码
 func sendCaptcha(ctx context.Context, c *app.RequestContext) {
 	var req user.SendCaptchaReq
 	if err := c.BindAndValidate(&req); err != nil {

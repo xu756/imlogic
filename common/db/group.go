@@ -34,12 +34,11 @@ func (m *customModel) GetUserGroups(ctx context.Context, groupIds []int64) (grou
 func (m *customModel) GetUserGroupIds(ctx context.Context, userId int64) (groupIds []int64, err error) {
 	ids, err := m.client.UserGroup.Query().
 		Where(usergroup.UserID(userId)).
-		Select(usergroup.FieldGroupID).
 		IDs(ctx)
 	if err != nil {
 		return nil, xerr.DbErr(err, "查询用户群列表失败 用户ID:%d", userId)
 	}
-	groupIds = make([]int64, 0, len(ids))
+
 	for _, id := range ids {
 		groupIds = append(groupIds, int64(id))
 	}
@@ -50,9 +49,11 @@ func (m *customModel) GetUserGroupIds(ctx context.Context, userId int64) (groupI
 func (m *customModel) GetGroupUserIdsByGroupId(ctx context.Context, groupId int64) (userIds []int64, err error) {
 	ids, err := m.client.UserGroup.Query().
 		Where(usergroup.GroupID(groupId)).
-		Select(usergroup.FieldUserID).
 		IDs(ctx)
-	if err != nil {
+	switch {
+	case ent.IsNotFound(err):
+		return userIds, nil
+	case err != nil:
 		return nil, xerr.DbErr(err, "查询群成员失败 群ID:%d", groupId)
 	}
 	userIds = make([]int64, 0, len(ids))

@@ -22,7 +22,6 @@ type dbFriendModel interface {
 
 // 获取用户的所有好友
 func (m *customModel) GetFriendList(ctx context.Context, userId int64) (friends []*ent.UserFriend, err error) {
-	friends = make([]*ent.UserFriend, 0)
 	friends, err = m.client.UserFriend.Query().
 		Where(userfriend.Owner(userId)).
 		Order(ent.Desc(userfriend.FieldCreatedAt)).
@@ -39,15 +38,31 @@ func (m *customModel) GetFriendList(ctx context.Context, userId int64) (friends 
 
 // 添加好友
 func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (err error) {
-	_, err = m.client.UserFriend.Create().
-		SetOwner(owner).
-		SetWithID(withId).
-		Save(ctx)
+	// 验证是否是好友
+	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(owner), userfriend.WithID(withId)).Only(ctx)
 	switch {
-	case ent.IsConstraintError(err):
+	case ent.IsNotFound(err):
+		userInfo, err := m.GetOneUserById(ctx, withId)
+		if err != nil {
+			return err
+		}
+		_, err = m.client.UserFriend.Create().
+			SetOwner(owner).
+			SetWithID(withId).
+			SetAlias(userInfo.Username).
+			SetOwnerDesc("").
+			Save(ctx)
+		switch {
+		case err != nil:
+			return xerr.DbErr(err, "添加好友失败")
+		}
+		return nil
+	case err != nil:
+		return xerr.DbErr(err, "判断是不是好友失败")
+	default:
 		return xerr.WarnMsg("已经是好友")
 	}
-	return nil
+
 }
 
 // 判断是不是好友

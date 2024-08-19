@@ -16,12 +16,12 @@ func ChatRoute(r *route.RouterGroup) {
 
 // 获取聊天列表
 func getChatList(ctx context.Context, c *app.RequestContext) {
-	var req base.GetOneReq
-	if err := c.BindAndValidate(&req); err != nil {
-		result.HttpParamErr(c)
+	userInfo, err := service.Jwt.GetUserInfoFromHeardToken(c)
+	if err != nil {
+		result.HttpError(c, err)
 		return
 	}
-	res, err := rpc.UserClient.GetUserChatList(ctx, &req)
+	res, err := rpc.UserClient.GetUserChatList(ctx, &base.GetOneReq{Id: userInfo.UserId})
 	if err != nil {
 		result.HttpError(c, err)
 		return

@@ -33,12 +33,20 @@ func getFriendList(ctx context.Context, c *app.RequestContext) {
 
 // 添加好友
 func addFriend(ctx context.Context, c *app.RequestContext) {
-	var req user.AddFriendReq
+	userInfo, err := service.Jwt.GetUserInfoFromHeardToken(c)
+	if err != nil {
+		result.HttpError(c, err)
+		return
+	}
+	var req base.GetOneReq
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.AddFriend(ctx, &req)
+	res, err := rpc.UserClient.AddFriend(ctx, &user.AddFriendReq{
+		Owner:  userInfo.UserId,
+		WithId: req.Id,
+	})
 	if err != nil {
 		result.HttpError(c, err)
 		return
