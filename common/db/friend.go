@@ -7,6 +7,7 @@ import (
 	"imlogic/ent/userfriend"
 	"imlogic/internal/xerr"
 	"imlogic/kitex_gen/base"
+	"time"
 )
 
 type dbFriendModel interface {
@@ -16,6 +17,25 @@ type dbFriendModel interface {
 	CheckIsFriend(ctx context.Context, sender, receiver int64) (err error)
 	// 添加好友
 	AddOneFriend(ctx context.Context, owner, withId int64) (err error)
+	// 获取用户的所有好友
+	GetFriendList(ctx context.Context, userId int64) (friends []*ent.UserFriend, err error)
+}
+
+// 获取用户的所有好友
+func (m *customModel) GetFriendList(ctx context.Context, userId int64) (friends []*ent.UserFriend, err error) {
+	friends = make([]*ent.UserFriend, 0)
+	friends, err = m.client.UserFriend.Query().
+		Where(userfriend.Owner(userId)).
+		Order(ent.Desc(userfriend.FieldCreatedAt)).
+		All(ctx)
+	switch {
+	case ent.IsNotFound(err):
+		return friends, nil
+	case err != nil:
+		return nil, xerr.DbErr(err, "获取用户私聊聊天列表失败 用户ID:%d", userId)
+	default:
+		return friends, nil
+	}
 }
 
 // 添加好友
@@ -23,6 +43,7 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 	_, err = m.client.UserFriend.Create().
 		SetOwner(owner).
 		SetWithID(withId).
+		SetCreatedAt(time.Now().Unix()).
 		Save(ctx)
 	switch {
 	case ent.IsConstraintError(err):
@@ -48,14 +69,11 @@ func (m *customModel) CheckIsFriend(ctx context.Context, sender, receiver int64)
 func (m *customModel) GetUserChatList(ctx context.Context, userId int64) (chatList []*base.ChatList, err error) {
 	chatList = make([]*base.ChatList, 0)
 	// 获取用户私聊聊天列表
-	userFriendsInfo, err := m.client.UserFriend.Query().
-		Where(userfriend.Owner(userId)).
-		Order(ent.Desc(userfriend.FieldCreatedAt)).
-		All(ctx)
+	userFriends, err := m.GetFriendList(ctx, userId)
 	if err != nil {
-		return nil, xerr.DbErr(err, "获取用户私聊聊天列表失败 用户ID:%d", userId)
+		return nil, err
 	}
-	for _, friendInfo := range userFriendsInfo {
+	for _, friendInfo := range userFriends {
 		msg, err := m.GetLastPrivateMsg(ctx, userId)
 		if err != nil {
 			continue

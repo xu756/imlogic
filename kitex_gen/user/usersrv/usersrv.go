@@ -26,6 +26,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetOneUserInfo":      kitex.NewMethodInfo(getOneUserInfoHandler, newUserSrvGetOneUserInfoArgs, newUserSrvGetOneUserInfoResult, false),
 		"GetUserOnlineStatus": kitex.NewMethodInfo(getUserOnlineStatusHandler, newUserSrvGetUserOnlineStatusArgs, newUserSrvGetUserOnlineStatusResult, false),
 		"GetUserChatList":     kitex.NewMethodInfo(getUserChatListHandler, newUserSrvGetUserChatListArgs, newUserSrvGetUserChatListResult, false),
+		"GetUserFriendList":   kitex.NewMethodInfo(getUserFriendListHandler, newUserSrvGetUserFriendListArgs, newUserSrvGetUserFriendListResult, false),
 		"AddFriend":           kitex.NewMethodInfo(addFriendHandler, newUserSrvAddFriendArgs, newUserSrvAddFriendResult, false),
 	}
 	extra := map[string]interface{}{
@@ -151,6 +152,24 @@ func newUserSrvGetUserChatListResult() interface{} {
 	return user.NewUserSrvGetUserChatListResult()
 }
 
+func getUserFriendListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserSrvGetUserFriendListArgs)
+	realResult := result.(*user.UserSrvGetUserFriendListResult)
+	success, err := handler.(user.UserSrv).GetUserFriendList(ctx, realArg.GetOneReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserSrvGetUserFriendListArgs() interface{} {
+	return user.NewUserSrvGetUserFriendListArgs()
+}
+
+func newUserSrvGetUserFriendListResult() interface{} {
+	return user.NewUserSrvGetUserFriendListResult()
+}
+
 func addFriendHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*user.UserSrvAddFriendArgs)
 	realResult := result.(*user.UserSrvAddFriendResult)
@@ -234,6 +253,16 @@ func (p *kClient) GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq
 	_args.GetOneReq = getOneReq
 	var _result user.UserSrvGetUserChatListResult
 	if err = p.c.Call(ctx, "GetUserChatList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq) (r []*user.Friend, err error) {
+	var _args user.UserSrvGetUserFriendListArgs
+	_args.GetOneReq = getOneReq
+	var _result user.UserSrvGetUserFriendListResult
+	if err = p.c.Call(ctx, "GetUserFriendList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

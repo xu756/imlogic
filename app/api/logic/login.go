@@ -18,7 +18,7 @@ func LoginRoute(r *route.RouterGroup) {
 }
 
 func loginByPassword(ctx context.Context, c *app.RequestContext) {
-	var req LoginReq
+	var req user.LoginByPasswordReq
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)
 		return
@@ -27,10 +27,7 @@ func loginByPassword(ctx context.Context, c *app.RequestContext) {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.LoginByPassword(ctx, &user.LoginByPasswordReq{
-		Username: req.Username,
-		Password: req.Password,
-	})
+	res, err := rpc.UserClient.LoginByPassword(ctx, &req)
 	if err != nil {
 		result.HttpError(c, err)
 		return
@@ -39,7 +36,7 @@ func loginByPassword(ctx context.Context, c *app.RequestContext) {
 }
 
 func loginByMobile(ctx context.Context, c *app.RequestContext) {
-	var req LoginReq
+	var req user.LoginByMobileReq
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)
 		return
@@ -48,11 +45,7 @@ func loginByMobile(ctx context.Context, c *app.RequestContext) {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.LoginByMobile(ctx, &user.LoginByMobileReq{
-		Mobile:    req.Mobile,
-		Captcha:   req.Captcha,
-		SessionId: req.SessionId,
-	})
+	res, err := rpc.UserClient.LoginByMobile(ctx, &req)
 	if err != nil {
 		result.HttpError(c, err)
 		return
@@ -62,15 +55,12 @@ func loginByMobile(ctx context.Context, c *app.RequestContext) {
 }
 
 func sendCaptcha(ctx context.Context, c *app.RequestContext) {
-	var req SendCaptchaReq
+	var req user.SendCaptchaReq
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.SendCaptcha(ctx, &user.SendCaptchaReq{
-		Mobile:    req.Mobile,
-		SessionId: req.SessionId,
-	})
+	res, err := rpc.UserClient.SendCaptcha(ctx, &req)
 	if err != nil {
 		result.HttpParamErr(c)
 		return

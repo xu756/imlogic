@@ -11,8 +11,8 @@ import (
 )
 
 type LoginByPasswordReq struct {
-	Username string `thrift:"username,1" frugal:"1,default,string" json:"username"`
-	Password string `thrift:"password,2" frugal:"2,default,string" json:"password"`
+	Username string `thrift:"username,1" frugal:"1,default,string" json:"username,required"`
+	Password string `thrift:"password,2" frugal:"2,default,string" json:"password,required"`
 }
 
 func NewLoginByPasswordReq() *LoginByPasswordReq {
@@ -230,9 +230,8 @@ func (p *LoginByPasswordReq) Field2DeepEqual(src string) bool {
 }
 
 type LoginByMobileReq struct {
-	Mobile    string `thrift:"mobile,1" frugal:"1,default,string" json:"mobile"`
-	Captcha   string `thrift:"captcha,2" frugal:"2,default,string" json:"captcha"`
-	SessionId string `thrift:"session_id,3" frugal:"3,default,string" json:"session_id"`
+	Mobile  string `thrift:"mobile,1" frugal:"1,default,string" json:"mobile,required"`
+	Captcha string `thrift:"captcha,2" frugal:"2,default,string" json:"captcha,required"`
 }
 
 func NewLoginByMobileReq() *LoginByMobileReq {
@@ -250,24 +249,16 @@ func (p *LoginByMobileReq) GetMobile() (v string) {
 func (p *LoginByMobileReq) GetCaptcha() (v string) {
 	return p.Captcha
 }
-
-func (p *LoginByMobileReq) GetSessionId() (v string) {
-	return p.SessionId
-}
 func (p *LoginByMobileReq) SetMobile(val string) {
 	p.Mobile = val
 }
 func (p *LoginByMobileReq) SetCaptcha(val string) {
 	p.Captcha = val
 }
-func (p *LoginByMobileReq) SetSessionId(val string) {
-	p.SessionId = val
-}
 
 var fieldIDToName_LoginByMobileReq = map[int16]string{
 	1: "mobile",
 	2: "captcha",
-	3: "session_id",
 }
 
 func (p *LoginByMobileReq) Read(iprot thrift.TProtocol) (err error) {
@@ -300,14 +291,6 @@ func (p *LoginByMobileReq) Read(iprot thrift.TProtocol) (err error) {
 		case 2:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 3:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -360,15 +343,6 @@ func (p *LoginByMobileReq) ReadField2(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
-func (p *LoginByMobileReq) ReadField3(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
-		p.SessionId = v
-	}
-	return nil
-}
 
 func (p *LoginByMobileReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -382,10 +356,6 @@ func (p *LoginByMobileReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
-			goto WriteFieldError
-		}
-		if err = p.writeField3(oprot); err != nil {
-			fieldId = 3
 			goto WriteFieldError
 		}
 	}
@@ -440,23 +410,6 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *LoginByMobileReq) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("session_id", thrift.STRING, 3); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.SessionId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
-}
-
 func (p *LoginByMobileReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -477,9 +430,6 @@ func (p *LoginByMobileReq) DeepEqual(ano *LoginByMobileReq) bool {
 	if !p.Field2DeepEqual(ano.Captcha) {
 		return false
 	}
-	if !p.Field3DeepEqual(ano.SessionId) {
-		return false
-	}
 	return true
 }
 
@@ -493,13 +443,6 @@ func (p *LoginByMobileReq) Field1DeepEqual(src string) bool {
 func (p *LoginByMobileReq) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Captcha, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *LoginByMobileReq) Field3DeepEqual(src string) bool {
-
-	if strings.Compare(p.SessionId, src) != 0 {
 		return false
 	}
 	return true
@@ -725,8 +668,7 @@ func (p *LoginRes) Field2DeepEqual(src int64) bool {
 }
 
 type SendCaptchaReq struct {
-	SessionId string `thrift:"session_id,1" frugal:"1,default,string" json:"session_id"`
-	Mobile    string `thrift:"mobile,2" frugal:"2,default,string" json:"mobile"`
+	Mobile string `thrift:"mobile,1" frugal:"1,default,string" json:"mobile,required"`
 }
 
 func NewSendCaptchaReq() *SendCaptchaReq {
@@ -737,23 +679,15 @@ func (p *SendCaptchaReq) InitDefault() {
 	*p = SendCaptchaReq{}
 }
 
-func (p *SendCaptchaReq) GetSessionId() (v string) {
-	return p.SessionId
-}
-
 func (p *SendCaptchaReq) GetMobile() (v string) {
 	return p.Mobile
-}
-func (p *SendCaptchaReq) SetSessionId(val string) {
-	p.SessionId = val
 }
 func (p *SendCaptchaReq) SetMobile(val string) {
 	p.Mobile = val
 }
 
 var fieldIDToName_SendCaptchaReq = map[int16]string{
-	1: "session_id",
-	2: "mobile",
+	1: "mobile",
 }
 
 func (p *SendCaptchaReq) Read(iprot thrift.TProtocol) (err error) {
@@ -778,14 +712,6 @@ func (p *SendCaptchaReq) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else if err = iprot.Skip(fieldTypeId); err != nil {
-				goto SkipFieldError
-			}
-		case 2:
-			if fieldTypeId == thrift.STRING {
-				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -825,15 +751,6 @@ func (p *SendCaptchaReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.SessionId = v
-	}
-	return nil
-}
-func (p *SendCaptchaReq) ReadField2(iprot thrift.TProtocol) error {
-
-	if v, err := iprot.ReadString(); err != nil {
-		return err
-	} else {
 		p.Mobile = v
 	}
 	return nil
@@ -847,10 +764,6 @@ func (p *SendCaptchaReq) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 	}
@@ -872,24 +785,7 @@ WriteStructEndError:
 }
 
 func (p *SendCaptchaReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("session_id", thrift.STRING, 1); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.SessionId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
-}
-
-func (p *SendCaptchaReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("mobile", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("mobile", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.Mobile); err != nil {
@@ -900,9 +796,9 @@ func (p *SendCaptchaReq) writeField2(oprot thrift.TProtocol) (err error) {
 	}
 	return nil
 WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
 func (p *SendCaptchaReq) String() string {
@@ -919,10 +815,7 @@ func (p *SendCaptchaReq) DeepEqual(ano *SendCaptchaReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.SessionId) {
-		return false
-	}
-	if !p.Field2DeepEqual(ano.Mobile) {
+	if !p.Field1DeepEqual(ano.Mobile) {
 		return false
 	}
 	return true
@@ -930,22 +823,348 @@ func (p *SendCaptchaReq) DeepEqual(ano *SendCaptchaReq) bool {
 
 func (p *SendCaptchaReq) Field1DeepEqual(src string) bool {
 
-	if strings.Compare(p.SessionId, src) != 0 {
-		return false
-	}
-	return true
-}
-func (p *SendCaptchaReq) Field2DeepEqual(src string) bool {
-
 	if strings.Compare(p.Mobile, src) != 0 {
 		return false
 	}
 	return true
 }
 
+type Friend struct {
+	UserId    int64  `thrift:"user_id,1" frugal:"1,default,i64" json:"user_id"`
+	Alias     string `thrift:"alias,2" frugal:"2,default,string" json:"alias"`
+	OwnerDesc string `thrift:"owner_desc,3" frugal:"3,default,string" json:"owner_desc"`
+	CreatedAt int64  `thrift:"created_at,4" frugal:"4,default,i64" json:"created_at"`
+}
+
+func NewFriend() *Friend {
+	return &Friend{}
+}
+
+func (p *Friend) InitDefault() {
+	*p = Friend{}
+}
+
+func (p *Friend) GetUserId() (v int64) {
+	return p.UserId
+}
+
+func (p *Friend) GetAlias() (v string) {
+	return p.Alias
+}
+
+func (p *Friend) GetOwnerDesc() (v string) {
+	return p.OwnerDesc
+}
+
+func (p *Friend) GetCreatedAt() (v int64) {
+	return p.CreatedAt
+}
+func (p *Friend) SetUserId(val int64) {
+	p.UserId = val
+}
+func (p *Friend) SetAlias(val string) {
+	p.Alias = val
+}
+func (p *Friend) SetOwnerDesc(val string) {
+	p.OwnerDesc = val
+}
+func (p *Friend) SetCreatedAt(val int64) {
+	p.CreatedAt = val
+}
+
+var fieldIDToName_Friend = map[int16]string{
+	1: "user_id",
+	2: "alias",
+	3: "owner_desc",
+	4: "created_at",
+}
+
+func (p *Friend) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_Friend[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *Friend) ReadField1(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = v
+	}
+	return nil
+}
+func (p *Friend) ReadField2(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Alias = v
+	}
+	return nil
+}
+func (p *Friend) ReadField3(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.OwnerDesc = v
+	}
+	return nil
+}
+func (p *Friend) ReadField4(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.CreatedAt = v
+	}
+	return nil
+}
+
+func (p *Friend) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("Friend"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *Friend) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("user_id", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.UserId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *Friend) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("alias", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Alias); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *Friend) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("owner_desc", thrift.STRING, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.OwnerDesc); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *Friend) writeField4(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("created_at", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.CreatedAt); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *Friend) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("Friend(%+v)", *p)
+
+}
+
+func (p *Friend) DeepEqual(ano *Friend) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.UserId) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Alias) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.OwnerDesc) {
+		return false
+	}
+	if !p.Field4DeepEqual(ano.CreatedAt) {
+		return false
+	}
+	return true
+}
+
+func (p *Friend) Field1DeepEqual(src int64) bool {
+
+	if p.UserId != src {
+		return false
+	}
+	return true
+}
+func (p *Friend) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Alias, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Friend) Field3DeepEqual(src string) bool {
+
+	if strings.Compare(p.OwnerDesc, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *Friend) Field4DeepEqual(src int64) bool {
+
+	if p.CreatedAt != src {
+		return false
+	}
+	return true
+}
+
 type AddFriendReq struct {
-	Owner  int64 `thrift:"owner,1" frugal:"1,default,i64" json:"owner"`
-	WithId int64 `thrift:"with_id,2" frugal:"2,default,i64" json:"with_id"`
+	Owner  int64 `thrift:"owner,1" frugal:"1,default,i64" json:"owner,required"`
+	WithId int64 `thrift:"with_id,2" frugal:"2,default,i64" json:"with_id,required"`
 }
 
 func NewAddFriendReq() *AddFriendReq {
@@ -1175,6 +1394,8 @@ type UserSrv interface {
 
 	GetUserChatList(ctx context.Context, getOneReq *base.GetOneReq) (r []*base.ChatList, err error)
 
+	GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq) (r []*Friend, err error)
+
 	AddFriend(ctx context.Context, addFriendReq *AddFriendReq) (r *base.BoolRes, err error)
 }
 
@@ -1258,6 +1479,15 @@ func (p *UserSrvClient) GetUserChatList(ctx context.Context, getOneReq *base.Get
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *UserSrvClient) GetUserFriendList(ctx context.Context, getOneReq *base.GetOneReq) (r []*Friend, err error) {
+	var _args UserSrvGetUserFriendListArgs
+	_args.GetOneReq = getOneReq
+	var _result UserSrvGetUserFriendListResult
+	if err = p.Client_().Call(ctx, "GetUserFriendList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 func (p *UserSrvClient) AddFriend(ctx context.Context, addFriendReq *AddFriendReq) (r *base.BoolRes, err error) {
 	var _args UserSrvAddFriendArgs
 	_args.AddFriendReq = addFriendReq
@@ -1294,6 +1524,7 @@ func NewUserSrvProcessor(handler UserSrv) *UserSrvProcessor {
 	self.AddToProcessorMap("GetOneUserInfo", &userSrvProcessorGetOneUserInfo{handler: handler})
 	self.AddToProcessorMap("GetUserOnlineStatus", &userSrvProcessorGetUserOnlineStatus{handler: handler})
 	self.AddToProcessorMap("GetUserChatList", &userSrvProcessorGetUserChatList{handler: handler})
+	self.AddToProcessorMap("GetUserFriendList", &userSrvProcessorGetUserFriendList{handler: handler})
 	self.AddToProcessorMap("AddFriend", &userSrvProcessorAddFriend{handler: handler})
 	return self
 }
@@ -1586,6 +1817,54 @@ func (p *userSrvProcessorGetUserChatList) Process(ctx context.Context, seqId int
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("GetUserChatList", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type userSrvProcessorGetUserFriendList struct {
+	handler UserSrv
+}
+
+func (p *userSrvProcessorGetUserFriendList) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := UserSrvGetUserFriendListArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("GetUserFriendList", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := UserSrvGetUserFriendListResult{}
+	var retval []*Friend
+	if retval, err2 = p.handler.GetUserFriendList(ctx, args.GetOneReq); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetUserFriendList: "+err2.Error())
+		oprot.WriteMessageBegin("GetUserFriendList", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("GetUserFriendList", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -3704,6 +3983,372 @@ func (p *UserSrvGetUserChatListResult) DeepEqual(ano *UserSrvGetUserChatListResu
 }
 
 func (p *UserSrvGetUserChatListResult) Field0DeepEqual(src []*base.ChatList) bool {
+
+	if len(p.Success) != len(src) {
+		return false
+	}
+	for i, v := range p.Success {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
+	}
+	return true
+}
+
+type UserSrvGetUserFriendListArgs struct {
+	GetOneReq *base.GetOneReq `thrift:"getOneReq,1" frugal:"1,default,base.GetOneReq" json:"getOneReq"`
+}
+
+func NewUserSrvGetUserFriendListArgs() *UserSrvGetUserFriendListArgs {
+	return &UserSrvGetUserFriendListArgs{}
+}
+
+func (p *UserSrvGetUserFriendListArgs) InitDefault() {
+	*p = UserSrvGetUserFriendListArgs{}
+}
+
+var UserSrvGetUserFriendListArgs_GetOneReq_DEFAULT *base.GetOneReq
+
+func (p *UserSrvGetUserFriendListArgs) GetGetOneReq() (v *base.GetOneReq) {
+	if !p.IsSetGetOneReq() {
+		return UserSrvGetUserFriendListArgs_GetOneReq_DEFAULT
+	}
+	return p.GetOneReq
+}
+func (p *UserSrvGetUserFriendListArgs) SetGetOneReq(val *base.GetOneReq) {
+	p.GetOneReq = val
+}
+
+var fieldIDToName_UserSrvGetUserFriendListArgs = map[int16]string{
+	1: "getOneReq",
+}
+
+func (p *UserSrvGetUserFriendListArgs) IsSetGetOneReq() bool {
+	return p.GetOneReq != nil
+}
+
+func (p *UserSrvGetUserFriendListArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserSrvGetUserFriendListArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UserSrvGetUserFriendListArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.GetOneReq = base.NewGetOneReq()
+	if err := p.GetOneReq.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UserSrvGetUserFriendListArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetUserFriendList_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UserSrvGetUserFriendListArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("getOneReq", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.GetOneReq.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *UserSrvGetUserFriendListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserSrvGetUserFriendListArgs(%+v)", *p)
+
+}
+
+func (p *UserSrvGetUserFriendListArgs) DeepEqual(ano *UserSrvGetUserFriendListArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.GetOneReq) {
+		return false
+	}
+	return true
+}
+
+func (p *UserSrvGetUserFriendListArgs) Field1DeepEqual(src *base.GetOneReq) bool {
+
+	if !p.GetOneReq.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type UserSrvGetUserFriendListResult struct {
+	Success []*Friend `thrift:"success,0,optional" frugal:"0,optional,list<Friend>" json:"success,omitempty"`
+}
+
+func NewUserSrvGetUserFriendListResult() *UserSrvGetUserFriendListResult {
+	return &UserSrvGetUserFriendListResult{}
+}
+
+func (p *UserSrvGetUserFriendListResult) InitDefault() {
+	*p = UserSrvGetUserFriendListResult{}
+}
+
+var UserSrvGetUserFriendListResult_Success_DEFAULT []*Friend
+
+func (p *UserSrvGetUserFriendListResult) GetSuccess() (v []*Friend) {
+	if !p.IsSetSuccess() {
+		return UserSrvGetUserFriendListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *UserSrvGetUserFriendListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]*Friend)
+}
+
+var fieldIDToName_UserSrvGetUserFriendListResult = map[int16]string{
+	0: "success",
+}
+
+func (p *UserSrvGetUserFriendListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UserSrvGetUserFriendListResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UserSrvGetUserFriendListResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UserSrvGetUserFriendListResult) ReadField0(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Success = make([]*Friend, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := NewFriend()
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Success = append(p.Success, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UserSrvGetUserFriendListResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetUserFriendList_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UserSrvGetUserFriendListResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+			return err
+		}
+		for _, v := range p.Success {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *UserSrvGetUserFriendListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserSrvGetUserFriendListResult(%+v)", *p)
+
+}
+
+func (p *UserSrvGetUserFriendListResult) DeepEqual(ano *UserSrvGetUserFriendListResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *UserSrvGetUserFriendListResult) Field0DeepEqual(src []*Friend) bool {
 
 	if len(p.Success) != len(src) {
 		return false

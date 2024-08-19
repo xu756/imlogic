@@ -4082,7 +4082,7 @@ type UserFriendMutation struct {
 	with_id       *int64
 	addwith_id    *int64
 	alias         *string
-	description   *string
+	owner_desc    *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*UserFriend, error)
@@ -4377,40 +4377,40 @@ func (m *UserFriendMutation) ResetAlias() {
 	m.alias = nil
 }
 
-// SetDescription sets the "description" field.
-func (m *UserFriendMutation) SetDescription(s string) {
-	m.description = &s
+// SetOwnerDesc sets the "owner_desc" field.
+func (m *UserFriendMutation) SetOwnerDesc(s string) {
+	m.owner_desc = &s
 }
 
-// Description returns the value of the "description" field in the mutation.
-func (m *UserFriendMutation) Description() (r string, exists bool) {
-	v := m.description
+// OwnerDesc returns the value of the "owner_desc" field in the mutation.
+func (m *UserFriendMutation) OwnerDesc() (r string, exists bool) {
+	v := m.owner_desc
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldDescription returns the old "description" field's value of the UserFriend entity.
+// OldOwnerDesc returns the old "owner_desc" field's value of the UserFriend entity.
 // If the UserFriend object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFriendMutation) OldDescription(ctx context.Context) (v string, err error) {
+func (m *UserFriendMutation) OldOwnerDesc(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
+		return v, errors.New("OldOwnerDesc is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDescription requires an ID field in the mutation")
+		return v, errors.New("OldOwnerDesc requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
+		return v, fmt.Errorf("querying old value for OldOwnerDesc: %w", err)
 	}
-	return oldValue.Description, nil
+	return oldValue.OwnerDesc, nil
 }
 
-// ResetDescription resets all changes to the "description" field.
-func (m *UserFriendMutation) ResetDescription() {
-	m.description = nil
+// ResetOwnerDesc resets all changes to the "owner_desc" field.
+func (m *UserFriendMutation) ResetOwnerDesc() {
+	m.owner_desc = nil
 }
 
 // Where appends a list predicates to the UserFriendMutation builder.
@@ -4460,8 +4460,8 @@ func (m *UserFriendMutation) Fields() []string {
 	if m.alias != nil {
 		fields = append(fields, userfriend.FieldAlias)
 	}
-	if m.description != nil {
-		fields = append(fields, userfriend.FieldDescription)
+	if m.owner_desc != nil {
+		fields = append(fields, userfriend.FieldOwnerDesc)
 	}
 	return fields
 }
@@ -4479,8 +4479,8 @@ func (m *UserFriendMutation) Field(name string) (ent.Value, bool) {
 		return m.WithID()
 	case userfriend.FieldAlias:
 		return m.Alias()
-	case userfriend.FieldDescription:
-		return m.Description()
+	case userfriend.FieldOwnerDesc:
+		return m.OwnerDesc()
 	}
 	return nil, false
 }
@@ -4498,8 +4498,8 @@ func (m *UserFriendMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldWithID(ctx)
 	case userfriend.FieldAlias:
 		return m.OldAlias(ctx)
-	case userfriend.FieldDescription:
-		return m.OldDescription(ctx)
+	case userfriend.FieldOwnerDesc:
+		return m.OldOwnerDesc(ctx)
 	}
 	return nil, fmt.Errorf("unknown UserFriend field %s", name)
 }
@@ -4537,12 +4537,12 @@ func (m *UserFriendMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAlias(v)
 		return nil
-	case userfriend.FieldDescription:
+	case userfriend.FieldOwnerDesc:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetDescription(v)
+		m.SetOwnerDesc(v)
 		return nil
 	}
 	return fmt.Errorf("unknown UserFriend field %s", name)
@@ -4632,8 +4632,8 @@ func (m *UserFriendMutation) ResetField(name string) error {
 	case userfriend.FieldAlias:
 		m.ResetAlias()
 		return nil
-	case userfriend.FieldDescription:
-		m.ResetDescription()
+	case userfriend.FieldOwnerDesc:
+		m.ResetOwnerDesc()
 		return nil
 	}
 	return fmt.Errorf("unknown UserFriend field %s", name)

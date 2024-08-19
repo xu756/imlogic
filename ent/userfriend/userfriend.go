@@ -21,8 +21,8 @@ const (
 	FieldWithID = "with_id"
 	// FieldAlias holds the string denoting the alias field in the database.
 	FieldAlias = "alias"
-	// FieldDescription holds the string denoting the description field in the database.
-	FieldDescription = "description"
+	// FieldOwnerDesc holds the string denoting the owner_desc field in the database.
+	FieldOwnerDesc = "owner_desc"
 	// Table holds the table name of the userfriend in the database.
 	Table = "user_friends"
 )
@@ -34,7 +34,7 @@ var Columns = []string{
 	FieldOwner,
 	FieldWithID,
 	FieldAlias,
-	FieldDescription,
+	FieldOwnerDesc,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -80,7 +80,7 @@ func ByAlias(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAlias, opts...).ToFunc()
 }
 
-// ByDescription orders the results by the description field.
-func ByDescription(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDescription, opts...).ToFunc()
+// ByOwnerDesc orders the results by the owner_desc field.
+func ByOwnerDesc(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldOwnerDesc, opts...).ToFunc()
 }

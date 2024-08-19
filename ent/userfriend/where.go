@@ -74,9 +74,9 @@ func Alias(v string) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldEQ(FieldAlias, v))
 }
 
-// Description applies equality check predicate on the "description" field. It's identical to DescriptionEQ.
-func Description(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldEQ(FieldDescription, v))
+// OwnerDesc applies equality check predicate on the "owner_desc" field. It's identical to OwnerDescEQ.
+func OwnerDesc(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEQ(FieldOwnerDesc, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -264,69 +264,69 @@ func AliasContainsFold(v string) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldContainsFold(FieldAlias, v))
 }
 
-// DescriptionEQ applies the EQ predicate on the "description" field.
-func DescriptionEQ(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldEQ(FieldDescription, v))
+// OwnerDescEQ applies the EQ predicate on the "owner_desc" field.
+func OwnerDescEQ(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEQ(FieldOwnerDesc, v))
 }
 
-// DescriptionNEQ applies the NEQ predicate on the "description" field.
-func DescriptionNEQ(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldNEQ(FieldDescription, v))
+// OwnerDescNEQ applies the NEQ predicate on the "owner_desc" field.
+func OwnerDescNEQ(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldNEQ(FieldOwnerDesc, v))
 }
 
-// DescriptionIn applies the In predicate on the "description" field.
-func DescriptionIn(vs ...string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldIn(FieldDescription, vs...))
+// OwnerDescIn applies the In predicate on the "owner_desc" field.
+func OwnerDescIn(vs ...string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldIn(FieldOwnerDesc, vs...))
 }
 
-// DescriptionNotIn applies the NotIn predicate on the "description" field.
-func DescriptionNotIn(vs ...string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldNotIn(FieldDescription, vs...))
+// OwnerDescNotIn applies the NotIn predicate on the "owner_desc" field.
+func OwnerDescNotIn(vs ...string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldNotIn(FieldOwnerDesc, vs...))
 }
 
-// DescriptionGT applies the GT predicate on the "description" field.
-func DescriptionGT(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldGT(FieldDescription, v))
+// OwnerDescGT applies the GT predicate on the "owner_desc" field.
+func OwnerDescGT(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldGT(FieldOwnerDesc, v))
 }
 
-// DescriptionGTE applies the GTE predicate on the "description" field.
-func DescriptionGTE(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldGTE(FieldDescription, v))
+// OwnerDescGTE applies the GTE predicate on the "owner_desc" field.
+func OwnerDescGTE(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldGTE(FieldOwnerDesc, v))
 }
 
-// DescriptionLT applies the LT predicate on the "description" field.
-func DescriptionLT(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldLT(FieldDescription, v))
+// OwnerDescLT applies the LT predicate on the "owner_desc" field.
+func OwnerDescLT(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldLT(FieldOwnerDesc, v))
 }
 
-// DescriptionLTE applies the LTE predicate on the "description" field.
-func DescriptionLTE(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldLTE(FieldDescription, v))
+// OwnerDescLTE applies the LTE predicate on the "owner_desc" field.
+func OwnerDescLTE(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldLTE(FieldOwnerDesc, v))
 }
 
-// DescriptionContains applies the Contains predicate on the "description" field.
-func DescriptionContains(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldContains(FieldDescription, v))
+// OwnerDescContains applies the Contains predicate on the "owner_desc" field.
+func OwnerDescContains(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldContains(FieldOwnerDesc, v))
 }
 
-// DescriptionHasPrefix applies the HasPrefix predicate on the "description" field.
-func DescriptionHasPrefix(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldHasPrefix(FieldDescription, v))
+// OwnerDescHasPrefix applies the HasPrefix predicate on the "owner_desc" field.
+func OwnerDescHasPrefix(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldHasPrefix(FieldOwnerDesc, v))
 }
 
-// DescriptionHasSuffix applies the HasSuffix predicate on the "description" field.
-func DescriptionHasSuffix(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldHasSuffix(FieldDescription, v))
+// OwnerDescHasSuffix applies the HasSuffix predicate on the "owner_desc" field.
+func OwnerDescHasSuffix(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldHasSuffix(FieldOwnerDesc, v))
 }
 
-// DescriptionEqualFold applies the EqualFold predicate on the "description" field.
-func DescriptionEqualFold(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldEqualFold(FieldDescription, v))
+// OwnerDescEqualFold applies the EqualFold predicate on the "owner_desc" field.
+func OwnerDescEqualFold(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEqualFold(FieldOwnerDesc, v))
 }
 
-// DescriptionContainsFold applies the ContainsFold predicate on the "description" field.
-func DescriptionContainsFold(v string) predicate.UserFriend {
-	return predicate.UserFriend(sql.FieldContainsFold(FieldDescription, v))
+// OwnerDescContainsFold applies the ContainsFold predicate on the "owner_desc" field.
+func OwnerDescContainsFold(v string) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldContainsFold(FieldOwnerDesc, v))
 }
 
 // And groups predicates with the AND operator between them.

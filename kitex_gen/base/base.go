@@ -2503,7 +2503,7 @@ func (p *UserInfo) Field5DeepEqual(src string) bool {
 }
 
 type GetOneReq struct {
-	Id int64 `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	Id int64 `thrift:"id,1" frugal:"1,default,i64" json:"id,required"`
 }
 
 func NewGetOneReq() *GetOneReq {

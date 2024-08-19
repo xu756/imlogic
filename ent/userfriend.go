@@ -24,10 +24,10 @@ type UserFriend struct {
 	Owner int64 `json:"owner,omitempty"`
 	// 聊天对象
 	WithID int64 `json:"with_id,omitempty"`
-	// 备注
+	// 别名
 	Alias string `json:"alias,omitempty"`
 	// 描述
-	Description  string `json:"description,omitempty"`
+	OwnerDesc    string `json:"owner_desc,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -38,7 +38,7 @@ func (*UserFriend) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case userfriend.FieldID, userfriend.FieldOwner, userfriend.FieldWithID:
 			values[i] = new(sql.NullInt64)
-		case userfriend.FieldAlias, userfriend.FieldDescription:
+		case userfriend.FieldAlias, userfriend.FieldOwnerDesc:
 			values[i] = new(sql.NullString)
 		case userfriend.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
@@ -87,11 +87,11 @@ func (uf *UserFriend) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				uf.Alias = value.String
 			}
-		case userfriend.FieldDescription:
+		case userfriend.FieldOwnerDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field description", values[i])
+				return fmt.Errorf("unexpected type %T for field owner_desc", values[i])
 			} else if value.Valid {
-				uf.Description = value.String
+				uf.OwnerDesc = value.String
 			}
 		default:
 			uf.selectValues.Set(columns[i], values[i])
@@ -141,8 +141,8 @@ func (uf *UserFriend) String() string {
 	builder.WriteString("alias=")
 	builder.WriteString(uf.Alias)
 	builder.WriteString(", ")
-	builder.WriteString("description=")
-	builder.WriteString(uf.Description)
+	builder.WriteString("owner_desc=")
+	builder.WriteString(uf.OwnerDesc)
 	builder.WriteByte(')')
 	return builder.String()
 }

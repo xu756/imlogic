@@ -24,5 +24,12 @@ func InitRouter() {
 	logic.UserRouter(userRouter)
 	userRouter.Use(middleware.HertzJwt())
 	// 会话路由
+	chatRouter := router.Group("/chat")
+	logic.ChatRoute(chatRouter)
+	chatRouter.Use(middleware.HertzJwt())
+	// 朋友路由
+	friendRouter := router.Group("/friend")
+	logic.FriendRoute(friendRouter)
+	friendRouter.Use(middleware.HertzJwt())
 	HttpServer = h
 }

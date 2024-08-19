@@ -17,14 +17,12 @@ func UserRouter(r *route.RouterGroup) {
 
 // 获取用户在线状态
 func getUserStatus(ctx context.Context, c *app.RequestContext) {
-	var req GetOneUser
+	var req base.GetOneReq
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.GetUserOnlineStatus(ctx, &base.GetOneReq{
-		Id: req.ID,
-	})
+	res, err := rpc.UserClient.GetUserOnlineStatus(ctx, &req)
 	if err != nil {
 		result.HttpError(c, err)
 		return
@@ -52,14 +50,12 @@ func getUserInfo(ctx context.Context, c *app.RequestContext) {
 
 // 获取单个用户信息
 func getUserOneInfo(ctx context.Context, c *app.RequestContext) {
-	var req GetOneUser
+	var req base.GetOneReq
 	if err := c.BindAndValidate(&req); err != nil {
 		result.HttpParamErr(c)
 		return
 	}
-	res, err := rpc.UserClient.GetOneUserInfo(ctx, &base.GetOneReq{
-		Id: req.ID,
-	})
+	res, err := rpc.UserClient.GetOneUserInfo(ctx, &req)
 	if err != nil {
 		result.HttpError(c, err)
 		return

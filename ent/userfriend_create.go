@@ -52,9 +52,9 @@ func (ufc *UserFriendCreate) SetAlias(s string) *UserFriendCreate {
 	return ufc
 }
 
-// SetDescription sets the "description" field.
-func (ufc *UserFriendCreate) SetDescription(s string) *UserFriendCreate {
-	ufc.mutation.SetDescription(s)
+// SetOwnerDesc sets the "owner_desc" field.
+func (ufc *UserFriendCreate) SetOwnerDesc(s string) *UserFriendCreate {
+	ufc.mutation.SetOwnerDesc(s)
 	return ufc
 }
 
@@ -119,8 +119,8 @@ func (ufc *UserFriendCreate) check() error {
 	if _, ok := ufc.mutation.Alias(); !ok {
 		return &ValidationError{Name: "alias", err: errors.New(`ent: missing required field "UserFriend.alias"`)}
 	}
-	if _, ok := ufc.mutation.Description(); !ok {
-		return &ValidationError{Name: "description", err: errors.New(`ent: missing required field "UserFriend.description"`)}
+	if _, ok := ufc.mutation.OwnerDesc(); !ok {
+		return &ValidationError{Name: "owner_desc", err: errors.New(`ent: missing required field "UserFriend.owner_desc"`)}
 	}
 	return nil
 }
@@ -170,9 +170,9 @@ func (ufc *UserFriendCreate) createSpec() (*UserFriend, *sqlgraph.CreateSpec) {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)
 		_node.Alias = value
 	}
-	if value, ok := ufc.mutation.Description(); ok {
-		_spec.SetField(userfriend.FieldDescription, field.TypeString, value)
-		_node.Description = value
+	if value, ok := ufc.mutation.OwnerDesc(); ok {
+		_spec.SetField(userfriend.FieldOwnerDesc, field.TypeString, value)
+		_node.OwnerDesc = value
 	}
 	return _node, _spec
 }

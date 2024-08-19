@@ -150,7 +150,7 @@ var (
 		{Name: "owner", Type: field.TypeInt64},
 		{Name: "with_id", Type: field.TypeInt64},
 		{Name: "alias", Type: field.TypeString},
-		{Name: "description", Type: field.TypeString},
+		{Name: "owner_desc", Type: field.TypeString},
 	}
 	// UserFriendsTable holds the schema information for the "user_friends" table.
 	UserFriendsTable = &schema.Table{

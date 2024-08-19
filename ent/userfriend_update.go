@@ -83,16 +83,16 @@ func (ufu *UserFriendUpdate) SetNillableAlias(s *string) *UserFriendUpdate {
 	return ufu
 }
 
-// SetDescription sets the "description" field.
-func (ufu *UserFriendUpdate) SetDescription(s string) *UserFriendUpdate {
-	ufu.mutation.SetDescription(s)
+// SetOwnerDesc sets the "owner_desc" field.
+func (ufu *UserFriendUpdate) SetOwnerDesc(s string) *UserFriendUpdate {
+	ufu.mutation.SetOwnerDesc(s)
 	return ufu
 }
 
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (ufu *UserFriendUpdate) SetNillableDescription(s *string) *UserFriendUpdate {
+// SetNillableOwnerDesc sets the "owner_desc" field if the given value is not nil.
+func (ufu *UserFriendUpdate) SetNillableOwnerDesc(s *string) *UserFriendUpdate {
 	if s != nil {
-		ufu.SetDescription(*s)
+		ufu.SetOwnerDesc(*s)
 	}
 	return ufu
 }
@@ -153,8 +153,8 @@ func (ufu *UserFriendUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ufu.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)
 	}
-	if value, ok := ufu.mutation.Description(); ok {
-		_spec.SetField(userfriend.FieldDescription, field.TypeString, value)
+	if value, ok := ufu.mutation.OwnerDesc(); ok {
+		_spec.SetField(userfriend.FieldOwnerDesc, field.TypeString, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ufu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -232,16 +232,16 @@ func (ufuo *UserFriendUpdateOne) SetNillableAlias(s *string) *UserFriendUpdateOn
 	return ufuo
 }
 
-// SetDescription sets the "description" field.
-func (ufuo *UserFriendUpdateOne) SetDescription(s string) *UserFriendUpdateOne {
-	ufuo.mutation.SetDescription(s)
+// SetOwnerDesc sets the "owner_desc" field.
+func (ufuo *UserFriendUpdateOne) SetOwnerDesc(s string) *UserFriendUpdateOne {
+	ufuo.mutation.SetOwnerDesc(s)
 	return ufuo
 }
 
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (ufuo *UserFriendUpdateOne) SetNillableDescription(s *string) *UserFriendUpdateOne {
+// SetNillableOwnerDesc sets the "owner_desc" field if the given value is not nil.
+func (ufuo *UserFriendUpdateOne) SetNillableOwnerDesc(s *string) *UserFriendUpdateOne {
 	if s != nil {
-		ufuo.SetDescription(*s)
+		ufuo.SetOwnerDesc(*s)
 	}
 	return ufuo
 }
@@ -332,8 +332,8 @@ func (ufuo *UserFriendUpdateOne) sqlSave(ctx context.Context) (_node *UserFriend
 	if value, ok := ufuo.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)
 	}
-	if value, ok := ufuo.mutation.Description(); ok {
-		_spec.SetField(userfriend.FieldDescription, field.TypeString, value)
+	if value, ok := ufuo.mutation.OwnerDesc(); ok {
+		_spec.SetField(userfriend.FieldOwnerDesc, field.TypeString, value)
 	}
 	_node = &UserFriend{config: ufuo.config}
 	_spec.Assign = _node.assignValues

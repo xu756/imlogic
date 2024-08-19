@@ -129,7 +129,7 @@ struct UserInfo {
 
 // 获取一个请求
 struct GetOneReq {
-  1: i64 id
+  1: i64 id (go.tag = "json:\"id,required\""),
 }
 
 
