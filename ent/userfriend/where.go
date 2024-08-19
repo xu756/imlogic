@@ -69,6 +69,11 @@ func WithID(v int64) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldEQ(FieldWithID, v))
 }
 
+// Agree applies equality check predicate on the "agree" field. It's identical to AgreeEQ.
+func Agree(v bool) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEQ(FieldAgree, v))
+}
+
 // Alias applies equality check predicate on the "alias" field. It's identical to AliasEQ.
 func Alias(v string) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldEQ(FieldAlias, v))
@@ -197,6 +202,16 @@ func WithIDLT(v int64) predicate.UserFriend {
 // WithIDLTE applies the LTE predicate on the "with_id" field.
 func WithIDLTE(v int64) predicate.UserFriend {
 	return predicate.UserFriend(sql.FieldLTE(FieldWithID, v))
+}
+
+// AgreeEQ applies the EQ predicate on the "agree" field.
+func AgreeEQ(v bool) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldEQ(FieldAgree, v))
+}
+
+// AgreeNEQ applies the NEQ predicate on the "agree" field.
+func AgreeNEQ(v bool) predicate.UserFriend {
+	return predicate.UserFriend(sql.FieldNEQ(FieldAgree, v))
 }
 
 // AliasEQ applies the EQ predicate on the "alias" field.

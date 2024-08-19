@@ -39,7 +39,7 @@ func (m *customModel) GetFriendList(ctx context.Context, userId int64) (friends 
 // 添加好友
 func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (err error) {
 	// 验证是否是好友
-	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(owner), userfriend.WithID(withId)).Only(ctx)
+	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(owner), userfriend.WithID(withId)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
 		userInfo, err := m.GetOneUserById(ctx, withId)
@@ -51,6 +51,18 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 			SetWithID(withId).
 			SetAlias(userInfo.Username).
 			SetOwnerDesc("").
+			SetAgree(true).
+			Save(ctx)
+		switch {
+		case err != nil:
+			return xerr.DbErr(err, "添加好友失败")
+		}
+		_, err = m.client.UserFriend.Create().
+			SetOwner(withId).
+			SetWithID(owner).
+			SetAlias(userInfo.Username).
+			SetOwnerDesc("").
+			SetAgree(false).
 			Save(ctx)
 		switch {
 		case err != nil:
@@ -60,21 +72,32 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 	case err != nil:
 		return xerr.DbErr(err, "判断是不是好友失败")
 	default:
-		return xerr.WarnMsg("已经是好友")
+		userFriend, err := m.client.UserFriend.Query().Where(userfriend.Owner(withId), userfriend.WithID(owner)).First(ctx)
+		if err != nil {
+			return xerr.DbErr(err, "判断是不是好友失败")
+		}
+		if userFriend.Agree {
+			return xerr.WarnMsg("已经是好友")
+		} else {
+			return xerr.WarnMsg("已经发送好友请求")
+		}
 	}
 
 }
 
 // 判断是不是好友
 func (m *customModel) CheckIsFriend(ctx context.Context, sender, receiver int64) (err error) {
-	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(receiver), userfriend.WithID(sender)).Only(ctx)
+	userFriend, err := m.client.UserFriend.Query().Where(userfriend.Owner(receiver), userfriend.WithID(sender)).Only(ctx)
 	switch {
 	case ent.IsNotFound(err):
 		return xerr.WarnMsg("不是好友")
 	case err != nil:
 		return xerr.DbErr(err, "判断是不是好友失败")
 	default:
-		return nil
+		if userFriend.Agree {
+			return nil
+		}
+		return xerr.WarnMsg("对方未同意好友请求")
 	}
 }
 

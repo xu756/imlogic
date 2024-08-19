@@ -24,6 +24,8 @@ type UserFriend struct {
 	Owner int64 `json:"owner,omitempty"`
 	// 聊天对象
 	WithID int64 `json:"with_id,omitempty"`
+	// 是否同意
+	Agree bool `json:"agree,omitempty"`
 	// 别名
 	Alias string `json:"alias,omitempty"`
 	// 描述
@@ -36,6 +38,8 @@ func (*UserFriend) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case userfriend.FieldAgree:
+			values[i] = new(sql.NullBool)
 		case userfriend.FieldID, userfriend.FieldOwner, userfriend.FieldWithID:
 			values[i] = new(sql.NullInt64)
 		case userfriend.FieldAlias, userfriend.FieldOwnerDesc:
@@ -80,6 +84,12 @@ func (uf *UserFriend) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field with_id", values[i])
 			} else if value.Valid {
 				uf.WithID = value.Int64
+			}
+		case userfriend.FieldAgree:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field agree", values[i])
+			} else if value.Valid {
+				uf.Agree = value.Bool
 			}
 		case userfriend.FieldAlias:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -137,6 +147,9 @@ func (uf *UserFriend) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("with_id=")
 	builder.WriteString(fmt.Sprintf("%v", uf.WithID))
+	builder.WriteString(", ")
+	builder.WriteString("agree=")
+	builder.WriteString(fmt.Sprintf("%v", uf.Agree))
 	builder.WriteString(", ")
 	builder.WriteString("alias=")
 	builder.WriteString(uf.Alias)

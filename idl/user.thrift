@@ -38,6 +38,7 @@ struct Friend {
 struct AddFriendReq {
   1: i64 owner (go.tag = "json:\"owner,required\""),  // 用户ID
   2: i64 with_id (go.tag = "json:\"with_id,required\"")  // 好友ID
+  3: bool agree (go.tag = "json:\"agree,required\"")  // 是否同意
 }
 
 // 用户服务

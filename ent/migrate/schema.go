@@ -149,6 +149,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "owner", Type: field.TypeInt64},
 		{Name: "with_id", Type: field.TypeInt64},
+		{Name: "agree", Type: field.TypeBool, Default: false},
 		{Name: "alias", Type: field.TypeString},
 		{Name: "owner_desc", Type: field.TypeString},
 	}

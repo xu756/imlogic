@@ -123,6 +123,10 @@ func init() {
 	userfriendDescCreatedAt := userfriendFields[1].Descriptor()
 	// userfriend.DefaultCreatedAt holds the default value on creation for the created_at field.
 	userfriend.DefaultCreatedAt = userfriendDescCreatedAt.Default.(func() time.Time)
+	// userfriendDescAgree is the schema descriptor for agree field.
+	userfriendDescAgree := userfriendFields[4].Descriptor()
+	// userfriend.DefaultAgree holds the default value on creation for the agree field.
+	userfriend.DefaultAgree = userfriendDescAgree.Default.(bool)
 	usergroupFields := schema.UserGroup{}.Fields()
 	_ = usergroupFields
 	// usergroupDescJoinAt is the schema descriptor for join_at field.

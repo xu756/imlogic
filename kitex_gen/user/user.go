@@ -1165,6 +1165,7 @@ func (p *Friend) Field4DeepEqual(src int64) bool {
 type AddFriendReq struct {
 	Owner  int64 `thrift:"owner,1" frugal:"1,default,i64" json:"owner,required"`
 	WithId int64 `thrift:"with_id,2" frugal:"2,default,i64" json:"with_id,required"`
+	Agree  bool  `thrift:"agree,3" frugal:"3,default,bool" json:"agree,required"`
 }
 
 func NewAddFriendReq() *AddFriendReq {
@@ -1182,16 +1183,24 @@ func (p *AddFriendReq) GetOwner() (v int64) {
 func (p *AddFriendReq) GetWithId() (v int64) {
 	return p.WithId
 }
+
+func (p *AddFriendReq) GetAgree() (v bool) {
+	return p.Agree
+}
 func (p *AddFriendReq) SetOwner(val int64) {
 	p.Owner = val
 }
 func (p *AddFriendReq) SetWithId(val int64) {
 	p.WithId = val
 }
+func (p *AddFriendReq) SetAgree(val bool) {
+	p.Agree = val
+}
 
 var fieldIDToName_AddFriendReq = map[int16]string{
 	1: "owner",
 	2: "with_id",
+	3: "agree",
 }
 
 func (p *AddFriendReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1224,6 +1233,14 @@ func (p *AddFriendReq) Read(iprot thrift.TProtocol) (err error) {
 		case 2:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1276,6 +1293,15 @@ func (p *AddFriendReq) ReadField2(iprot thrift.TProtocol) error {
 	}
 	return nil
 }
+func (p *AddFriendReq) ReadField3(iprot thrift.TProtocol) error {
+
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		p.Agree = v
+	}
+	return nil
+}
 
 func (p *AddFriendReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1289,6 +1315,10 @@ func (p *AddFriendReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 	}
@@ -1343,6 +1373,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
+func (p *AddFriendReq) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("agree", thrift.BOOL, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteBool(p.Agree); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
 func (p *AddFriendReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1363,6 +1410,9 @@ func (p *AddFriendReq) DeepEqual(ano *AddFriendReq) bool {
 	if !p.Field2DeepEqual(ano.WithId) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.Agree) {
+		return false
+	}
 	return true
 }
 
@@ -1376,6 +1426,13 @@ func (p *AddFriendReq) Field1DeepEqual(src int64) bool {
 func (p *AddFriendReq) Field2DeepEqual(src int64) bool {
 
 	if p.WithId != src {
+		return false
+	}
+	return true
+}
+func (p *AddFriendReq) Field3DeepEqual(src bool) bool {
+
+	if p.Agree != src {
 		return false
 	}
 	return true

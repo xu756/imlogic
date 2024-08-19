@@ -69,6 +69,20 @@ func (ufu *UserFriendUpdate) AddWithID(i int64) *UserFriendUpdate {
 	return ufu
 }
 
+// SetAgree sets the "agree" field.
+func (ufu *UserFriendUpdate) SetAgree(b bool) *UserFriendUpdate {
+	ufu.mutation.SetAgree(b)
+	return ufu
+}
+
+// SetNillableAgree sets the "agree" field if the given value is not nil.
+func (ufu *UserFriendUpdate) SetNillableAgree(b *bool) *UserFriendUpdate {
+	if b != nil {
+		ufu.SetAgree(*b)
+	}
+	return ufu
+}
+
 // SetAlias sets the "alias" field.
 func (ufu *UserFriendUpdate) SetAlias(s string) *UserFriendUpdate {
 	ufu.mutation.SetAlias(s)
@@ -150,6 +164,9 @@ func (ufu *UserFriendUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ufu.mutation.AddedWithID(); ok {
 		_spec.AddField(userfriend.FieldWithID, field.TypeInt64, value)
 	}
+	if value, ok := ufu.mutation.Agree(); ok {
+		_spec.SetField(userfriend.FieldAgree, field.TypeBool, value)
+	}
 	if value, ok := ufu.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)
 	}
@@ -215,6 +232,20 @@ func (ufuo *UserFriendUpdateOne) SetNillableWithID(i *int64) *UserFriendUpdateOn
 // AddWithID adds i to the "with_id" field.
 func (ufuo *UserFriendUpdateOne) AddWithID(i int64) *UserFriendUpdateOne {
 	ufuo.mutation.AddWithID(i)
+	return ufuo
+}
+
+// SetAgree sets the "agree" field.
+func (ufuo *UserFriendUpdateOne) SetAgree(b bool) *UserFriendUpdateOne {
+	ufuo.mutation.SetAgree(b)
+	return ufuo
+}
+
+// SetNillableAgree sets the "agree" field if the given value is not nil.
+func (ufuo *UserFriendUpdateOne) SetNillableAgree(b *bool) *UserFriendUpdateOne {
+	if b != nil {
+		ufuo.SetAgree(*b)
+	}
 	return ufuo
 }
 
@@ -328,6 +359,9 @@ func (ufuo *UserFriendUpdateOne) sqlSave(ctx context.Context) (_node *UserFriend
 	}
 	if value, ok := ufuo.mutation.AddedWithID(); ok {
 		_spec.AddField(userfriend.FieldWithID, field.TypeInt64, value)
+	}
+	if value, ok := ufuo.mutation.Agree(); ok {
+		_spec.SetField(userfriend.FieldAgree, field.TypeBool, value)
 	}
 	if value, ok := ufuo.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)

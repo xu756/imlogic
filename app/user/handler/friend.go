@@ -2,11 +2,15 @@ package handler
 
 import (
 	"context"
+	"imlogic/internal/xerr"
 	"imlogic/kitex_gen/base"
 	"imlogic/kitex_gen/user"
 )
 
 func (s *PublicSrvImpl) AddFriend(ctx context.Context, addFriendReq *user.AddFriendReq) (r *base.BoolRes, err error) {
+	if addFriendReq.Owner == addFriendReq.WithId {
+		return &base.BoolRes{Ok: false}, xerr.WarnMsg("不能添加自己为好友")
+	}
 	err = s.Model.AddOneFriend(ctx, addFriendReq.Owner, addFriendReq.WithId)
 	if err != nil {
 		return nil, err

@@ -46,6 +46,20 @@ func (ufc *UserFriendCreate) SetWithID(i int64) *UserFriendCreate {
 	return ufc
 }
 
+// SetAgree sets the "agree" field.
+func (ufc *UserFriendCreate) SetAgree(b bool) *UserFriendCreate {
+	ufc.mutation.SetAgree(b)
+	return ufc
+}
+
+// SetNillableAgree sets the "agree" field if the given value is not nil.
+func (ufc *UserFriendCreate) SetNillableAgree(b *bool) *UserFriendCreate {
+	if b != nil {
+		ufc.SetAgree(*b)
+	}
+	return ufc
+}
+
 // SetAlias sets the "alias" field.
 func (ufc *UserFriendCreate) SetAlias(s string) *UserFriendCreate {
 	ufc.mutation.SetAlias(s)
@@ -103,6 +117,10 @@ func (ufc *UserFriendCreate) defaults() {
 		v := userfriend.DefaultCreatedAt()
 		ufc.mutation.SetCreatedAt(v)
 	}
+	if _, ok := ufc.mutation.Agree(); !ok {
+		v := userfriend.DefaultAgree
+		ufc.mutation.SetAgree(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -115,6 +133,9 @@ func (ufc *UserFriendCreate) check() error {
 	}
 	if _, ok := ufc.mutation.WithID(); !ok {
 		return &ValidationError{Name: "with_id", err: errors.New(`ent: missing required field "UserFriend.with_id"`)}
+	}
+	if _, ok := ufc.mutation.Agree(); !ok {
+		return &ValidationError{Name: "agree", err: errors.New(`ent: missing required field "UserFriend.agree"`)}
 	}
 	if _, ok := ufc.mutation.Alias(); !ok {
 		return &ValidationError{Name: "alias", err: errors.New(`ent: missing required field "UserFriend.alias"`)}
@@ -165,6 +186,10 @@ func (ufc *UserFriendCreate) createSpec() (*UserFriend, *sqlgraph.CreateSpec) {
 	if value, ok := ufc.mutation.WithID(); ok {
 		_spec.SetField(userfriend.FieldWithID, field.TypeInt64, value)
 		_node.WithID = value
+	}
+	if value, ok := ufc.mutation.Agree(); ok {
+		_spec.SetField(userfriend.FieldAgree, field.TypeBool, value)
+		_node.Agree = value
 	}
 	if value, ok := ufc.mutation.Alias(); ok {
 		_spec.SetField(userfriend.FieldAlias, field.TypeString, value)

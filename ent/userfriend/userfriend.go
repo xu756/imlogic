@@ -19,6 +19,8 @@ const (
 	FieldOwner = "owner"
 	// FieldWithID holds the string denoting the with_id field in the database.
 	FieldWithID = "with_id"
+	// FieldAgree holds the string denoting the agree field in the database.
+	FieldAgree = "agree"
 	// FieldAlias holds the string denoting the alias field in the database.
 	FieldAlias = "alias"
 	// FieldOwnerDesc holds the string denoting the owner_desc field in the database.
@@ -33,6 +35,7 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldOwner,
 	FieldWithID,
+	FieldAgree,
 	FieldAlias,
 	FieldOwnerDesc,
 }
@@ -50,6 +53,8 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
+	// DefaultAgree holds the default value on creation for the "agree" field.
+	DefaultAgree bool
 )
 
 // OrderOption defines the ordering options for the UserFriend queries.
@@ -73,6 +78,11 @@ func ByOwner(opts ...sql.OrderTermOption) OrderOption {
 // ByWithID orders the results by the with_id field.
 func ByWithID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldWithID, opts...).ToFunc()
+}
+
+// ByAgree orders the results by the agree field.
+func ByAgree(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAgree, opts...).ToFunc()
 }
 
 // ByAlias orders the results by the alias field.

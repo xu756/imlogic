@@ -4081,6 +4081,7 @@ type UserFriendMutation struct {
 	addowner      *int64
 	with_id       *int64
 	addwith_id    *int64
+	agree         *bool
 	alias         *string
 	owner_desc    *string
 	clearedFields map[string]struct{}
@@ -4341,6 +4342,42 @@ func (m *UserFriendMutation) ResetWithID() {
 	m.addwith_id = nil
 }
 
+// SetAgree sets the "agree" field.
+func (m *UserFriendMutation) SetAgree(b bool) {
+	m.agree = &b
+}
+
+// Agree returns the value of the "agree" field in the mutation.
+func (m *UserFriendMutation) Agree() (r bool, exists bool) {
+	v := m.agree
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAgree returns the old "agree" field's value of the UserFriend entity.
+// If the UserFriend object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserFriendMutation) OldAgree(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAgree is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAgree requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAgree: %w", err)
+	}
+	return oldValue.Agree, nil
+}
+
+// ResetAgree resets all changes to the "agree" field.
+func (m *UserFriendMutation) ResetAgree() {
+	m.agree = nil
+}
+
 // SetAlias sets the "alias" field.
 func (m *UserFriendMutation) SetAlias(s string) {
 	m.alias = &s
@@ -4447,7 +4484,7 @@ func (m *UserFriendMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserFriendMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.created_at != nil {
 		fields = append(fields, userfriend.FieldCreatedAt)
 	}
@@ -4456,6 +4493,9 @@ func (m *UserFriendMutation) Fields() []string {
 	}
 	if m.with_id != nil {
 		fields = append(fields, userfriend.FieldWithID)
+	}
+	if m.agree != nil {
+		fields = append(fields, userfriend.FieldAgree)
 	}
 	if m.alias != nil {
 		fields = append(fields, userfriend.FieldAlias)
@@ -4477,6 +4517,8 @@ func (m *UserFriendMutation) Field(name string) (ent.Value, bool) {
 		return m.Owner()
 	case userfriend.FieldWithID:
 		return m.WithID()
+	case userfriend.FieldAgree:
+		return m.Agree()
 	case userfriend.FieldAlias:
 		return m.Alias()
 	case userfriend.FieldOwnerDesc:
@@ -4496,6 +4538,8 @@ func (m *UserFriendMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldOwner(ctx)
 	case userfriend.FieldWithID:
 		return m.OldWithID(ctx)
+	case userfriend.FieldAgree:
+		return m.OldAgree(ctx)
 	case userfriend.FieldAlias:
 		return m.OldAlias(ctx)
 	case userfriend.FieldOwnerDesc:
@@ -4529,6 +4573,13 @@ func (m *UserFriendMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetWithID(v)
+		return nil
+	case userfriend.FieldAgree:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAgree(v)
 		return nil
 	case userfriend.FieldAlias:
 		v, ok := value.(string)
@@ -4628,6 +4679,9 @@ func (m *UserFriendMutation) ResetField(name string) error {
 		return nil
 	case userfriend.FieldWithID:
 		m.ResetWithID()
+		return nil
+	case userfriend.FieldAgree:
+		m.ResetAgree()
 		return nil
 	case userfriend.FieldAlias:
 		m.ResetAlias()
