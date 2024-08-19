@@ -42,14 +42,10 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 	_, err = m.client.UserFriend.Query().Where(userfriend.Owner(owner), userfriend.WithID(withId)).First(ctx)
 	switch {
 	case ent.IsNotFound(err):
-		userInfo, err := m.GetOneUserById(ctx, withId)
-		if err != nil {
-			return err
-		}
 		_, err = m.client.UserFriend.Create().
 			SetOwner(owner).
 			SetWithID(withId).
-			SetAlias(userInfo.Username).
+			SetAlias("").
 			SetOwnerDesc("").
 			SetAgree(true).
 			Save(ctx)
@@ -64,23 +60,41 @@ func (m *customModel) AddOneFriend(ctx context.Context, owner, withId int64) (er
 			SetOwnerDesc("").
 			SetAgree(false).
 			Save(ctx)
-		switch {
-		case err != nil:
+		if err != nil {
 			return xerr.DbErr(err, "添加好友失败")
 		}
-		return nil
+		return xerr.WarnMsg("已经发送好友请求")
 	case err != nil:
 		return xerr.DbErr(err, "判断是不是好友失败")
 	default:
+		var i = 0
+	checkWithHadOwner:
 		userFriend, err := m.client.UserFriend.Query().Where(userfriend.Owner(withId), userfriend.WithID(owner)).First(ctx)
-		if err != nil {
+		switch {
+		case ent.IsNotFound(err):
+			_, err = m.client.UserFriend.Create().
+				SetOwner(withId).
+				SetWithID(owner).
+				SetAlias("").
+				SetOwnerDesc("").
+				SetAgree(false).
+				Save(ctx)
+			if err != nil {
+				return xerr.DbErr(err, "添加好友失败")
+			}
+			i++
+			if i > 2 {
+				return xerr.DbErr(err, "添加好友失败")
+			}
+			goto checkWithHadOwner
+		case err != nil:
 			return xerr.DbErr(err, "判断是不是好友失败")
+
 		}
 		if userFriend.Agree {
 			return xerr.WarnMsg("已经是好友")
-		} else {
-			return xerr.WarnMsg("已经发送好友请求")
 		}
+		return xerr.WarnMsg("已经发送好友请求")
 	}
 
 }
