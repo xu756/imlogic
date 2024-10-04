@@ -28,7 +28,7 @@ jobs:
         run: go mod download
       - name: 打包
         run: |
-          go build -ldflags="-s -w" -o main $MAIN_GO_FILE \
+          go build  -o main $MAIN_GO_FILE \
           && ls -l .
 
       - name: 登录到私有仓库
