@@ -24,7 +24,8 @@ jobs:
         with:
           go-version: 1.23.1
           cache-dependency-path: go.mod
-
+      - name: 安装依赖
+        run: go mod download
       - name: 打包
         run: go build -ldflags="-s -w" -o main $MAIN_GO_FILE
 
