@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  MAIN_GO_FILE: cmd/api/main.go
+  MAIN_GO_FILE: app/api/main.go
   PACKAGE_NAME: im-api
   PACKAGE_VERSION: latest
 

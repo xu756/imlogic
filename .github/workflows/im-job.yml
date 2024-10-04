@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  MAIN_GO_FILE: cmd/job/main.go
+  MAIN_GO_FILE: app/job/main.go
   PACKAGE_NAME: im-job
   PACKAGE_VERSION: latest
 
