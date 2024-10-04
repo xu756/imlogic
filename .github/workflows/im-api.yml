@@ -25,7 +25,7 @@ jobs:
           go-version: 1.23.1
           cache-dependency-path: go.mod
       - name: 打包
-        run: go build -ldflags="-s -w" -o deploy/main  ${{MAIN_GO_FILE}}
+        run: go build -ldflags="-s -w" -o deploy/main $MAIN_GO_FILE
           
 
       - name: 登录到私有仓库
