@@ -12,6 +12,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       packages: write
       contents: read
@@ -24,11 +25,13 @@ jobs:
           go-version: 1.23.1
           cache-dependency-path: go.mod
       - name: 设置环境变量
-        run:
-          ｜echo "GO111MODULE=on" >> $GITHUB_ENV
-          ｜echo "CGO_ENABLED=0" >> $GITHUB_ENV
-          ｜echo "GOOS=linux" >> $GITHUB_ENV
-          ｜echo "GOARCH=amd64" >> $GITHUB_ENV
+        run: |
+          export GO111MODULE=on \
+          export CGO_ENABLED=0 \
+          export GOOS=linux \
+          export GOARCH=amd64
+
+
       - name: 打包
         run: go build -ldflags="-s -w" -o deploy/main $MAIN_GO_FILE
 
