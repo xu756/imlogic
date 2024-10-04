@@ -21,7 +21,7 @@ type Service struct {
 
 func InitService() {
 	s, err := imhandler.NewClient("im-handler",
-		client.WithHostPorts(config.RunData.Rpc.ImHandlerAddr),
+		client.WithHostPorts(config.RunData().Rpc.ImHandlerAddr),
 		client.WithErrorHandler(middleware.ClientErrorHandler),
 	)
 	if err != nil {

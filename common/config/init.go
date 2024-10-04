@@ -5,17 +5,29 @@ import (
 	"os"
 )
 
-var RunData Config
+var runData Config
 
-func Init(path string) {
-	configFileBytes, err := os.ReadFile(path)
-	if err != nil {
-		panic(err)
+func RunData() Config {
+	// 判断是否为空
+	if runData == (Config{}) {
+		configFileBytes, err := os.ReadFile(os.Getenv("CONFIG_PATH"))
+		if err != nil {
+			panic(err)
+		}
+		d := Config{}
+		err = yaml.Unmarshal(configFileBytes, &d)
+		if err != nil {
+			panic(err)
+		}
+		runData = d
 	}
-	d := Config{}
-	err = yaml.Unmarshal(configFileBytes, &d)
+	return runData
+
+}
+
+func InitDir() {
+	err := CreateDir(RunData().UploadPath)
 	if err != nil {
-		panic(err)
+		return
 	}
-	RunData = d
 }

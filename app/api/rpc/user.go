@@ -13,7 +13,7 @@ var UserClient usersrv.Client
 
 func InitUserClient(destService string) {
 	s, err := usersrv.NewClient(destService,
-		client.WithHostPorts(config.RunData.Rpc.UserRpc),
+		client.WithHostPorts(config.RunData().Rpc.UserRpc),
 		client.WithErrorHandler(middleware.ClientErrorHandler),
 	)
 

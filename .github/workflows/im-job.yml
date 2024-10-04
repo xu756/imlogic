@@ -1,0 +1,59 @@
+name: 构建im-job镜像
+
+
+on:
+  workflow_dispatch:
+
+env:
+  MAIN_GO_FILE: cmd/job/main.go
+  PACKAGE_NAME: im-job
+  PACKAGE_VERSION: latest
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4.2.0
+      - name: 设置go环境
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.1
+          cache-dependency-path: go.mod
+      - name: 打包
+        run: go build -ldflags="-s -w" -o deploy/main  ${{MAIN_GO_FILE}}
+          
+
+      - name: 登录到私有仓库
+        uses: docker/login-action@v3
+        with:
+          registry: xu756-docker.pkg.coding.net # 声明镜像源
+          username: xm-1727413781573
+          password: 6f21a199cc3d8c7c2117794c829859a425bd958d
+
+      #      - uses: docker/login-action@v3
+      #        with:
+      #          registry: ghcr.io
+      #          username: ${{github.actor}}
+      #          password: ${{secrets.GITHUB_TOKEN}}
+
+      # 设置环境变量 version 为最后一次提交commit
+      - name: 设置环境变量
+        run: echo "PACKAGE_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: 构建镜像并发布
+        run:
+          | # 使用 上一步写的 Dockerfile 构建镜像并发布到私有仓库； 发布完成可以去 https://github.com/MrGaoGang?tab=packages 查看
+          docker build .  --tag xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
+          docker push xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
+#      - name: 更新服务器 发送请求
+#        run: |
+#          curl -X PUT  \
+#          -H "content-type: application/json" \
+#          -H "Cookie: KuboardUsername=admin; KuboardAccessKey=emrcwdmbxijy.mbxn23tmz8hmmtnnx25wab3ist3nz7nx" \
+#          -d '{"kind":"deployments","namespace":"app","name":"iot","images":{"xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}":"xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}"}}' \
+#          "https://k3s.imlogic.cn/kuboard-api/cluster/default/kind/CICDApi/admin/resource/updateImageTag"

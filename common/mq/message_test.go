@@ -2,13 +2,11 @@ package mq
 
 import (
 	"fmt"
-	"imlogic/common/config"
 	"imlogic/kitex_gen/base"
 	"testing"
 )
 
 func TestPrivateChatMessage(t *testing.T) {
-	config.Init("../../configs/dev.yaml")
 	rabbitmq, err := NewPrivateMessageMQ()
 	defer rabbitmq.Destory()
 	if err != nil {
@@ -25,7 +23,6 @@ func TestPrivateChatMessage(t *testing.T) {
 }
 
 func TestBroadcastMessage(t *testing.T) {
-	config.Init("../../configs/dev.yaml")
 	rabbitmq, err := NewBroadcastMessageMQ()
 	defer rabbitmq.Destory()
 	if err != nil {
@@ -42,7 +39,6 @@ func TestBroadcastMessage(t *testing.T) {
 }
 
 func TestNewRabbitMQPubSub(t *testing.T) {
-	config.Init("../../configs/dev.yaml")
 	rabbitmq := NewRabbitMQPubSub("im")
 	defer rabbitmq.Destory()
 	for i := 0; i < 100; i++ {
@@ -51,7 +47,6 @@ func TestNewRabbitMQPubSub(t *testing.T) {
 }
 
 func TestNewDelayMessageMQ(t *testing.T) {
-	config.Init("../../configs/dev.yaml")
 	rabbitmq, err := NewDelayMessageMQ("delay")
 	defer rabbitmq.Destory()
 	if err != nil {

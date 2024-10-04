@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 
 	"imlogic/app/api/logic"
@@ -10,15 +9,11 @@ import (
 	"imlogic/common/config"
 )
 
-var file = flag.String("f", "", "config file path")
-
 func main() {
-	flag.Parse()
-	config.Init(*file)
 	router.InitRouter()
 	rpc.Init()
 	logic.Init()
-	log.Printf("【 Api 】addr on %s", config.RunData.Addr.ApiAddr)
+	log.Printf("【 Api 】addr on %s", config.RunData().Addr.ApiAddr)
 	err := router.HttpServer.Run()
 	if err != nil {
 		log.Print(err)

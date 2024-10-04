@@ -24,7 +24,7 @@ type RabbitMQ struct {
 
 // 创建结构体实例
 func newRabbitMQ(queueName string, exchange string, key string) *RabbitMQ {
-	return &RabbitMQ{QueueName: queueName, Exchange: exchange, Key: key, Mqurl: config.RunData.MqUrl}
+	return &RabbitMQ{QueueName: queueName, Exchange: exchange, Key: key, Mqurl: config.RunData().MqUrl}
 }
 
 // 断开channel 和 connection

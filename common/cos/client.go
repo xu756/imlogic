@@ -18,7 +18,7 @@ type Cos struct {
 
 // 初始化对象存储
 func NewCos() *Cos {
-	mConfig := config.RunData.Minio
+	mConfig := config.RunData().Minio
 	// Initialize minio client object.
 	minioClient, err := minio.New(mConfig.Endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(mConfig.AccessKeyID, mConfig.SecretAccessKey, ""),
@@ -30,7 +30,7 @@ func NewCos() *Cos {
 	return &Cos{
 		client: minioClient,
 		bucket: mConfig.Bucket,
-		cosUrl: config.RunData.CosUrl,
+		cosUrl: config.RunData().CosUrl,
 	}
 }
 
@@ -43,6 +43,6 @@ func (c *Cos) UploadImage(ctx context.Context, imgName, imgPath string) (url str
 	if err != nil {
 		return "", xerr.UploadImageErr(err, "上传图片失败 图片路径:%s", imgPath)
 	}
-	url = config.RunData.CosUrl + file.Key
+	url = config.RunData().CosUrl + file.Key
 	return
 }

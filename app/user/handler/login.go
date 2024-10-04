@@ -21,7 +21,7 @@ func (s *PublicSrvImpl) LoginByPassword(ctx context.Context, req *user.LoginByPa
 	}
 	resp = &user.LoginRes{
 		Token:  token,
-		Expire: config.RunData.JwtConfig.Expire,
+		Expire: config.RunData().JwtConfig.Expire,
 	}
 	return resp, nil
 }
@@ -37,7 +37,7 @@ func (s *PublicSrvImpl) LoginByMobile(ctx context.Context, req *user.LoginByMobi
 	}
 	resp = &user.LoginRes{
 		Token:  token,
-		Expire: config.RunData.JwtConfig.Expire,
+		Expire: config.RunData().JwtConfig.Expire,
 	}
 	return resp, nil
 }

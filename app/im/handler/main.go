@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"net"
 
@@ -13,12 +12,9 @@ import (
 	"github.com/cloudwego/kitex/server"
 )
 
-var file = flag.String("f", "", "config file path")
-
 func main() {
-	flag.Parse()
-	config.Init(*file)
-	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.ImHandlerAddr)
+
+	addr, err := net.ResolveTCPAddr("tcp", config.RunData().Addr.ImHandlerAddr)
 	if err != nil {
 		log.Fatal(err)
 
@@ -27,7 +23,7 @@ func main() {
 		server.WithServiceAddr(addr),
 		server.WithErrorHandler(middleware.ServerErrorHandler),
 	)
-	log.Printf("【Im Rpc】 on %s", config.RunData.Addr.ImHandlerAddr)
+	log.Printf("【Im Rpc】 on %s", config.RunData().Addr.ImHandlerAddr)
 	err = svr.Run()
 	if err != nil {
 		log.Println(err.Error())

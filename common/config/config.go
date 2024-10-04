@@ -58,6 +58,6 @@ type Minio struct {
 }
 
 func GetVersion() string {
-	return RunData.Version
+	return RunData().Version
 
 }

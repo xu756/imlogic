@@ -23,7 +23,7 @@ type customModel struct {
 
 func NewModel() Model {
 	dsn := "host=%s user=%s password=%s dbname=%s port=%d  TimeZone=Asia/Shanghai sslmode=disable"
-	dsn = fmt.Sprintf(dsn, config.RunData.DbConfig.Addr, config.RunData.DbConfig.Username, config.RunData.DbConfig.Password, config.RunData.DbConfig.DbName, config.RunData.DbConfig.Port)
+	dsn = fmt.Sprintf(dsn, config.RunData().DbConfig.Addr, config.RunData().DbConfig.Username, config.RunData().DbConfig.Password, config.RunData().DbConfig.DbName, config.RunData().DbConfig.Port)
 	db, err := sqlx.Connect("postgres", dsn)
 	if err != nil {
 		log.Panic(err)

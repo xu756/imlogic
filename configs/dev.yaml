@@ -12,19 +12,19 @@ Rpc:
 
 DbConfig:
   DbType: postgres
-  Addr: 192.168.0.105
-  Port: 5432
-  Username: imlogic
-  Password: imlogic
+  Addr: 110.40.208.122
+  Port: 15432
+  Username: root
+  Password: fyU0bj2KLndYN6CKYubb
   DbName: imlogic
 
 RedisConfig:
-  Addr: 192.168.0.105:6379
-  Password: redis123456
+  Addr: 110.40.208.122:16379
+  Password: Y5dg5tg8050oigInC30sf
   Db: 4
-  Prefix: imlogic-dev
+  Prefix: imlogic
 
-uploadPath: /code/AdminServer/media/
+uploadPath: ./build/file
 cosUrl: https://cos.imlogic.cn/appserver
 
 JwtConfig:

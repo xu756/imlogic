@@ -14,10 +14,10 @@ type Client struct {
 func NewClient() *Client {
 	return &Client{
 		redis: redis.NewClient(&redis.Options{
-			Addr:     config.RunData.RedisConfig.Addr,
-			Password: config.RunData.RedisConfig.Password,
-			DB:       config.RunData.RedisConfig.Db,
+			Addr:     config.RunData().RedisConfig.Addr,
+			Password: config.RunData().RedisConfig.Password,
+			DB:       config.RunData().RedisConfig.Db,
 		}),
-		prefix: config.RunData.RedisConfig.Prefix,
+		prefix: config.RunData().RedisConfig.Prefix,
 	}
 }

@@ -22,8 +22,8 @@ type Jwt struct {
 
 func NewJwt() *Jwt {
 	return &Jwt{
-		SignKey: config.RunData.JwtConfig.SignKey,
-		Expire:  config.RunData.JwtConfig.Expire,
+		SignKey: config.RunData().JwtConfig.SignKey,
+		Expire:  config.RunData().JwtConfig.Expire,
 	}
 }
 

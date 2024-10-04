@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"net"
 
@@ -14,14 +13,11 @@ import (
 	"github.com/cloudwego/kitex/server"
 )
 
-var file = flag.String("f", "", "config file path")
-
 func main() {
-	flag.Parse()
-	config.Init(*file)
+
 	logic.InitService()
 
-	addr, err := net.ResolveTCPAddr("tcp", config.RunData.Addr.ImServerAddr)
+	addr, err := net.ResolveTCPAddr("tcp", config.RunData().Addr.ImServerAddr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,9 +32,9 @@ func main() {
 			log.Printf(err.Error())
 			return
 		}
-		log.Printf("【 Im-rpc-server 】addr on %s", config.RunData.Addr.ImServerAddr)
+		log.Printf("【 Im-rpc-server 】addr on %s", config.RunData().Addr.ImServerAddr)
 	}()
-	log.Printf("【 Im-api-server 】addr on %s", config.RunData.Addr.ImAddr)
+	log.Printf("【 Im-api-server 】addr on %s", config.RunData().Addr.ImAddr)
 	handler.InitRouter()
 	handler.HttpServer.Spin()
 
