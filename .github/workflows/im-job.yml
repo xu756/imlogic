@@ -9,10 +9,10 @@ env:
   PACKAGE_NAME: im-job
   PACKAGE_VERSION: latest
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       packages: write
       contents: read
@@ -24,9 +24,9 @@ jobs:
         with:
           go-version: 1.23.1
           cache-dependency-path: go.mod
+
       - name: 打包
-        run: go build -ldflags="-s -w" -o deploy/main  ${{MAIN_GO_FILE}}
-          
+        run: go build -ldflags="-s -w" -o deploy/main $MAIN_GO_FILE
 
       - name: 登录到私有仓库
         uses: docker/login-action@v3
