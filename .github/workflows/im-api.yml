@@ -26,7 +26,7 @@ jobs:
           cache-dependency-path: go.mod
 
       - name: 打包
-        run: go build -ldflags="-s -w" -o deploy/main cmd/api/main.go
+        run: go build -ldflags="-s -w" -o deploy/main $MAIN_GO_FILE
 
       - name: 登录到私有仓库
         uses: docker/login-action@v3
