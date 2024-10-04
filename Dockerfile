@@ -1,4 +1,4 @@
-FROM alpine:3.20.2
+FROM ubuntu:24.10
 
 WORKDIR /app
 RUN apk update --no-cache && apk add --no-cache tzdata
