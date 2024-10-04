@@ -1,36 +1,23 @@
-name: 构建im-api镜像
+name: 构建admin镜像
 
 
 on:
   workflow_dispatch:
 
 env:
-  MAIN_GO_FILE: app/api/main.go
   PACKAGE_NAME: im-api
   PACKAGE_VERSION: latest
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
     permissions:
       packages: write
       contents: read
     steps:
       - name: 检出代码
         uses: actions/checkout@v4.2.0
-      - name: 设置go环境
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.23.1
-          cache-dependency-path: go.mod
-      - name: 安装依赖
-        run: go mod download
-      - name: 打包
-        run: |
-          go build  -o main $MAIN_GO_FILE \
-          && ls -l .
-
       - name: 登录到私有仓库
         uses: docker/login-action@v3
         with:
@@ -51,7 +38,7 @@ jobs:
       - name: 构建镜像并发布
         run:
           | # 使用 上一步写的 Dockerfile 构建镜像并发布到私有仓库； 发布完成可以去 https://github.com/MrGaoGang?tab=packages 查看
-          docker build .  --tag xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
+          docker build . --file app/api/Dockerfile --tag xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
           docker push xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
 #      - name: 更新服务器 发送请求
 #        run: |
