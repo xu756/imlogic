@@ -16,8 +16,8 @@ func main() {
 	router.InitRouter()
 	rpc.Init()
 	logic.Init()
-	tracer := trace.SetUp(serviceName)
-	defer tracer.Shutdown()
+	hertzTracer := trace.HertzTraceSetUp(serviceName)
+	defer hertzTracer.Shutdown()
 
 	log.Printf("【 Api 】addr on %s", config.RunData().Addr.ApiAddr)
 	router.HttpServer.Spin()

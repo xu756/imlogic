@@ -4,19 +4,19 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
-	hertzlogrus "github.com/hertz-contrib/obs-opentelemetry/logging/logrus"
-	"github.com/hertz-contrib/obs-opentelemetry/provider"
+	"github.com/cloudwego/kitex/pkg/klog"
+	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
+	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/sirupsen/logrus"
 	"imlogic/common/config"
 	"imlogic/common/xlog"
 )
 
-type Trace struct {
+type KitexTrace struct {
 	provider provider.OtelProvider
 }
 
-func SetUp(serviceName string) *Trace {
+func KitexTraceSetUp(serviceName string) *KitexTrace {
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceNamespace("default"),
 		provider.WithServiceName(serviceName),
@@ -32,22 +32,21 @@ func SetUp(serviceName string) *Trace {
 		}),
 		provider.WithInsecure(),
 	)
-	logger := hertzlogrus.NewLogger(
+	logger := kitexlogrus.NewLogger(
 		// 打印错误日志
-		hertzlogrus.WithTraceHookErrorSpanLevel(logrus.ErrorLevel),
+		kitexlogrus.WithTraceHookErrorSpanLevel(logrus.ErrorLevel),
 		// 打印所有日志
-		hertzlogrus.WithTraceHookLevels(logrus.AllLevels),
+		kitexlogrus.WithTraceHookLevels(logrus.AllLevels),
 		// 打印日志的字段
-		hertzlogrus.WithRecordStackTraceInSpan(true),
+		kitexlogrus.WithRecordStackTraceInSpan(true),
 	)
-	hlog.SetLogger(logger)
-	hlog.SetLevel(hlog.LevelTrace)
-	hlog.SetOutput(xlog.LogOutFile(serviceName))
-	return &Trace{provider: p}
+	klog.SetLogger(logger)
+	klog.SetLevel(klog.LevelTrace)
+	klog.SetOutput(xlog.LogOutFile(serviceName))
+	return &KitexTrace{provider: p}
 }
 
-//defer p.Shutdown(context.Background())
-
-func (t *Trace) Shutdown() {
+// defer p.Shutdown(context.Background())
+func (t *KitexTrace) Shutdown() {
 	t.provider.Shutdown(context.Background())
 }

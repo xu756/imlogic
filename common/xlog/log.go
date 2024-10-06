@@ -2,9 +2,6 @@ package xlog
 
 import (
 	"fmt"
-	hertzzap "github.com/hertz-contrib/logger/zap"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"imlogic/common/types"
 
@@ -16,11 +13,11 @@ import (
 	"time"
 )
 
-func InitHertzLog(serviceName string) *hertzzap.Logger {
-	logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
-	logger.SetOutput(LogOutFile(serviceName))
-	return logger
-}
+//func InitHertzLog(serviceName string) *hertzzap.Logger {
+//	logger := hertzzap.NewLogger(hertzzap.WithZapOptions(zap.WithFatalHook(zapcore.WriteThenPanic)))
+//	logger.SetOutput(LogOutFile(serviceName))
+//	return logger
+//}
 
 func LogOutFile(serviceName string) io.Writer {
 	// 可定制的输出目录。
