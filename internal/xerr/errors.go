@@ -3,10 +3,6 @@ package xerr
 import (
 	"errors"
 	"fmt"
-	types "imlogic/common/types"
-	"imlogic/internal/xlog"
-
-	"google.golang.org/grpc/codes"
 )
 
 /**
@@ -16,13 +12,6 @@ import (
 type CodeError struct {
 	Code int32  `json:"code"`
 	Msg  string `json:"msg"`
-}
-
-func GetCodeError(code int32) CodeError {
-	return CodeError{
-		Code: code,
-		Msg:  message[code],
-	}
 }
 
 func (e CodeError) Error() string {
@@ -49,8 +38,8 @@ func WarnMsg(format string, v ...interface{}) error {
 }
 
 func RoleErr(format string, v ...interface{}) error {
-	msg := fmt.Sprintf(format, v...)
-	xlog.ErrLog(types.RedisErrCode, msg, nil)
+	//msg := fmt.Sprintf(format, v...)
+	//xlog.SystemErrLog(enum.RedisErrCode, msg, nil)
 	return CodeError{
 		Code: RoleErrCode,
 		Msg:  message[RoleErrCode],
@@ -58,8 +47,8 @@ func RoleErr(format string, v ...interface{}) error {
 }
 
 func DbErr(err error, format string, v ...interface{}) error {
-	msg := fmt.Sprintf(format, v...)
-	xlog.ErrLog(types.DbErrCode, msg, err)
+	//msg := fmt.Sprintf(format, v...)
+	//xlog.SystemErrLog(enum.DbErrCode, msg, err)
 	return CodeError{
 		Code: SystemErrCode,
 		Msg:  message[SystemErrCode],
@@ -67,8 +56,41 @@ func DbErr(err error, format string, v ...interface{}) error {
 }
 
 func RedisErr(err error, format string, v ...interface{}) error {
-	msg := fmt.Sprintf(format, v...)
-	xlog.ErrLog(types.RedisErrCode, msg, err)
+	//msg := fmt.Sprintf(format, v...)
+	//xlog.SystemErrLog(enum.RedisErrCode, msg, err)
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+}
+
+func WxApiErr(msg string, err error) error {
+	//xlog.SystemErrLog(enum.WxApiErrCode, msg, err)
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+}
+
+func TtApiErr(msg string, err error) error {
+	//xlog.SystemErrLog(enum.TtApiErrCode, msg, err)
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+}
+
+func EmailErr(msg string, err error) error {
+	//xlog.SystemErrLog(enum.EmailErrCode, msg, err)
+	return CodeError{
+		Code: SystemErrCode,
+		Msg:  message[SystemErrCode],
+	}
+
+}
+
+func SmsErr(msg string, err error) error {
+	//xlog.SystemErrLog(enum.SmsErrCode, msg, err)
 	return CodeError{
 		Code: SystemErrCode,
 		Msg:  message[SystemErrCode],
@@ -76,7 +98,7 @@ func RedisErr(err error, format string, v ...interface{}) error {
 }
 
 func UnmarshalErr(msg string) error {
-	xlog.ErrLog(types.UnmarshalErrCode, msg, nil)
+	//xlog.SystemErrLog(enum.UnmarshalErrCode, msg, nil)
 	return CodeError{
 		Code: SystemErrCode,
 		Msg:  message[SystemErrCode],
@@ -85,27 +107,10 @@ func UnmarshalErr(msg string) error {
 }
 
 func UploadImageErr(err error, format string, v ...interface{}) error {
-	msg := fmt.Sprintf(format, v...)
-	xlog.ErrLog(types.UploadImageFail, msg, err)
+	//msg := fmt.Sprintf(format, v...)
+	//xlog.SystemErrLog(enum.UploadImageFail, msg, err)
 	return CodeError{
 		Code: SystemErrCode,
 		Msg:  message[SystemErrCode],
 	}
-}
-
-func SmsErr(err error, format string, v ...interface{}) error {
-	msg := fmt.Sprintf(format, v...)
-	xlog.ErrLog(types.SmsErrCode, msg, err)
-	return CodeError{
-		Code: SystemErrCode,
-		Msg:  message[SystemErrCode],
-	}
-}
-
-func GetErrorCode(err error) (codes.Code, bool) {
-	var xErr CodeError
-	if !errors.As(err, &xErr) {
-		return 0, false
-	}
-	return codes.Code(xErr.Code), true
 }

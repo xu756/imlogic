@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"imlogic/app/api/logic"
 	"imlogic/common/config"
 	"imlogic/internal/middleware"
@@ -11,11 +12,13 @@ import (
 var HttpServer *server.Hertz
 
 func InitRouter() {
-	h := server.Default(
+	tracer, cfg := tracing.NewServerTracer()
+	h := server.Default(tracer,
 		server.WithHostPorts(config.RunData().Addr.ApiAddr),
 		server.WithReadBufferSize(1024*1024*100),
 		server.WithMaxRequestBodySize(1024*1024*100),
 	)
+	h.Use(tracing.ServerMiddleware(cfg))
 	router := h.Group("/api")
 	// 登录路由
 	logic.LoginRoute(router.Group("/login"))

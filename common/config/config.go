@@ -1,17 +1,18 @@
 package config
 
 type Config struct {
-	Addr        Addr        `yaml:"Addr"`
-	Rpc         Rpc         `yaml:"Rpc"`
-	DbConfig    DbConfig    `yaml:"DbConfig"`
-	RedisConfig RedisConfig `yaml:"RedisConfig"`
-	JwtConfig   JwtConfig   `yaml:"JwtConfig"`
-	MqUrl       string      `yaml:"MqUrl"`
-	Version     string      `yaml:"Version"`
-	CosUrl      string      `yaml:"CosUrl"`
-	UploadPath  string      `yaml:"UploadPath"`
-	Minio       Minio       `yaml:"Minio"`
-	MongodbUrl  string      `yaml:"MongodbUrl"`
+	Addr          Addr          `yaml:"Addr"`
+	Rpc           Rpc           `yaml:"Rpc"`
+	DbConfig      DbConfig      `yaml:"DbConfig"`
+	RedisConfig   RedisConfig   `yaml:"RedisConfig"`
+	JwtConfig     JwtConfig     `yaml:"JwtConfig"`
+	MqUrl         string        `yaml:"MqUrl"`
+	Version       string        `yaml:"Version"`
+	CosUrl        string        `yaml:"CosUrl"`
+	UploadPath    string        `yaml:"UploadPath"`
+	Minio         Minio         `yaml:"Minio"`
+	MongodbUrl    string        `yaml:"MongodbUrl"`
+	OpenTelemetry OpenTelemetry `yaml:"openTelemetry"`
 }
 
 type Addr struct {
@@ -55,6 +56,14 @@ type Minio struct {
 	SecretAccessKey string `yaml:"SecretAccessKey"`
 	UseSSL          bool   `yaml:"UseSSL"`
 	Bucket          string `yaml:"Bucket"`
+}
+type OpenTelemetry struct {
+	Addr     string `yaml:"addr"`
+	Endpoint string `yaml:"endpoint"`
+	Straem   string `yaml:"stream"`
+	UserName string `yaml:"userName"`
+	PassWord string `yaml:"passWord"`
+	FullSize int    `yaml:"fullSize"`
 }
 
 func GetVersion() string {

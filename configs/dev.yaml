@@ -42,4 +42,13 @@ Minio:
   UseSSL: false 
   Bucket: appserver
 
+
+openTelemetry:
+  addr: https://log.imlogic.cn
+  endpoint: log.imlogic.cn:15081
+  stream: imlogic
+  userName: imlogic@qq.com
+  passWord: imlogic123
+  fullSize: 20
+
 MongodbUrl: mongodb://root:fyU0bj2KLndYN6CKYubb@110.40.208.122:17017
