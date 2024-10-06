@@ -16,7 +16,7 @@ WORKDIR /app
 
 
 
-RUN go build -ldflags="-s -w"  -o /app/main  app/api/main.go
+RUN go build -ldflags="-s -w"  -o /app/main  app/user/main.go
 
 
 FROM alpine:3.20.2

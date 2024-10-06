@@ -1,13 +1,13 @@
-name: 构建im-api镜像
+name: 构建im-user镜像
 
 
 on:
   workflow_dispatch:
 
 env:
-  PACKAGE_NAME: im-api
+  PACKAGE_NAME: im-user
   PACKAGE_VERSION: latest
-  DOCKERFILE_PATH: app/api/Dockerfile
+  DOCKERFILE_PATH: app/user/Dockerfile
 
 
 jobs:
