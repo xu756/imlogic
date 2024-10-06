@@ -10,8 +10,6 @@ import (
 	"log"
 )
 
-var ()
-
 func Connect(ctx context.Context, c *app.RequestContext) {
 	userInfo, err := service.Jwt.GetUserInfoFromHeardToken(c)
 	if err != nil {
@@ -22,6 +20,7 @@ func Connect(ctx context.Context, c *app.RequestContext) {
 		conn := client.NewClient(
 			ctx, ws,
 			uuid.NewString(),
+			service.hostIp,
 			userInfo.UserId,
 			onConnect,
 			onClose,

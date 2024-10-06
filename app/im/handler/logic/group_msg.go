@@ -27,7 +27,7 @@ func (i *ImRpcImpl) HandlerGroupMessage(ctx context.Context, req *base.Message) 
 			return nil, err
 		}
 		for _, conn := range conns {
-			err = i.PrivateMq.PublishPrivateMessage(conn.LinkID, conn.HostName, req)
+			err = i.PrivateMq.PublishPrivateMessage(conn.LinkID, conn.HostIP, req)
 			if err != nil {
 				log.Print("publish group message error: ", err)
 			}

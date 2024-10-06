@@ -22,6 +22,6 @@ func broadcast() {
 }
 
 func broadcastFunc(msg *base.Message) {
-	rpc := NewWsServerRpcClient("devLinux")
+	rpc := NewWsServerRpcClient("im-server")
 	go rpc.SendMsgToAll(context.Background(), msg)
 }

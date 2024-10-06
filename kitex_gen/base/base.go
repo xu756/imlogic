@@ -1326,11 +1326,11 @@ func (p *Message) Field9DeepEqual(src *Event) bool {
 }
 
 type MetaMsg struct {
-	LinkId   string   `thrift:"link_id,1" frugal:"1,default,string" json:"link_id"`
-	UserId   int64    `thrift:"user_id,2" frugal:"2,default,i64" json:"user_id"`
-	Status   WsStatus `thrift:"status,3" frugal:"3,default,WsStatus" json:"status"`
-	HostName string   `thrift:"host_name,4" frugal:"4,default,string" json:"host_name"`
-	Device   string   `thrift:"device,5" frugal:"5,default,string" json:"device"`
+	LinkId string   `thrift:"link_id,1" frugal:"1,default,string" json:"link_id"`
+	UserId int64    `thrift:"user_id,2" frugal:"2,default,i64" json:"user_id"`
+	Status WsStatus `thrift:"status,3" frugal:"3,default,WsStatus" json:"status"`
+	HostIp string   `thrift:"host_ip,4" frugal:"4,default,string" json:"host_ip"`
+	Device string   `thrift:"device,5" frugal:"5,default,string" json:"device"`
 }
 
 func NewMetaMsg() *MetaMsg {
@@ -1353,8 +1353,8 @@ func (p *MetaMsg) GetStatus() (v WsStatus) {
 	return p.Status
 }
 
-func (p *MetaMsg) GetHostName() (v string) {
-	return p.HostName
+func (p *MetaMsg) GetHostIp() (v string) {
+	return p.HostIp
 }
 
 func (p *MetaMsg) GetDevice() (v string) {
@@ -1369,8 +1369,8 @@ func (p *MetaMsg) SetUserId(val int64) {
 func (p *MetaMsg) SetStatus(val WsStatus) {
 	p.Status = val
 }
-func (p *MetaMsg) SetHostName(val string) {
-	p.HostName = val
+func (p *MetaMsg) SetHostIp(val string) {
+	p.HostIp = val
 }
 func (p *MetaMsg) SetDevice(val string) {
 	p.Device = val
@@ -1380,7 +1380,7 @@ var fieldIDToName_MetaMsg = map[int16]string{
 	1: "link_id",
 	2: "user_id",
 	3: "status",
-	4: "host_name",
+	4: "host_ip",
 	5: "device",
 }
 
@@ -1504,7 +1504,7 @@ func (p *MetaMsg) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.HostName = v
+		p.HostIp = v
 	}
 	return nil
 }
@@ -1614,10 +1614,10 @@ WriteFieldEndError:
 }
 
 func (p *MetaMsg) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("host_name", thrift.STRING, 4); err != nil {
+	if err = oprot.WriteFieldBegin("host_ip", thrift.STRING, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.HostName); err != nil {
+	if err := oprot.WriteString(p.HostIp); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1670,7 +1670,7 @@ func (p *MetaMsg) DeepEqual(ano *MetaMsg) bool {
 	if !p.Field3DeepEqual(ano.Status) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.HostName) {
+	if !p.Field4DeepEqual(ano.HostIp) {
 		return false
 	}
 	if !p.Field5DeepEqual(ano.Device) {
@@ -1702,7 +1702,7 @@ func (p *MetaMsg) Field3DeepEqual(src WsStatus) bool {
 }
 func (p *MetaMsg) Field4DeepEqual(src string) bool {
 
-	if strings.Compare(p.HostName, src) != 0 {
+	if strings.Compare(p.HostIp, src) != 0 {
 		return false
 	}
 	return true

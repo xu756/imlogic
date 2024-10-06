@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"imlogic/kitex_gen/base"
-	"os"
 	"sync"
 	"time"
 
@@ -20,7 +19,7 @@ type Client struct {
 	cancelFunc context.CancelFunc
 	linkId     string // websocket 连接 id
 	userId     int64  // 用户id
-	hostName   string
+	hostIp     string
 	lock       sync.Mutex
 	ws         *websocket.Conn
 	send       chan *base.Message
@@ -31,7 +30,7 @@ type Client struct {
 	OnClose    func(*Client)
 }
 
-func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId int64,
+func NewClient(ctx context.Context, ws *websocket.Conn, linkID, hostIp string, userId int64,
 	connect func(*Client),
 	close func(*Client),
 	metaMsg func(*Client, *base.MetaMsg),
@@ -40,11 +39,10 @@ func NewClient(ctx context.Context, ws *websocket.Conn, linkID string, userId in
 ) *Client {
 	ctx, cancelFunc := context.WithCancel(ctx)
 	ws.SetReadLimit(1024 * 1024 * 100)
-	hostname, _ := os.Hostname()
 	conn := &Client{
 		ctx:        ctx,
 		cancelFunc: cancelFunc,
-		hostName:   hostname,
+		hostIp:     hostIp,
 		linkId:     linkID,
 		userId:     userId,
 		send:       make(chan *base.Message, 1024),
@@ -155,30 +153,30 @@ func (c *Client) write(msg *base.Message) {
 // connectMsg 连接消息
 func (c *Client) ConnectMsg() *base.MetaMsg {
 	return &base.MetaMsg{
-		LinkId:   c.GetLinkId(),
-		UserId:   c.GetUserId(),
-		Status:   base.WsStatus_Connect,
-		HostName: c.hostName,
+		LinkId: c.GetLinkId(),
+		UserId: c.GetUserId(),
+		Status: base.WsStatus_Connect,
+		HostIp: c.hostIp,
 	}
 }
 
 // heartbeatMsg 心跳消息
 func (c *Client) HeartbeatMsg() *base.MetaMsg {
 	return &base.MetaMsg{
-		LinkId:   c.GetLinkId(),
-		UserId:   c.GetUserId(),
-		Status:   base.WsStatus_Heartbeat,
-		HostName: c.hostName,
+		LinkId: c.GetLinkId(),
+		UserId: c.GetUserId(),
+		Status: base.WsStatus_Heartbeat,
+		HostIp: c.hostIp,
 	}
 }
 
 // disconnectMsg 断开连接消息
 func (c *Client) DisconnectMsg() *base.MetaMsg {
 	return &base.MetaMsg{
-		LinkId:   c.GetLinkId(),
-		UserId:   c.GetUserId(),
-		Status:   base.WsStatus_Disconnect,
-		HostName: c.hostName,
+		LinkId: c.GetLinkId(),
+		UserId: c.GetUserId(),
+		Status: base.WsStatus_Disconnect,
+		HostIp: c.hostIp,
 	}
 }
 

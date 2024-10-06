@@ -1,14 +1,14 @@
 package logic
 
 import (
+	"github.com/cloudwego/kitex/client"
 	"imlogic/common/config"
 	"imlogic/common/hub"
+	"imlogic/common/ip"
 	"imlogic/internal/middleware"
 	"imlogic/internal/xjwt"
 	"imlogic/kitex_gen/im/imhandler"
 	"log"
-
-	"github.com/cloudwego/kitex/client"
 )
 
 var service *Service
@@ -17,6 +17,7 @@ type Service struct {
 	ImHandler imhandler.Client
 	Jwt       *xjwt.Jwt
 	hub       *hub.Hub
+	hostIp    string
 }
 
 func InitService() {
@@ -32,5 +33,6 @@ func InitService() {
 		ImHandler: s,
 		Jwt:       xjwt.NewJwt(),
 		hub:       hub.NewHub(),
+		hostIp:    ip.GetCurrentIp(),
 	}
 }

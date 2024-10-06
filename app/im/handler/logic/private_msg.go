@@ -40,7 +40,7 @@ func (i *ImRpcImpl) HandlerPrivateMessage(ctx context.Context, req *base.Message
 	}
 	// todo 当不存在连接时，是否需要存储消息
 	for _, conn := range conns {
-		err = i.PrivateMq.PublishPrivateMessage(conn.LinkID, conn.HostName, req)
+		err = i.PrivateMq.PublishPrivateMessage(conn.LinkID, conn.HostIP, req)
 		if err != nil {
 			log.Print("publish private message error: ", err)
 		}

@@ -1,1 +1,1 @@
-kitex -module imlogic  idl/user.proto 
+kitex -module imlogic  idl/im.thrift

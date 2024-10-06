@@ -1090,7 +1090,7 @@ func (p *MetaMsg) FastReadField4(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.HostName = v
+		p.HostIp = v
 
 	}
 	return offset, nil
@@ -1174,8 +1174,8 @@ func (p *MetaMsg) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter)
 
 func (p *MetaMsg) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "host_name", thrift.STRING, 4)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.HostName)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "host_ip", thrift.STRING, 4)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.HostIp)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1219,8 +1219,8 @@ func (p *MetaMsg) field3Length() int {
 
 func (p *MetaMsg) field4Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("host_name", thrift.STRING, 4)
-	l += bthrift.Binary.StringLengthNocopy(p.HostName)
+	l += bthrift.Binary.FieldBeginLength("host_ip", thrift.STRING, 4)
+	l += bthrift.Binary.StringLengthNocopy(p.HostIp)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

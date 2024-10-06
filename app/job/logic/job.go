@@ -13,9 +13,9 @@ func StartJob() {
 	broadcast()
 }
 
-func NewWsServerRpcClient(hostName string) imserver.Client {
+func NewWsServerRpcClient(hostIp string) imserver.Client {
 	s, err := imserver.NewClient("im-server",
-		client.WithHostPorts(hostName+":7083"),
+		client.WithHostPorts(hostIp+":7083"),
 		client.WithErrorHandler(middleware.ClientErrorHandler),
 	)
 	if err != nil {
