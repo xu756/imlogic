@@ -121,7 +121,7 @@ var (
 		{Name: "link_id", Type: field.TypeString, Unique: true},
 		{Name: "link_time", Type: field.TypeTime},
 		{Name: "user_id", Type: field.TypeInt64},
-		{Name: "host_name", Type: field.TypeString, Default: ""},
+		{Name: "host_ip", Type: field.TypeString, Default: ""},
 		{Name: "device", Type: field.TypeString, Default: ""},
 		{Name: "last_heartbeat_time", Type: field.TypeTime},
 	}
@@ -137,7 +137,7 @@ var (
 				Columns: []*schema.Column{UserConnsColumns[1]},
 			},
 			{
-				Name:    "userconn_user_id_host_name",
+				Name:    "userconn_user_id_host_ip",
 				Unique:  false,
 				Columns: []*schema.Column{UserConnsColumns[3], UserConnsColumns[4]},
 			},

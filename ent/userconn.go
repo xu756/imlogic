@@ -23,8 +23,8 @@ type UserConn struct {
 	LinkTime time.Time `json:"link_time,omitempty"`
 	// 用户id
 	UserID int64 `json:"user_id,omitempty"`
-	// 主机名
-	HostName string `json:"host_name,omitempty"`
+	// 主机ip
+	HostIP string `json:"host_ip,omitempty"`
 	// 设备
 	Device string `json:"device,omitempty"`
 	// 最后一次心跳时间
@@ -39,7 +39,7 @@ func (*UserConn) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case userconn.FieldID, userconn.FieldUserID:
 			values[i] = new(sql.NullInt64)
-		case userconn.FieldLinkID, userconn.FieldHostName, userconn.FieldDevice:
+		case userconn.FieldLinkID, userconn.FieldHostIP, userconn.FieldDevice:
 			values[i] = new(sql.NullString)
 		case userconn.FieldLinkTime, userconn.FieldLastHeartbeatTime:
 			values[i] = new(sql.NullTime)
@@ -82,11 +82,11 @@ func (uc *UserConn) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				uc.UserID = value.Int64
 			}
-		case userconn.FieldHostName:
+		case userconn.FieldHostIP:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field host_name", values[i])
+				return fmt.Errorf("unexpected type %T for field host_ip", values[i])
 			} else if value.Valid {
-				uc.HostName = value.String
+				uc.HostIP = value.String
 			}
 		case userconn.FieldDevice:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -145,8 +145,8 @@ func (uc *UserConn) String() string {
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", uc.UserID))
 	builder.WriteString(", ")
-	builder.WriteString("host_name=")
-	builder.WriteString(uc.HostName)
+	builder.WriteString("host_ip=")
+	builder.WriteString(uc.HostIP)
 	builder.WriteString(", ")
 	builder.WriteString("device=")
 	builder.WriteString(uc.Device)

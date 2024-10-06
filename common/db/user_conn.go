@@ -12,13 +12,13 @@ type dbUserConnModel interface {
 	//  根据用户ID查找用户连接信息
 	GetUserConnsByUserId(ctx context.Context, userId int64) (userConns []*ent.UserConn, err error)
 	//  添加用户连接信息
-	AddUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
+	AddUserConn(ctx context.Context, userId int64, hostIp, device, linkId string) (err error)
 	// 获取所有连接信息
 	GetAllUserConns(ctx context.Context) (userConns []*ent.UserConn, err error)
 	// 删除用户连接信息
-	DeleteUserConn(ctx context.Context, userId int64, hostName, linkId string) (err error)
+	DeleteUserConn(ctx context.Context, userId int64, hostIp, linkId string) (err error)
 	// 更新最后一次心跳时间
-	UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostName, device, linkId string) (err error)
+	UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostIp, device, linkId string) (err error)
 	// 删除最后一次心跳时间大于当前2分钟
 	DeleteUserConnByHeartbeatTime(ctx context.Context) (err error)
 }
@@ -39,16 +39,16 @@ func (m *customModel) GetUserConnsByUserId(ctx context.Context, userId int64) (u
 }
 
 // 添加用户连接信息
-func (m *customModel) AddUserConn(ctx context.Context, userId int64, hostName, device, linkId string) (err error) {
+func (m *customModel) AddUserConn(ctx context.Context, userId int64, hostIp, device, linkId string) (err error) {
 	_, err = m.client.UserConn.Create().
 		SetUserID(userId).
-		SetHostName(hostName).
+		SetHostIP(hostIp).
 		SetDevice(device).
 		SetLinkID(linkId).
 		SetLinkTime(time.Now()).
 		Save(ctx)
 	if err != nil {
-		return xerr.DbErr(err, "添加用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostName, device, linkId)
+		return xerr.DbErr(err, "添加用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostIp, device, linkId)
 	}
 	return nil
 }
@@ -65,24 +65,24 @@ func (m *customModel) GetAllUserConns(ctx context.Context) (userConns []*ent.Use
 }
 
 // 删除用户连接信息
-func (m *customModel) DeleteUserConn(ctx context.Context, userId int64, hostName, linkId string) (err error) {
+func (m *customModel) DeleteUserConn(ctx context.Context, userId int64, hostIp, linkId string) (err error) {
 	_, err = m.client.UserConn.Delete().
 		Where(userconn.LinkID(linkId)).
 		Exec(ctx)
 	if err != nil {
-		return xerr.DbErr(err, "删除用户连接信息失败 用户ID:%d 主机名:%s 连接ID:%s", userId, hostName, linkId)
+		return xerr.DbErr(err, "删除用户连接信息失败 用户ID:%d 主机名:%s 连接ID:%s", userId, hostIp, linkId)
 	}
 	return nil
 }
 
 // 更新最后一次心跳时间
-func (m *customModel) UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostName, device, linkId string) (err error) {
+func (m *customModel) UpdateLastHeartbeatTime(ctx context.Context, userId int64, hostIp, device, linkId string) (err error) {
 	_, err = m.client.UserConn.Update().
 		Where(userconn.LinkID(linkId)).
 		SetLastHeartbeatTime(time.Now()).
 		Save(ctx)
 	if err != nil {
-		return xerr.DbErr(err, "更新用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostName, device, linkId)
+		return xerr.DbErr(err, "更新用户连接信息失败 用户ID:%d 主机名:%s 设备:%s 连接ID:%s", userId, hostIp, device, linkId)
 	}
 	return nil
 }

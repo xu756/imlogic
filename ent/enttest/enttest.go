@@ -4,6 +4,7 @@ package enttest
 
 import (
 	"context"
+
 	"imlogic/ent"
 	// required by schema hooks.
 	_ "imlogic/ent/runtime"

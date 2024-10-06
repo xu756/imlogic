@@ -3,7 +3,7 @@ module imlogic
 go 1.23.1
 
 require (
-	entgo.io/ent v0.13.0
+	entgo.io/ent v0.14.1
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/hertz v0.7.2
 	github.com/cloudwego/kitex v0.10.1
@@ -76,12 +76,12 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	golang.org/x/arch v0.4.0 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
-	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
+	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect

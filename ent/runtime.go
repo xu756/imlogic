@@ -105,10 +105,10 @@ func init() {
 	userconnDescLinkTime := userconnFields[1].Descriptor()
 	// userconn.DefaultLinkTime holds the default value on creation for the link_time field.
 	userconn.DefaultLinkTime = userconnDescLinkTime.Default.(func() time.Time)
-	// userconnDescHostName is the schema descriptor for host_name field.
-	userconnDescHostName := userconnFields[3].Descriptor()
-	// userconn.DefaultHostName holds the default value on creation for the host_name field.
-	userconn.DefaultHostName = userconnDescHostName.Default.(string)
+	// userconnDescHostIP is the schema descriptor for host_ip field.
+	userconnDescHostIP := userconnFields[3].Descriptor()
+	// userconn.DefaultHostIP holds the default value on creation for the host_ip field.
+	userconn.DefaultHostIP = userconnDescHostIP.Default.(string)
 	// userconnDescDevice is the schema descriptor for device field.
 	userconnDescDevice := userconnFields[4].Descriptor()
 	// userconn.DefaultDevice holds the default value on creation for the device field.

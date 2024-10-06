@@ -19,8 +19,8 @@ const (
 	FieldLinkTime = "link_time"
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
-	// FieldHostName holds the string denoting the host_name field in the database.
-	FieldHostName = "host_name"
+	// FieldHostIP holds the string denoting the host_ip field in the database.
+	FieldHostIP = "host_ip"
 	// FieldDevice holds the string denoting the device field in the database.
 	FieldDevice = "device"
 	// FieldLastHeartbeatTime holds the string denoting the last_heartbeat_time field in the database.
@@ -35,7 +35,7 @@ var Columns = []string{
 	FieldLinkID,
 	FieldLinkTime,
 	FieldUserID,
-	FieldHostName,
+	FieldHostIP,
 	FieldDevice,
 	FieldLastHeartbeatTime,
 }
@@ -53,8 +53,8 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultLinkTime holds the default value on creation for the "link_time" field.
 	DefaultLinkTime func() time.Time
-	// DefaultHostName holds the default value on creation for the "host_name" field.
-	DefaultHostName string
+	// DefaultHostIP holds the default value on creation for the "host_ip" field.
+	DefaultHostIP string
 	// DefaultDevice holds the default value on creation for the "device" field.
 	DefaultDevice string
 	// DefaultLastHeartbeatTime holds the default value on creation for the "last_heartbeat_time" field.
@@ -84,9 +84,9 @@ func ByUserID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUserID, opts...).ToFunc()
 }
 
-// ByHostName orders the results by the host_name field.
-func ByHostName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldHostName, opts...).ToFunc()
+// ByHostIP orders the results by the host_ip field.
+func ByHostIP(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHostIP, opts...).ToFunc()
 }
 
 // ByDevice orders the results by the device field.

@@ -49,16 +49,16 @@ func (ucu *UserConnUpdate) AddUserID(i int64) *UserConnUpdate {
 	return ucu
 }
 
-// SetHostName sets the "host_name" field.
-func (ucu *UserConnUpdate) SetHostName(s string) *UserConnUpdate {
-	ucu.mutation.SetHostName(s)
+// SetHostIP sets the "host_ip" field.
+func (ucu *UserConnUpdate) SetHostIP(s string) *UserConnUpdate {
+	ucu.mutation.SetHostIP(s)
 	return ucu
 }
 
-// SetNillableHostName sets the "host_name" field if the given value is not nil.
-func (ucu *UserConnUpdate) SetNillableHostName(s *string) *UserConnUpdate {
+// SetNillableHostIP sets the "host_ip" field if the given value is not nil.
+func (ucu *UserConnUpdate) SetNillableHostIP(s *string) *UserConnUpdate {
 	if s != nil {
-		ucu.SetHostName(*s)
+		ucu.SetHostIP(*s)
 	}
 	return ucu
 }
@@ -138,8 +138,8 @@ func (ucu *UserConnUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := ucu.mutation.AddedUserID(); ok {
 		_spec.AddField(userconn.FieldUserID, field.TypeInt64, value)
 	}
-	if value, ok := ucu.mutation.HostName(); ok {
-		_spec.SetField(userconn.FieldHostName, field.TypeString, value)
+	if value, ok := ucu.mutation.HostIP(); ok {
+		_spec.SetField(userconn.FieldHostIP, field.TypeString, value)
 	}
 	if value, ok := ucu.mutation.Device(); ok {
 		_spec.SetField(userconn.FieldDevice, field.TypeString, value)
@@ -188,16 +188,16 @@ func (ucuo *UserConnUpdateOne) AddUserID(i int64) *UserConnUpdateOne {
 	return ucuo
 }
 
-// SetHostName sets the "host_name" field.
-func (ucuo *UserConnUpdateOne) SetHostName(s string) *UserConnUpdateOne {
-	ucuo.mutation.SetHostName(s)
+// SetHostIP sets the "host_ip" field.
+func (ucuo *UserConnUpdateOne) SetHostIP(s string) *UserConnUpdateOne {
+	ucuo.mutation.SetHostIP(s)
 	return ucuo
 }
 
-// SetNillableHostName sets the "host_name" field if the given value is not nil.
-func (ucuo *UserConnUpdateOne) SetNillableHostName(s *string) *UserConnUpdateOne {
+// SetNillableHostIP sets the "host_ip" field if the given value is not nil.
+func (ucuo *UserConnUpdateOne) SetNillableHostIP(s *string) *UserConnUpdateOne {
 	if s != nil {
-		ucuo.SetHostName(*s)
+		ucuo.SetHostIP(*s)
 	}
 	return ucuo
 }
@@ -307,8 +307,8 @@ func (ucuo *UserConnUpdateOne) sqlSave(ctx context.Context) (_node *UserConn, er
 	if value, ok := ucuo.mutation.AddedUserID(); ok {
 		_spec.AddField(userconn.FieldUserID, field.TypeInt64, value)
 	}
-	if value, ok := ucuo.mutation.HostName(); ok {
-		_spec.SetField(userconn.FieldHostName, field.TypeString, value)
+	if value, ok := ucuo.mutation.HostIP(); ok {
+		_spec.SetField(userconn.FieldHostIP, field.TypeString, value)
 	}
 	if value, ok := ucuo.mutation.Device(); ok {
 		_spec.SetField(userconn.FieldDevice, field.TypeString, value)

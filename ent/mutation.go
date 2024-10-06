@@ -3448,7 +3448,7 @@ type UserConnMutation struct {
 	link_time           *time.Time
 	user_id             *int64
 	adduser_id          *int64
-	host_name           *string
+	host_ip             *string
 	device              *string
 	last_heartbeat_time *time.Time
 	clearedFields       map[string]struct{}
@@ -3683,40 +3683,40 @@ func (m *UserConnMutation) ResetUserID() {
 	m.adduser_id = nil
 }
 
-// SetHostName sets the "host_name" field.
-func (m *UserConnMutation) SetHostName(s string) {
-	m.host_name = &s
+// SetHostIP sets the "host_ip" field.
+func (m *UserConnMutation) SetHostIP(s string) {
+	m.host_ip = &s
 }
 
-// HostName returns the value of the "host_name" field in the mutation.
-func (m *UserConnMutation) HostName() (r string, exists bool) {
-	v := m.host_name
+// HostIP returns the value of the "host_ip" field in the mutation.
+func (m *UserConnMutation) HostIP() (r string, exists bool) {
+	v := m.host_ip
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldHostName returns the old "host_name" field's value of the UserConn entity.
+// OldHostIP returns the old "host_ip" field's value of the UserConn entity.
 // If the UserConn object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserConnMutation) OldHostName(ctx context.Context) (v string, err error) {
+func (m *UserConnMutation) OldHostIP(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldHostName is only allowed on UpdateOne operations")
+		return v, errors.New("OldHostIP is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldHostName requires an ID field in the mutation")
+		return v, errors.New("OldHostIP requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldHostName: %w", err)
+		return v, fmt.Errorf("querying old value for OldHostIP: %w", err)
 	}
-	return oldValue.HostName, nil
+	return oldValue.HostIP, nil
 }
 
-// ResetHostName resets all changes to the "host_name" field.
-func (m *UserConnMutation) ResetHostName() {
-	m.host_name = nil
+// ResetHostIP resets all changes to the "host_ip" field.
+func (m *UserConnMutation) ResetHostIP() {
+	m.host_ip = nil
 }
 
 // SetDevice sets the "device" field.
@@ -3835,8 +3835,8 @@ func (m *UserConnMutation) Fields() []string {
 	if m.user_id != nil {
 		fields = append(fields, userconn.FieldUserID)
 	}
-	if m.host_name != nil {
-		fields = append(fields, userconn.FieldHostName)
+	if m.host_ip != nil {
+		fields = append(fields, userconn.FieldHostIP)
 	}
 	if m.device != nil {
 		fields = append(fields, userconn.FieldDevice)
@@ -3858,8 +3858,8 @@ func (m *UserConnMutation) Field(name string) (ent.Value, bool) {
 		return m.LinkTime()
 	case userconn.FieldUserID:
 		return m.UserID()
-	case userconn.FieldHostName:
-		return m.HostName()
+	case userconn.FieldHostIP:
+		return m.HostIP()
 	case userconn.FieldDevice:
 		return m.Device()
 	case userconn.FieldLastHeartbeatTime:
@@ -3879,8 +3879,8 @@ func (m *UserConnMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldLinkTime(ctx)
 	case userconn.FieldUserID:
 		return m.OldUserID(ctx)
-	case userconn.FieldHostName:
-		return m.OldHostName(ctx)
+	case userconn.FieldHostIP:
+		return m.OldHostIP(ctx)
 	case userconn.FieldDevice:
 		return m.OldDevice(ctx)
 	case userconn.FieldLastHeartbeatTime:
@@ -3915,12 +3915,12 @@ func (m *UserConnMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUserID(v)
 		return nil
-	case userconn.FieldHostName:
+	case userconn.FieldHostIP:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetHostName(v)
+		m.SetHostIP(v)
 		return nil
 	case userconn.FieldDevice:
 		v, ok := value.(string)
@@ -4009,8 +4009,8 @@ func (m *UserConnMutation) ResetField(name string) error {
 	case userconn.FieldUserID:
 		m.ResetUserID()
 		return nil
-	case userconn.FieldHostName:
-		m.ResetHostName()
+	case userconn.FieldHostIP:
+		m.ResetHostIP()
 		return nil
 	case userconn.FieldDevice:
 		m.ResetDevice()

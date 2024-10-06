@@ -46,16 +46,16 @@ func (ucc *UserConnCreate) SetUserID(i int64) *UserConnCreate {
 	return ucc
 }
 
-// SetHostName sets the "host_name" field.
-func (ucc *UserConnCreate) SetHostName(s string) *UserConnCreate {
-	ucc.mutation.SetHostName(s)
+// SetHostIP sets the "host_ip" field.
+func (ucc *UserConnCreate) SetHostIP(s string) *UserConnCreate {
+	ucc.mutation.SetHostIP(s)
 	return ucc
 }
 
-// SetNillableHostName sets the "host_name" field if the given value is not nil.
-func (ucc *UserConnCreate) SetNillableHostName(s *string) *UserConnCreate {
+// SetNillableHostIP sets the "host_ip" field if the given value is not nil.
+func (ucc *UserConnCreate) SetNillableHostIP(s *string) *UserConnCreate {
 	if s != nil {
-		ucc.SetHostName(*s)
+		ucc.SetHostIP(*s)
 	}
 	return ucc
 }
@@ -127,9 +127,9 @@ func (ucc *UserConnCreate) defaults() {
 		v := userconn.DefaultLinkTime()
 		ucc.mutation.SetLinkTime(v)
 	}
-	if _, ok := ucc.mutation.HostName(); !ok {
-		v := userconn.DefaultHostName
-		ucc.mutation.SetHostName(v)
+	if _, ok := ucc.mutation.HostIP(); !ok {
+		v := userconn.DefaultHostIP
+		ucc.mutation.SetHostIP(v)
 	}
 	if _, ok := ucc.mutation.Device(); !ok {
 		v := userconn.DefaultDevice
@@ -152,8 +152,8 @@ func (ucc *UserConnCreate) check() error {
 	if _, ok := ucc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "UserConn.user_id"`)}
 	}
-	if _, ok := ucc.mutation.HostName(); !ok {
-		return &ValidationError{Name: "host_name", err: errors.New(`ent: missing required field "UserConn.host_name"`)}
+	if _, ok := ucc.mutation.HostIP(); !ok {
+		return &ValidationError{Name: "host_ip", err: errors.New(`ent: missing required field "UserConn.host_ip"`)}
 	}
 	if _, ok := ucc.mutation.Device(); !ok {
 		return &ValidationError{Name: "device", err: errors.New(`ent: missing required field "UserConn.device"`)}
@@ -199,9 +199,9 @@ func (ucc *UserConnCreate) createSpec() (*UserConn, *sqlgraph.CreateSpec) {
 		_spec.SetField(userconn.FieldUserID, field.TypeInt64, value)
 		_node.UserID = value
 	}
-	if value, ok := ucc.mutation.HostName(); ok {
-		_spec.SetField(userconn.FieldHostName, field.TypeString, value)
-		_node.HostName = value
+	if value, ok := ucc.mutation.HostIP(); ok {
+		_spec.SetField(userconn.FieldHostIP, field.TypeString, value)
+		_node.HostIP = value
 	}
 	if value, ok := ucc.mutation.Device(); ok {
 		_spec.SetField(userconn.FieldDevice, field.TypeString, value)

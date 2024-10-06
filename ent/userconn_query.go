@@ -9,6 +9,7 @@ import (
 	"imlogic/ent/userconn"
 	"math"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -60,7 +61,7 @@ func (ucq *UserConnQuery) Order(o ...userconn.OrderOption) *UserConnQuery {
 // First returns the first UserConn entity from the query.
 // Returns a *NotFoundError when no UserConn was found.
 func (ucq *UserConnQuery) First(ctx context.Context) (*UserConn, error) {
-	nodes, err := ucq.Limit(1).All(setContextOp(ctx, ucq.ctx, "First"))
+	nodes, err := ucq.Limit(1).All(setContextOp(ctx, ucq.ctx, ent.OpQueryFirst))
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +84,7 @@ func (ucq *UserConnQuery) FirstX(ctx context.Context) *UserConn {
 // Returns a *NotFoundError when no UserConn ID was found.
 func (ucq *UserConnQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
-	if ids, err = ucq.Limit(1).IDs(setContextOp(ctx, ucq.ctx, "FirstID")); err != nil {
+	if ids, err = ucq.Limit(1).IDs(setContextOp(ctx, ucq.ctx, ent.OpQueryFirstID)); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -106,7 +107,7 @@ func (ucq *UserConnQuery) FirstIDX(ctx context.Context) int {
 // Returns a *NotSingularError when more than one UserConn entity is found.
 // Returns a *NotFoundError when no UserConn entities are found.
 func (ucq *UserConnQuery) Only(ctx context.Context) (*UserConn, error) {
-	nodes, err := ucq.Limit(2).All(setContextOp(ctx, ucq.ctx, "Only"))
+	nodes, err := ucq.Limit(2).All(setContextOp(ctx, ucq.ctx, ent.OpQueryOnly))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +135,7 @@ func (ucq *UserConnQuery) OnlyX(ctx context.Context) *UserConn {
 // Returns a *NotFoundError when no entities are found.
 func (ucq *UserConnQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
-	if ids, err = ucq.Limit(2).IDs(setContextOp(ctx, ucq.ctx, "OnlyID")); err != nil {
+	if ids, err = ucq.Limit(2).IDs(setContextOp(ctx, ucq.ctx, ent.OpQueryOnlyID)); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -159,7 +160,7 @@ func (ucq *UserConnQuery) OnlyIDX(ctx context.Context) int {
 
 // All executes the query and returns a list of UserConns.
 func (ucq *UserConnQuery) All(ctx context.Context) ([]*UserConn, error) {
-	ctx = setContextOp(ctx, ucq.ctx, "All")
+	ctx = setContextOp(ctx, ucq.ctx, ent.OpQueryAll)
 	if err := ucq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
@@ -181,7 +182,7 @@ func (ucq *UserConnQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if ucq.ctx.Unique == nil && ucq.path != nil {
 		ucq.Unique(true)
 	}
-	ctx = setContextOp(ctx, ucq.ctx, "IDs")
+	ctx = setContextOp(ctx, ucq.ctx, ent.OpQueryIDs)
 	if err = ucq.Select(userconn.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -199,7 +200,7 @@ func (ucq *UserConnQuery) IDsX(ctx context.Context) []int {
 
 // Count returns the count of the given query.
 func (ucq *UserConnQuery) Count(ctx context.Context) (int, error) {
-	ctx = setContextOp(ctx, ucq.ctx, "Count")
+	ctx = setContextOp(ctx, ucq.ctx, ent.OpQueryCount)
 	if err := ucq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
@@ -217,7 +218,7 @@ func (ucq *UserConnQuery) CountX(ctx context.Context) int {
 
 // Exist returns true if the query has elements in the graph.
 func (ucq *UserConnQuery) Exist(ctx context.Context) (bool, error) {
-	ctx = setContextOp(ctx, ucq.ctx, "Exist")
+	ctx = setContextOp(ctx, ucq.ctx, ent.OpQueryExist)
 	switch _, err := ucq.FirstID(ctx); {
 	case IsNotFound(err):
 		return false, nil
@@ -449,7 +450,7 @@ func (ucgb *UserConnGroupBy) Aggregate(fns ...AggregateFunc) *UserConnGroupBy {
 
 // Scan applies the selector query and scans the result into the given value.
 func (ucgb *UserConnGroupBy) Scan(ctx context.Context, v any) error {
-	ctx = setContextOp(ctx, ucgb.build.ctx, "GroupBy")
+	ctx = setContextOp(ctx, ucgb.build.ctx, ent.OpQueryGroupBy)
 	if err := ucgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -497,7 +498,7 @@ func (ucs *UserConnSelect) Aggregate(fns ...AggregateFunc) *UserConnSelect {
 
 // Scan applies the selector query and scans the result into the given value.
 func (ucs *UserConnSelect) Scan(ctx context.Context, v any) error {
-	ctx = setContextOp(ctx, ucs.ctx, "Select")
+	ctx = setContextOp(ctx, ucs.ctx, ent.OpQuerySelect)
 	if err := ucs.prepareQuery(ctx); err != nil {
 		return err
 	}

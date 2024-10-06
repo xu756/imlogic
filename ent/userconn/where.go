@@ -69,9 +69,9 @@ func UserID(v int64) predicate.UserConn {
 	return predicate.UserConn(sql.FieldEQ(FieldUserID, v))
 }
 
-// HostName applies equality check predicate on the "host_name" field. It's identical to HostNameEQ.
-func HostName(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldEQ(FieldHostName, v))
+// HostIP applies equality check predicate on the "host_ip" field. It's identical to HostIPEQ.
+func HostIP(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldEQ(FieldHostIP, v))
 }
 
 // Device applies equality check predicate on the "device" field. It's identical to DeviceEQ.
@@ -229,69 +229,69 @@ func UserIDLTE(v int64) predicate.UserConn {
 	return predicate.UserConn(sql.FieldLTE(FieldUserID, v))
 }
 
-// HostNameEQ applies the EQ predicate on the "host_name" field.
-func HostNameEQ(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldEQ(FieldHostName, v))
+// HostIPEQ applies the EQ predicate on the "host_ip" field.
+func HostIPEQ(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldEQ(FieldHostIP, v))
 }
 
-// HostNameNEQ applies the NEQ predicate on the "host_name" field.
-func HostNameNEQ(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldNEQ(FieldHostName, v))
+// HostIPNEQ applies the NEQ predicate on the "host_ip" field.
+func HostIPNEQ(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldNEQ(FieldHostIP, v))
 }
 
-// HostNameIn applies the In predicate on the "host_name" field.
-func HostNameIn(vs ...string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldIn(FieldHostName, vs...))
+// HostIPIn applies the In predicate on the "host_ip" field.
+func HostIPIn(vs ...string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldIn(FieldHostIP, vs...))
 }
 
-// HostNameNotIn applies the NotIn predicate on the "host_name" field.
-func HostNameNotIn(vs ...string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldNotIn(FieldHostName, vs...))
+// HostIPNotIn applies the NotIn predicate on the "host_ip" field.
+func HostIPNotIn(vs ...string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldNotIn(FieldHostIP, vs...))
 }
 
-// HostNameGT applies the GT predicate on the "host_name" field.
-func HostNameGT(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldGT(FieldHostName, v))
+// HostIPGT applies the GT predicate on the "host_ip" field.
+func HostIPGT(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldGT(FieldHostIP, v))
 }
 
-// HostNameGTE applies the GTE predicate on the "host_name" field.
-func HostNameGTE(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldGTE(FieldHostName, v))
+// HostIPGTE applies the GTE predicate on the "host_ip" field.
+func HostIPGTE(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldGTE(FieldHostIP, v))
 }
 
-// HostNameLT applies the LT predicate on the "host_name" field.
-func HostNameLT(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldLT(FieldHostName, v))
+// HostIPLT applies the LT predicate on the "host_ip" field.
+func HostIPLT(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldLT(FieldHostIP, v))
 }
 
-// HostNameLTE applies the LTE predicate on the "host_name" field.
-func HostNameLTE(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldLTE(FieldHostName, v))
+// HostIPLTE applies the LTE predicate on the "host_ip" field.
+func HostIPLTE(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldLTE(FieldHostIP, v))
 }
 
-// HostNameContains applies the Contains predicate on the "host_name" field.
-func HostNameContains(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldContains(FieldHostName, v))
+// HostIPContains applies the Contains predicate on the "host_ip" field.
+func HostIPContains(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldContains(FieldHostIP, v))
 }
 
-// HostNameHasPrefix applies the HasPrefix predicate on the "host_name" field.
-func HostNameHasPrefix(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldHasPrefix(FieldHostName, v))
+// HostIPHasPrefix applies the HasPrefix predicate on the "host_ip" field.
+func HostIPHasPrefix(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldHasPrefix(FieldHostIP, v))
 }
 
-// HostNameHasSuffix applies the HasSuffix predicate on the "host_name" field.
-func HostNameHasSuffix(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldHasSuffix(FieldHostName, v))
+// HostIPHasSuffix applies the HasSuffix predicate on the "host_ip" field.
+func HostIPHasSuffix(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldHasSuffix(FieldHostIP, v))
 }
 
-// HostNameEqualFold applies the EqualFold predicate on the "host_name" field.
-func HostNameEqualFold(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldEqualFold(FieldHostName, v))
+// HostIPEqualFold applies the EqualFold predicate on the "host_ip" field.
+func HostIPEqualFold(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldEqualFold(FieldHostIP, v))
 }
 
-// HostNameContainsFold applies the ContainsFold predicate on the "host_name" field.
-func HostNameContainsFold(v string) predicate.UserConn {
-	return predicate.UserConn(sql.FieldContainsFold(FieldHostName, v))
+// HostIPContainsFold applies the ContainsFold predicate on the "host_ip" field.
+func HostIPContainsFold(v string) predicate.UserConn {
+	return predicate.UserConn(sql.FieldContainsFold(FieldHostIP, v))
 }
 
 // DeviceEQ applies the EQ predicate on the "device" field.

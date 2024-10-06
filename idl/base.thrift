@@ -97,7 +97,7 @@ struct MetaMsg {
   1: string link_id,
   2: i64 user_id,
   3: WsStatus status,
-  4: string host_name,
+  4: string host_ip,
   5: string device
 }
 

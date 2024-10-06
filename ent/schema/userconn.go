@@ -19,7 +19,7 @@ func (UserConn) Fields() []ent.Field {
 		field.String("link_id").Unique().Immutable().Comment("连接id"),
 		field.Time("link_time").Immutable().Default(time.Now).Comment("连接时间"),
 		field.Int64("user_id").Comment("用户id"),
-		field.String("host_name").Default("").Comment("主机名"),
+		field.String("host_ip").Default("").Comment("主机ip"),
 		field.String("device").Default("").Comment("设备"),
 		field.Time("last_heartbeat_time").Default(time.Now).Comment("最后一次心跳时间"),
 	}
@@ -36,6 +36,6 @@ func (UserConn) Indexes() []ent.Index {
 		// unique index.
 		index.Fields("link_id").Unique(),
 		// index.
-		index.Fields("user_id", "host_name"),
+		index.Fields("user_id", "host_ip"),
 	}
 }

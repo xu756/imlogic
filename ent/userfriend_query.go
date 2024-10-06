@@ -9,6 +9,7 @@ import (
 	"imlogic/ent/userfriend"
 	"math"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -60,7 +61,7 @@ func (ufq *UserFriendQuery) Order(o ...userfriend.OrderOption) *UserFriendQuery 
 // First returns the first UserFriend entity from the query.
 // Returns a *NotFoundError when no UserFriend was found.
 func (ufq *UserFriendQuery) First(ctx context.Context) (*UserFriend, error) {
-	nodes, err := ufq.Limit(1).All(setContextOp(ctx, ufq.ctx, "First"))
+	nodes, err := ufq.Limit(1).All(setContextOp(ctx, ufq.ctx, ent.OpQueryFirst))
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +84,7 @@ func (ufq *UserFriendQuery) FirstX(ctx context.Context) *UserFriend {
 // Returns a *NotFoundError when no UserFriend ID was found.
 func (ufq *UserFriendQuery) FirstID(ctx context.Context) (id int64, err error) {
 	var ids []int64
-	if ids, err = ufq.Limit(1).IDs(setContextOp(ctx, ufq.ctx, "FirstID")); err != nil {
+	if ids, err = ufq.Limit(1).IDs(setContextOp(ctx, ufq.ctx, ent.OpQueryFirstID)); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -106,7 +107,7 @@ func (ufq *UserFriendQuery) FirstIDX(ctx context.Context) int64 {
 // Returns a *NotSingularError when more than one UserFriend entity is found.
 // Returns a *NotFoundError when no UserFriend entities are found.
 func (ufq *UserFriendQuery) Only(ctx context.Context) (*UserFriend, error) {
-	nodes, err := ufq.Limit(2).All(setContextOp(ctx, ufq.ctx, "Only"))
+	nodes, err := ufq.Limit(2).All(setContextOp(ctx, ufq.ctx, ent.OpQueryOnly))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +135,7 @@ func (ufq *UserFriendQuery) OnlyX(ctx context.Context) *UserFriend {
 // Returns a *NotFoundError when no entities are found.
 func (ufq *UserFriendQuery) OnlyID(ctx context.Context) (id int64, err error) {
 	var ids []int64
-	if ids, err = ufq.Limit(2).IDs(setContextOp(ctx, ufq.ctx, "OnlyID")); err != nil {
+	if ids, err = ufq.Limit(2).IDs(setContextOp(ctx, ufq.ctx, ent.OpQueryOnlyID)); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -159,7 +160,7 @@ func (ufq *UserFriendQuery) OnlyIDX(ctx context.Context) int64 {
 
 // All executes the query and returns a list of UserFriends.
 func (ufq *UserFriendQuery) All(ctx context.Context) ([]*UserFriend, error) {
-	ctx = setContextOp(ctx, ufq.ctx, "All")
+	ctx = setContextOp(ctx, ufq.ctx, ent.OpQueryAll)
 	if err := ufq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
@@ -181,7 +182,7 @@ func (ufq *UserFriendQuery) IDs(ctx context.Context) (ids []int64, err error) {
 	if ufq.ctx.Unique == nil && ufq.path != nil {
 		ufq.Unique(true)
 	}
-	ctx = setContextOp(ctx, ufq.ctx, "IDs")
+	ctx = setContextOp(ctx, ufq.ctx, ent.OpQueryIDs)
 	if err = ufq.Select(userfriend.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -199,7 +200,7 @@ func (ufq *UserFriendQuery) IDsX(ctx context.Context) []int64 {
 
 // Count returns the count of the given query.
 func (ufq *UserFriendQuery) Count(ctx context.Context) (int, error) {
-	ctx = setContextOp(ctx, ufq.ctx, "Count")
+	ctx = setContextOp(ctx, ufq.ctx, ent.OpQueryCount)
 	if err := ufq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
@@ -217,7 +218,7 @@ func (ufq *UserFriendQuery) CountX(ctx context.Context) int {
 
 // Exist returns true if the query has elements in the graph.
 func (ufq *UserFriendQuery) Exist(ctx context.Context) (bool, error) {
-	ctx = setContextOp(ctx, ufq.ctx, "Exist")
+	ctx = setContextOp(ctx, ufq.ctx, ent.OpQueryExist)
 	switch _, err := ufq.FirstID(ctx); {
 	case IsNotFound(err):
 		return false, nil
@@ -449,7 +450,7 @@ func (ufgb *UserFriendGroupBy) Aggregate(fns ...AggregateFunc) *UserFriendGroupB
 
 // Scan applies the selector query and scans the result into the given value.
 func (ufgb *UserFriendGroupBy) Scan(ctx context.Context, v any) error {
-	ctx = setContextOp(ctx, ufgb.build.ctx, "GroupBy")
+	ctx = setContextOp(ctx, ufgb.build.ctx, ent.OpQueryGroupBy)
 	if err := ufgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -497,7 +498,7 @@ func (ufs *UserFriendSelect) Aggregate(fns ...AggregateFunc) *UserFriendSelect {
 
 // Scan applies the selector query and scans the result into the given value.
 func (ufs *UserFriendSelect) Scan(ctx context.Context, v any) error {
-	ctx = setContextOp(ctx, ufs.ctx, "Select")
+	ctx = setContextOp(ctx, ufs.ctx, ent.OpQuerySelect)
 	if err := ufs.prepareQuery(ctx); err != nil {
 		return err
 	}
