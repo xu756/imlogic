@@ -41,10 +41,10 @@ jobs:
           | # 使用 上一步写的 Dockerfile 构建镜像并发布到私有仓库； 发布完成可以去 https://github.com/MrGaoGang?tab=packages 查看
           docker build . --file ${{env.DOCKERFILE_PATH}} --tag xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
           docker push xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}
-#      - name: 更新服务器 发送请求
-#        run: |
-#          curl -X PUT  \
-#          -H "content-type: application/json" \
-#          -H "Cookie: KuboardUsername=admin; KuboardAccessKey=emrcwdmbxijy.mbxn23tmz8hmmtnnx25wab3ist3nz7nx" \
-#          -d '{"kind":"deployments","namespace":"app","name":"iot","images":{"xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}":"xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}"}}' \
-#          "https://k3s.imlogic.cn/kuboard-api/cluster/default/kind/CICDApi/admin/resource/updateImageTag"
+      - name: 更新服务器 发送请求
+        run: |
+          curl -X PUT  \
+          -H "content-type: application/json" \
+          -H "Cookie: KuboardUsername=admin; KuboardAccessKey=emrcwdmbxijy.mbxn23tmz8hmmtnnx25wab3ist3nz7nx" \
+          -d '{"kind":"deployments","namespace":"imlogic","name":"${{env.PACKAGE_NAME}}","images":{"xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}":"xu756-docker.pkg.coding.net/me/xm/${{env.PACKAGE_NAME}}:${{env.PACKAGE_VERSION}}"}}' \
+          "https://k3s.imlogic.cn/kuboard-api/cluster/default/kind/CICDApi/admin/resource/updateImageTag"

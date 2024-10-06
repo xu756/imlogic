@@ -8,8 +8,8 @@ type Config struct {
 	JwtConfig   JwtConfig   `yaml:"JwtConfig"`
 	MqUrl       string      `yaml:"MqUrl"`
 	Version     string      `yaml:"Version"`
-	CosUrl      string      `yaml:"cosUrl"`
-	UploadPath  string      `yaml:"uploadPath"`
+	CosUrl      string      `yaml:"CosUrl"`
+	UploadPath  string      `yaml:"UploadPath"`
 	Minio       Minio       `yaml:"Minio"`
 	MongodbUrl  string      `yaml:"MongodbUrl"`
 }
