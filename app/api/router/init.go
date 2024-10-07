@@ -1,10 +1,13 @@
 package router
 
 import (
+	"context"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"imlogic/app/api/logic"
 	"imlogic/common/config"
 	"imlogic/internal/middleware"
+	"imlogic/internal/result"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
@@ -34,5 +37,14 @@ func InitRouter() {
 	friendRouter := router.Group("/friend")
 	logic.FriendRoute(friendRouter)
 	friendRouter.Use(middleware.HertzJwt())
+	router.GET("/ping", func(ctx context.Context, c *app.RequestContext) {
+		header := make(map[string]string)
+		c.VisitAllHeaders(func(key, value []byte) {
+			header[string(key)] = string(value)
+		})
+		header["RemoteAddr"] = c.RemoteAddr().String()
+		header["ip"] = c.ClientIP()
+		result.HttpSuccess(c, header)
+	})
 	HttpServer = h
 }
