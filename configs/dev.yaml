@@ -12,15 +12,15 @@ Rpc:
 
 DbConfig:
   DbType: postgres
-  Addr: 110.40.208.122
+  Addr: postgresql.db
   Port: 15432
   Username: root
-  Password: fyU0bj2KLndYN6CKYubb
+  Password: imlogic
   DbName: imlogic
 
 RedisConfig:
   Addr: 110.40.208.122:16379
-  Password: Y5dg5tg8050oigInC30sf
+  Password: imlogic
   Db: 4
   Prefix: imlogic
 
@@ -32,15 +32,15 @@ JwtConfig:
   Expire: 3600000
 
 
-MqUrl: amqp://root:1mYa0PE6JLz8U5YJYMgj@110.40.208.122:5672/
+MqUrl: amqp://root:imlogic@productLinux:5672/
 Version: v1
 
 Minio:
   Endpoint: cos.imlogic.cn
-  AccessKeyID: nJQ8MGtvnWfgHJXu0pFS 
+  AccessKeyID: dev 
   SecretAccessKey:  
   UseSSL: false 
-  Bucket: appserver
+  Bucket: dev
 
 
 openTelemetry:
@@ -51,4 +51,4 @@ openTelemetry:
   passWord: imlogic123
   fullSize: 20
 
-MongodbUrl: mongodb://root:fyU0bj2KLndYN6CKYubb@110.40.208.122:17017
+MongodbUrl: mongodb://root:fyU0bj2KLndYN6CKYubb@productLinux:17017
